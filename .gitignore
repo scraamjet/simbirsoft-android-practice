@@ -1,0 +1,89 @@
+# Исключение временных и сборочных файлов
+
+### Android Studio ###
+# Скомпилированные файлы приложения
+*.apk
+*.ap_
+*.aab
+
+# Файлы ART/Dalvik VM
+*.dex
+
+# Java class файлы
+*.class
+
+# Сгенерированные файлы
+bin/
+gen/
+out/
+
+# Локальные настройки Android Studio
+.idea/caches/
+.idea/libraries/
+.idea/shelf/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/navEditor.xml
+
+# Конфигурация локального SDK
+local.properties
+
+# Временные файлы сборки
+/build/
+/*/build/
+/*/out
+
+# Подпись и ключи
+*.jks
+*.keystore
+.signing/
+
+# Логи и временные файлы
+*.log
+*.tmp
+
+# Google Services (например, Firebase)
+google-services.json
+
+# Внешние нативные сборки
+.externalNativeBuild
+obj/
+
+# Файлы IntelliJ IDEA
+*.iml
+*.iws
+
+# Файлы Eclipse
+.classpath
+.project
+.cproject
+.settings/
+
+# Плагины Android Studio
+captures/
+.navigation/
+.idea/
+
+# Исключение gradle-кэша
+.gradle/
+
+# Исключение временных файлов
+hs_err_pid*
+*~
+
+### Исключение, чтобы сохранить важные файлы ###
+
+# Сохранить файлы сборки Gradle
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+!build.gradle
+!settings.gradle
+!gradle.properties
+
+# Сохранить конфигурации проекта
+!google-services.json
