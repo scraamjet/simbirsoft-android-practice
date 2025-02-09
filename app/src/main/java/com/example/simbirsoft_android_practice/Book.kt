@@ -13,4 +13,18 @@ class Book(
             "Novel"
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other !is Book) {
+            return false
+        }
+        return price == other.price && wordCount == other.wordCount
+    }
+
+    override fun hashCode(): Int {
+        return price.hashCode() * 31 + wordCount
+    }
 }
