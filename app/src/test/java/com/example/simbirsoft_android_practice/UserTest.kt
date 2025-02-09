@@ -41,4 +41,17 @@ class UserTest {
             fullAccessUsers.all { it.type == Type.FULL },
         )
     }
+
+    @Test
+    fun testTransformUsersToNames() {
+        val userNames = users.map { it.name }
+        val firstUser = userNames.first()
+        val lastUser = userNames.last()
+
+        println("First user: $firstUser")
+        println("Last user: $lastUser")
+
+        assertEquals("First user must be Dima", firstUser, "Dima")
+        assertEquals("Last user must be Emma", lastUser, "Emma")
+    }
 }
