@@ -51,4 +51,13 @@ class PublicationTest {
         buy(book)
         buy(magazine)
     }
+
+    @Test
+    fun testNullableBooksWithLet() {
+        val book1: Book? = null
+        val book2: Book? = Book(18.99, 4000)
+
+        book1?.let { buy(it) }
+        book2?.let { buy(it) }
+    }
 }
