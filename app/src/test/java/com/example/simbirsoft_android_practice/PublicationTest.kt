@@ -1,6 +1,8 @@
 package com.example.simbirsoft_android_practice
 
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Test
 
 class PublicationTest {
@@ -29,5 +31,15 @@ class PublicationTest {
         assertEquals("Flash Fiction", book1.getType())
         assertEquals("Short Story", book2.getType())
         assertEquals("Magazine", magazine.getType())
+    }
+
+    @Test
+    fun testBookEquality() {
+        val book1 = Book(15.99, 900)
+        val book2 = Book(15.99, 900)
+
+        assertFalse(book1 === book2)
+        assertEquals(book1, book2)
+        assertNotEquals(book1, Book(20.50, 5000))
     }
 }
