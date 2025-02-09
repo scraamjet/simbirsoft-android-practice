@@ -25,4 +25,21 @@ class AuthTest {
             println("Updating cache...")
         }
     }
+
+    @Test
+    fun testAuthCallbackWithAgeCheck() {
+        val user = User(1, "Dima", 25, Type.FULL)
+        val authCallback = object : AuthCallback {
+            override fun authSuccess() {
+                println("Authentication successful!")
+            }
+
+            override fun authFailed() {
+                println("Authentication failed!")
+            }
+        }
+        auth(user, authCallback) {
+            println("Updating cache...")
+        }
+    }
 }
