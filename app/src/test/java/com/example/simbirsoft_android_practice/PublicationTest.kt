@@ -42,4 +42,13 @@ class PublicationTest {
         assertEquals(book1, book2)
         assertNotEquals(book1, Book(20.50, 5000))
     }
+
+    @Test
+    fun testBuyFunction() {
+        val book = Book(12.99, 3000)
+        val magazine = Magazine(7.50, 10000)
+
+        buy(book)
+        buy(magazine)
+    }
 }
