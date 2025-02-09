@@ -54,4 +54,13 @@ class UserTest {
         assertEquals("First user must be Dima", firstUser, "Dima")
         assertEquals("Last user must be Emma", lastUser, "Emma")
     }
+
+    @Test
+    fun testCheckAdultFunction() {
+        val adultUser = User(1, "Dima", 25, Type.FULL)
+        val minorUser = User(2, "Leo", 16, Type.DEMO)
+
+        assertTrue("Dima must be adult", adultUser.checkAdult().isSuccess)
+        assertTrue("Leo must not be adult", minorUser.checkAdult().isFailure)
+    }
 }
