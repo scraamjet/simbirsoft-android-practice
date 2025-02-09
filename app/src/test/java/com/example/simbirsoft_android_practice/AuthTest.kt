@@ -18,4 +18,11 @@ class AuthTest {
         authCallback.authSuccess()
         authCallback.authFailed()
     }
+
+    @Test
+    fun testAuthFunction() {
+        auth {
+            println("Updating cache...")
+        }
+    }
 }
