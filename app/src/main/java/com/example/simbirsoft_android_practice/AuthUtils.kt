@@ -24,3 +24,17 @@ inline fun auth(
         )
     println("Authentication process completed.")
 }
+
+fun doAction(action: Action, authCallback: AuthCallback) {
+    when (action) {
+        is Action.Registration -> println("Auth started: Registration")
+        is Action.Login -> {
+            println("Auth started: Login for user ${action.user.name}")
+            auth(action.user, authCallback) {
+                println("Updating cache after login...")
+            }
+        }
+
+        is Action.Logout -> println("Auth started: Logout")
+    }
+}
