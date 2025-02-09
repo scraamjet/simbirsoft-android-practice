@@ -60,4 +60,15 @@ class PublicationTest {
         book1?.let { buy(it) }
         book2?.let { buy(it) }
     }
+
+    @Test
+    fun testLambdaSum() {
+        val sum: (Int, Int) -> Unit = { a, b ->
+            val result = a + b
+            println("Sum of $a and $b is $result")
+        }
+
+        sum(5, 10)
+        sum(-3, 7)
+    }
 }
