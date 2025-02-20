@@ -5,12 +5,10 @@ class Book(
     override val wordCount: Int
 ) : Publication {
     override fun getType(): String {
-        return if (wordCount <= 1000) {
-            "Flash Fiction"
-        } else if (wordCount <= 7500) {
-            "Short Story"
-        } else {
-            "Novel"
+        return when (wordCount) {
+            in 0..1000 -> "Flash Fiction"
+            in 1001..7500 -> "Short Story"
+            else -> "Novel"
         }
     }
 
