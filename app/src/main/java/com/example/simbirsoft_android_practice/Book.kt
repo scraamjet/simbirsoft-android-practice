@@ -1,5 +1,7 @@
 package com.example.simbirsoft_android_practice
 
+import java.math.BigDecimal
+
 private const val FLASH_FICTION_MIN_WORD_COUNT = 1
 private const val FLASH_FICTION_MAX_WORD_COUNT = 1000
 
@@ -11,7 +13,7 @@ private const val TYPE_SHORT_STORY = "Short Story"
 private const val TYPE_NOVEL = "Novel"
 
 class Book(
-    override val price: Double,
+    override val price: BigDecimal,
     override val wordCount: Int
 ) : Publication {
     override fun getType(): String {

@@ -1,9 +1,11 @@
 package com.example.simbirsoft_android_practice
 
+import java.math.BigDecimal
+
 private const val TYPE_MAGAZINE = "Magazine"
 
 class Magazine(
-    override val price: Double,
+    override val price: BigDecimal,
     override val wordCount: Int
 ) : Publication {
     override fun getType(): String {
