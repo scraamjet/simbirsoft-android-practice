@@ -9,4 +9,12 @@ class Magazine(
     override fun getType(): String {
         return TYPE_MAGAZINE
     }
+
+    override fun toString(): String {
+        return buildString {
+            append("Type: ${getType()}, ")
+            append("Words: $wordCount, ")
+            append("Price: ${"%.2f".format(price)}€")
+        }
+    }
 }

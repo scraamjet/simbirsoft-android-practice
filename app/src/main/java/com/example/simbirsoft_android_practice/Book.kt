@@ -35,4 +35,12 @@ class Book(
     override fun hashCode(): Int {
         return price.hashCode() * 31 + wordCount
     }
+
+    override fun toString(): String {
+        return buildString {
+            append("Type: ${getType()}, ")
+            append("Words: $wordCount, ")
+            append("Price: ${"%.2f".format(price)}€")
+        }
+    }
 }
