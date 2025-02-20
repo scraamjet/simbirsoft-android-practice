@@ -6,16 +6,11 @@ import org.junit.Before
 import org.junit.Test
 
 class UserTest {
-    private lateinit var users: MutableList<User>
-
-    @Before
-    fun setup() {
-        users = mutableListOf(User(1, "Dima", 25, Type.FULL)).apply {
-            add(User(2, "Artem", 22, Type.DEMO))
-            add(User(3, "Kate", 28, Type.FULL))
-            add(User(4, "John", 35, Type.DEMO))
-            add(User(5, "Emma", 22, Type.FULL))
-        }
+    private val users: MutableList<User> = mutableListOf(User(1, "Dima", 25, Type.FULL)).apply {
+        add(User(2, "Artem", 22, Type.DEMO))
+        add(User(3, "Kate", 28, Type.FULL))
+        add(User(4, "John", 35, Type.DEMO))
+        add(User(5, "Emma", 22, Type.FULL))
     }
 
     @Test
