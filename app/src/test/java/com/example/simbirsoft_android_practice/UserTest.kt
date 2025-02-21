@@ -32,12 +32,12 @@ class UserTest {
     }
 
     @Test
-    fun testFilterUsersWithFulLAccess() {
-        val fullAccessUsers = users.filter { it.type == Type.FULL }
+    fun testFilterUsersWithFullAccess() {
+        val fullAccessUsers = users.filter { user -> user.type == Type.FULL }
         println("Users with FULL access: $fullAccessUsers")
         assertTrue(
             "All filtered users must have FULL access",
-            fullAccessUsers.all { it.type == Type.FULL },
+            fullAccessUsers.all { user -> user.type == Type.FULL }
         )
     }
 
