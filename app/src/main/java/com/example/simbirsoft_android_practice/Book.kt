@@ -31,11 +31,11 @@ class Book(
         if (other !is Book) {
             return false
         }
-        return price == other.price && wordCount == other.wordCount
+        return price.compareTo(other.price) == 0 && wordCount == other.wordCount
     }
 
     override fun hashCode(): Int {
-        return price.hashCode() * 31 + wordCount
+        return price.stripTrailingZeros().hashCode() * 31 + wordCount
     }
 
     override fun toString(): String {
