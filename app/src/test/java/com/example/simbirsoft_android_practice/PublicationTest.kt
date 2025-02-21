@@ -43,6 +43,14 @@ class PublicationTest {
     }
 
     @Test
+    fun testBookEqualityForDifferentDecimalRepresentation() {
+        val book1 = Book(BigDecimal(23.000000), 1500)
+        val book2 = Book(BigDecimal(23.00), 1500)
+
+        assertEquals(book1, book2)
+    }
+
+    @Test
     fun testBuyFunction() {
         val book = Book(BigDecimal(12.99), 3000)
         val magazine = Magazine(BigDecimal(7.50), 10000)
