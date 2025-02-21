@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice
 
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import org.junit.Before
 import org.junit.Test
 
 class UserTest {
@@ -11,6 +10,11 @@ class UserTest {
         add(User(3, "Kate", 28, Type.FULL))
         add(User(4, "John", 35, Type.DEMO))
         add(User(5, "Emma", 22, Type.FULL))
+    }
+
+    @Test
+    fun testUsersListIsNotEmpty() {
+        assertTrue("Users list should not be empty", users.isNotEmpty())
     }
 
     @Test
