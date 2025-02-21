@@ -6,6 +6,8 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import java.math.BigDecimal
 
+typealias Summator = (Int, Int) -> Unit
+
 class PublicationTest {
     @Test
     fun testBookAndMagazine() {
@@ -52,7 +54,7 @@ class PublicationTest {
 
     @Test
     fun testLambdaSum() {
-        val sum: (Int, Int) -> Unit = { a, b ->
+        val sum: Summator = { a, b ->
             val result = a + b
             println("Sum of $a and $b is $result")
         }
