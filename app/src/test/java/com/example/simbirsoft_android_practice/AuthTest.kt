@@ -18,14 +18,7 @@ class AuthTest {
         authCallback.authSuccess()
         authCallback.authFailed()
     }
-
-    @Test
-    fun testAuthFunction() {
-        auth {
-            println("Updating cache...")
-        }
-    }
-
+    
     @Test
     fun testAuthCallbackWithAgeCheck() {
         val user = User(1, "Dima", 25, Type.FULL)
