@@ -64,8 +64,8 @@ class PublicationTest {
         val book1: Book? = null
         val book2: Book? = Book(BigDecimal(18.99), 4000)
 
-        book1?.let { buy(it) }
-        book2?.let { buy(it) }
+        book1?.let(::buy)
+        book2?.let(::buy)
     }
 
     @Test
