@@ -44,14 +44,14 @@ class UserTest {
     @Test
     fun testTransformUsersToNames() {
         val userNames = users.map { it.name }
-        val firstUser = userNames.first()
-        val lastUser = userNames.last()
+        val firstUserName = userNames.first()
+        val lastUserName = userNames.last()
 
-        println("First user: $firstUser")
-        println("Last user: $lastUser")
+        println("First user: $firstUserName")
+        println("Last user: $lastUserName")
 
-        assertEquals("First user must be Dima", firstUser, "Dima")
-        assertEquals("Last user must be Emma", lastUser, "Emma")
+        assertEquals("First user must be Dima", firstUserName, "Dima")
+        assertEquals("Last user must be Emma", lastUserName, "Emma")
     }
 
     @Test
