@@ -1,10 +1,11 @@
 package com.example.simbirsoft_android_practice
 
-fun User.checkAdult(): Result<Unit> {
+fun User.isAdult(): Boolean {
     return if (age >= 18) {
         println("User $name is an adult.")
-        Result.success(Unit)
+        true
     } else {
-        Result.failure(IllegalArgumentException("User $name is not an adult."))
+        println("User $name is not an adult.")
+        throw UnderageUserException("User $name is not an adult.")
     }
 }

@@ -6,16 +6,15 @@ inline fun auth(
     updateCache: () -> Unit
 ) {
     println("Authenticating user ${user.name}...")
-    user.checkAdult()
-        .fold(
-            onSuccess = {
-                authCallback.authSuccess()
-                updateCache()
-            },
-            onFailure = {
-                authCallback.authFailed()
-            }
-        )
+    try {
+        if (user.isAdult()) {
+            authCallback.authSuccess()
+            updateCache()
+        }
+    } catch (e: UnderageUserException) {
+        authCallback.authFailed()
+        println(e.message)
+    }
     println("Authentication process completed.")
 }
 
