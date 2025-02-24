@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice
 
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class UserTest {
@@ -60,10 +59,14 @@ class UserTest {
         val adultUser = User(1, "Dima", 25, Type.FULL)
         val minorUser = User(2, "Leo", 16, Type.DEMO)
 
-        assertTrue("Dima must be adult", adultUser.isAdult())
-
-        assertThrows(UnderageUserException::class.java) {
+        val adultCheck = runCatching {
+            adultUser.isAdult()
+        }
+        val minorCheck = runCatching {
             minorUser.isAdult()
         }
+
+        assertTrue("Dima must be adult", adultCheck.isSuccess)
+        assertTrue("Leo must not be adult", minorCheck.isFailure)
     }
 }
