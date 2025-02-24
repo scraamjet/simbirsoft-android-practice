@@ -44,7 +44,7 @@ class UserTest {
 
     @Test
     fun testTransformUsersToNames() {
-        val userNames = users.map { it.name }
+        val userNames = users.map { user -> user.name }
         val firstUserName = userNames.first()
         val lastUserName = userNames.last()
 
