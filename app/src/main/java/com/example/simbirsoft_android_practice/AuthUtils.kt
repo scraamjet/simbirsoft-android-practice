@@ -7,10 +7,9 @@ inline fun auth(
 ) {
     println("Authenticating user ${user.name}...")
     try {
-        if (user.isAdult()) {
-            authCallback.authSuccess()
-            updateCache()
-        }
+        user.throwIfUnderage()
+        authCallback.authSuccess()
+        updateCache()
     } catch (e: UnderageUserException) {
         authCallback.authFailed()
         println(e.message)

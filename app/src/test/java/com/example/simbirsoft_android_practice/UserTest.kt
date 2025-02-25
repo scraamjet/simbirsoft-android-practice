@@ -60,10 +60,10 @@ class UserTest {
         val minorUser = User(2, "Leo", 16, Type.DEMO)
 
         val adultCheck = runCatching {
-            adultUser.isAdult()
+            adultUser.throwIfUnderage()
         }
         val minorCheck = runCatching {
-            minorUser.isAdult()
+            minorUser.throwIfUnderage()
         }
 
         assertTrue("Dima must be adult", adultCheck.isSuccess)
