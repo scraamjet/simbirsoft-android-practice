@@ -43,6 +43,10 @@ ktlint {
     ignoreFailures = false
     outputToConsole = true
     outputColorName = "RED"
+    filter {
+        exclude("package-name")
+        exclude("no-wildcard-imports")
+    }
     reporters {
         reporter(ReporterType.PLAIN)
         reporter(ReporterType.CHECKSTYLE)
