@@ -1,6 +1,9 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -32,6 +35,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+}
+
+ktlint {
+    android = true
+    ignoreFailures = false
+    outputToConsole = true
+    outputColorName = "RED"
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
     }
 }
 
