@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity_splash_screen -->
+    <dimen name="splash_app_logo_width">245dp</dimen>
+    <dimen name="splash_app_logo_height">73dp</dimen>
+    <dimen name="splash_app_logo_margin_top">154dp</dimen>
+    <dimen name="splash_progress_bar_margin_bottom">20dp</dimen>
+    <dimen name="splash_loading_text_margin_bottom">124dp</dimen>
+    <dimen name="splash_mss_logo_margin_bottom">40dp</dimen>
+
+    <!-- activity_profile -->
+    <dimen name="profile_collapsing_toolbar_height">276dp</dimen>
+    <dimen name="profile_app_bar_elevation">0dp</dimen>
+    <dimen name="profile_app_bar_image_height">220dp</dimen>
+    <dimen name="profile_toolbar_margin_start">15dp</dimen>
+    <dimen name="profile_name_margin_top">20dp</dimen>
+    <dimen name="profile_birthday_hint_margin_top">16dp</dimen>
+    <dimen name="profile_field_of_activity_margin_top">10dp</dimen>
+    <dimen name="profile_push_notifications_margin_top">28dp</dimen>
+    <dimen name="profile_switch_margin_end">26dp</dimen>
+    <dimen name="profile_switch_margin_bottom">15dp</dimen>
+    <dimen name="profile_line_margin_top">18dp</dimen>
+    <dimen name="profile_line_height">1dp</dimen>
+    <dimen name="profile_friends_margin_top">20dp</dimen>
+    <dimen name="profile_friend_margin_start">20dp</dimen>
+    <dimen name="profile_friend_margin_top_1">67dp</dimen>
+    <dimen name="profile_friend_margin_top_2">39dp</dimen>
+    <dimen name="profile_friend_margin_top_3">41dp</dimen>
+    <dimen name="profile_friend_image_margin_top">16dp</dimen>
+    <dimen name="profile_friend_image_margin_top_small">10dp</dimen>
+    <dimen name="profile_friend_image_margin_end">64dp</dimen>
+    <dimen name="profile_line_2_margin_top">20dp</dimen>
+    <dimen name="profile_logout_margin_top">20dp</dimen>
+    <dimen name="profile_logout_margin_bottom">92dp</dimen>
+    <dimen name="profile_guideline_margin_start">20dp</dimen>
+    <dimen name="bottom_nav_height">54dp</dimen>
+
+</resources>
+
