@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/material_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:menu="@menu/profile_menu">
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ImageView
+        android:id="@+id/app_bar_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_app_bar_image_height"
+        android:layout_gravity="bottom"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_man"
+        app:layout_collapseMode="parallax"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/material_toolbar"
+        app:layout_scrollFlags="scroll"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/TextStyle12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_name_margin_top"
+        android:text="@string/profile_sample_name"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_image" />
+
+    <TextView
+        android:id="@+id/tv_birthday_hint"
+        style="@style/TextStyle13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_birthday_hint_margin_top"
+        android:text="@string/profile_date_of_birth"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/tv_birthday"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_sample_date"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday_hint" />
+
+    <TextView
+        android:id="@+id/tv_field_of_activity"
+        style="@style/TextStyle13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_field_of_activity_margin_top"
+        android:text="@string/profile_field_of_activity"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/tv_activity"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_sample_activity"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_field_of_activity" />
+
+    <TextView
+        android:id="@+id/tv_push_up"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_push_notifications_margin_top"
+        android:text="@string/profile_push_notifications"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity" />
+
+    <Switch
+        android:id="@+id/switch_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/profile_switch_margin_end"
+        android:layout_marginBottom="@dimen/profile_switch_margin_bottom"
+        app:layout_constraintBottom_toTopOf="@id/line_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:theme="@style/Theme.Simbirsoftandroidpractice"
+        tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
+
+    <View
+        android:id="@+id/line_1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_line_height"
+        android:layout_marginTop="@dimen/profile_line_margin_top"
+        android:background="@color/cool_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_push_up" />
+
+    <TextView
+        android:id="@+id/tv_your_friends"
+        style="@style/TextStyle13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_friends_margin_top"
+        android:text="@string/profile_friends_list"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/line_1" />
+
+    <TextView
+        android:id="@+id/tv_sample_friend_1"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/profile_friend_margin_start"
+        android:layout_marginTop="@dimen/profile_friend_margin_top_1"
+        android:text="@string/profile_sample_friend_1"
+        app:layout_constraintStart_toEndOf="@+id/iv_sample_friend_1"
+        app:layout_constraintTop_toBottomOf="@+id/line_1" />
+
+    <ImageView
+        android:id="@+id/iv_sample_friend_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_friend_image_margin_top"
+        android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
+        android:src="@drawable/avatar_1"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tv_your_friends" />
+
+    <TextView
+        android:id="@+id/tv_sample_friend_2"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/profile_friend_margin_start"
+        android:layout_marginTop="@dimen/profile_friend_margin_top_2"
+        android:text="@string/profile_sample_friend_2"
+        app:layout_constraintStart_toEndOf="@+id/iv_sample_friend_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sample_friend_1" />
+
+    <ImageView
+        android:id="@+id/iv_sample_friend_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
+        android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
+        android:src="@drawable/avatar_2"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sample_friend_1" />
+
+    <TextView
+        android:id="@+id/tv_sample_friend_3"
+        style="@style/TextStyle8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/profile_friend_margin_start"
+        android:layout_marginTop="@dimen/profile_friend_margin_top_3"
+        android:text="@string/profile_sample_friend_3"
+        app:layout_constraintStart_toEndOf="@+id/iv_sample_friend_3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sample_friend_2" />
+
+    <ImageView
+        android:id="@+id/iv_sample_friend_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
+        android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
+        android:src="@drawable/avatar_3"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sample_friend_2" />
+
+    <View
+        android:id="@+id/line_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_line_height"
+        android:layout_marginTop="@dimen/profile_line_2_margin_top"
+        android:background="@color/cool_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sample_friend_3" />
+
+    <Button
+        android:id="@+id/button_logout"
+        style="@style/TextStyle6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/profile_logout_margin_top"
+        android:layout_marginBottom="@dimen/profile_logout_margin_bottom"
+        android:gravity="center"
+        android:text="@string/profile_logout_button"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line_2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/profile_guideline_margin_start" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
