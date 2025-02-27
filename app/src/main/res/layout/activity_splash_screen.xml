@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     android:background="@color/pale_grey">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="profile_menu.xml" />
+
     <ImageView
         android:id="@+id/iv_app_logo"
         android:layout_width="@dimen/splash_app_logo_width"
