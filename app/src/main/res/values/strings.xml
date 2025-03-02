@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">simbirsoft-android-practice</string>
+    <!-- activity_splash_screen -->
+    <string name="splash_loading">Загрузка…</string>
+    <string name="splash_logo_desc">Логотип приложения</string>
+    <string name="splash_icon_desc">Иконка приложения</string>
+    <string name="splash_loading_indicator">Индикатор загрузки</string>
+    <string name="splash_progress_desc">Логотип SimbirSoft mobile</string>
+
+    <!-- activity_profile -->
+    <string name="app_name">Хочу помочь</string>
+    <string name="profile_date_of_birth">Дата рождения</string>
+    <string name="profile_field_of_activity">Сфера деятельности</string>
+    <string name="profile_push_notifications">Получать push-уведомления</string>
+    <string name="profile_friends_list">Ваши друзья</string>
+    <string name="profile_logout_button">Выйти из аккаунта</string>
+    <string name="profile_sample_name">Константинов Денис</string>
+    <string name="profile_sample_date">01 февраля 1980</string>
+    <string name="profile_sample_activity">Хирургия, травмотология</string>
+    <string name="profile_sample_friend_1">Дмитрий Валерьевич</string>
+    <string name="profile_sample_friend_2">Евгений Александров</string>
+    <string name="profile_sample_friend_3">Виктор Кузнецов</string>
+
+    <!-- bottom_menu_navigation -->
+    <string name="nav_news">Новости</string>
+    <string name="nav_search">Поиск</string>
+    <string name="nav_help">Помочь</string>
+    <string name="nav_history">История</string>
+    <string name="nav_profile">Профиль</string>
+
+    <!-- profile_menu -->
+    <string name="profile_edit_button">Редактировать</string>
 </resources>
