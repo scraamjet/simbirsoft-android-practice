@@ -8,12 +8,6 @@ import androidx.fragment.app.DialogFragment
 
 class EditPhotoDialogFragment : DialogFragment() {
 
-    companion object {
-        fun newInstance(): EditPhotoDialogFragment {
-            return EditPhotoDialogFragment()
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogView = layoutInflater.inflate(R.layout.edit_photo_dialog, null)
         val dialog = AlertDialog.Builder(requireContext())
@@ -21,7 +15,7 @@ class EditPhotoDialogFragment : DialogFragment() {
             .create()
 
         dialogView.findViewById<LinearLayout>(R.id.take_photo)?.setOnClickListener {
-            (parentFragment as? ProfileFragment)?.openCamera()
+            (parentFragment as? ProfileFragment)?.takePhotoFromCamera()
             dialog.dismiss()
         }
 
@@ -31,5 +25,11 @@ class EditPhotoDialogFragment : DialogFragment() {
         }
 
         return dialog
+    }
+
+    companion object {
+        fun newInstance(): EditPhotoDialogFragment {
+            return EditPhotoDialogFragment()
+        }
     }
 }
