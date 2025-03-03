@@ -1,6 +1,5 @@
 package com.example.simbirsoft_android_practice
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +18,13 @@ import android.Manifest
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
-    private lateinit var profileImageView: ImageView
+    lateinit var profileImageView: ImageView
+
+    companion object {
+        fun newInstance(): ProfileFragment {
+            return ProfileFragment()
+        }
+    }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -45,7 +49,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         profileImageView = view.findViewById(R.id.app_bar_image)
 
         profileImageView.setOnClickListener {
@@ -62,37 +65,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun showEditPhotoDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.edit_photo_dialog, null)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
-
-        dialogView.findViewById<LinearLayout>(R.id.take_photo)?.setOnClickListener {
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    openCamera()
-                }
-
-                else -> {
-                    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-                }
-            }
-            dialog.dismiss()
-        }
-
-        dialogView.findViewById<LinearLayout>(R.id.delete_photo)?.setOnClickListener {
-            profileImageView.setImageResource(R.drawable.ic_launcher_background)
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        val editPhotoDialogFragment = EditPhotoDialogFragment.newInstance()
+        editPhotoDialogFragment.show(childFragmentManager, "EditPhotoDialog")
     }
 
-    private fun openCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraLauncher.launch(takePictureIntent)
+    fun openCamera() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraLauncher.launch(takePictureIntent)
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
     }
 }
