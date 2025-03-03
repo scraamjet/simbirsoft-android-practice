@@ -35,5 +35,15 @@
     <dimen name="profile_guideline_margin_start">20dp</dimen>
     <dimen name="bottom_nav_height">54dp</dimen>
 
+    <!-- edit_photo_dialog -->
+    <dimen name="edit_photo_dialog_height">234dp</dimen>
+    <dimen name="edit_photo_dialog_width">310dp</dimen>
+    <dimen name="edit_photo_dialog_option_margin_start">29dp</dimen>
+    <dimen name="edit_photo_dialog_choose_photo_margin_top">31dp</dimen>
+    <dimen name="edit_photo_dialog_take_photo_margin_top">43dp</dimen>
+    <dimen name="edit_photo_dialog_delete_photo_margin_top">43dp</dimen>
+
+
+
 </resources>
 
