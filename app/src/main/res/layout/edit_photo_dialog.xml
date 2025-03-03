@@ -9,11 +9,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/choose_photo_option" />
+        <include
+            android:id="@+id/choose_photo"
+            layout="@layout/choose_photo_option" />
 
-        <include layout="@layout/take_photo_option" />
+        <include
+            android:id="@+id/take_photo"
+            layout="@layout/take_photo_option" />
 
-        <include layout="@layout/delete_photo_option" />
+        <include
+            android:id="@+id/delete_photo"
+            layout="@layout/delete_photo_option" />
 
     </LinearLayout>
 
