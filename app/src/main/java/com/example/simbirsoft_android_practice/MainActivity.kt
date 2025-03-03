@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.profile -> loadFragment(ProfileFragment())
+                R.id.profile -> loadFragment(ProfileFragment.newInstance())
             }
             true
         }
