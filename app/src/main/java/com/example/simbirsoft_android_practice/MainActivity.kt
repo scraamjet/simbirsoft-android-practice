@@ -12,13 +12,16 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ProfileFragment())
+                .replace(R.id.fragment_container, HelpFragment.newInstance())
                 .commit()
         }
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+        bottomNav.selectedItemId = R.id.help
+
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.help -> loadFragment(HelpFragment.newInstance())
                 R.id.profile -> loadFragment(ProfileFragment.newInstance())
             }
             true
