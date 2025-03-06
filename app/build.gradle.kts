@@ -59,7 +59,8 @@ ktlint {
 }
 
 dependencies {
-    implementation(libs.viewbindingpropertydelegate)
+    implementation(libs.vbpd)
+    implementation(libs.vbpd.reflection)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
