@@ -1,11 +1,11 @@
 package com.example.simbirsoft_android_practice
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
 
-class HelpViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val icon: ImageView = itemView.findViewById(R.id.item_help_icon)
-    val title: TextView = itemView.findViewById(R.id.item_help_title)
+class HelpViewHolder(private val binding: ItemHelpBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: HelpCategory) {
+        binding.itemHelpIcon.setImageResource(item.icon)
+        binding.itemHelpTitle.text = item.title
+    }
 }
