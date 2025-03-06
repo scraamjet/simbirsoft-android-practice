@@ -37,6 +37,11 @@ android {
         jvmTarget = "11"
     }
 }
+android {
+    buildFeatures {
+        viewBinding = true
+    }
+}
 
 ktlint {
     android = true
@@ -54,7 +59,7 @@ ktlint {
 }
 
 dependencies {
-
+    implementation(libs.viewbindingpropertydelegate)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
