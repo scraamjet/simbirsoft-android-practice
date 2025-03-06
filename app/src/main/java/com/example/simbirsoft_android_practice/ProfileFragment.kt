@@ -1,76 +1,119 @@
 package com.example.simbirsoft_android_practice
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import android.Manifest
 import androidx.activity.result.launch
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
+import dev.androidbroadcast.vbpd.viewBinding
 
+private const val IMAGE_SELECTOR_TAG = "IMAGE_SELECTOR_TAG"
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
-    lateinit var profileImageView: ImageView
+    private val binding by viewBinding(FragmentProfileBinding::bind)
 
     private val cameraPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            when {
-                granted -> launchCamera()
-                !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showCameraPermissionWarning()
-                else -> showCameraPermissionWarning()
-            }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            handleCameraPermissionResult(isGranted)
         }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let { profileImageView.setImageBitmap(it) }
+            bitmap?.let { updateAppBarImage(it) }
         }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
-        profileImageView = view.findViewById(R.id.app_bar_image)
+        initUI()
+        handleBackPress()
+    }
 
-        profileImageView.setOnClickListener {
-            EditPhotoDialogFragment.newInstance().show(childFragmentManager, IMAGE_SELECTOR)
+    private fun initUI() {
+        binding.appBarImage.setOnClickListener {
+            showEditPhotoDialog()
         }
+    }
 
+    private fun handleBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     requireActivity().finishAffinity()
                 }
-            }
+            },
         )
+    }
+
+    private fun showEditPhotoDialog() {
+        EditPhotoDialogFragment.newInstance { action ->
+            when (action) {
+                PhotoAction.TAKE_PHOTO -> handleTakePhoto()
+                PhotoAction.DELETE_PHOTO -> clearAppBarImage()
+            }
+        }.show(childFragmentManager, IMAGE_SELECTOR_TAG)
+    }
+
+    private fun handleTakePhoto() {
+        when {
+            hasCameraPermission() -> launchCamera()
+            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showCameraPermissionWarning()
+            else -> requestCameraPermission()
+        }
     }
 
     private fun launchCamera() {
         cameraLauncher.launch()
     }
 
-    fun takePhotoFromCamera() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-            showCameraPermissionWarning()
+    private fun requestCameraPermission() {
+        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun handleCameraPermissionResult(isGranted: Boolean) {
+        if (isGranted) {
+            launchCamera()
         } else {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            showCameraPermissionWarning()
         }
+    }
+
+    private fun hasCameraPermission(): Boolean {
+        val permissionStatus =
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA,
+            )
+        return permissionStatus == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showCameraPermissionWarning() {
         Toast.makeText(
             requireContext(),
-            resources.getText(R.string.nav_news),
-            Toast.LENGTH_SHORT
+            R.string.profile_camera_permission_warning,
+            Toast.LENGTH_SHORT,
         ).show()
     }
 
-    companion object {
-        private const val IMAGE_SELECTOR = "IMAGE_SELECTOR"
+    private fun updateAppBarImage(bitmap: Bitmap) {
+        binding.appBarImage.setImageBitmap(bitmap)
+    }
 
-        fun newInstance(): ProfileFragment {
-            return ProfileFragment()
-        }
+    private fun clearAppBarImage() {
+        binding.appBarImage.setImageResource(R.drawable.user_icon)
+    }
+
+    companion object {
+        fun newInstance(): ProfileFragment = ProfileFragment()
     }
 }

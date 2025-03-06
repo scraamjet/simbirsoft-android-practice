@@ -3,33 +3,50 @@ package com.example.simbirsoft_android_practice
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import com.example.simbirsoft_android_practice.databinding.EditPhotoDialogBinding
 
 class EditPhotoDialogFragment : DialogFragment() {
+    private var _binding: EditPhotoDialogBinding? = null
+    private val binding get() = _binding!!
+
+    private var actionCallback: ((PhotoAction) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialogView = layoutInflater.inflate(R.layout.edit_photo_dialog, null)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
+        _binding = EditPhotoDialogBinding.inflate(layoutInflater)
+        return createDialog()
+    }
 
-        dialogView.findViewById<LinearLayout>(R.id.take_photo)?.setOnClickListener {
-            (parentFragment as? ProfileFragment)?.takePhotoFromCamera()
-            dialog.dismiss()
+    private fun createDialog(): Dialog {
+        return AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create().apply {
+                initClickListeners()
+            }
+    }
+
+    private fun initClickListeners() {
+        binding.takePhoto.root.setOnClickListener {
+            actionCallback?.invoke(PhotoAction.TAKE_PHOTO)
+            dismiss()
         }
 
-        dialogView.findViewById<LinearLayout>(R.id.delete_photo)?.setOnClickListener {
-            (parentFragment as? ProfileFragment)?.profileImageView?.setImageResource(R.drawable.ic_launcher_background)
-            dialog.dismiss()
+        binding.deletePhoto.root.setOnClickListener {
+            actionCallback?.invoke(PhotoAction.DELETE_PHOTO)
+            dismiss()
         }
+    }
 
-        return dialog
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
-        fun newInstance(): EditPhotoDialogFragment {
-            return EditPhotoDialogFragment()
+        fun newInstance(callback: (PhotoAction) -> Unit): EditPhotoDialogFragment {
+            return EditPhotoDialogFragment().apply {
+                actionCallback = callback
+            }
         }
     }
 }

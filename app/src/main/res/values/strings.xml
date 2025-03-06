@@ -19,7 +19,7 @@
     <string name="profile_sample_friend_1">Дмитрий Валерьевич</string>
     <string name="profile_sample_friend_2">Евгений Александров</string>
     <string name="profile_sample_friend_3">Виктор Кузнецов</string>
-    <string name="profile_camera_permission_warning">Нужна камера</string>
+    <string name="profile_camera_permission_warning">Необходимо разрешение на камеру!</string>
 
     <!-- bottom_menu_navigation -->
     <string name="nav_news">Новости</string>
@@ -59,7 +59,6 @@
     <!-- fragment_search_by_nko -->
     <string name="search_by_nko_keywords_label">Ключевые слова: мастер-класс, помощь</string>
     <string name="search_by_nko_search_results_label">Результаты поиска: 109 мероприятий</string>
-
 
 
 </resources>
