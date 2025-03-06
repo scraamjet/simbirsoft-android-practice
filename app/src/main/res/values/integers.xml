@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--fragment_search -->
+    <integer name="search_view_pager_weight">1</integer>
+
+    <!--fragment_help -->
+    <integer name="help_recycler_view_span_count">2</integer>
+
+    <!-- item_search_result -->
+    <integer name="item_search_result_layout_weight">1</integer>
+    <integer name="item_search_result_max_lines">1</integer>
+
+    <!-- activity_main -->
+    <integer name="main_frame_layout_weight">1</integer>
+
+</resources>

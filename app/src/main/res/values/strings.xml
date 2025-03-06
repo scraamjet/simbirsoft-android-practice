@@ -42,14 +42,24 @@
     <string name="choose_category_label">Выберите категорию помощи</string>
 
     <!-- item_help -->
-    <string name="children_category_label">Дети</string>
+    <string name="help_children_category_label">Дети</string>
+    <string name="help_adult_category_label">Взрослые</string>
+    <string name="help_animals_category_label">Животные</string>
+    <string name="help_old_category_label">Пожилые</string>
+    <string name="help_events_category_label">Мероприятия</string>
 
     <!-- fragment_search -->
     <string name="hint_input_name_organization">Введите название организации</string>
 
-    <!-- fragment_search_events -->
+    <!-- fragment_search_by_events -->
     <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
     <string name="search_by_events_example_text">Например,</string>
     <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
+
+    <!-- fragment_search_by_nko -->
+    <string name="search_by_nko_keywords_label">Ключевые слова: мастер-класс, помощь</string>
+    <string name="search_by_nko_search_results_label">Результаты поиска: 109 мероприятий</string>
+
+
 
 </resources>

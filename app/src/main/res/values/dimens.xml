@@ -8,7 +8,7 @@
     <dimen name="splash_loading_text_margin_bottom">124dp</dimen>
     <dimen name="splash_mss_logo_margin_bottom">40dp</dimen>
 
-    <!-- activity_profile -->
+    <!-- fragment_profile -->
     <dimen name="profile_collapsing_toolbar_height">276dp</dimen>
     <dimen name="profile_app_bar_elevation">0dp</dimen>
     <dimen name="profile_app_bar_image_height">220dp</dimen>
@@ -43,26 +43,51 @@
     <dimen name="edit_photo_dialog_take_photo_margin_top">43dp</dimen>
     <dimen name="edit_photo_dialog_delete_photo_margin_top">43dp</dimen>
 
-    <!-- Fragment Help -->
+    <!-- fragment_search -->
+    <dimen name="search_margin_horizontal">8dp</dimen>
+    <dimen name="search_margin_top">8dp</dimen>
+    <dimen name="search_card_corner_radius">2dp</dimen>
+    <dimen name="search_card_elevation">2dp</dimen>
+    <dimen name="search_card_translationZ">2dp</dimen>
+    <dimen name="search_tab_layout_height">48dp</dimen>
+    <dimen name="search_view_pager_height">0dp</dimen>
+    <dimen name="search_tab_indicator_height">2dp</dimen>
+
+
+    <!-- fragment_help -->
     <dimen name="help_rv_margin_top">20dp</dimen>
     <dimen name="help_tv_margin_top">19dp</dimen>
 
-    <!-- Item Help -->
+    <!-- item_help -->
     <dimen name="item_help_icon_width">120dp</dimen>
     <dimen name="item_help_icon_height">80dp</dimen>
     <dimen name="item_help_title_margin_top">12dp</dimen>
     <dimen name="item_help_padding">12dp</dimen>
 
-    <!-- Cardview -->
+    <!-- fragment_search_by_events -->
     <dimen name="cardview_default_elevation">2dp</dimen>
     <dimen name="item_card_margin">8dp</dimen>
     <dimen name="recycler_view_spacing">8dp</dimen>
-
     <dimen name="icon_margin_top">40dp</dimen>
     <dimen name="text_margin_top">10dp</dimen>
     <dimen name="text_margin_start">4dp</dimen>
 
+    <!-- fragment_search_by_nko -->
+    <dimen name="search_by_nko_layout_margin_vertical">20dp</dimen>
+    <dimen name="search_by_nko_layout_margin_horizontal">8dp</dimen>
+    <dimen name="search_by_nko_layout_margin_top">8dp</dimen>
+    <dimen name="search_by_nko_layout_margin_end">72dp</dimen>
 
+    <!-- item_search_result -->
+    <dimen name="item_search_result_margin_top">17dp</dimen>
+    <dimen name="item_search_result_margin_bottom">18dp</dimen>
+    <dimen name="item_search_result_margin_end">16dp</dimen>
+
+    <!-- item_search_result_divider -->
+    <dimen name="item_search_result_divider_height">1dp</dimen>
+
+    <!-- item_search_result_border -->
+    <dimen name="item_search_result_border_width">1dp</dimen>
 
 </resources>
 

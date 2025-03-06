@@ -126,15 +126,14 @@
         <item name="android:textColor">@color/light_grey_two</item>
     </style>
 
-    <style name="SearchViewTextStyle" parent="TextAppearance.Material3.SearchView">
-        <item name="fontFamily">@font/roboto_regular</item>
-        <item name="android:textColor">@color/black_38</item>
-    </style>
-
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabSelectedTextAppearance">@style/CustomTabSelectedTextAppearance</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
     </style>
 
+    <style name="SearchViewTextStyle" parent="TextAppearance.Material3.SearchView">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black_38</item>
+    </style>
 
 </resources>

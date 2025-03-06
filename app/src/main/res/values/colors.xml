@@ -7,7 +7,6 @@
     <color name="black_87">#de000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pale_grey">#eff3f6</color>
-    <color name="green">#FF66A636</color>
     <color name="green_dark">#FF508527</color>
     <color name="turtle_green">#FF7DB354</color>
     <color name="warm_grey">#FF979797</color>
@@ -25,7 +24,6 @@
 
 
     <color name="leaf">#FF4C7D27</color>
-    <color name="leaf_light">#FF66A636</color>
-    <color name="leaf_light_super">#FFA5D184</color>
+    <color name="green">#FF66A636</color>
 
 </resources>
