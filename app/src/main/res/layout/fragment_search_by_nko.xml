@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey_two"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/search_by_nko_layout_margin_vertical"
+        android:layout_marginStart="@dimen/search_by_nko_layout_margin_vertical"
+        android:layout_marginEnd="@dimen/search_by_nko_layout_margin_end"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextStyle3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_by_nko_keywords_label" />
+
+        <TextView
+            style="@style/TextStyle3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_by_nko_search_results_label" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_search_result_border">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_nko_item_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_by_nko_layout_margin_vertical"
+            android:background="@android:color/transparent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:divider="@drawable/item_search_result_divider"/>
+    </FrameLayout>
+</LinearLayout>
