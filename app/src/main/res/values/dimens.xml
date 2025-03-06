@@ -43,6 +43,25 @@
     <dimen name="edit_photo_dialog_take_photo_margin_top">43dp</dimen>
     <dimen name="edit_photo_dialog_delete_photo_margin_top">43dp</dimen>
 
+    <!-- Fragment Help -->
+    <dimen name="help_rv_margin_top">20dp</dimen>
+    <dimen name="help_tv_margin_top">19dp</dimen>
+
+    <!-- Item Help -->
+    <dimen name="item_help_icon_width">120dp</dimen>
+    <dimen name="item_help_icon_height">80dp</dimen>
+    <dimen name="item_help_title_margin_top">12dp</dimen>
+    <dimen name="item_help_padding">12dp</dimen>
+
+    <!-- Cardview -->
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <dimen name="item_card_margin">8dp</dimen>
+    <dimen name="recycler_view_spacing">8dp</dimen>
+
+    <dimen name="icon_margin_top">40dp</dimen>
+    <dimen name="text_margin_top">10dp</dimen>
+    <dimen name="text_margin_start">4dp</dimen>
+
 
 
 </resources>

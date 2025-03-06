@@ -6,7 +6,7 @@
     <string name="splash_loading_indicator">Индикатор загрузки</string>
     <string name="splash_progress_desc">Логотип SimbirSoft mobile</string>
 
-    <!-- activity_profile -->
+    <!-- fragment_profile -->
     <string name="app_name">Хочу помочь</string>
     <string name="profile_date_of_birth">Дата рождения</string>
     <string name="profile_field_of_activity">Сфера деятельности</string>
@@ -19,6 +19,7 @@
     <string name="profile_sample_friend_1">Дмитрий Валерьевич</string>
     <string name="profile_sample_friend_2">Евгений Александров</string>
     <string name="profile_sample_friend_3">Виктор Кузнецов</string>
+    <string name="profile_camera_permission_warning">Нужна камера</string>
 
     <!-- bottom_menu_navigation -->
     <string name="nav_news">Новости</string>
@@ -30,8 +31,25 @@
     <!-- profile_menu -->
     <string name="profile_edit_button">Редактировать</string>
 
+    <!-- edit_photo_dialog -->
     <string name="edit_photo_dialog_edit_title">Редактировать</string>
     <string name="edit_photo_dialog_choose_photo">Выбрать фото</string>
     <string name="edit_photo_dialog_take_picture">Сделать снимок</string>
     <string name="edit_photo_dialog_delete_photo">Удалить</string>
+
+    <!-- fragment_help -->
+    <string name="help_label">Помочь</string>
+    <string name="choose_category_label">Выберите категорию помощи</string>
+
+    <!-- item_help -->
+    <string name="children_category_label">Дети</string>
+
+    <!-- fragment_search -->
+    <string name="hint_input_name_organization">Введите название организации</string>
+
+    <!-- fragment_search_events -->
+    <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
+    <string name="search_by_events_example_text">Например,</string>
+    <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
+
 </resources>

@@ -49,6 +49,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="TextStyle7">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:textColor">@color/leaf</item>
+    </style>
+
     <style name="TextStyle8">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -88,18 +96,45 @@
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="custom_text_appearance_tab_layout" parent="TextAppearance.Design.Tab">
+    <style name="TextStyle20">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/black_70</item>
+    </style>
+
+    <style name="CustomTabSelectedTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+        <item name="android:textAppearance">@style/TextStyle6</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:letterSpacing">0.04</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="custom_search_view" parent="Widget.AppCompat.SearchView">
-        <item name="fontFamily">@font/roboto_regular</item>
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAppearance">@style/TextStyle6</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">@color/light_grey_two</item>
     </style>
+
+    <style name="SearchViewTextStyle" parent="TextAppearance.Material3.SearchView">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/black_38</item>
+    </style>
+
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextAppearance">@style/CustomTabSelectedTextAppearance</item>
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+    </style>
+
 
 </resources>
