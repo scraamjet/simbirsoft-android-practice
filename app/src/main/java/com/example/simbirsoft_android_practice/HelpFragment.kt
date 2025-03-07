@@ -8,6 +8,8 @@ import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val ITEM_DECORATOR_SPAN_COUNT = 2
+private const val RECYCLER_VIEW_SPAN_COUNT = 2
+
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
@@ -23,7 +25,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private fun initRecyclerView() {
         val recyclerView = binding.helpItemRecyclerView
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), RECYCLER_VIEW_SPAN_COUNT)
         recyclerView.adapter = HelpAdapter(getHelpCategories())
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(
