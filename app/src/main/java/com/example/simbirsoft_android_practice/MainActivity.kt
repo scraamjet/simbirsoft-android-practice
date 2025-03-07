@@ -12,11 +12,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initFragment(savedInstanceState)
+        initHelpFragment(savedInstanceState)
         setupBottomNavigation()
     }
 
-    private fun initFragment(savedInstanceState: Bundle?) {
+    private fun initHelpFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             loadFragment(HelpFragment.newInstance())
         }
