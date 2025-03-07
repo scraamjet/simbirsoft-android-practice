@@ -1,10 +1,12 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.search
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchByNkoBinding
 import dev.androidbroadcast.vbpd.viewBinding
 

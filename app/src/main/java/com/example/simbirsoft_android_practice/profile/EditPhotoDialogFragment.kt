@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.profile
 
 import android.app.AlertDialog
 import android.app.Dialog

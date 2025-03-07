@@ -1,8 +1,9 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBinding
 
 class EventAdapter(private val events: List<Event>) : RecyclerView.Adapter<EventViewHolder>() {

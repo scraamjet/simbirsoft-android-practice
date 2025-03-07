@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.search
 
 enum class SearchTab(val title: String) {
     EVENTS("По мероприятиям"),

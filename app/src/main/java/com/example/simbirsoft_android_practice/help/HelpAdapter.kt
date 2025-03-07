@@ -1,8 +1,9 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.help
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
 
 class HelpAdapter(private val items: List<HelpCategory>) : RecyclerView.Adapter<HelpViewHolder>() {

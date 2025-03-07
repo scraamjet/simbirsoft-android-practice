@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.help
 
 import android.graphics.Rect
 import android.view.View
