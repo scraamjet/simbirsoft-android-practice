@@ -20,7 +20,8 @@ class EditPhotoDialogFragment : DialogFragment() {
     private fun createDialog(): Dialog {
         return AlertDialog.Builder(requireContext())
             .setView(binding.root)
-            .create().apply {
+            .create()
+            .apply {
                 initClickListeners()
             }
     }

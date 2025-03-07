@@ -3,11 +3,11 @@ package com.example.simbirsoft_android_practice.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
 import com.example.simbirsoft_android_practice.profile.ProfileFragment
-import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.search.SearchFragment
-import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

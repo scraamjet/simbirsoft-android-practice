@@ -13,7 +13,10 @@ import dev.androidbroadcast.vbpd.viewBinding
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private val binding by viewBinding(FragmentSearchBinding::bind)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
         initTabLayout()
@@ -30,7 +33,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             tab.text = SearchTab.fromPosition(position).title
         }.attach()
     }
-
 
     companion object {
         fun newInstance() = SearchFragment()
