@@ -8,6 +8,5 @@ class EventViewHolder(private val binding: ItemSearchResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(event: Event) {
         binding.itemTitle.text = event.title
-        binding.itemImage.setImageResource(event.iconResId)
     }
 }
