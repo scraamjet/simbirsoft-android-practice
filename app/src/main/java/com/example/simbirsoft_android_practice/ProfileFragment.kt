@@ -26,7 +26,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let { updateAppBarImage(it) }
+            bitmap?.let { capturedImage -> updateAppBarImage(capturedImage) }
         }
 
     override fun onViewCreated(
