@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:backgroundTint="@color/light_grey"
     android:elevation="@dimen/cardview_default_elevation"
+    app:cardCornerRadius="@dimen/item_help_corner_radius"
     app:strokeColor="@color/light_grey">
 
     <LinearLayout
