@@ -11,10 +11,7 @@ import dev.androidbroadcast.vbpd.viewBinding
 class SearchNKOFragment : Fragment(R.layout.fragment_search_by_nko) {
     private val binding by viewBinding(FragmentSearchByNkoBinding::bind)
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
     }
@@ -28,15 +25,13 @@ class SearchNKOFragment : Fragment(R.layout.fragment_search_by_nko) {
     }
 
     private fun generateEventsList(): List<Event> {
-        val events =
-            listOf(
-                Event("Мастер-класс по рисованию", R.drawable.icon_chevron_right),
-                Event("Благотворительный концерт", R.drawable.icon_chevron_right),
-                Event("Экологическая акция", R.drawable.icon_chevron_right),
-                Event("Лекция по здоровью", R.drawable.icon_chevron_right),
-                Event("Волонтерская помощь", R.drawable.icon_chevron_right),
-            )
-        return events
+        return listOf(
+            Event("Благотворительный фонд Алины Кабаевой", R.drawable.icon_chevron_right),
+            Event("«Во имя жизни»", R.drawable.icon_chevron_right),
+            Event("Благотворительный фонд В. Потанина", R.drawable.icon_chevron_right),
+            Event("«Детские домики»", R.drawable.icon_chevron_right),
+            Event("«Мозайка счастья»", R.drawable.icon_chevron_right)
+        )
     }
 
     companion object {
