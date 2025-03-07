@@ -19,7 +19,7 @@
     <string name="profile_sample_friend_1">Дмитрий Валерьевич</string>
     <string name="profile_sample_friend_2">Евгений Александров</string>
     <string name="profile_sample_friend_3">Виктор Кузнецов</string>
-    <string name="profile_camera_permission_warning">Необходимо разрешение на камеру!</string>
+    <string name="profile_camera_permission_warning">Необходимо разрешение на камеру</string>
 
     <!-- bottom_menu_navigation -->
     <string name="nav_news">Новости</string>
@@ -39,7 +39,7 @@
 
     <!-- fragment_help -->
     <string name="help_label">Помочь</string>
-    <string name="choose_category_label">Выберите категорию помощи</string>
+    <string name="help_choose_category_label">Выберите категорию помощи</string>
 
     <!-- item_help -->
     <string name="help_children_category_label">Дети</string>
@@ -49,7 +49,9 @@
     <string name="help_events_category_label">Мероприятия</string>
 
     <!-- fragment_search -->
-    <string name="hint_input_name_organization">Введите название организации</string>
+    <string name="search_hint_input_name_organization">Введите название организации</string>
+    <string name="search_event_title">По мероприятиям</string>
+    <string name="search_nko_title">По НКО</string>
 
     <!-- fragment_search_by_events -->
     <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>

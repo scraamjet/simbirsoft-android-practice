@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:iconifiedByDefault="false"
-            app:defaultQueryHint="@string/hint_input_name_organization"
+            app:defaultQueryHint="@string/search_hint_input_name_organization"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
             app:searchIcon="@drawable/search_black"

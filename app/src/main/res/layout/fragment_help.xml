@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/help_tv_margin_top"
-        android:text="@string/choose_category_label" />
+        android:text="@string/help_choose_category_label" />
 
 
     <androidx.recyclerview.widget.RecyclerView
