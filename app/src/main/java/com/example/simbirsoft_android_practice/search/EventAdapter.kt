@@ -19,9 +19,4 @@ class EventAdapter(private var events: List<Event>) : RecyclerView.Adapter<Event
     }
 
     override fun getItemCount() = events.size
-
-    fun updateEvents(newEvents: List<Event>) {
-        events = newEvents
-        notifyDataSetChanged()
-    }
 }
