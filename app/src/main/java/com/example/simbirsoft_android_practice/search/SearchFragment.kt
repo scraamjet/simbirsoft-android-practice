@@ -26,12 +26,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val viewPager: ViewPager2 = binding.searchFragmentViewPager
         viewPager.adapter = SearchFragmentViewPagerAdapter(this)
 
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                viewPager.adapter?.notifyItemChanged(position)
-            }
-        })
+        viewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    viewPager.adapter?.notifyItemChanged(position)
+                }
+            },
+        )
     }
 
     private fun initTabLayout() {
