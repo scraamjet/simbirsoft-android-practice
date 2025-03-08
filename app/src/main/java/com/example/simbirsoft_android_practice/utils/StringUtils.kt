@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.utils
 
 import java.util.UUID
 

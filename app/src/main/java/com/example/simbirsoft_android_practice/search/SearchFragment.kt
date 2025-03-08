@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchBinding
+import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
@@ -45,7 +46,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun refreshCurrentFragment(position: Int) {
-        val fragment = childFragmentManager.findFragmentByTag("f$position")
+        val fragment = binding.searchFragmentViewPager.findFragmentAtPosition(
+            childFragmentManager, position
+        )
         when (fragment) {
             is SearchEventsResultFragment -> fragment.refreshData()
             is SearchNKOResultFragment -> fragment.refreshData()

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchResultsBinding
+import com.example.simbirsoft_android_practice.utils.generateRandomString
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val EVENTS_LIST_SIZE = 5
