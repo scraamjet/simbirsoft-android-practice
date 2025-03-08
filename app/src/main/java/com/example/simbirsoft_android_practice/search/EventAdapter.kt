@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,4 +26,10 @@ class EventAdapter(private var events: List<Event>) : RecyclerView.Adapter<Event
     }
 
     override fun getItemCount() = events.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateEvents(newEvents: List<Event>) {
+        events = newEvents
+        notifyDataSetChanged()
+    }
 }

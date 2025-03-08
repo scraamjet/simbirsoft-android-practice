@@ -24,13 +24,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun initViewPager() {
         val viewPager: ViewPager2 = binding.searchFragmentViewPager
-        viewPager.adapter = SearchFragmentViewPagerAdapter(this)
+        val adapter = SearchFragmentViewPagerAdapter(this)
+        viewPager.adapter = adapter
 
         viewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    viewPager.adapter?.notifyItemChanged(position)
+                    refreshCurrentFragment(position)
                 }
             },
         )
@@ -41,6 +42,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         TabLayoutMediator(tabLayout, binding.searchFragmentViewPager) { tab, position ->
             tab.text = SearchTab.fromPosition(position).title
         }.attach()
+    }
+
+    private fun refreshCurrentFragment(position: Int) {
+        val fragment = childFragmentManager.findFragmentByTag("f$position")
+        when (fragment) {
+            is SearchEventsResultFragment -> fragment.refreshData()
+            is SearchNKOResultFragment -> fragment.refreshData()
+        }
     }
 
     companion object {

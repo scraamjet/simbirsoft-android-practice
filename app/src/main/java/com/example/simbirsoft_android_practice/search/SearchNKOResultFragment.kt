@@ -14,6 +14,7 @@ private const val NKO_LIST_SIZE = 5
 
 class SearchNKOResultFragment : Fragment(R.layout.fragment_search_results) {
     private val binding by viewBinding(FragmentSearchResultsBinding::bind)
+    private val adapter = EventAdapter(generateEventsList())
 
     override fun onViewCreated(
         view: View,
@@ -24,15 +25,19 @@ class SearchNKOResultFragment : Fragment(R.layout.fragment_search_results) {
     }
 
     private fun initRecyclerView() {
-        val events =
-            List(NKO_LIST_SIZE) {
-                Event(generateRandomString())
-            }
         binding.searchNkoItemRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = EventAdapter(events)
+            adapter = this@SearchNKOResultFragment.adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+    }
+
+    fun refreshData() {
+        adapter.updateEvents(generateEventsList())
+    }
+
+    private fun generateEventsList(): List<Event> {
+        return List(NKO_LIST_SIZE) { Event(generateRandomString()) }
     }
 
     companion object {
