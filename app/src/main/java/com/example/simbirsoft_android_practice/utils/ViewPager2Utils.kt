@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 
 fun ViewPager2.findFragmentAtPosition(
     fragmentManager: FragmentManager,
-    position: Int
+    position: Int,
 ): Fragment? {
     return fragmentManager.findFragmentByTag("f$position")
 }

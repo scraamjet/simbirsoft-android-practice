@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.data.Event
-import com.example.simbirsoft_android_practice.databinding.FragmentSearchResultsBinding
+import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import com.example.simbirsoft_android_practice.utils.generateRandomString
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val EVENTS_LIST_SIZE = 5
 
-class SearchEventsResultFragment : Fragment(R.layout.fragment_search_results) {
-    private val binding by viewBinding(FragmentSearchResultsBinding::bind)
+class EventListFragment : Fragment(R.layout.fragment_search_list) {
+    private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val adapter = EventAdapter(generateEventsList())
 
     override fun onViewCreated(
@@ -26,9 +26,9 @@ class SearchEventsResultFragment : Fragment(R.layout.fragment_search_results) {
     }
 
     private fun initRecyclerView() {
-        binding.searchNkoItemRecyclerView.apply {
+        binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@SearchEventsResultFragment.adapter
+            adapter = this@EventListFragment.adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
@@ -42,6 +42,6 @@ class SearchEventsResultFragment : Fragment(R.layout.fragment_search_results) {
     }
 
     companion object {
-        fun newInstance() = SearchEventsResultFragment()
+        fun newInstance() = EventListFragment()
     }
 }

@@ -7,6 +7,6 @@ import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBindi
 class EventViewHolder(private val binding: ItemSearchResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(event: Event) {
-        binding.itemTitle.text = event.title
+        binding.textViewItemTitle.text = event.title
     }
 }

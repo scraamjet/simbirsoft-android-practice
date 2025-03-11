@@ -1,8 +1,13 @@
 package com.example.simbirsoft_android_practice.search
 
-enum class SearchTab(val title: String) {
-    EVENTS("По мероприятиям"),
-    NKO("По НКО");
+import androidx.annotation.StringRes
+import com.example.simbirsoft_android_practice.R
+
+enum class SearchTab(
+    @StringRes val titleResId: Int,
+) {
+    EVENTS(R.string.tab_title_events),
+    ORGANIZATIONS(R.string.tab_title_organizations);
 
     companion object {
         fun fromPosition(position: Int): SearchTab {

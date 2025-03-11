@@ -16,7 +16,7 @@
         app:cardCornerRadius="@dimen/search_card_corner_radius">
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/search_view"
+            android:id="@+id/searchView"
             style="@style/SearchViewTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +29,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/search_tab_layout"
+        android:id="@+id/tabLayout"
         style="@style/CustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_tab_layout_height"
@@ -42,7 +42,7 @@
         app:tabTextColor="@color/white_70" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/search_fragment_view_pager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_view_pager_height"
         android:layout_weight="@integer/search_view_pager_weight"
