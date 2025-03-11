@@ -2,11 +2,12 @@ package com.example.simbirsoft_android_practice.help
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
 
-class HelpAdapter(private val items: List<HelpCategory>) : RecyclerView.Adapter<HelpViewHolder>() {
+class HelpAdapter : ListAdapter<HelpCategory, HelpViewHolder>(HelpCategoryDiffCallback()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -19,8 +20,6 @@ class HelpAdapter(private val items: List<HelpCategory>) : RecyclerView.Adapter<
         holder: HelpViewHolder,
         position: Int,
     ) {
-        holder.bind(items[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = items.size
 }
