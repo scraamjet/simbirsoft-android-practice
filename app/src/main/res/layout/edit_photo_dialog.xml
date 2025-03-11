@@ -10,15 +10,15 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/choose_photo"
+            android:id="@+id/choosePhoto"
             layout="@layout/choose_photo_option" />
 
         <include
-            android:id="@+id/take_photo"
+            android:id="@+id/takePhoto"
             layout="@layout/take_photo_option" />
 
         <include
-            android:id="@+id/delete_photo"
+            android:id="@+id/deletePhoto"
             layout="@layout/delete_photo_option" />
 
     </LinearLayout>

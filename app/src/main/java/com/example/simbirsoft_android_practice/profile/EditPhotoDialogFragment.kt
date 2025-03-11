@@ -14,26 +14,20 @@ class EditPhotoDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = EditPhotoDialogBinding.inflate(layoutInflater)
-        return createDialog()
-    }
-
-    private fun createDialog(): Dialog {
         return AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
-            .apply {
-                initClickListeners()
-            }
+            .apply { initClickListeners() }
     }
 
     private fun initClickListeners() {
         binding.takePhoto.root.setOnClickListener {
-            actionCallback?.invoke(PhotoAction.TAKE_PHOTO)
+            actionCallback.invoke(PhotoAction.TAKE_PHOTO)
             dismiss()
         }
 
         binding.deletePhoto.root.setOnClickListener {
-            actionCallback?.invoke(PhotoAction.DELETE_PHOTO)
+            actionCallback.invoke(PhotoAction.DELETE_PHOTO)
             dismiss()
         }
     }
