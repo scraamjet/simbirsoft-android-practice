@@ -53,11 +53,6 @@
     <string name="search_event_title">По мероприятиям</string>
     <string name="search_nko_title">По НКО</string>
 
-    <!-- fragment_search_by_events -->
-    <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
-    <string name="search_by_events_example_text">Например,</string>
-    <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
-
     <!-- fragment_search_by_nko -->
     <string name="search_by_nko_keywords_label">Ключевые слова: мастер-класс, помощь</string>
     <string name="search_by_nko_search_results_label">Результаты поиска: 109 мероприятий</string>

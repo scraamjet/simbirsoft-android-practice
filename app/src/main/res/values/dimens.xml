@@ -65,14 +65,6 @@
     <dimen name="item_help_padding">12dp</dimen>
     <dimen name="item_help_corner_radius">0dp</dimen>
 
-    <!-- fragment_search_by_events -->
-    <dimen name="cardview_default_elevation">2dp</dimen>
-    <dimen name="item_card_margin">8dp</dimen>
-    <dimen name="recycler_view_spacing">8dp</dimen>
-    <dimen name="icon_margin_top">40dp</dimen>
-    <dimen name="text_margin_top">10dp</dimen>
-    <dimen name="text_margin_start">4dp</dimen>
-
     <!-- fragment_search_by_nko -->
     <dimen name="search_by_nko_layout_margin_vertical">20dp</dimen>
     <dimen name="search_by_nko_layout_margin_horizontal">8dp</dimen>
