@@ -10,7 +10,7 @@ class EditPhotoDialogFragment : DialogFragment() {
     private var _binding: EditPhotoDialogBinding? = null
     private val binding get() = _binding!!
 
-    private var actionCallback: ((PhotoAction) -> Unit)? = null
+    private var actionCallback: ((PhotoAction) -> Unit) = {}
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = EditPhotoDialogBinding.inflate(layoutInflater)
