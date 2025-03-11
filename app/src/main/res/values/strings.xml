@@ -42,20 +42,26 @@
     <string name="help_choose_category_label">Выберите категорию помощи</string>
 
     <!-- item_help -->
-    <string name="help_children_category_label">Дети</string>
-    <string name="help_adult_category_label">Взрослые</string>
-    <string name="help_animals_category_label">Животные</string>
-    <string name="help_old_category_label">Пожилые</string>
-    <string name="help_events_category_label">Мероприятия</string>
+    <string name="help_children_category_title">Дети</string>
+    <string name="help_adult_category_title">Взрослые</string>
+    <string name="help_animals_category_title">Животные</string>
+    <string name="help_old_category_title">Пожилые</string>
+    <string name="help_events_category_title">Мероприятия</string>
 
     <!-- fragment_search -->
     <string name="search_hint_input_name_organization">Введите название организации</string>
     <string name="search_event_title">По мероприятиям</string>
     <string name="search_nko_title">По НКО</string>
 
-    <!-- fragment_search_by_nko -->
-    <string name="search_by_nko_keywords_label">Ключевые слова: мастер-класс, помощь</string>
-    <string name="search_by_nko_search_results_label">Результаты поиска: 109 мероприятий</string>
+    <string name="search_list_keywords_label">Ключевые слова: мастер-класс, помощь</string>
+    <string name="search_list_search_results_label">Результаты поиска: 109 мероприятий</string>
 
+    <string name="permission_required">Permission Required</string>
+    <string name="camera_permission_settings_message">Camera access is required to take photos. Please enable it in settings.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="tab_title_events">По мероприятиям</string>
+    <string name="tab_title_organizations">По НКО</string>
 
 </resources>

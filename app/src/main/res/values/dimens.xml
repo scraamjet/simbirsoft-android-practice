@@ -65,11 +65,11 @@
     <dimen name="item_help_padding">12dp</dimen>
     <dimen name="item_help_corner_radius">0dp</dimen>
 
-    <!-- fragment_search_by_nko -->
-    <dimen name="search_by_nko_layout_margin_vertical">20dp</dimen>
-    <dimen name="search_by_nko_layout_margin_horizontal">8dp</dimen>
-    <dimen name="search_by_nko_layout_margin_top">8dp</dimen>
-    <dimen name="search_by_nko_layout_margin_end">72dp</dimen>
+    <!-- fragment_search_list -->
+    <dimen name="search_list_layout_margin_vertical">20dp</dimen>
+    <dimen name="search_list_layout_margin_horizontal">8dp</dimen>
+    <dimen name="search_list_layout_margin_top">8dp</dimen>
+    <dimen name="search_list_layout_margin_end">72dp</dimen>
 
     <!-- item_search_result -->
     <dimen name="item_search_result_margin_top">17dp</dimen>
@@ -81,6 +81,8 @@
 
     <!-- item_search_result_border -->
     <dimen name="item_search_result_border_width">1dp</dimen>
+
+    <dimen name="help_category_item_spacing">8dp</dimen>
 
 </resources>
 

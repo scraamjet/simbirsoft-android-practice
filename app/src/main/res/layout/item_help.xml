@@ -18,20 +18,20 @@
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:id="@+id/item_help_icon"
+            android:id="@+id/imageViewItemHelpIcon"
             android:layout_width="@dimen/item_help_icon_width"
             android:layout_height="@dimen/item_help_icon_height"
             android:importantForAccessibility="no"
             tools:src="@drawable/help_children" />
 
         <TextView
-            android:id="@+id/item_help_title"
-            style="@style/TextStyle"
+            android:id="@+id/textViewItemHelpItem"
+            style="@style/HeadingSmallGreenCenter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/item_help_title_margin_top"
             android:gravity="center"
-            tools:text="@string/help_children_category_label" />
+            tools:text="@string/help_children_category_title" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
