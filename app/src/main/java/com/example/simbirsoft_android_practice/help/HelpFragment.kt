@@ -9,9 +9,7 @@ import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
-private const val ITEM_DECORATOR_SPAN_COUNT = 2
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
-private const val RECYCLER_VIEW_SPACING_SIZE = 8
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
@@ -21,31 +19,25 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        val recyclerView = binding.helpItemRecyclerView
+        val recyclerView = binding.recyclerViewHelpItem
         recyclerView.layoutManager = GridLayoutManager(requireContext(), RECYCLER_VIEW_SPAN_COUNT)
-        recyclerView.adapter = HelpAdapter(getHelpCategories())
+        val adapter = HelpAdapter()
+        recyclerView.adapter = adapter
         recyclerView.addItemDecoration(
             GridSpacingItemDecoration(
-                ITEM_DECORATOR_SPAN_COUNT,
-                RECYCLER_VIEW_SPACING_SIZE,
-                true,
+                RECYCLER_VIEW_SPAN_COUNT,
+                resources.getDimensionPixelSize(R.dimen.help_category_item_spacing),
             ),
         )
+        adapter.submitList(getHelpCategories())
     }
 
     private fun getHelpCategories(): List<HelpCategory> {
-        return listOf(
-            HelpCategory("Дети", R.drawable.help_children),
-            HelpCategory("Взрослые", R.drawable.help_adults),
-            HelpCategory("Пожилые", R.drawable.help_old),
-            HelpCategory("Животные", R.drawable.help_animals),
-            HelpCategory("Мероприятия", R.drawable.help_events),
-        )
+        return HelpCategory.entries
     }
 
     companion object {

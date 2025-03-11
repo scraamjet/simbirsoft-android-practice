@@ -13,8 +13,8 @@
         android:background="@color/green">
 
         <TextView
-            android:id="@+id/label_fragment_text_vew"
-            style="@style/TextStyle2"
+            android:id="@+id/textViewLabelFragment"
+            style="@style/HeadingMediumWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -23,7 +23,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        style="@style/TextStyle5"
+        style="@style/BodyTextMediumBlackCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -32,7 +32,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/help_item_recycler_view"
+        android:id="@+id/recyclerViewHelpItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
