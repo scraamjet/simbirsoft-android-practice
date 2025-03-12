@@ -34,7 +34,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (isGranted) {
                 cameraLauncher.launch()
             } else {
-                handlePermissionDenied()
+                showSettingsDialog()
             }
         }
 
@@ -67,14 +67,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             cameraLauncher.launch()
         } else {
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
-    }
-
-    private fun handlePermissionDenied() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        } else {
-            showSettingsDialog()
         }
     }
 
