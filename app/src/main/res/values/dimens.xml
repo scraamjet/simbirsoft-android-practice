@@ -84,5 +84,17 @@
 
     <dimen name="help_category_item_spacing">8dp</dimen>
 
+    <!-- NewsFragment -->
+    <dimen name="margin_bottom_last_item">20dp</dimen>
+
+    <!-- NewsDetailFragment -->
+    <dimen name="margin_between_items_news_detail">10dp</dimen>
+    <dimen name="margin_between_items_subscribers">-6dp</dimen>
+    <dimen name="padding_default_toolbar_action_button">16dp</dimen>
+
+    <dimen name="margin_default">20dp</dimen>
+    <dimen name="margin_default_small">16dp</dimen>
+
+
 </resources>
 

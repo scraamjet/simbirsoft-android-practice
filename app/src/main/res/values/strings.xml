@@ -60,4 +60,21 @@
     <string name="tab_title_events">По мероприятиям</string>
     <string name="tab_title_organizations">По НКО</string>
 
+    <string name="empty_news_list">По заданным категориям новостей нет</string>
+
+    <!-- FilterFragment -->
+    <string name="filter_change_apply">Изменения приняты</string>
+
+    <!-- NewsFragment -->
+    <string name="title_news">Новости</string>
+
+    <!-- NewsDetailFragment -->
+    <string name="hyperlink_news_owner_mail"><u>Напишите нам</u></string>
+    <string name="hyperlink_news_owner_web"><u>Перейти на сайт организации</u></string>
+    <string name="help_things">Помочь\nвещами</string>
+    <string name="help_volunteer">Стать\nволонтером</string>
+    <string name="help_prof">Проф.\nпомощь</string>
+    <string name="help_money">Помочь\nденьгами</string>
+    <string name="questions_news">У вас есть вопросы?</string>
+
 </resources>
