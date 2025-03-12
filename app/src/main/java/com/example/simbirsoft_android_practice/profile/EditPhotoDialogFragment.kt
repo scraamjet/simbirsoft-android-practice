@@ -21,6 +21,11 @@ class EditPhotoDialogFragment : DialogFragment() {
     }
 
     private fun initClickListeners() {
+        binding.choosePhoto.root.setOnClickListener {
+            actionCallback.invoke(PhotoAction.CHOOSE_PHOTO)
+            dismiss()
+        }
+
         binding.takePhoto.root.setOnClickListener {
             actionCallback.invoke(PhotoAction.TAKE_PHOTO)
             dismiss()
