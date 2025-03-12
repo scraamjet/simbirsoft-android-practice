@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:gravity="center"
     android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical">
 
     <FrameLayout
@@ -17,7 +17,7 @@
         android:paddingTop="4dp">
 
         <ImageView
-            android:id="@+id/picture_news"
+            android:id="@+id/imageViewNewsItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -35,6 +35,20 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/textViewNewsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="38dp"
+        android:layout_marginTop="-12dp"
+        android:fontFamily="@font/officina_sans_extra_bold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="12sp"
+        android:textColor="@color/blue_grey"
+        android:textSize="21sp"
+        android:textStyle="normal"
+        tools:text="Конкурс по вокальному пению в детском доме №6" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +58,7 @@
         android:src="@drawable/news_decor" />
 
     <TextView
-        android:id="@+id/description_news"
+        android:id="@+id/textViewNewsDescription"
         style="@style/TextStyle10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +76,7 @@
         android:backgroundTint="@color/turtle_green">
 
         <TextView
-            android:id="@+id/time_text"
+            android:id="@+id/textViewNewsTime"
             style="@style/TextStyle8White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
