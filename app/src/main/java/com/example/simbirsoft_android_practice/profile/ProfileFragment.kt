@@ -114,7 +114,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun updateAppBarImageFromCamera(uri: Uri) {
-        binding.appBarImage.apply {
+        binding.appBarImageProfile.apply {
             setImageURI(uri)
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
