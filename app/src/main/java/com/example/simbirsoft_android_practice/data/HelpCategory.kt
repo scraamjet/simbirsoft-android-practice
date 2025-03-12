@@ -12,5 +12,5 @@ enum class HelpCategory(
     ADULTS(R.string.help_adult_category_title, R.drawable.help_adults),
     ELDERLY(R.string.help_old_category_title, R.drawable.help_old),
     ANIMALS(R.string.help_animals_category_title, R.drawable.help_animals),
-    EVENTS(R.string.help_events_category_title, R.drawable.help_events),
+    EVENTS(R.string.help_events_category_title, R.drawable.help_events)
 }

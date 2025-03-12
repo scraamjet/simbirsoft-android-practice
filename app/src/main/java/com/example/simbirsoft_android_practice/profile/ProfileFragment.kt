@@ -63,10 +63,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun handleTakePhoto() {
-        if (hasCameraPermission()) {
-            cameraLauncher.launch()
-        } else {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        when {
+            hasCameraPermission() -> cameraLauncher.launch()
+            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showSettingsDialog()
+            else -> cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -87,9 +87,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         )
     }
 
-    private fun hasCameraPermission() =
-        ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED
+    private fun hasCameraPermission(): Boolean {
+        val permissionStatus =
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA,
+            )
+        return permissionStatus == PackageManager.PERMISSION_GRANTED
+    }
 
     private fun updateAppBarImage(bitmap: Bitmap) {
         binding.appBarImage.apply {

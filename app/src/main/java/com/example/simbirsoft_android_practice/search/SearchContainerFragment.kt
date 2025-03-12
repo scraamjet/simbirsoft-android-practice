@@ -26,7 +26,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     private fun initViewPager() {
         val viewPager: ViewPager2 = binding.viewPager
-        val adapter = SearchContainerFragmentViewPagerAdapter(this)
+        val adapter = SearchViewPagerAdapter(this)
         viewPager.adapter = adapter
 
         viewPager.setPageTransformer(ZoomOutPageTransformer())
