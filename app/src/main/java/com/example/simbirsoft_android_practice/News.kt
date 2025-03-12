@@ -11,7 +11,9 @@ data class News(
     val ownerContacts: String,
     @SerializedName("pictures_url")
     val picturesUrl: List<String>,
+    @SerializedName("title")
     val title: String,
+    @SerializedName("description")
     val description: String,
     @SerializedName("full_description")
     val fullDescription: String,
