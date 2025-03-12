@@ -3,7 +3,9 @@ package com.example.simbirsoft_android_practice
 import com.google.gson.annotations.SerializedName
 
 data class News(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("owner")
     val owner: String,
     @SerializedName("owner_address")
     val ownerAddress: String,

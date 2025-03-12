@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.simbirsoft_android_practice.NewsFragment
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 R.id.help -> loadFragment(HelpFragment.newInstance())
                 R.id.profile -> loadFragment(ProfileFragment.newInstance())
                 R.id.search -> loadFragment(SearchContainerFragment.newInstance())
+                R.id.news -> loadFragment(NewsFragment.newInstance())
             }
             true
         }
