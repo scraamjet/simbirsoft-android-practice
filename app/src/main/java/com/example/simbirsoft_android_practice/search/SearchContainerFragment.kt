@@ -25,7 +25,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     }
 
     private fun initViewPager() {
-        val viewPager: ViewPager2 = binding.viewPager
+        val viewPager: ViewPager2 = binding.viewPagerSearch
         val adapter = SearchViewPagerAdapter(this)
         viewPager.adapter = adapter
 
@@ -42,15 +42,15 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     }
 
     private fun initTabLayout() {
-        val tabLayout: TabLayout = binding.tabLayout
-        TabLayoutMediator(tabLayout, binding.viewPager) { tab, position ->
+        val tabLayout: TabLayout = binding.tabLayoutSearch
+        TabLayoutMediator(tabLayout, binding.viewPagerSearch) { tab, position ->
             tab.text = getString(SearchTab.fromPosition(position).titleResId)
         }.attach()
     }
 
     private fun refreshCurrentFragment(position: Int) {
         val fragment =
-            binding.viewPager.findFragmentAtPosition(
+            binding.viewPagerSearch.findFragmentAtPosition(
                 childFragmentManager,
                 position,
             )

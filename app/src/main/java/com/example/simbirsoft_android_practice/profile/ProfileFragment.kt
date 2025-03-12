@@ -43,7 +43,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        binding.appBarImage.setOnClickListener { showEditPhotoDialog() }
+        binding.appBarImageProfile.setOnClickListener { showEditPhotoDialog() }
         handleBackPress()
     }
 
@@ -97,14 +97,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun updateAppBarImage(bitmap: Bitmap) {
-        binding.appBarImage.apply {
+        binding.appBarImageProfile.apply {
             setImageBitmap(bitmap)
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     }
 
     private fun clearAppBarImage() {
-        binding.appBarImage.apply {
+        binding.appBarImageProfile.apply {
             setImageResource(R.drawable.user_icon)
             scaleType = ImageView.ScaleType.FIT_CENTER
         }
