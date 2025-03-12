@@ -19,7 +19,10 @@
     <string name="profile_sample_friend_1">Дмитрий Валерьевич</string>
     <string name="profile_sample_friend_2">Евгений Александров</string>
     <string name="profile_sample_friend_3">Виктор Кузнецов</string>
-    <string name="profile_camera_permission_warning">Необходимо разрешение на камеру</string>
+    <string name="permission_required">Требуется разрешение</string>
+    <string name="camera_permission_settings_message">Для съемки фотографий требуется доступ к камере. Пожалуйста, включите его в настройках.</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="cancel">Отмена</string>
 
     <!-- bottom_menu_navigation -->
     <string name="nav_news">Новости</string>
@@ -52,15 +55,8 @@
     <string name="search_hint_input_name_organization">Введите название организации</string>
     <string name="search_event_title">По мероприятиям</string>
     <string name="search_nko_title">По НКО</string>
-
     <string name="search_list_keywords_label">Ключевые слова: мастер-класс, помощь</string>
     <string name="search_list_search_results_label">Результаты поиска: 109 мероприятий</string>
-
-    <string name="permission_required">Permission Required</string>
-    <string name="camera_permission_settings_message">Camera access is required to take photos. Please enable it in settings.</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="cancel">Cancel</string>
-
     <string name="tab_title_events">По мероприятиям</string>
     <string name="tab_title_organizations">По НКО</string>
 
