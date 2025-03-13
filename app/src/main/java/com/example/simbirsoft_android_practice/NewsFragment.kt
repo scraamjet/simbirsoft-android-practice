@@ -17,6 +17,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         setupRecyclerView()
         loadNewsData()
         setupFilterButton()
+        setupFilterResultListener()
     }
 
     private fun setupRecyclerView() {
@@ -26,10 +27,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun loadNewsData() {
+    private fun loadNewsData(selectedCategoryIds: List<Int>? = null) {
         val parser = JsonParser(requireContext())
-        val newsList = parser.parseNews()
-        newsAdapter.submitList(newsList)
+        val allNews = parser.parseNews()
+        val filteredNews = selectedCategoryIds?.let { ids ->
+            allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
+        } ?: allNews
+        newsAdapter.submitList(filteredNews)
     }
 
     private fun setupFilterButton() {
@@ -38,6 +42,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
+        }
+    }
+
+    private fun setupFilterResultListener() {
+        parentFragmentManager.setFragmentResultListener("filter_result", viewLifecycleOwner) { _, bundle ->
+            val selectedCategories = bundle.getIntArray("selectedCategories")?.toList()
+            loadNewsData(selectedCategories)
         }
     }
 

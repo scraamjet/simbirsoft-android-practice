@@ -8,6 +8,6 @@ data class Category(
     @SerializedName("title")
     val title: String,
     @SerializedName("iconUrl")
-    val iconUrl: String,
+    val iconUrl: String? = null,
     var isEnabled: Boolean = true
 )

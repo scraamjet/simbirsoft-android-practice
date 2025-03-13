@@ -15,8 +15,9 @@ class CategoryAdapter : ListAdapter<Category, CategoryViewHolder>(CategoryDiffCa
         val category = getItem(position)
         holder.bind(category)
 
-        holder.binding.itemFilter.setOnCheckedChangeListener(null) // Убираем старый listener, чтобы избежать артефактов
+        holder.binding.itemFilter.setOnCheckedChangeListener(null)
         holder.binding.itemFilter.isChecked = category.isEnabled
+
         holder.binding.itemFilter.setOnCheckedChangeListener { _, isChecked ->
             category.isEnabled = isChecked
         }
