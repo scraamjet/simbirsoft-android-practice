@@ -12,14 +12,14 @@ class JsonParser(private val context: Context) {
         return context.assets.open(filename).bufferedReader().use { it.readText() }
     }
 
-    fun parseNews(fileName: String): List<News> {
-        val json = readJsonFile(fileName)
+    fun parseNews(): List<News> {
+        val json = readJsonFile("news.json")
         val type = object : TypeToken<List<News>>() {}.type
         return gson.fromJson(json, type)
     }
 
-    fun parseCategories(fileName: String): List<Category> {
-        val json = readJsonFile(fileName)
+    fun parseCategories(): List<Category> {
+        val json = readJsonFile("categories.json")
         val type = object : TypeToken<List<Category>>() {}.type
         return gson.fromJson(json, type)
     }

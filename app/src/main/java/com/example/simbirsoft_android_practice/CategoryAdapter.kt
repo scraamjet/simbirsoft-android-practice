@@ -12,6 +12,13 @@ class CategoryAdapter : ListAdapter<Category, CategoryViewHolder>(CategoryDiffCa
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val category = getItem(position)
+        holder.bind(category)
+
+        holder.binding.itemFilter.setOnCheckedChangeListener(null) // Убираем старый listener, чтобы избежать артефактов
+        holder.binding.itemFilter.isChecked = category.isEnabled
+        holder.binding.itemFilter.setOnCheckedChangeListener { _, isChecked ->
+            category.isEnabled = isChecked
+        }
     }
 }

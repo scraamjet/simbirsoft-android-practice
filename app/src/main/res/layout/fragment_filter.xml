@@ -17,8 +17,16 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/green"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:navigationIcon="@drawable/ic_back">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <ImageView
+                android:id="@+id/imageViewFilterBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="4dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/textViewFilterName"
@@ -62,7 +70,6 @@
         android:background="@drawable/gray_view_border"
         android:paddingStart="@dimen/margin_default"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:divider = "@drawable/item_search_result_divider"
         tools:ignore="RtlSymmetry"
         tools:itemCount="5"
         tools:listitem="@layout/item_filter" />

@@ -28,7 +28,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun loadNewsData() {
         val parser = JsonParser(requireContext())
-        val newsList = parser.parseNews("news.json")
+        val newsList = parser.parseNews()
         newsAdapter.submitList(newsList)
     }
 
