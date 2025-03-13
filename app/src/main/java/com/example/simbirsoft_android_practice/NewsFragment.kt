@@ -16,6 +16,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         loadNewsData()
+        setupFilterButton()
     }
 
     private fun setupRecyclerView() {
@@ -29,6 +30,15 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val parser = JsonParser(requireContext())
         val newsList = parser.parseNews("news.json")
         newsAdapter.submitList(newsList)
+    }
+
+    private fun setupFilterButton() {
+        binding.imageViewButtonFilters.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     companion object {

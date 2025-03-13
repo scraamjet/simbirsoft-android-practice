@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pale_grey"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarFilter"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/green"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_back">
+
+            <TextView
+                android:id="@+id/textViewFilterName"
+                style="@style/HeadingMediumWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/title_filter" />
+
+            <ImageView
+                android:id="@+id/imageViewFilterApplySettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="4dp"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/default_padding_toolbar_action_button"
+                android:src="@drawable/ic_ok" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_default"
+        android:layout_marginStart="@dimen/margin_default"
+        android:fontFamily="@font/roboto_regular"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/category_help"
+        android:textColor="@color/black_70"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFilterItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_view_border"
+        android:paddingStart="@dimen/margin_default"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:divider = "@drawable/item_search_result_divider"
+        tools:ignore="RtlSymmetry"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_filter" />
+
+</LinearLayout>

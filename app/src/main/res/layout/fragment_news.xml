@@ -28,7 +28,7 @@
                 android:text="@string/title_news" />
 
             <ImageView
-                android:id="@+id/ImageViewButtonFilters"
+                android:id="@+id/imageViewButtonFilters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

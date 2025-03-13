@@ -17,4 +17,10 @@ class JsonParser(private val context: Context) {
         val type = object : TypeToken<List<News>>() {}.type
         return gson.fromJson(json, type)
     }
+
+    fun parseCategories(fileName: String): List<Category> {
+        val json = readJsonFile(fileName)
+        val type = object : TypeToken<List<Category>>() {}.type
+        return gson.fromJson(json, type)
+    }
 }
