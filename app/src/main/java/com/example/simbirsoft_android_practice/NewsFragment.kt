@@ -14,7 +14,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val newsAdapter by lazy { NewsAdapter() }
-    private val prefs by lazy { requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE) }
+    private val prefs by lazy {
+        requireContext().getSharedPreferences(
+            "filter_prefs",
+            Context.MODE_PRIVATE
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,7 +68,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun setupFilterResultListener() {
-        parentFragmentManager.setFragmentResultListener("filter_result", viewLifecycleOwner) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            "filter_result",
+            viewLifecycleOwner
+        ) { _, bundle ->
             val selectedCategories = bundle.getIntArray("selectedCategories")?.toList()
             saveSelectedCategories(selectedCategories)
             loadNewsData(selectedCategories)
@@ -78,7 +86,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun saveNewsToPreferences(news: News) {
-        val sharedPreferences = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString("selected_news", Gson().toJson(news))
             apply()
