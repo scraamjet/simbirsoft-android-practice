@@ -7,9 +7,23 @@
     <color name="black_87">#de000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pale_grey">#eff3f6</color>
-    <color name="green">#FF66A636</color>
     <color name="green_dark">#FF508527</color>
     <color name="turtle_green">#FF7DB354</color>
     <color name="warm_grey">#FF979797</color>
     <color name="cool_grey">#AABBBB</color>
+    <color name="light_olive_green">#9EBF50</color>
+
+    <color name="light_grey">#EAEDE8</color>
+    <color name="light_grey_two">#FFE8EDED</color>
+    <color name="macaroni_and_cheese">#FFF2B630</color>
+    <color name="grey">#94998A</color>
+
+    <color name="black_60">#99000000</color>
+    <color name="black_54">#8A000000</color>
+    <color name="white_70">#B3FFFFFF</color>
+
+
+    <color name="leaf">#FF4C7D27</color>
+    <color name="green">#FF66A636</color>
+
 </resources>

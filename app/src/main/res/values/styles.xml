@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TextStyle2">
+    <style name="HeadingSmallGreenCenter">
+        <item name="android:fontFamily">@font/officina_sans_extra_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/light_olive_green</item>
+    </style>
+
+    <style name="HeadingMediumWhite">
         <item name="android:fontFamily">@font/officina_sans_extra_bold</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="TextStyle4">
+    <style name="BodyTextSmallBlack54">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">6sp</item>
+        <item name="android:textColor">@color/black_54</item>
+    </style>
+
+    <style name="CaptionExtraSmallGrayCenter">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -16,7 +32,15 @@
         <item name="android:textColor">@color/black_40</item>
     </style>
 
-    <style name="TextStyle6">
+    <style name="BodyTextMediumBlackCenter">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="BodyTextSmallWhiteCenter">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -25,14 +49,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="TextStyle8">
+    <style name="BodyTextRegularBlack">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="TextStyle10">
+    <style name="BodyTextSmallBlack70Center">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -41,7 +65,7 @@
         <item name="android:textColor">@color/black_70</item>
     </style>
 
-    <style name="TextStyle12">
+    <style name="HeadingLargeBlack">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">24sp</item>
@@ -49,11 +73,58 @@
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="TextStyle13">
+    <style name="CaptionSmallBlack38">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
         <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">@color/black_38</item>
+    </style>
+
+    <style name="HeadingMediumBlack">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="BodyTextSmallBlack70End">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/black_70</item>
+    </style>
+
+    <style name="CustomTabSelectedTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAppearance">@style/BodyTextSmallWhiteCenter</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAppearance">@style/BodyTextSmallWhiteCenter</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">@color/light_grey_two</item>
+    </style>
+
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextAppearance">@style/CustomTabSelectedTextAppearance</item>
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+    </style>
+
+    <style name="SearchViewTextStyle" parent="TextAppearance.Material3.SearchView">
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/black_38</item>
     </style>
 
