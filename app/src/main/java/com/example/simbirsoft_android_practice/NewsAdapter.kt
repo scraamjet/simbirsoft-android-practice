@@ -7,12 +7,20 @@ import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 
 class NewsAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffCallback()) {
 
+    private var onItemClickListener: ((News) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (News) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NewsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val news = getItem(position)
+        holder.bind(news)
+        holder.itemView.setOnClickListener { onItemClickListener?.invoke(news) }
     }
 }
