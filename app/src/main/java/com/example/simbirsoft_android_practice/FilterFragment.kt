@@ -3,10 +3,8 @@ package com.example.simbirsoft_android_practice
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
@@ -29,10 +27,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         binding.recyclerViewFilterItem.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = categoryAdapter
-            val divider = ContextCompat.getDrawable(context, R.drawable.item_search_result_divider)
-            val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-            divider?.let { dividerItemDecoration.setDrawable(it) }
-            addItemDecoration(dividerItemDecoration)
         }
     }
 
@@ -57,6 +51,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                 categoryAdapter.currentList.forEach { category ->
                     putBoolean("category_${category.id}", category.isEnabled)
                 }
+                putStringSet("selected_categories", selectedCategories.map { it.toString() }.toSet())
                 apply()
             }
             parentFragmentManager.setFragmentResult("filter_result", bundleOf("selectedCategories" to selectedCategories.toIntArray()))

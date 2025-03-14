@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
+import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import com.google.gson.Gson
 import dev.androidbroadcast.vbpd.viewBinding
@@ -22,11 +23,14 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         news?.let { bindNewsDetails(it) }
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
+            (activity as? MainActivity)?.showBottomNavigation()
         }
+
     }
 
     private fun getNewsFromPreferences(): News? {
-        val sharedPreferences = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
         val newsJson = sharedPreferences.getString("selected_news", null)
         return newsJson?.let { Gson().fromJson(it, News::class.java) }
     }
@@ -35,7 +39,8 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         with(binding) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
-            textViewNewsDetailTime.text = DateUtils.formatEventDates(news.startDateTime, news.endDateTime)
+            textViewNewsDetailTime.text =
+                DateUtils.formatEventDates(news.startDateTime, news.endDateTime)
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts

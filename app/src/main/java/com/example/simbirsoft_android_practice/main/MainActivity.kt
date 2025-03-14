@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.simbirsoft_android_practice.NewsFragment
@@ -45,5 +46,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayoutFragmentContainer, fragment)
             .commit()
+    }
+
+    fun hideBottomNavigation() {
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    fun showBottomNavigation() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }
