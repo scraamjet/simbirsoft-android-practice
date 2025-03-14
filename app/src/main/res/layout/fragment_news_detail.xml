@@ -26,8 +26,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
@@ -47,9 +47,9 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="27dp"
                     android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:marqueeRepeatLimit="marquee_forever"
                     tools:text="Спонсоры отремонтируют школу-интернат" />
 
                 <ImageView
@@ -213,42 +213,38 @@
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="205dp"
+                    android:layout_height="158dp"
                     android:layout_marginTop="@dimen/margin_default"
                     android:layout_marginEnd="8dp"
                     android:adjustViewBounds="true"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toStartOf="@id/imageViewNewsDetailImage2"
-                    app:layout_constraintHorizontal_weight="2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail"
                     tools:src="@drawable/tmp_news_picture" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage2"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="105dp"
+                    android:layout_height="74dp"
+                    android:layout_marginTop="@dimen/margin_default"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="@id/imageViewNewsDetailImage3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailImage1"
-                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailImage1"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewNewsDetailImage1"
+                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail"
                     tools:src="@drawable/tmp_news_picture" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage3"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="105dp"
+                    android:layout_height="74dp"
                     android:layout_marginTop="10dp"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="@id/imageViewNewsDetailImage1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/imageViewNewsDetailImage2"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewNewsDetailImage1"
                     app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailImage2"
                     tools:src="@drawable/tmp_news_picture" />
 
@@ -281,12 +277,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@color/light_grey_two">
+                android:background="@color/pale_grey">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_default"
+                    android:layout_marginTop="30dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     tools:ignore="UselessParent">
@@ -298,17 +295,17 @@
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/avatar_1" />
+                            android:src="@drawable/avatar_3" />
 
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/photo_2" />
@@ -316,8 +313,8 @@
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatar_2" />
@@ -325,8 +322,8 @@
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber4"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/photo_4" />
@@ -334,8 +331,8 @@
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber5"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatar_1" />
@@ -345,9 +342,10 @@
 
                     <TextView
                         style="@style/BodyTextSmallBlack54"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="@string/temp_count_102" />
 
                 </LinearLayout>
