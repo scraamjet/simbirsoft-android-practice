@@ -66,7 +66,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun saveSelectedNewsId(newsId: Int) {
-        val sharedPreferences = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt("selected_news_id", newsId)
             apply()
@@ -75,7 +76,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onResume() {
         super.onResume()
-        loadNewsData() // Обновляем список новостей при возвращении к фрагменту
+        loadNewsData()
     }
 
     companion object {

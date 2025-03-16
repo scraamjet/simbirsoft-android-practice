@@ -16,7 +16,8 @@ data class Category(
         return FilterCategory(
             id = id,
             title = title,
-            isEnabled = prefs.getBoolean("category_$id", true)
+            isEnabled = prefs.getStringSet("selected_categories", emptySet())
+                ?.contains(id.toString()) == true
         )
     }
 
@@ -28,3 +29,4 @@ data class Category(
         )
     }
 }
+

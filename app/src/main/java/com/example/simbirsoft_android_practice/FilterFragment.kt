@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
@@ -57,7 +56,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun saveSelectedCategories(categoryIds: List<Int>) {
         prefs.edit().apply {
-            categoryIds.forEach { id -> putBoolean("category_$id", true) }
             putStringSet("selected_categories", categoryIds.map { it.toString() }.toSet())
             apply()
         }
