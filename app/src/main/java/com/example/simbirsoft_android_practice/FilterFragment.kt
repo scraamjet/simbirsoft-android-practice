@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +50,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         binding.imageViewFilterApplySettings.setOnClickListener {
             val selectedCategories = filterAdapter.currentList.filter { it.isEnabled }.map { it.id }
             saveSelectedCategories(selectedCategories)
+            Toast.makeText(requireContext(), "Фильтры успешно сохранены", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
         }
     }
