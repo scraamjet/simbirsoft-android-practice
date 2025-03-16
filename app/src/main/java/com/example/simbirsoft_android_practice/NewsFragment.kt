@@ -34,8 +34,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
         }
-        newsAdapter.setOnItemClickListener { news ->
-            saveNewsToPreferences(news)
+        newsAdapter.setOnItemClickListener { newsItem ->
+            saveSelectedNewsId(newsItem.id)
             (activity as? MainActivity)?.hideBottomNavigation()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
@@ -50,7 +50,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val filteredNews = selectedCategoryIds?.let { ids ->
             allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
         } ?: allNews
-        newsAdapter.submitList(filteredNews)
+        newsAdapter.submitList(filteredNews.map { it.toNewsItem() })
     }
 
     private fun getSavedCategories(): List<Int>? {
@@ -85,11 +85,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun saveNewsToPreferences(news: News) {
+    private fun saveSelectedNewsId(newsId: Int) {
         val sharedPreferences =
             requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
-            putString("selected_news", Gson().toJson(news))
+            putInt("selected_news_id", newsId)
             apply()
         }
     }

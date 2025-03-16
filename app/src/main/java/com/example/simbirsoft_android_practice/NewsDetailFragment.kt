@@ -19,23 +19,25 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val news = getNewsFromPreferences()
-        news?.let { bindNewsDetails(it) }
+        val newsDetail = getNewsDetailFromPreferences()
+        newsDetail?.let { bindNewsDetails(it) }
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
             (activity as? MainActivity)?.showBottomNavigation()
         }
-
     }
 
-    private fun getNewsFromPreferences(): News? {
+    private fun getNewsDetailFromPreferences(): NewsDetail? {
         val sharedPreferences =
             requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
-        val newsJson = sharedPreferences.getString("selected_news", null)
-        return newsJson?.let { Gson().fromJson(it, News::class.java) }
+        val selectedNewsId = sharedPreferences.getInt("selected_news_id", -1)
+        if (selectedNewsId == -1) return null
+
+        val parser = JsonParser(requireContext())
+        return parser.parseNews().find { it.id == selectedNewsId }?.toNewsDetail()
     }
 
-    private fun bindNewsDetails(news: News) {
+    private fun bindNewsDetails(news: NewsDetail) {
         with(binding) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title

@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 
-class NewsAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffCallback()) {
+class NewsAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback()) {
 
-    private var onItemClickListener: ((News) -> Unit)? = null
+    private var onItemClickListener: ((NewsItem) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (News) -> Unit) {
+    fun setOnItemClickListener(listener: (NewsItem) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -19,8 +19,8 @@ class NewsAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffCallback()) {
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val news = getItem(position)
-        holder.bind(news)
-        holder.itemView.setOnClickListener { onItemClickListener?.invoke(news) }
+        val newsItem = getItem(position)
+        holder.bind(newsItem)
+        holder.itemView.setOnClickListener { onItemClickListener?.invoke(newsItem) }
     }
 }

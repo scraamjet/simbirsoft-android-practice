@@ -7,14 +7,14 @@ import com.example.simbirsoft_android_practice.utils.DateUtils
 
 class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(news: News) {
+    fun bind(newsItem: NewsItem) {
         binding.apply {
-            textViewNewsTitle.text = news.title
-            textViewNewsDescription.text = news.description
-            textViewNewsTime.text = DateUtils.formatEventDates(news.startDateTime, news.endDateTime)
+            textViewNewsTitle.text = newsItem.title
+            textViewNewsDescription.text = newsItem.description
+            textViewNewsTime.text = DateUtils.formatEventDates(newsItem.startDateTime, newsItem.endDateTime)
 
             Glide.with(imageViewNewsItem.context)
-                .load(news.picturesUrl.firstOrNull())
+                .load(newsItem.imageUrl)
                 .into(imageViewNewsItem)
         }
     }
