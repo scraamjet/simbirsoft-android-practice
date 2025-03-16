@@ -15,18 +15,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val newsAdapter by lazy { NewsAdapter() }
     private val prefs by lazy {
-        requireContext().getSharedPreferences(
-            "filter_prefs",
-            Context.MODE_PRIVATE
-        )
+        requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        loadNewsData(getSavedCategories())
+        loadNewsData()
         setupFilterButton()
-        setupFilterResultListener()
     }
 
     private fun setupRecyclerView() {
@@ -34,6 +30,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
         }
+
         newsAdapter.setOnItemClickListener { newsItem ->
             saveSelectedNewsId(newsItem.id)
             parentFragmentManager.beginTransaction()
@@ -43,12 +40,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun loadNewsData(selectedCategoryIds: List<Int>? = null) {
+    private fun loadNewsData() {
         val parser = JsonParser(requireContext())
         val allNews = parser.parseNews()
+        val selectedCategoryIds = getSavedCategories()
         val filteredNews = selectedCategoryIds?.let { ids ->
             allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
         } ?: allNews
+
         newsAdapter.submitList(filteredNews.map { it.toNewsItem() })
     }
 
@@ -66,31 +65,17 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun setupFilterResultListener() {
-        parentFragmentManager.setFragmentResultListener(
-            "filter_result",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val selectedCategories = bundle.getIntArray("selectedCategories")?.toList()
-            saveSelectedCategories(selectedCategories)
-            loadNewsData(selectedCategories)
-        }
-    }
-
-    private fun saveSelectedCategories(categoryIds: List<Int>?) {
-        prefs.edit().apply {
-            putStringSet("selected_categories", categoryIds?.map { it.toString() }?.toSet())
-            apply()
-        }
-    }
-
     private fun saveSelectedNewsId(newsId: Int) {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences = requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt("selected_news_id", newsId)
             apply()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadNewsData() // Обновляем список новостей при возвращении к фрагменту
     }
 
     companion object {

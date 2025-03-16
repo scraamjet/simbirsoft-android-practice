@@ -14,10 +14,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
     private val prefs by lazy {
-        requireContext().getSharedPreferences(
-            "filter_prefs",
-            Context.MODE_PRIVATE
-        )
+        requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,23 +47,17 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun setupApplySettingsButton() {
         binding.imageViewFilterApplySettings.setOnClickListener {
-            val selectedCategories =
-                filterAdapter.currentList.filter { it.isEnabled }.map { it.id }
-            prefs.edit().apply {
-                filterAdapter.currentList.forEach { category ->
-                    putBoolean("category_${category.id}", category.isEnabled)
-                }
-                putStringSet(
-                    "selected_categories",
-                    selectedCategories.map { it.toString() }.toSet()
-                )
-                apply()
-            }
-            parentFragmentManager.setFragmentResult(
-                "filter_result",
-                bundleOf("selectedCategories" to selectedCategories.toIntArray())
-            )
+            val selectedCategories = filterAdapter.currentList.filter { it.isEnabled }.map { it.id }
+            saveSelectedCategories(selectedCategories)
             parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun saveSelectedCategories(categoryIds: List<Int>) {
+        prefs.edit().apply {
+            categoryIds.forEach { id -> putBoolean("category_$id", true) }
+            putStringSet("selected_categories", categoryIds.map { it.toString() }.toSet())
+            apply()
         }
     }
 
