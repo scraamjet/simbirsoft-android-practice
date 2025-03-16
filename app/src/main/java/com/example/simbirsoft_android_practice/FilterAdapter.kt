@@ -2,10 +2,11 @@ package com.example.simbirsoft_android_practice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding
 
-class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCallback()) {
+class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
         val binding = ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FilterViewHolder(binding)
@@ -20,6 +21,18 @@ class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCa
 
         holder.binding.itemFilter.setOnCheckedChangeListener { _, isChecked ->
             category.isEnabled = isChecked
+        }
+    }
+
+    companion object {
+        private val FilterDiffCallback = object : DiffUtil.ItemCallback<FilterCategory>() {
+            override fun areItemsTheSame(oldItem: FilterCategory, newItem: FilterCategory): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: FilterCategory, newItem: FilterCategory): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

@@ -2,10 +2,11 @@ package com.example.simbirsoft_android_practice
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 
-class NewsAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback()) {
+class NewsAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback) {
 
     private var onItemClickListener: ((NewsItem) -> Unit)? = null
 
@@ -22,5 +23,17 @@ class NewsAdapter : ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback()) {
         val newsItem = getItem(position)
         holder.bind(newsItem)
         holder.itemView.setOnClickListener { onItemClickListener?.invoke(newsItem) }
+    }
+
+    companion object {
+        private val NewsDiffCallback = object : DiffUtil.ItemCallback<NewsItem>() {
+            override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
