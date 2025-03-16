@@ -10,14 +10,13 @@ data class Category(
     @SerializedName("title")
     val title: String,
     @SerializedName("icon_url")
-    val iconUrl: String? = null
+    val iconUrl: String
 ) {
     fun toFilter(prefs: SharedPreferences): FilterCategory {
         return FilterCategory(
             id = id,
             title = title,
-            iconUrl = iconUrl,
-            isEnabled = prefs.getBoolean("category_$id", true),
+            isEnabled = prefs.getBoolean("category_$id", true)
         )
     }
 
