@@ -6,16 +6,24 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
-import com.example.simbirsoft_android_practice.main.MainActivity
-import com.google.gson.Gson
 import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val binding by viewBinding(FragmentNewsBinding::bind)
-    private val newsAdapter by lazy { NewsAdapter() }
+
     private val prefs by lazy {
         requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE)
+    }
+
+    private val newsAdapter by lazy {
+        NewsAdapter { newsId ->
+            saveSelectedNewsId(newsId)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,14 +37,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.recyclerViewItemNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
-        }
-
-        newsAdapter.setOnItemClickListener { newsItem ->
-            saveSelectedNewsId(newsItem.id)
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
         }
     }
 
