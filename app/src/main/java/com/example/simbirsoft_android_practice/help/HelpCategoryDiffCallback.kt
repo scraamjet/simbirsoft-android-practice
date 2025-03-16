@@ -1,20 +1,15 @@
 package com.example.simbirsoft_android_practice.help
 
 import androidx.recyclerview.widget.DiffUtil
+import com.example.simbirsoft_android_practice.Category
 import com.example.simbirsoft_android_practice.data.HelpCategory
 
-class HelpCategoryDiffCallback : DiffUtil.ItemCallback<HelpCategory>() {
-    override fun areItemsTheSame(
-        oldItem: HelpCategory,
-        newItem: HelpCategory,
-    ): Boolean {
-        return oldItem.name == newItem.name
+class HelpCategoryDiffCallback : DiffUtil.ItemCallback<Category>() {
+    override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(
-        oldItem: HelpCategory,
-        newItem: HelpCategory,
-    ): Boolean {
-        return oldItem.titleResId == newItem.titleResId && oldItem.icon == newItem.icon
+    override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        return oldItem == newItem
     }
 }
