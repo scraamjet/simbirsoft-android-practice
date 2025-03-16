@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
+import coil.load
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
-import com.google.gson.Gson
 import dev.androidbroadcast.vbpd.viewBinding
 
 
@@ -19,11 +18,13 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).hideBottomNavigation()
+
         val newsDetail = getNewsDetailFromPreferences()
         newsDetail?.let { bindNewsDetails(it) }
+
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
-            (activity as? MainActivity)?.showBottomNavigation()
         }
     }
 
@@ -56,13 +57,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     private fun loadImage(imageView: ImageView, url: String?) {
         url?.let {
-            Glide.with(this)
-                .load(it)
-                .into(imageView)
+            imageView.load(it)
         }
     }
 
     companion object {
         fun newInstance() = NewsDetailFragment()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        (activity as? MainActivity)?.showBottomNavigation()
     }
 }

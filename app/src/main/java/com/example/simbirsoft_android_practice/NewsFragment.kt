@@ -36,7 +36,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
         newsAdapter.setOnItemClickListener { newsItem ->
             saveSelectedNewsId(newsItem.id)
-            (activity as? MainActivity)?.hideBottomNavigation()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
                 .addToBackStack(null)
