@@ -35,7 +35,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategories() {
-        val categories = jsonParser.parseCategories()
+        val categoriesDto = jsonParser.parseCategories()
+        val categories = categoriesDto.map { it.toHelpCategory() }
         adapter.submitList(categories)
     }
 
