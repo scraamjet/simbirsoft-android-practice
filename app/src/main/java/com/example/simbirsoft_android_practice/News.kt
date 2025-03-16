@@ -25,28 +25,4 @@ data class News(
     val endDateTime: String,
     @SerializedName("list_help_category_id")
     val listHelpCategoryId: List<Int>
-) {
-    fun toNewsItem(): NewsItem {
-        return NewsItem(
-            id = this.id,
-            title = this.title,
-            description = this.description,
-            startDateTime = this.startDateTime,
-            endDateTime = this.endDateTime,
-            imageUrl = this.picturesUrl.firstOrNull()
-        )
-    }
-
-    fun toNewsDetail(): NewsDetail {
-        return NewsDetail(
-            title = this.title,
-            fullDescription = this.fullDescription,
-            startDateTime = this.startDateTime,
-            endDateTime = this.endDateTime,
-            owner = this.owner,
-            ownerAddress = this.ownerAddress,
-            ownerContacts = this.ownerContacts,
-            picturesUrl = this.picturesUrl
-        )
-    }
-}
+)

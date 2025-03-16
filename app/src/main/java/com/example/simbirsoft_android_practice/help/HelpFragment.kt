@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.simbirsoft_android_practice.CategoryMapper
 import com.example.simbirsoft_android_practice.JsonParser
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
@@ -36,7 +37,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private fun loadCategories() {
         val categoriesDto = jsonParser.parseCategories()
-        val categories = categoriesDto.map { it.toHelpCategory() }
+        val categories = categoriesDto.map { CategoryMapper.toHelpCategory(it) }
         adapter.submitList(categories)
     }
 

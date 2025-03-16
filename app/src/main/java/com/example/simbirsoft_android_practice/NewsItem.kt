@@ -6,5 +6,5 @@ data class NewsItem(
     val description: String,
     val startDateTime: String,
     val endDateTime: String,
-    val imageUrl: String?
+    val imageUrl: String
 )

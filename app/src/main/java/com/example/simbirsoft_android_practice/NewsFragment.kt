@@ -48,7 +48,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
         } ?: allNews
 
-        newsAdapter.submitList(filteredNews.map { it.toNewsItem() })
+        newsAdapter.submitList(filteredNews.map { NewsMapper.toNewsItem(it) })
     }
 
     private fun getSavedCategories(): List<Int>? {

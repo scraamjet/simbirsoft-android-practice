@@ -35,7 +35,8 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         if (selectedNewsId == -1) return null
 
         val parser = JsonParser(requireContext())
-        return parser.parseNews().find { it.id == selectedNewsId }?.toNewsDetail()
+        return parser.parseNews().find { it.id == selectedNewsId }
+            ?.let { NewsMapper.toNewsDetail(it) }
     }
 
     private fun bindNewsDetails(news: NewsDetail) {

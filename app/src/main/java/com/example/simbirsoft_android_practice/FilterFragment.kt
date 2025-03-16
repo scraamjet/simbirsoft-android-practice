@@ -35,7 +35,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun loadCategoryData() {
         val parser = JsonParser(requireContext())
         val categoriesDto = parser.parseCategories()
-        val categories = categoriesDto.map { it.toFilter(prefs) }
+        val categories = categoriesDto.map { CategoryMapper.toFilter(it, prefs) }
         filterAdapter.submitList(categories)
     }
 
