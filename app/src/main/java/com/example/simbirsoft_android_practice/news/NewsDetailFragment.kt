@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.news
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.core.JsonParser

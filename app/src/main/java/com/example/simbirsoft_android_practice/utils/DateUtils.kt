@@ -9,13 +9,16 @@ import kotlinx.datetime.todayIn
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 object DateUtils {
 
+    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))
+
     fun formatEventDates(startDate: String, endDate: String): String {
-        val start = parseDate(startDate)
-        val end = parseDate(endDate)
+        val start = convertTimestampToLocalDate(startDate)
+        val end = convertTimestampToLocalDate(endDate)
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
         val daysLeft = now.daysUntil(start)
@@ -28,26 +31,32 @@ object DateUtils {
         }
     }
 
-    private fun parseDate(dateString: String): LocalDate {
-        return dateString.toLongOrNull()?.let { timestamp ->
-            Instant.fromEpochSeconds(timestamp)
-                .toLocalDateTime(TimeZone.currentSystemDefault()).date
-        } ?: LocalDate.parse(dateString)
+    private fun convertTimestampToLocalDate(dateString: String): LocalDate {
+        return dateString.toLongOrNull()
+            ?.let { timestamp -> convertTimestampToLocalDate(timestamp) }
+            ?: LocalDate.parse(dateString)
     }
 
     private fun formatDateRange(start: LocalDate, end: LocalDate): String {
-        val formatter = DateTimeFormatter.ofPattern("dd.MM")
-        val startFormatted = start.toJavaLocalDate().format(formatter)
-        val endFormatted = end.toJavaLocalDate().format(formatter)
-        return "($startFormatted - $endFormatted)"
+        return "(${formatDate(start)} – ${formatDate(end)})"
     }
 
-    private fun formatDaysText(daysLeft: Int): String {
-        val dayWord = when {
-            daysLeft % 10 == 1 && daysLeft % 100 != 11 -> "день"
-            daysLeft % 10 in 2..4 && daysLeft % 100 !in 12..14 -> "дня"
+    private fun formatDaysText(days: Int): String {
+        val word = when {
+            days % 10 == 1 && days % 100 != 11 -> "день"
+            days % 10 in 2..4 && days % 100 !in 12..14 -> "дня"
             else -> "дней"
         }
-        return "$daysLeft $dayWord"
+        return "$days $word"
+    }
+
+    private fun convertTimestampToLocalDate(timestamp: Long): LocalDate {
+        return Instant.fromEpochSeconds(timestamp)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
+
+    private fun formatDate(date: LocalDate): String {
+        return date.toJavaLocalDate().format(DATE_FORMATTER)
     }
 }
+
