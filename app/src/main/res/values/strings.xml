@@ -69,13 +69,12 @@
     <string name="title_news">Новости</string>
 
     <!-- NewsDetailFragment -->
-
     <string name="title_filter">Фильтр</string>
     <string name="category_help">Категории помощи:</string>
 
 
-    <string name="hyperlink_news_owner_mail"><u>Напишите нам</u></string>
-    <string name="hyperlink_news_owner_web"><u>Перейти на сайт организации</u></string>
+    <string name="link_news_owner_mail"><u>Напишите нам</u></string>
+    <string name="link_news_owner_web"><u>Перейти на сайт организации</u></string>
     <string name="help_things">Помочь\nвещами</string>
     <string name="help_volunteer">Стать\nволонтером</string>
     <string name="help_prof">Проф.\nпомощь</string>
@@ -87,7 +86,6 @@
     <string name="title_money_help_dialog_fragment">Выберите размер пожертвования</string>
     <string name="title_custom_money">или введите нужную сумму</string>
     <string name="input_custom_money">Введите сумму</string>
-
     <string name="filter_saved_toast">Фильтры успешно сохранены</string>
     <string name="no_news_available">Нет новостей, соответствующих выбранным фильтрам</string>
 </resources>
