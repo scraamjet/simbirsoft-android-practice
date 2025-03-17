@@ -13,9 +13,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
-    private val prefs by lazy {
-        requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE)
-    }
+    private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +33,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun loadCategoryData() {
         val parser = JsonParser(requireContext())
         val categoriesDto = parser.parseCategories()
-        val categories = categoriesDto.map { CategoryMapper.toFilter(it, prefs) }
+        val categories = categoriesDto.map { CategoryMapper.toFilter(it, filterPrefs) }
         filterAdapter.submitList(categories)
     }
 
@@ -48,16 +46,9 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun setupApplySettingsButton() {
         binding.imageViewFilterApplySettings.setOnClickListener {
             val selectedCategories = filterAdapter.currentList.filter { it.isEnabled }.map { it.id }
-            saveSelectedCategories(selectedCategories)
+            filterPrefs.saveSelectedCategories(selectedCategories)
             Toast.makeText(requireContext(), "Фильтры успешно сохранены", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
-        }
-    }
-
-    private fun saveSelectedCategories(categoryIds: List<Int>) {
-        prefs.edit().apply {
-            putStringSet("selected_categories", categoryIds.map { it.toString() }.toSet())
-            apply()
         }
     }
 

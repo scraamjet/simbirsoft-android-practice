@@ -11,14 +11,12 @@ import dev.androidbroadcast.vbpd.viewBinding
 class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val binding by viewBinding(FragmentNewsBinding::bind)
-
-    private val prefs by lazy {
-        requireContext().getSharedPreferences("filter_prefs", Context.MODE_PRIVATE)
-    }
+    private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
+    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
 
     private val newsAdapter by lazy {
         NewsAdapter { newsId ->
-            saveSelectedNewsId(newsId)
+            newsPrefs.saveSelectedNewsId(newsId)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
                 .addToBackStack(null)
@@ -43,17 +41,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun loadNewsData() {
         val parser = JsonParser(requireContext())
         val allNews = parser.parseNews()
-        val selectedCategoryIds = getSavedCategories()
-        val filteredNews = selectedCategoryIds?.let { ids ->
+        val selectedCategoryIds = filterPrefs.getSelectedCategories()
+        val filteredNews = selectedCategoryIds.let { ids ->
             allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
         } ?: allNews
 
         newsAdapter.submitList(filteredNews.map { NewsMapper.toNewsItem(it) })
-    }
-
-    private fun getSavedCategories(): List<Int>? {
-        val categoriesSet = prefs.getStringSet("selected_categories", null)
-        return categoriesSet?.map { it.toInt() }
     }
 
     private fun setupFilterButton() {
@@ -62,15 +55,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
-        }
-    }
-
-    private fun saveSelectedNewsId(newsId: Int) {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putInt("selected_news_id", newsId)
-            apply()
         }
     }
 

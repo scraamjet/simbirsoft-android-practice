@@ -1,6 +1,5 @@
 package com.example.simbirsoft_android_practice
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -15,12 +14,13 @@ import dev.androidbroadcast.vbpd.viewBinding
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
+    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).hideBottomNavigation()
 
-        val newsDetail = getNewsDetailFromPreferences()
+        val newsDetail = getNewsDetail()
         newsDetail?.let { bindNewsDetails(it) }
 
         binding.buttonBackNewsDetail.setOnClickListener {
@@ -28,10 +28,8 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         }
     }
 
-    private fun getNewsDetailFromPreferences(): NewsDetail? {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("news_prefs", Context.MODE_PRIVATE)
-        val selectedNewsId = sharedPreferences.getInt("selected_news_id", -1)
+    private fun getNewsDetail(): NewsDetail? {
+        val selectedNewsId = newsPrefs.getSelectedNewsId()
         if (selectedNewsId == -1) return null
 
         val parser = JsonParser(requireContext())
@@ -50,16 +48,14 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
 
-            loadImage(imageViewNewsDetailImage1, news.picturesUrl.getOrNull(0))
-            loadImage(imageViewNewsDetailImage2, news.picturesUrl.getOrNull(1))
-            loadImage(imageViewNewsDetailImage3, news.picturesUrl.getOrNull(2))
+            loadImage(imageViewNewsDetailImage1, news.picturesUrl[0])
+            loadImage(imageViewNewsDetailImage2, news.picturesUrl[1])
+            loadImage(imageViewNewsDetailImage3, news.picturesUrl[2])
         }
     }
 
     private fun loadImage(imageView: ImageView, url: String?) {
-        url?.let {
-            imageView.load(it)
-        }
+        url?.let { imageView.load(it) }
     }
 
     companion object {
