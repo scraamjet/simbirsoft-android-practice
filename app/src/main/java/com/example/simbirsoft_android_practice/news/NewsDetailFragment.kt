@@ -21,8 +21,9 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
+
         getNewsDetail()?.let(::bindNewsDetails)
-        setupBackButton()
+        initClickListeners()
     }
 
     private fun getNewsDetail(): NewsDetail? {
@@ -53,7 +54,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         }
     }
 
-    private fun setupBackButton() {
+    private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
         }

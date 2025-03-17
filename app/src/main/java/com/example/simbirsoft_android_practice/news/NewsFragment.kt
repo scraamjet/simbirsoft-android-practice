@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.news
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.core.JsonParser
@@ -20,16 +21,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
+
+        initRecyclerView()
+        initClickListeners()
         loadNewsData()
     }
 
-    private fun setupUI() {
-        setupRecyclerView()
-        setupFilterButton()
-    }
-
-    private fun setupRecyclerView() {
+    private fun initRecyclerView() {
         binding.recyclerViewItemNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
@@ -48,17 +46,15 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             }
             .map(NewsMapper::toNewsItem)
 
-        if (filteredNewsItems.isEmpty()) {
-            binding.scrollViewNews.visibility = View.GONE
-            binding.textViewNoNews.visibility = View.VISIBLE
-        } else {
-            binding.scrollViewNews.visibility = View.VISIBLE
-            binding.textViewNoNews.visibility = View.GONE
+        binding.scrollViewNews.isVisible = filteredNewsItems.isNotEmpty()
+        binding.textViewNoNews.isVisible = filteredNewsItems.isEmpty()
+
+        if (filteredNewsItems.isNotEmpty()) {
             newsAdapter.submitList(filteredNewsItems)
         }
     }
 
-    private fun setupFilterButton() {
+    private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())

@@ -18,13 +18,13 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        setupBackButton()
-        setupApplySettingsButton()
+
+        initRecyclerView()
+        initClickListeners()
         loadCategoryData()
     }
 
-    private fun setupRecyclerView() {
+    private fun initRecyclerView() {
         binding.recyclerViewFilterItem.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = filterAdapter
@@ -39,13 +39,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         filterAdapter.submitList(filterCategories)
     }
 
-    private fun setupBackButton() {
+    private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-    }
-
-    private fun setupApplySettingsButton() {
         binding.imageViewFilterApplySettings.setOnClickListener {
             saveFilterSettings()
         }
