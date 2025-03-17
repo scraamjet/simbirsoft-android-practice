@@ -10,12 +10,11 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/itemFilter"
-        style="@style/TextStyle8"
+        style="@style/BodyTextMediumBlack87"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_default_small"
+        android:layout_marginEnd="@dimen/margin_default_small_1"
         app:thumbTint="@color/green"
-        app:trackTint="@drawable/color_switch_selector"
-        tools:text="Деньгами" />
+        app:trackTint="@drawable/color_switch_selector" />
 
 </LinearLayout>

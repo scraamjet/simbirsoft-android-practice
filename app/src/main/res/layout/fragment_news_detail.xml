@@ -7,7 +7,6 @@
     android:background="@color/pale_grey"
     android:orientation="vertical">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutNewsDetail"
         android:layout_width="match_parent"
@@ -19,8 +18,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarNewsDetail"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/green"
+            android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
 
                 <ImageView
                     android:id="@+id/buttonBackNewsDetail"
-                    android:layout_width="24dp"
+                    android:layout_width="@dimen/toolbar_icon_size"
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back"
@@ -43,8 +43,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/toolbar_title_start_margin"
                     android:layout_weight="1"
-                    android:layout_marginStart="23dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/buttonBackNewsDetail"
                     app:layout_constraintRight_toLeftOf="@id/buttonSharedNewsDetail"
@@ -57,13 +57,12 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="none"
                         android:gravity="start"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        tools:text="Спонсоры отремонтируют школу-интернат" />
+                        android:maxLines="@integer/toolbar_title_max_lines"
+                        android:singleLine="true" />
 
                     <ImageView
                         android:id="@+id/imageViewNewsDetailToolbarGradient"
-                        android:layout_width="24dp"
+                        android:layout_width="@dimen/toolbar_icon_size"
                         android:layout_height="match_parent"
                         android:layout_gravity="end"
                         android:importantForAccessibility="no"
@@ -74,13 +73,12 @@
                     android:id="@+id/buttonSharedNewsDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="23dp"
+                    android:layout_marginEnd="@dimen/toolbar_share_margin_end"
                     android:src="@drawable/ic_share"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -89,7 +87,7 @@
     <ScrollView
         android:id="@+id/scrollViewNewsDetail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -107,44 +105,35 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailTitle"
+                    style="@style/HeadingMediumBlueGreyEllipsize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/officina_sans_extra_bold"
-                    android:lineSpacingExtra="8sp"
-                    android:maxLines="2"
-                    android:textColor="@color/blue_grey"
-                    android:textSize="21sp"
-                    android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Спонсоры отремонтируют школу-интернат" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textViewNewsDetailTime"
-                    style="@style/TextStyle18"
+                    style="@style/CaptionSmallGray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:drawablePadding="5dp"
+                    android:layout_marginTop="@dimen/news_detail_title_margin_top"
+                    android:drawablePadding="@dimen/calendar_drawable_padding"
                     android:gravity="center"
                     app:drawableStartCompat="@drawable/ic_calendar_grey"
                     app:layout_constraintStart_toStartOf="@id/textViewNewsDetailTitle"
-                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailTitle"
-                    tools:text="Осталось 13 дней (21.09 - 20.10)" />
+                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailTitle" />
 
                 <TextView
                     android:id="@+id/textViewNewsDetailOwner"
-                    style="@style/TextStyle9"
+                    style="@style/CaptionSmallBlack60"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/news_detail_owner_margin_top"
                     app:layout_constraintStart_toStartOf="@id/textViewNewsDetailTime"
-                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailTime"
-                    tools:text="Благотворительный Фонд «Счастливый Мир»" />
+                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailTime" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailAddress"
@@ -158,17 +147,16 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailAddress"
+                    style="BodyTextRegularBlack70"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_between_items_news_detail"
                     android:layout_marginEnd="@dimen/margin_default"
-                    android:minHeight="24dp"
                     android:singleLine="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailAddress"
-                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailAddress"
-                    tools:text="Санкт-Петербург, Кирочная улица, д. 50А, каб. 208" />
+                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailAddress" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailContacts"
@@ -182,16 +170,15 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailContacts"
+                    style="BodyTextRegularBlack70"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_between_items_news_detail"
                     android:layout_marginEnd="@dimen/margin_default"
-                    android:minHeight="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailContacts"
-                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailContacts"
-                    tools:text="+7 (937) 037 37-73 \n+7 (937) 016 16-16" />
+                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailContacts" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailMail"
@@ -205,11 +192,11 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailHintMail"
+                    style="BodyTextRegularBlack70"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_between_items_news_detail"
                     android:layout_marginEnd="@dimen/margin_default"
-                    android:minHeight="24dp"
                     android:text="@string/questions_news"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -218,6 +205,7 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailMail"
+                    style="@style/BodyTextLinkGreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_between_items_news_detail"
@@ -227,15 +215,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/textViewNewsDetailHintMail"
-                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailMail"
-                    tools:text="Напишите нам" />
+                    app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailMail" />
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage1"
-                    android:layout_width="205dp"
-                    android:layout_height="158dp"
+                    android:layout_width="@dimen/news_detail_image_1_width"
+                    android:layout_height="@dimen/news_detail_image_1_height"
                     android:layout_marginTop="@dimen/margin_default"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/margin_default_small"
                     android:adjustViewBounds="true"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
@@ -245,8 +232,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage2"
-                    android:layout_width="105dp"
-                    android:layout_height="74dp"
+                    android:layout_width="@dimen/news_detail_image_2_width"
+                    android:layout_height="@dimen/news_detail_image_2_height"
                     android:layout_marginTop="@dimen/margin_default"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
@@ -257,9 +244,9 @@
 
                 <ImageView
                     android:id="@+id/imageViewNewsDetailImage3"
-                    android:layout_width="105dp"
-                    android:layout_height="74dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="@dimen/news_detail_image_3_width"
+                    android:layout_height="@dimen/news_detail_image_3_height"
+                    android:layout_marginTop="@dimen/news_detail_title_margin_top"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -269,21 +256,20 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailDescription"
+                    style="@style/BodyTextRegularBlack70"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailImage1"
-                    tools:text="Участники и болельщики смогли весело и активно провести время на «Петербургском благотворительном марафоне» и при этом финансово поучаствовать в помощи детям.\n \nПри этом финансово поучаствовать в помощи детям. При этом финансово поучаствовать в помощи детям." />
+                    app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailImage1" />
 
                 <TextView
                     android:id="@+id/textViewNewsDetailHyperLink"
+                    style="@style/BodyTextLinkGreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default"
-                    android:minHeight="24dp"
-                    android:textColor="@color/green"
                     android:text="@string/hyperlink_news_owner_web"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -296,14 +282,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/subscriber_avatar_margin_top"
                 android:background="@color/pale_grey">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_default"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/subscriber_avatar_margin_top"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     tools:ignore="UselessParent">
@@ -315,56 +301,51 @@
 
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber1"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/news_detail_subscriber_image_size"
+                            android:layout_height="@dimen/news_detail_subscriber_image_size"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatar_3" />
 
-
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber2"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/news_detail_subscriber_image_size"
+                            android:layout_height="@dimen/news_detail_subscriber_image_size"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/photo_2" />
 
-
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber3"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/news_detail_subscriber_image_size"
+                            android:layout_height="@dimen/news_detail_subscriber_image_size"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatar_2" />
 
-
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber4"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/news_detail_subscriber_image_size"
+                            android:layout_height="@dimen/news_detail_subscriber_image_size"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/photo_4" />
 
-
                         <ImageView
                             android:id="@+id/imageViewNewsDetailSubscriber5"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="@dimen/news_detail_subscriber_image_size"
+                            android:layout_height="@dimen/news_detail_subscriber_image_size"
                             android:importantForAccessibility="no"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatar_1" />
 
                     </LinearLayout>
 
-
                     <TextView
                         style="@style/BodyTextSmallBlack54"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_width="@dimen/news_detail_subscriber_image_size"
+                        android:layout_height="@dimen/news_detail_subscriber_image_size"
+                        android:layout_marginStart="@dimen/news_detail_subscriber_margin_start"
                         android:gravity="center"
                         android:text="@string/temp_count_102" />
 
@@ -372,19 +353,17 @@
 
             </FrameLayout>
 
-
         </LinearLayout>
-
     </ScrollView>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/separator_width"
         android:background="@color/light_grey_three" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/bottom_bar_height"
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:gravity="center_vertical"
@@ -399,13 +378,13 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_shirt" />
 
             <TextView
-                style="@style/TextStyle11"
+                style="@style/CaptionExtraSmallBlack40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_things" />
@@ -427,13 +406,13 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_hands" />
 
             <TextView
-                style="@style/TextStyle11"
+                style="@style/CaptionExtraSmallBlack40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_volunteer" />
@@ -455,13 +434,13 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_tools" />
 
             <TextView
-                style="@style/TextStyle11"
+                style="@style/CaptionExtraSmallBlack40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_prof" />
@@ -483,19 +462,17 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/toolbar_icon_size"
+                android:layout_height="@dimen/toolbar_icon_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_coins" />
 
             <TextView
-                style="@style/TextStyle11"
+                style="@style/CaptionExtraSmallBlack40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_money" />
 
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

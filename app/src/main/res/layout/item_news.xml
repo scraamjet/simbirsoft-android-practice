@@ -5,7 +5,7 @@
     android:id="@+id/item_news"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="@dimen/margin_top_news_item"
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical">
@@ -13,8 +13,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="4dp"
-        android:paddingTop="4dp">
+        android:paddingHorizontal="@dimen/padding_horizontal_image"
+        android:paddingTop="@dimen/padding_top_image">
 
         <ImageView
             android:id="@+id/imageViewNewsItem"
@@ -32,59 +32,49 @@
             android:scaleType="centerCrop"
             android:src="@drawable/fade" />
 
-
     </FrameLayout>
 
     <TextView
         android:id="@+id/textViewNewsTitle"
+        style="@style/HeadingMediumBlueGreyCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="38dp"
-        android:layout_marginTop="-12dp"
-        android:fontFamily="@font/officina_sans_extra_bold"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="12sp"
-        android:textColor="@color/blue_grey"
-        android:textSize="21sp"
-        android:textStyle="normal"
-        tools:text="Конкурс по вокальному пению в детском доме №6" />
+        android:layout_marginHorizontal="@dimen/margin_horizontal_title"
+        android:layout_marginTop="@dimen/margin_top_title" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/margin_top_decor"
+        android:layout_marginBottom="@dimen/margin_bottom_decor"
         android:importantForAccessibility="no"
         android:src="@drawable/news_decor" />
 
     <TextView
         android:id="@+id/textViewNewsDescription"
-        style="@style/TextStyle10"
+        style="@style/BodyTextMediumBlack70"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="26dp"
-        android:layout_marginBottom="@dimen/margin_default_small"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_description"
+        android:layout_marginBottom="@dimen/margin_bottom_description"
         android:ellipsize="end"
         android:maxLines="3"
-        android:paddingHorizontal="16dp"
-        tools:text="Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …" />
-
+        android:paddingHorizontal="@dimen/margin_default_2" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/card_view_height"
         android:backgroundTint="@color/turtle_green">
 
         <TextView
             android:id="@+id/textViewNewsTime"
-            style="@style/TextStyle8White"
+            style="@style/CaptionExtraSmallWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawablePadding="10dp"
+            android:drawablePadding="@dimen/drawable_padding_time"
             android:gravity="center"
-            app:drawableStartCompat="@drawable/ic_calendar_white"
-            tools:text="Осталось 13 дней (21.09 - 20.10)" />
+            app:drawableStartCompat="@drawable/ic_calendar_white" />
 
     </androidx.cardview.widget.CardView>
 

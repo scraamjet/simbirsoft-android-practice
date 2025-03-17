@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pale_grey"
@@ -24,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="@dimen/margin_default_2"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_back" />
 
@@ -41,9 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="@dimen/margin_default_2"
                 android:importantForAccessibility="no"
-                android:padding="@dimen/default_padding_toolbar_action_button"
                 android:src="@drawable/ic_ok" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -51,27 +49,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
+        style="BodyTextRegularBlack70"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_default"
-        android:layout_marginStart="@dimen/margin_default"
-        android:fontFamily="@font/roboto_regular"
-        android:lineSpacingExtra="6sp"
-        android:text="@string/category_help"
-        android:textColor="@color/black_70"
-        android:textSize="14sp"
-        android:textStyle="normal" />
-
+        android:layout_marginVertical="@dimen/margin_default_2"
+        android:layout_marginStart="@dimen/margin_default_2"
+        android:text="@string/category_help" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFilterItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gray_view_border"
-        android:paddingStart="@dimen/margin_default"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:ignore="RtlSymmetry"
-        tools:itemCount="5"
-        tools:listitem="@layout/item_filter" />
+        android:paddingStart="@dimen/margin_default_2"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>
