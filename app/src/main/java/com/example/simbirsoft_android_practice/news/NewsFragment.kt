@@ -16,21 +16,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
-
-    private val newsAdapter by lazy {
-        NewsAdapter { newsId ->
-            newsPrefs.saveSelectedNewsId(newsId)
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
-        }
-    }
+    private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        setupUI()
         loadNewsData()
+    }
+
+    private fun setupUI() {
+        setupRecyclerView()
         setupFilterButton()
     }
 
@@ -42,14 +37,20 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        val parser = JsonParser(requireContext())
-        val allNews = parser.parseNews()
+        val allNews = JsonParser(requireContext()).parseNews()
         val selectedCategoryIds = filterPrefs.getSelectedCategories()
-        val filteredNews = selectedCategoryIds.let { ids ->
-            allNews.filter { news -> news.listHelpCategoryId.any { it in ids } }
-        } ?: allNews
 
-        newsAdapter.submitList(filteredNews.map { NewsMapper.toNewsItem(it) })
+        val filteredNewsItems = allNews
+            .filter { news ->
+                news.listHelpCategoryId.any { categoryId ->
+                    selectedCategoryIds.contains(
+                        categoryId
+                    )
+                }
+            }
+            .map(NewsMapper::toNewsItem)
+
+        newsAdapter.submitList(filteredNewsItems)
     }
 
     private fun setupFilterButton() {
@@ -59,6 +60,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    private fun onNewsItemSelected(newsId: Int) {
+        newsPrefs.saveSelectedNewsId(newsId)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onResume() {

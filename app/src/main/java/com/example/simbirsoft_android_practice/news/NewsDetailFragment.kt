@@ -21,23 +21,21 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).hideBottomNavigation()
-
-        val newsDetail = getNewsDetail()
-        newsDetail?.let { bindNewsDetails(it) }
-
-        binding.buttonBackNewsDetail.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
+        (activity as? MainActivity)?.hideBottomNavigation()
+        getNewsDetail()?.let(::bindNewsDetails)
+        setupBackButton()
     }
 
     private fun getNewsDetail(): NewsDetail? {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
-        if (selectedNewsId == -1) return null
+        if (selectedNewsId == -1) {
+            return null
+        }
 
-        val parser = JsonParser(requireContext())
-        return parser.parseNews().find { it.id == selectedNewsId }
-            ?.let { NewsMapper.toNewsDetail(it) }
+        val newsList = JsonParser(requireContext()).parseNews()
+        val selectedNews = newsList.find { news -> news.id == selectedNewsId }
+
+        return selectedNews?.let(NewsMapper::toNewsDetail)
     }
 
     private fun bindNewsDetails(news: NewsDetail) {
@@ -51,22 +49,23 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
 
-            loadImage(imageViewNewsDetailImage1, news.picturesUrl[0])
-            loadImage(imageViewNewsDetailImage2, news.picturesUrl[1])
-            loadImage(imageViewNewsDetailImage3, news.picturesUrl[2])
+            listOf(imageViewNewsDetailImage1, imageViewNewsDetailImage2, imageViewNewsDetailImage3)
+                .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
 
-    private fun loadImage(imageView: ImageView, url: String?) {
-        url?.let { imageView.load(it) }
-    }
-
-    companion object {
-        fun newInstance() = NewsDetailFragment()
+    private fun setupBackButton() {
+        binding.buttonBackNewsDetail.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
         (activity as? MainActivity)?.showBottomNavigation()
+    }
+
+    companion object {
+        fun newInstance() = NewsDetailFragment()
     }
 }
