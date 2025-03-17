@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.simbirsoft_android_practice.data.FilterCategory
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding
 
 class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCallback) {
