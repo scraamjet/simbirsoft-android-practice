@@ -3,7 +3,9 @@ package com.example.simbirsoft_android_practice.filter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.R
@@ -28,6 +30,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         binding.recyclerViewFilterItem.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = filterAdapter
+            val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            ContextCompat.getDrawable(requireContext(), R.drawable.item_filter_divider)
+                ?.let { drawable ->
+                    divider.setDrawable(drawable)
+                }
+            addItemDecoration(divider)
         }
     }
 
