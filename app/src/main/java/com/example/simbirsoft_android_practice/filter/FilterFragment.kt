@@ -18,14 +18,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
-        loadCategoryData()
-    }
-
-    private fun setupUI() {
         setupRecyclerView()
         setupBackButton()
         setupApplySettingsButton()
+        loadCategoryData()
     }
 
     private fun setupRecyclerView() {
@@ -36,11 +32,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val categoriesDto = JsonParser(requireContext()).parseCategories()
-        val categories = categoriesDto.map { category ->
-            CategoryMapper.toFilter(category, filterPrefs)
+        val categories = JsonParser(requireContext()).parseCategories()
+        val filterCategories = categories.map { category ->
+            CategoryMapper.toFilterCategory(category, filterPrefs)
         }
-        filterAdapter.submitList(categories)
+        filterAdapter.submitList(filterCategories)
     }
 
     private fun setupBackButton() {
@@ -62,7 +58,8 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             .toSet()
 
         filterPrefs.saveSelectedCategories(selectedCategories)
-        Toast.makeText(requireContext(), "Фильтры успешно сохранены", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)
+            .show()
         parentFragmentManager.popBackStack()
     }
 

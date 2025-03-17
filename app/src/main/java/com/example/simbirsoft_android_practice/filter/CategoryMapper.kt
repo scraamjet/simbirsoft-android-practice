@@ -5,7 +5,10 @@ import com.example.simbirsoft_android_practice.data.FilterCategory
 import com.example.simbirsoft_android_practice.data.HelpCategory
 
 object CategoryMapper {
-    fun toFilter(category: Category, filterPrefs: FilterPreferencesManager): FilterCategory {
+    fun toFilterCategory(
+        category: Category,
+        filterPrefs: FilterPreferencesManager
+    ): FilterCategory {
         return FilterCategory(
             id = category.id,
             title = category.title,

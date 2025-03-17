@@ -43,14 +43,19 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val filteredNewsItems = allNews
             .filter { news ->
                 news.listHelpCategoryId.any { categoryId ->
-                    selectedCategoryIds.contains(
-                        categoryId
-                    )
+                    selectedCategoryIds.contains(categoryId)
                 }
             }
             .map(NewsMapper::toNewsItem)
 
-        newsAdapter.submitList(filteredNewsItems)
+        if (filteredNewsItems.isEmpty()) {
+            binding.scrollViewNews.visibility = View.GONE
+            binding.textViewNoNews.visibility = View.VISIBLE
+        } else {
+            binding.scrollViewNews.visibility = View.VISIBLE
+            binding.textViewNoNews.visibility = View.GONE
+            newsAdapter.submitList(filteredNewsItems)
+        }
     }
 
     private fun setupFilterButton() {
