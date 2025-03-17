@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pale_grey"
@@ -27,8 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/buttonBackNewsDetail"
@@ -222,37 +220,40 @@
                     android:layout_width="@dimen/news_detail_image_1_width"
                     android:layout_height="@dimen/news_detail_image_1_height"
                     android:layout_marginTop="@dimen/margin_default"
-                    android:layout_marginEnd="@dimen/margin_default_small"
                     android:adjustViewBounds="true"
                     android:importantForAccessibility="no"
                     android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail"
-                    tools:src="@drawable/tmp_news_picture" />
+                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail" />
 
-                <ImageView
-                    android:id="@+id/imageViewNewsDetailImage2"
-                    android:layout_width="@dimen/news_detail_image_2_width"
-                    android:layout_height="@dimen/news_detail_image_2_height"
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default"
-                    android:importantForAccessibility="no"
-                    android:scaleType="centerCrop"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewNewsDetailImage1"
-                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail"
-                    tools:src="@drawable/tmp_news_picture" />
+                    app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailImage1"
+                    app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail">
 
-                <ImageView
-                    android:id="@+id/imageViewNewsDetailImage3"
-                    android:layout_width="@dimen/news_detail_image_3_width"
-                    android:layout_height="@dimen/news_detail_image_3_height"
-                    android:layout_marginTop="@dimen/news_detail_title_margin_top"
-                    android:importantForAccessibility="no"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewNewsDetailImage1"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailImage2"
-                    tools:src="@drawable/tmp_news_picture" />
+                    <ImageView
+                        android:id="@+id/imageViewNewsDetailImage2"
+                        android:layout_width="@dimen/news_detail_image_2_width"
+                        android:layout_height="@dimen/news_detail_image_2_height"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/imageViewNewsDetailImage3"
+                        android:layout_width="@dimen/news_detail_image_3_width"
+                        android:layout_height="@dimen/news_detail_image_3_height"
+                        android:layout_marginTop="@dimen/news_detail_title_margin_top"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop" />
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/textViewNewsDetailDescription"
@@ -291,8 +292,7 @@
                     android:layout_margin="@dimen/margin_default"
                     android:layout_marginTop="@dimen/subscriber_avatar_margin_top"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    tools:ignore="UselessParent">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -374,8 +374,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="@dimen/toolbar_icon_size"
@@ -395,15 +394,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:importantForAccessibility="no"
-            android:src="@drawable/separator_2" />
+            android:src="@drawable/vertical_separator_line" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="@dimen/toolbar_icon_size"
@@ -423,15 +421,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:importantForAccessibility="no"
-            android:src="@drawable/separator_2" />
+            android:src="@drawable/vertical_separator_line" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="@dimen/toolbar_icon_size"
@@ -451,15 +448,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:importantForAccessibility="no"
-            android:src="@drawable/separator_2" />
+            android:src="@drawable/vertical_separator_line" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="@dimen/toolbar_icon_size"
