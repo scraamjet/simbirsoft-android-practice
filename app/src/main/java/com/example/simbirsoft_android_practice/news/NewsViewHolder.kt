@@ -1,7 +1,8 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.news
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 import com.example.simbirsoft_android_practice.utils.DateUtils
 

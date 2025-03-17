@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.filter
 
 data class FilterCategory(
     val id: Int,

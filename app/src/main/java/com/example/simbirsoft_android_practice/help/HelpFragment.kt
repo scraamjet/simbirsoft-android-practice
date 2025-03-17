@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.simbirsoft_android_practice.CategoryMapper
-import com.example.simbirsoft_android_practice.JsonParser
+import com.example.simbirsoft_android_practice.filter.CategoryMapper
+import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import dev.androidbroadcast.vbpd.viewBinding

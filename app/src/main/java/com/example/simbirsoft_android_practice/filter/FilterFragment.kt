@@ -1,11 +1,12 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.filter
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 

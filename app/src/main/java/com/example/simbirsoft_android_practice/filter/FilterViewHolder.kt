@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.filter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding

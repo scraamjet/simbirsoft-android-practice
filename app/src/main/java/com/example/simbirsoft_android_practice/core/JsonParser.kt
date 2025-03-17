@@ -1,6 +1,8 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.core
 
 import android.content.Context
+import com.example.simbirsoft_android_practice.data.Category
+import com.example.simbirsoft_android_practice.data.News
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

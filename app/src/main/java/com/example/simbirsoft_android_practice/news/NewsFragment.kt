@@ -1,11 +1,14 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.news
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
+import com.example.simbirsoft_android_practice.filter.FilterFragment
+import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
 import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsFragment : Fragment(R.layout.fragment_news) {

@@ -1,4 +1,8 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.news
+
+import com.example.simbirsoft_android_practice.data.News
+import com.example.simbirsoft_android_practice.data.NewsDetail
+import com.example.simbirsoft_android_practice.data.NewsItem
 
 object NewsMapper {
     fun toNewsItem(news: News): NewsItem {

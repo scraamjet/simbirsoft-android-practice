@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.data
 
 import com.google.gson.annotations.SerializedName
 

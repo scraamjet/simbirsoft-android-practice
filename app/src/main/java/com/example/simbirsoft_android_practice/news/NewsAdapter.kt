@@ -1,9 +1,10 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.news
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 
 class NewsAdapter(private val onItemClicked: (idItem: Int) -> Unit) :
