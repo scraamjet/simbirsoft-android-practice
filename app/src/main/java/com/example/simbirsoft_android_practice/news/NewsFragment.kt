@@ -1,33 +1,78 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
-import com.example.simbirsoft_android_practice.utils.updateScrollFlags
 import dev.androidbroadcast.vbpd.viewBinding
+
+private const val KEY_NEWS_ITEMS = "newsItems"
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
+    private var newsService: NewsService? = null
+    private var bound = false
+    private var newsItems: List<NewsItem>? = null
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            newsService = (service as NewsService.LocalBinder).getService()
+            bound = true
+            loadNewsData()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            bound = false
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        requireContext().bindService(
+            Intent(requireContext(), NewsService::class.java),
+            connection,
+            Context.BIND_AUTO_CREATE
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (bound) {
+            requireContext().unbindService(connection)
+            bound = false
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
         initClickListeners()
-        loadNewsData()
+        savedInstanceState?.getParcelableArrayList<NewsItem>(KEY_NEWS_ITEMS)?.let {
+            newsItems = it
+            updateNewsList(it)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(newsItems.orEmpty()))
     }
 
     private fun initRecyclerView() {
@@ -38,24 +83,23 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        val allNews = JsonParser(requireContext()).parseNews()
-        val selectedCategoryIds = filterPrefs.getSelectedCategories()
-
-        val filteredNewsItems =
-            allNews
-                .filter { news ->
-                    news.listHelpCategoryId.any { categoryId ->
-                        selectedCategoryIds.contains(categoryId)
-                    }
-                }
-                .map(NewsMapper::toNewsItem)
-
-        newsAdapter.submitList(filteredNewsItems)
-        binding.apply {
-            textViewNoNews.isVisible = filteredNewsItems.isEmpty()
-            recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
-            toolbarNews.updateScrollFlags(filteredNewsItems.isEmpty())
+        binding.progressBarNews.isVisible = true
+        newsService?.loadNews { news ->
+            val filteredNewsItems =
+                news.filter { it.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains) }
+                    .map(NewsMapper::toNewsItem)
+            updateNewsList(filteredNewsItems)
         }
+    }
+
+    private fun updateNewsList(newsList: List<NewsItem>) {
+        newsItems = newsList
+        binding.apply {
+            scrollViewNews.isVisible = newsList.isNotEmpty()
+            textViewNoNews.isVisible = newsList.isEmpty()
+            progressBarNews.isVisible = false
+        }
+        newsAdapter.submitList(newsList)
     }
 
     private fun initClickListeners() {
@@ -77,7 +121,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onResume() {
         super.onResume()
-        loadNewsData()
+        if (bound) loadNewsData()
     }
 
     companion object {
