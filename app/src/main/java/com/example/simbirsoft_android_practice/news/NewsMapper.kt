@@ -12,7 +12,7 @@ object NewsMapper {
             description = news.description,
             startDateTime = news.startDateTime,
             endDateTime = news.endDateTime,
-            imageUrl = news.picturesUrl.first()
+            imageUrl = news.picturesUrl.first(),
         )
     }
 
@@ -25,7 +25,7 @@ object NewsMapper {
             owner = news.owner,
             ownerAddress = news.ownerAddress,
             ownerContacts = news.ownerContacts,
-            picturesUrl = news.picturesUrl
+            picturesUrl = news.picturesUrl,
         )
     }
 }

@@ -7,12 +7,12 @@ import com.example.simbirsoft_android_practice.data.HelpCategory
 object CategoryMapper {
     fun toFilterCategory(
         category: Category,
-        filterPrefs: FilterPreferencesManager
+        filterPrefs: FilterPreferencesManager,
     ): FilterCategory {
         return FilterCategory(
             id = category.id,
             title = category.title,
-            isEnabled = filterPrefs.isCategorySelected(category.id)
+            isEnabled = filterPrefs.isCategorySelected(category.id),
         )
     }
 
@@ -20,7 +20,7 @@ object CategoryMapper {
         return HelpCategory(
             id = category.id,
             title = category.title,
-            iconUrl = category.iconUrl
+            iconUrl = category.iconUrl,
         )
     }
 }

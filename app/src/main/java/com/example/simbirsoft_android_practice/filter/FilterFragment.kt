@@ -7,18 +7,20 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
-
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
@@ -41,9 +43,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun loadCategoryData() {
         val categories = JsonParser(requireContext()).parseCategories()
-        val filterCategories = categories.map { category ->
-            CategoryMapper.toFilterCategory(category, filterPrefs)
-        }
+        val filterCategories =
+            categories.map { category ->
+                CategoryMapper.toFilterCategory(category, filterPrefs)
+            }
         filterAdapter.submitList(filterCategories)
     }
 
@@ -57,10 +60,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun saveFilterSettings() {
-        val selectedCategories = filterAdapter.currentList
-            .filter { category -> category.isEnabled }
-            .map { category -> category.id }
-            .toSet()
+        val selectedCategories =
+            filterAdapter.currentList
+                .filter { category -> category.isEnabled }
+                .map { category -> category.id }
+                .toSet()
 
         filterPrefs.saveSelectedCategories(selectedCategories)
         Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)

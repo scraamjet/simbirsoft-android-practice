@@ -5,21 +5,23 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
 import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
-
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
@@ -38,13 +40,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val allNews = JsonParser(requireContext()).parseNews()
         val selectedCategoryIds = filterPrefs.getSelectedCategories()
 
-        val filteredNewsItems = allNews
-            .filter { news ->
-                news.listHelpCategoryId.any { categoryId ->
-                    selectedCategoryIds.contains(categoryId)
+        val filteredNewsItems =
+            allNews
+                .filter { news ->
+                    news.listHelpCategoryId.any { categoryId ->
+                        selectedCategoryIds.contains(categoryId)
+                    }
                 }
-            }
-            .map(NewsMapper::toNewsItem)
+                .map(NewsMapper::toNewsItem)
 
         binding.scrollViewNews.isVisible = filteredNewsItems.isNotEmpty()
         binding.textViewNoNews.isVisible = filteredNewsItems.isEmpty()

@@ -8,12 +8,18 @@ import com.example.simbirsoft_android_practice.data.FilterCategory
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding
 
 class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): FilterViewHolder {
         val binding = ItemFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FilterViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: FilterViewHolder,
+        position: Int,
+    ) {
         val category = getItem(position)
         holder.bind(category)
 
@@ -26,14 +32,21 @@ class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCa
     }
 
     companion object {
-        private val FilterDiffCallback = object : DiffUtil.ItemCallback<FilterCategory>() {
-            override fun areItemsTheSame(oldItem: FilterCategory, newItem: FilterCategory): Boolean {
-                return oldItem.id == newItem.id
-            }
+        private val FilterDiffCallback =
+            object : DiffUtil.ItemCallback<FilterCategory>() {
+                override fun areItemsTheSame(
+                    oldItem: FilterCategory,
+                    newItem: FilterCategory,
+                ): Boolean {
+                    return oldItem.id == newItem.id
+                }
 
-            override fun areContentsTheSame(oldItem: FilterCategory, newItem: FilterCategory): Boolean {
-                return oldItem == newItem
+                override fun areContentsTheSame(
+                    oldItem: FilterCategory,
+                    newItem: FilterCategory,
+                ): Boolean {
+                    return oldItem == newItem
+                }
             }
-        }
     }
 }

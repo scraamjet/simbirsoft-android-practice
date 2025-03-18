@@ -24,5 +24,5 @@ data class News(
     @SerializedName("end_date_time")
     val endDateTime: String,
     @SerializedName("list_help_category_id")
-    val listHelpCategoryId: List<Int>
+    val listHelpCategoryId: List<Int>,
 )

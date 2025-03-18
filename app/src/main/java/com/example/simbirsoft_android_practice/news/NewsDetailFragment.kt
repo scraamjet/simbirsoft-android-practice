@@ -4,21 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
-import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 
-
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
-
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
 

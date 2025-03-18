@@ -8,6 +8,5 @@ data class Category(
     @SerializedName("title")
     val title: String,
     @SerializedName("icon_url")
-    val iconUrl: String
+    val iconUrl: String,
 )
-

@@ -7,7 +7,6 @@ import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 import com.example.simbirsoft_android_practice.utils.DateUtils
 
 class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
-
     fun bind(newsItem: NewsItem) {
         binding.apply {
             textViewNewsTitle.text = newsItem.title

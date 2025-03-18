@@ -8,5 +8,5 @@ data class NewsDetail(
     val owner: String,
     val ownerAddress: String,
     val ownerContacts: String,
-    val picturesUrl: List<String>
+    val picturesUrl: List<String>,
 )

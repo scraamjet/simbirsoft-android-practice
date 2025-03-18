@@ -5,18 +5,19 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
-import kotlinx.datetime.todayIn
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-
 object DateUtils {
-
     private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))
 
-    fun formatEventDates(startDate: String, endDate: String): String {
+    fun formatEventDates(
+        startDate: String,
+        endDate: String,
+    ): String {
         val start = convertTimestampToLocalDate(startDate)
         val end = convertTimestampToLocalDate(endDate)
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
@@ -37,16 +38,20 @@ object DateUtils {
             ?: LocalDate.parse(dateString)
     }
 
-    private fun formatDateRange(start: LocalDate, end: LocalDate): String {
+    private fun formatDateRange(
+        start: LocalDate,
+        end: LocalDate,
+    ): String {
         return "(${formatDate(start)} – ${formatDate(end)})"
     }
 
     private fun formatDaysText(days: Int): String {
-        val word = when {
-            days % 10 == 1 && days % 100 != 11 -> "день"
-            days % 10 in 2..4 && days % 100 !in 12..14 -> "дня"
-            else -> "дней"
-        }
+        val word =
+            when {
+                days % 10 == 1 && days % 100 != 11 -> "день"
+                days % 10 in 2..4 && days % 100 !in 12..14 -> "дня"
+                else -> "дней"
+            }
         return "$days $word"
     }
 
@@ -59,4 +64,3 @@ object DateUtils {
         return date.toJavaLocalDate().format(DATE_FORMATTER)
     }
 }
-
