@@ -81,40 +81,35 @@
 
     <!-- item_search_result_border -->
     <dimen name="item_search_result_border_width">1dp</dimen>
-
     <dimen name="help_category_item_spacing">8dp</dimen>
 
     <!-- NewsFragment -->
-    <dimen name="margin_bottom_last_item">20dp</dimen>
+    <dimen name="margin_bottom_last_item_news">20dp</dimen>
 
     <!-- NewsDetailFragment -->
     <dimen name="margin_between_items_news_detail">10dp</dimen>
     <dimen name="margin_between_items_subscribers">-6dp</dimen>
     <dimen name="padding_default_toolbar_action_button">16dp</dimen>
-    <dimen name="default_padding_toolbar_action_button">16dp</dimen>
-
-    <dimen name="margin_default_1">20dp</dimen>
-    <dimen name="margin_default_small_1">16dp</dimen>
-
     <dimen name="margin_default">16dp</dimen>
     <dimen name="margin_default_small">8dp</dimen>
-    <dimen name="toolbar_icon_size">24dp</dimen>
-    <dimen name="toolbar_title_start_margin">23dp</dimen>
-    <dimen name="toolbar_share_margin_end">16dp</dimen>
-    <dimen name="news_detail_title_margin_top">10dp</dimen>
-    <dimen name="news_detail_owner_margin_top">8dp</dimen>
-    <dimen name="news_detail_image_1_width">205dp</dimen>
-    <dimen name="news_detail_image_1_height">158dp</dimen>
-    <dimen name="news_detail_image_2_width">105dp</dimen>
-    <dimen name="news_detail_image_2_height">74dp</dimen>
-    <dimen name="news_detail_image_3_width">105dp</dimen>
-    <dimen name="news_detail_image_3_height">74dp</dimen>
-    <dimen name="news_detail_subscriber_image_size">36dp</dimen>
-    <dimen name="news_detail_subscriber_margin_start">10dp</dimen>
-    <dimen name="bottom_bar_height">70dp</dimen>
-    <dimen name="separator_width">1dp</dimen>
-    <dimen name="subscriber_avatar_margin_top">30dp</dimen>
-    <dimen name="calendar_drawable_padding">5dp</dimen>
+    <dimen name="size_toolbar_icon">24dp</dimen>
+    <dimen name="start_margin_toolbar_title">23dp</dimen>
+    <dimen name="margin_end_toolbar_share">16dp</dimen>
+    <dimen name="margin_top_news_detail_title">10dp</dimen>
+    <dimen name="margin_top_news_detail_owner">8dp</dimen>
+    <dimen name="width_news_detail_image_1">205dp</dimen>
+    <dimen name="height_news_detail_image_1">158dp</dimen>
+    <dimen name="width_news_detail_image_2">105dp</dimen>
+    <dimen name="height_news_detail_image_2">74dp</dimen>
+    <dimen name="width_news_detail_image_3">105dp</dimen>
+    <dimen name="height_news_detail_image_3">74dp</dimen>
+    <dimen name="size_news_detail_subscriber_image">36dp</dimen>
+    <dimen name="margin_start_news_detail_subscriber">10dp</dimen>
+    <dimen name="height_bottom_news_bar">70dp</dimen>
+    <dimen name="width_separator">1dp</dimen>
+    <dimen name="margin_top_subscriber_avatar">30dp</dimen>
+    <dimen name="padding_calendar_drawable">5dp</dimen>
+
 
     <dimen name="margin_top_news_item">8dp</dimen>
     <dimen name="padding_horizontal_image">4dp</dimen>
@@ -125,13 +120,16 @@
     <dimen name="margin_bottom_decor">10dp</dimen>
     <dimen name="margin_horizontal_description">26dp</dimen>
     <dimen name="margin_bottom_description">8dp</dimen>
-    <dimen name="card_view_height">32dp</dimen>
+    <dimen name="height_card_view_item_news">32dp</dimen>
     <dimen name="drawable_padding_time">10dp</dimen>
+    <dimen name="margin_horizontal_recycler_view_item_news">8dp</dimen>
+    <dimen name="margin_end_button_filters">4dp</dimen>
+    <dimen name="width_item_news_detail">0dp</dimen>
+    <dimen name="width_default_frame">0dp</dimen>
+
     <dimen name="margin_default_small_2">8dp</dimen>
     <dimen name="margin_default_2">16dp</dimen>
-
-    <dimen name="margin_horizontal">8dp</dimen>
-    <dimen name="button_filters_margin_end">4dp</dimen>
-
+    <dimen name="margin_default_1">20dp</dimen>
+    <dimen name="margin_default_small_1">16dp</dimen>
 </resources>
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_news"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:importantForAccessibility="no"
-            tools:src="@drawable/tmp_news_picture" />
+            android:importantForAccessibility="no" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -30,7 +28,7 @@
             android:adjustViewBounds="true"
             android:importantForAccessibility="no"
             android:scaleType="centerCrop"
-            android:src="@drawable/fade" />
+            android:src="@drawable/fade_view_gradient" />
 
     </FrameLayout>
 
@@ -48,7 +46,7 @@
         android:layout_marginTop="@dimen/margin_top_decor"
         android:layout_marginBottom="@dimen/margin_bottom_decor"
         android:importantForAccessibility="no"
-        android:src="@drawable/news_decor" />
+        android:src="@drawable/ic_news_decor" />
 
     <TextView
         android:id="@+id/textViewNewsDescription"
@@ -63,7 +61,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/card_view_height"
+        android:layout_height="@dimen/height_card_view_item_news"
         android:backgroundTint="@color/turtle_green">
 
         <TextView
