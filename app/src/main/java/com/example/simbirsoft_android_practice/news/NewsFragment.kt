@@ -5,15 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.view.View
+import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
@@ -64,15 +62,21 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        savedInstanceState?.getParcelableArrayList<NewsItem>(KEY_NEWS_ITEMS)?.let {
-            newsItems = it
-            updateNewsList(it)
+        savedInstanceState?.let { bundle ->
+            newsItems =
+                BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
+            newsItems?.let { newsList -> updateNewsList(newsList) }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(newsItems.orEmpty()))
+        newsItems?.let { newsList ->
+            outState.putParcelableArrayList(
+                KEY_NEWS_ITEMS,
+                ArrayList(newsList)
+            )
+        }
     }
 
     private fun initRecyclerView() {
@@ -84,9 +88,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun loadNewsData() {
         binding.progressBarNews.isVisible = true
-        newsService?.loadNews { news ->
+        newsService?.loadNews { newsList ->
             val filteredNewsItems =
-                news.filter { it.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains) }
+                newsList.filter { newsItem -> newsItem.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains) }
                     .map(NewsMapper::toNewsItem)
             updateNewsList(filteredNewsItems)
         }

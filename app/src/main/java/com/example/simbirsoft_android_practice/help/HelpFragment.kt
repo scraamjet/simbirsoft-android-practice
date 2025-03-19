@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.help
 
 import android.os.Bundle
+import androidx.core.os.BundleCompat
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -30,8 +31,12 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         initRecyclerView()
 
         if (savedInstanceState != null) {
-            categories = savedInstanceState.getParcelableArrayList(KEY_CATEGORIES)
-            categories?.let { adapter.submitList(it) }
+            categories = BundleCompat.getParcelableArrayList(
+                savedInstanceState,
+                KEY_CATEGORIES,
+                HelpCategory::class.java
+            )
+            categories?.let { categoryList -> adapter.submitList(categoryList) }
         } else {
             loadCategories()
         }
@@ -82,3 +87,4 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         fun newInstance() = HelpFragment()
     }
 }
+
