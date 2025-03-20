@@ -58,7 +58,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-
     private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
             parentFragmentManager.beginTransaction()

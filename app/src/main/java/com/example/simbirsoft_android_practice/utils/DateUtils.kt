@@ -23,11 +23,12 @@ object DateUtils {
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
         val daysLeft = now.daysUntil(start)
-        val dateRange = if (start == end) {
-            "(${formatDate(start)})"
-        } else {
-            "(${formatDate(start)} – ${formatDate(end)})"
-        }
+        val dateRange =
+            if (start == end) {
+                "(${formatDate(start)})"
+            } else {
+                "(${formatDate(start)} – ${formatDate(end)})"
+            }
 
         return when {
             now < start -> "Осталось ${formatDaysText(daysLeft)} $dateRange"
