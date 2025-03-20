@@ -18,6 +18,8 @@ import java.util.concurrent.Executors
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
+private const val TIMEOUT = 5000L
+
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
@@ -58,7 +60,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         binding.progressBarHelp.visibility = View.VISIBLE
 
         executor.execute {
-            Thread.sleep(5000)
+            Thread.sleep(TIMEOUT)
 
             val parsedCategories = jsonParser.parseCategories()
             val helpCategories = parsedCategories.map(CategoryMapper::toHelpCategory)

@@ -11,6 +11,8 @@ import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.News
 import java.util.concurrent.Executors
 
+private const val TIMEOUT = 5000L
+
 class NewsService : Service() {
     private val binder = LocalBinder()
     private val executor = Executors.newSingleThreadExecutor()
@@ -30,7 +32,7 @@ class NewsService : Service() {
 
     fun loadNews(callback: (List<News>) -> Unit) {
         executor.execute {
-            Thread.sleep(5000)
+            Thread.sleep(TIMEOUT)
             val newsList = jsonParser.parseNews()
             handler.post { callback(newsList) }
         }
