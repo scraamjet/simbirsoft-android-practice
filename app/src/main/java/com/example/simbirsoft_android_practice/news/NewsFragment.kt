@@ -22,60 +22,65 @@ private const val KEY_NEWS_ITEMS = "newsItems"
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
-    private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
-    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
+    private val filterPreferences by lazy { FilterPreferencesManager(requireContext()) }
+    private val newsPreferences by lazy { NewsPreferencesManager(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
     private var newsService: NewsService? = null
-    private var bound = false
+    private var serviceState: NewsServiceState = NewsServiceState.Disconnected
     private var newsItems: List<NewsItem>? = null
 
-    private val connection = object : ServiceConnection {
+    private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             newsService = (service as NewsService.LocalBinder).getService()
-            bound = true
-            loadNewsData()
+            serviceState = NewsServiceState.Connected
+            if (newsItems == null) {
+                loadNewsData()
+            } else {
+                updateNewsList(newsItems!!)
+            }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            bound = false
+            serviceState = NewsServiceState.Disconnected
+            newsService = null
         }
     }
 
     override fun onStart() {
         super.onStart()
-        requireContext().bindService(
-            Intent(requireContext(), NewsService::class.java),
-            connection,
-            Context.BIND_AUTO_CREATE
-        )
+        bindNewsService()
     }
 
     override fun onStop() {
         super.onStop()
-        if (bound) {
-            requireContext().unbindService(connection)
-            bound = false
-        }
+        unbindNewsService()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        savedInstanceState?.let { bundle ->
-            newsItems =
-                BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
-            newsItems?.let { newsList -> updateNewsList(newsList) }
-        }
+        restoreNewsItems(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        newsItems?.let { newsList ->
-            outState.putParcelableArrayList(
-                KEY_NEWS_ITEMS,
-                ArrayList(newsList)
-            )
+        saveNewsItems(outState)
+    }
+
+    private fun bindNewsService() {
+        serviceState = NewsServiceState.Connecting
+        requireContext().bindService(
+            Intent(requireContext(), NewsService::class.java),
+            serviceConnection,
+            Context.BIND_AUTO_CREATE
+        )
+    }
+
+    private fun unbindNewsService() {
+        if (serviceState == NewsServiceState.Connected) {
+            requireContext().unbindService(serviceConnection)
+            serviceState = NewsServiceState.Disconnected
         }
     }
 
@@ -86,12 +91,26 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
+    private fun restoreNewsItems(savedInstanceState: Bundle?) {
+        savedInstanceState?.let { bundle ->
+            val savedNewsItems =
+                BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
+            savedNewsItems?.let { updateNewsList(it) }
+        }
+    }
+
+    private fun saveNewsItems(outState: Bundle) {
+        newsItems?.let { newsList ->
+            outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(newsList))
+        }
+    }
+
     private fun loadNewsData() {
         binding.progressBarNews.isVisible = true
         newsService?.loadNews { newsList ->
-            val filteredNewsItems =
-                newsList.filter { newsItem -> newsItem.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains) }
-                    .map(NewsMapper::toNewsItem)
+            val filteredNewsItems = newsList.filter { newsItem ->
+                newsItem.listHelpCategoryId.any(filterPreferences.getSelectedCategories()::contains)
+            }.map(NewsMapper::toNewsItem)
             updateNewsList(filteredNewsItems)
         }
     }
@@ -116,7 +135,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun onNewsItemSelected(newsId: Int) {
-        newsPrefs.saveSelectedNewsId(newsId)
+        newsPreferences.saveSelectedNewsId(newsId)
         parentFragmentManager.beginTransaction()
             .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
             .addToBackStack(null)
@@ -125,7 +144,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onResume() {
         super.onResume()
-        if (bound) loadNewsData()
+        if (serviceState == NewsServiceState.Connected) {
+            loadNewsData()
+        }
     }
 
     companion object {

@@ -13,6 +13,7 @@ import java.util.concurrent.Executors
 
 class NewsService : Service() {
     private val binder = LocalBinder()
+    private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var jsonParser: JsonParser
 
@@ -28,10 +29,15 @@ class NewsService : Service() {
     }
 
     fun loadNews(callback: (List<News>) -> Unit) {
-        Executors.newSingleThreadExecutor().execute {
+        executor.execute {
             Thread.sleep(5000)
-            val news = jsonParser.parseNews()
-            handler.post { callback(news) }
+            val newsList = jsonParser.parseNews()
+            handler.post { callback(newsList) }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        executor.shutdown()
     }
 }
