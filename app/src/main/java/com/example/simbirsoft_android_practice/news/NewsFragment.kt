@@ -10,6 +10,7 @@ import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
+import com.example.simbirsoft_android_practice.utils.updateScrollFlags
 import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
@@ -53,8 +54,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.apply {
             textViewNoNews.isVisible = filteredNewsItems.isEmpty()
             recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
+            toolbarNews.updateScrollFlags(filteredNewsItems.isEmpty())
         }
     }
+
 
     private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
