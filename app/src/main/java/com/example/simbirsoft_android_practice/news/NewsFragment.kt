@@ -16,6 +16,7 @@ import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
+import com.example.simbirsoft_android_practice.utils.updateScrollFlags
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val KEY_NEWS_ITEMS = "newsItems"
@@ -95,6 +96,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             val filteredNewsItems = newsList.filter {
                 it.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains)
             }.map(NewsMapper::toNewsItem)
+
+            binding.progressBarNews.isVisible = false
             updateNewsList(filteredNewsItems)
         }
     }
@@ -102,16 +105,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun updateNewsList(newsList: List<NewsItem>) {
         newsItems = newsList
         binding.apply {
-            scrollViewNews.isVisible = newsList.isNotEmpty()
             textViewNoNews.isVisible = newsList.isEmpty()
-            progressBarNews.isVisible = false
+            recyclerViewItemNews.isVisible = newsList.isNotEmpty()
+            toolbarNews.updateScrollFlags(newsList.isEmpty())
         }
         newsAdapter.submitList(newsList)
     }
 
     private fun showLoading() {
         binding.apply {
-            scrollViewNews.isVisible = false
+            recyclerViewItemNews.isVisible = false
             textViewNoNews.isVisible = false
             progressBarNews.isVisible = true
         }
