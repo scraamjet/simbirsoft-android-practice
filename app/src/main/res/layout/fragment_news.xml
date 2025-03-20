@@ -35,26 +35,17 @@
                 android:importantForAccessibility="no"
                 android:padding="@dimen/padding_default_toolbar_action_button"
                 android:src="@drawable/ic_filter" />
-
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewNews"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewItemNews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewItemNews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal_recycler_view_item_news"
-            android:background="@android:color/transparent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </androidx.core.widget.NestedScrollView>
+        android:layout_marginHorizontal="@dimen/margin_horizontal_recycler_view_item_news"
+        android:background="@android:color/transparent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
         android:id="@+id/textViewNoNews"
@@ -64,6 +55,13 @@
         android:layout_gravity="center"
         android:text="@string/no_news_available"
         android:textAlignment="center"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBarNews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

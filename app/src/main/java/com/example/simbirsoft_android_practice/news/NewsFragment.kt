@@ -49,11 +49,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 }
                 .map(NewsMapper::toNewsItem)
 
-        binding.scrollViewNews.isVisible = filteredNewsItems.isNotEmpty()
-        binding.textViewNoNews.isVisible = filteredNewsItems.isEmpty()
-
-        if (filteredNewsItems.isNotEmpty()) {
-            newsAdapter.submitList(filteredNewsItems)
+        newsAdapter.submitList(filteredNewsItems)
+        binding.apply {
+            textViewNoNews.isVisible = filteredNewsItems.isEmpty()
+            recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
         }
     }
 
