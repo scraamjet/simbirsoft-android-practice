@@ -23,11 +23,15 @@ object DateUtils {
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
         val daysLeft = now.daysUntil(start)
-        val dateRange = formatDateRange(start, end)
+        val dateRange = if (start == end) {
+            "(${formatDate(start)})"
+        } else {
+            "(${formatDate(start)} – ${formatDate(end)})"
+        }
 
         return when {
-            daysLeft > 0 -> "Осталось ${formatDaysText(daysLeft)} $dateRange"
-            daysLeft == 0 -> "Событие сегодня $dateRange"
+            now < start -> "Осталось ${formatDaysText(daysLeft)} $dateRange"
+            now in start..end -> "Событие сегодня $dateRange"
             else -> "Событие завершено $dateRange"
         }
     }
@@ -38,11 +42,9 @@ object DateUtils {
             ?: LocalDate.parse(dateString)
     }
 
-    private fun formatDateRange(
-        start: LocalDate,
-        end: LocalDate,
-    ): String {
-        return "(${formatDate(start)} – ${formatDate(end)})"
+    private fun convertTimestampToLocalDate(timestamp: Long): LocalDate {
+        return Instant.fromEpochSeconds(timestamp)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 
     private fun formatDaysText(days: Int): String {
@@ -53,11 +55,6 @@ object DateUtils {
                 else -> "дней"
             }
         return "$days $word"
-    }
-
-    private fun convertTimestampToLocalDate(timestamp: Long): LocalDate {
-        return Instant.fromEpochSeconds(timestamp)
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 
     private fun formatDate(date: LocalDate): String {
