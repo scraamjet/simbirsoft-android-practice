@@ -33,11 +33,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             newsService = (service as NewsService.LocalBinder).getService()
             serviceState = NewsServiceState.Connected
-            if (newsItems == null) {
-                loadNewsData()
-            } else {
-                updateNewsList(newsItems!!)
-            }
+            loadNewsData()
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
