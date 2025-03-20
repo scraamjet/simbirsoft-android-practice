@@ -87,7 +87,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         if (!isAdded) {
             return
         }
-        binding.progressBarNews.isVisible = true
+        showLoading()
         newsService?.loadNews { newsList ->
             if (!isAdded) {
                 return@loadNews
@@ -107,6 +107,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             progressBarNews.isVisible = false
         }
         newsAdapter.submitList(newsList)
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            scrollViewNews.isVisible = false
+            textViewNoNews.isVisible = false
+            progressBarNews.isVisible = true
+        }
     }
 
     private fun initClickListeners() {
