@@ -25,10 +25,10 @@ object DateUtils {
         val daysLeft = now.daysUntil(start)
         val dateRange = formatDateRange(start, end)
 
-        return if (daysLeft >= 0) {
-            "Осталось ${formatDaysText(daysLeft)} $dateRange"
-        } else {
-            "Событие завершено $dateRange"
+        return when {
+            daysLeft > 0 -> "Осталось ${formatDaysText(daysLeft)} $dateRange"
+            daysLeft == 0 -> "Событие сегодня $dateRange"
+            else -> "Событие завершено $dateRange"
         }
     }
 
