@@ -3,7 +3,6 @@ package com.example.simbirsoft_android_practice.news
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-
 import android.os.Binder
 import android.os.Handler
 import android.os.Looper
@@ -19,7 +18,7 @@ class NewsService : Service() {
     private val binder = LocalBinder()
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var jsonParser: JsonParser
+    private var jsonParser: JsonParser? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -37,11 +36,11 @@ class NewsService : Service() {
 
         executor.execute {
             Thread.sleep(TIMEOUT)
-            val newsList = jsonParser.parseNews()
+            val newsList = jsonParser?.parseNews()
 
             handler.post {
                 callbackRef.get()?.let { safeCallback ->
-                    safeCallback(newsList)
+                    newsList?.let { safeCallback(it) }
                 }
             }
         }

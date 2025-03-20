@@ -26,7 +26,7 @@ private const val TIMEOUT = 5000L
 class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private val binding by viewBinding(FragmentHelpBinding::bind)
-    private lateinit var jsonParser: JsonParser
+    private var jsonParser: JsonParser? = null
     private val adapter by lazy { HelpAdapter() }
     private val executor = Executors.newSingleThreadExecutor()
     private var categories: List<HelpCategory>? = null
@@ -73,8 +73,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         binding.progressBarHelp.isVisible = true
         executor.execute {
             Thread.sleep(TIMEOUT)
-            val parsedCategories = jsonParser.parseCategories()
-            val helpCategories = parsedCategories.map(CategoryMapper::toHelpCategory)
+            val parsedCategories = jsonParser?.parseCategories()
+            val helpCategories = parsedCategories?.map(CategoryMapper::toHelpCategory)
             Handler(Looper.getMainLooper()).post {
                 if (!isAdded) {
                     return@post
