@@ -9,11 +9,13 @@ import android.os.Handler
 import android.os.Looper
 import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.News
+import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
 private const val TIMEOUT = 5000L
 
 class NewsService : Service() {
+
     private val binder = LocalBinder()
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
@@ -31,10 +33,17 @@ class NewsService : Service() {
     }
 
     fun loadNews(callback: (List<News>) -> Unit) {
+        val callbackRef = WeakReference(callback)
+
         executor.execute {
             Thread.sleep(TIMEOUT)
             val newsList = jsonParser.parseNews()
-            handler.post { callback(newsList) }
+
+            handler.post {
+                callbackRef.get()?.let { safeCallback ->
+                    safeCallback(newsList)
+                }
+            }
         }
     }
 

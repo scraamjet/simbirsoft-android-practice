@@ -1,10 +1,12 @@
 package com.example.simbirsoft_android_practice.help
 
+import android.content.Context
 import android.os.Bundle
-import androidx.core.os.BundleCompat
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.core.os.BundleCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.R
@@ -22,27 +24,38 @@ private const val TIMEOUT = 5000L
 
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
+
     private val binding by viewBinding(FragmentHelpBinding::bind)
-    private val jsonParser by lazy { JsonParser(requireContext()) }
+    private lateinit var jsonParser: JsonParser
     private val adapter by lazy { HelpAdapter() }
     private val executor = Executors.newSingleThreadExecutor()
     private var categories: List<HelpCategory>? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        jsonParser = JsonParser(context)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-
         if (savedInstanceState != null) {
             categories = BundleCompat.getParcelableArrayList(
                 savedInstanceState,
                 KEY_CATEGORIES,
                 HelpCategory::class.java
             )
-            categories?.let { categoryList -> adapter.submitList(categoryList) }
+            categories?.let { adapter.submitList(it) }
         } else {
             loadCategories()
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        categories?.let { outState.putParcelableArrayList(KEY_CATEGORIES, ArrayList(it)) }
+    }
+
 
     private fun initRecyclerView() {
         val recyclerView = binding.recyclerViewHelpItem
@@ -57,26 +70,19 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategories() {
-        binding.progressBarHelp.visibility = View.VISIBLE
-
+        binding.progressBarHelp.isVisible = true
         executor.execute {
             Thread.sleep(TIMEOUT)
-
             val parsedCategories = jsonParser.parseCategories()
             val helpCategories = parsedCategories.map(CategoryMapper::toHelpCategory)
-
             Handler(Looper.getMainLooper()).post {
+                if (!isAdded) {
+                    return@post
+                }
                 categories = helpCategories
                 adapter.submitList(helpCategories)
-                binding.progressBarHelp.visibility = View.GONE
+                binding.progressBarHelp.isVisible = false
             }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        categories?.let { categoryList ->
-            outState.putParcelableArrayList(KEY_CATEGORIES, ArrayList(categoryList))
         }
     }
 
