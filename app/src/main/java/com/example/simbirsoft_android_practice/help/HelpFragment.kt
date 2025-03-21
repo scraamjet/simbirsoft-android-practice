@@ -30,6 +30,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private val adapter by lazy { HelpAdapter() }
     private val executor = Executors.newSingleThreadExecutor()
     private var categories: List<HelpCategory>? = null
+    private var isCategoriesLoaded: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,15 +39,21 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        if (savedInstanceState != null) {
-            categories = BundleCompat.getParcelableArrayList(
-                savedInstanceState,
+
+        savedInstanceState?.let { bundle ->
+            val savedCategories = BundleCompat.getParcelableArrayList(
+                bundle,
                 KEY_CATEGORIES,
                 HelpCategory::class.java
             )
-            categories?.let { adapter.submitList(it) }
-        } else {
+            savedCategories?.let { adapter.submitList(it) }
+            categories = savedCategories
+            isCategoriesLoaded = bundle.getBoolean("isCategoriesLoaded", false)
+        }
+
+        initRecyclerView()
+
+        if (categories == null) {
             loadCategories()
         }
     }
@@ -54,8 +61,15 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         categories?.let { outState.putParcelableArrayList(KEY_CATEGORIES, ArrayList(it)) }
+        outState.putBoolean("isCategoriesLoaded", isCategoriesLoaded)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        executor.shutdown()
+
+        isCategoriesLoaded = false
+    }
 
     private fun initRecyclerView() {
         val recyclerView = binding.recyclerViewHelpItem
@@ -70,29 +84,31 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategories() {
+        if (isCategoriesLoaded) {
+            return
+        }
+
         binding.progressBarHelp.isVisible = true
         executor.execute {
             Thread.sleep(TIMEOUT)
             val parsedCategories = jsonParser?.parseCategories()
             val helpCategories = parsedCategories?.map(CategoryMapper::toHelpCategory)
+
             Handler(Looper.getMainLooper()).post {
                 if (!isAdded) {
                     return@post
                 }
+
                 categories = helpCategories
                 adapter.submitList(helpCategories)
                 binding.progressBarHelp.isVisible = false
+
+                isCategoriesLoaded = true
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        executor.shutdown()
     }
 
     companion object {
         fun newInstance() = HelpFragment()
     }
 }
-
