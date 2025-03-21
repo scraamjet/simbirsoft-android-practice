@@ -27,6 +27,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
+
     private var newsService: NewsService? = null
     private var serviceState: NewsServiceState = NewsServiceState.Disconnected
     private var newsItems: List<NewsItem>? = null
@@ -36,7 +37,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             newsService = (service as NewsService.LocalBinder).getService()
             serviceState = NewsServiceState.Connected
-            loadNewsData()
+
+            if (!isNewsLoaded) {
+                loadNewsData()
+            }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -74,10 +78,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             newsItems = savedNewsItems
             isNewsLoaded = bundle.getBoolean("isNewsLoaded", false)
         }
-
-        if (newsItems == null && serviceState == NewsServiceState.Connected) {
-            loadNewsData()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -111,8 +111,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 it.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains)
             }.map(NewsMapper::toNewsItem)
 
-            binding.progressBarNews.isVisible = false
             updateNewsList(filteredNewsItems)
+            binding.progressBarNews.isVisible = false
             isNewsLoaded = true
         }
     }
@@ -150,13 +150,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
             .addToBackStack(null)
             .commit()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (serviceState == NewsServiceState.Connected && !isNewsLoaded) {
-            loadNewsData()
-        }
     }
 
     companion object {
