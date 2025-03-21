@@ -30,6 +30,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var newsService: NewsService? = null
     private var serviceState: NewsServiceState = NewsServiceState.Disconnected
     private var newsItems: List<NewsItem>? = null
+    private var isNewsLoaded: Boolean = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -65,16 +66,29 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
+
         savedInstanceState?.let { bundle ->
             val savedNewsItems =
                 BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
             savedNewsItems?.let { updateNewsList(it) }
+            newsItems = savedNewsItems
+            isNewsLoaded = bundle.getBoolean("isNewsLoaded", false)
+        }
+
+        if (newsItems == null && serviceState == NewsServiceState.Connected) {
+            loadNewsData()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         newsItems?.let { outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(it)) }
+        outState.putBoolean("isNewsLoaded", isNewsLoaded)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isNewsLoaded = false
     }
 
     private fun initRecyclerView() {
@@ -85,7 +99,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        if (!isAdded) {
+        if (!isAdded || isNewsLoaded) {
             return
         }
         showLoading()
@@ -99,6 +113,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
             binding.progressBarNews.isVisible = false
             updateNewsList(filteredNewsItems)
+            isNewsLoaded = true
         }
     }
 
@@ -139,7 +154,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onResume() {
         super.onResume()
-        if (serviceState == NewsServiceState.Connected) {
+        if (serviceState == NewsServiceState.Connected && !isNewsLoaded) {
             loadNewsData()
         }
     }
