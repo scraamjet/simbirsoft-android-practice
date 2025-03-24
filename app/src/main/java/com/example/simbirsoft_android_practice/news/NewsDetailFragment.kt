@@ -24,7 +24,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     }
 
     private fun getNewsDetail(): NewsDetail? {
-        val selectedNewsId = newsPrefs.getSelectedNewsId() ?: return null
+        val selectedNewsId = newsPrefs.getSelectedNewsId()
         val newsList = AssetJsonReader(requireContext()).parseNews()
         val selectedNews = newsList.find { news -> news.id == selectedNewsId }
         return selectedNews?.let(NewsMapper::toNewsDetail)
