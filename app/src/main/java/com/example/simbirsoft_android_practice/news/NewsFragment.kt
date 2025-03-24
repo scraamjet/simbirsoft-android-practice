@@ -20,24 +20,21 @@ import com.example.simbirsoft_android_practice.utils.updateScrollFlags
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val KEY_NEWS_ITEMS = "newsItems"
+private const val KEY_IS_NEWS_LOADED = "isNewsLoaded"
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
-
     private val binding by viewBinding(FragmentNewsBinding::bind)
     private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
     private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
-
     private var newsService: NewsService? = null
     private var serviceState: NewsServiceState = NewsServiceState.Disconnected
     private var newsItems: List<NewsItem>? = null
     private var isNewsLoaded: Boolean = false
-
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             newsService = (service as NewsService.LocalBinder).getService()
             serviceState = NewsServiceState.Connected
-
             if (!isNewsLoaded) {
                 loadNewsData()
             }
@@ -70,20 +67,19 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-
         savedInstanceState?.let { bundle ->
             val savedNewsItems =
                 BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
             savedNewsItems?.let { updateNewsList(it) }
             newsItems = savedNewsItems
-            isNewsLoaded = bundle.getBoolean("isNewsLoaded", false)
+            isNewsLoaded = bundle.getBoolean(KEY_IS_NEWS_LOADED, false)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         newsItems?.let { outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(it)) }
-        outState.putBoolean("isNewsLoaded", isNewsLoaded)
+        outState.putBoolean(KEY_IS_NEWS_LOADED, isNewsLoaded)
     }
 
     override fun onDestroyView() {
@@ -99,21 +95,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        if (!isAdded || isNewsLoaded) {
-            return
-        }
         showLoading()
-        newsService?.loadNews { newsList ->
-            if (!isAdded) {
-                return@loadNews
+        newsService?.loadNews { loadedNewsList ->
+            if (isAdded) {
+                val selectedCategories = filterPrefs.getSelectedCategories() ?: emptySet()
+                val filteredNewsItems = loadedNewsList.filter { newsItem -> // Explicit name here
+                    newsItem.listHelpCategoryId.any(selectedCategories::contains)
+                }.map(NewsMapper::toNewsItem)
+                updateNewsList(filteredNewsItems)
+                isNewsLoaded = true
             }
-            val filteredNewsItems = newsList.filter {
-                it.listHelpCategoryId.any(filterPrefs.getSelectedCategories()::contains)
-            }.map(NewsMapper::toNewsItem)
-
-            updateNewsList(filteredNewsItems)
-            binding.progressBarNews.isVisible = false
-            isNewsLoaded = true
         }
     }
 
@@ -125,6 +116,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             toolbarNews.updateScrollFlags(newsList.isEmpty())
         }
         newsAdapter.submitList(newsList)
+        binding.progressBarNews.isVisible = false
     }
 
     private fun showLoading() {
@@ -156,3 +148,4 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         fun newInstance() = NewsFragment()
     }
 }
+

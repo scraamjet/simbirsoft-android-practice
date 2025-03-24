@@ -22,7 +22,6 @@ private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
 private const val TIMEOUT = 5000L
 
-
 class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private val binding by viewBinding(FragmentHelpBinding::bind)
@@ -40,20 +39,20 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        savedInstanceState?.let { bundle ->
+        initRecyclerView()
+
+        if (savedInstanceState != null) {
             val savedCategories = BundleCompat.getParcelableArrayList(
-                bundle,
+                savedInstanceState,
                 KEY_CATEGORIES,
                 HelpCategory::class.java
             )
-            savedCategories?.let { adapter.submitList(it) }
             categories = savedCategories
-            isCategoriesLoaded = bundle.getBoolean("isCategoriesLoaded", false)
+            isCategoriesLoaded = savedInstanceState.getBoolean("isCategoriesLoaded", false)
+            savedCategories?.let { savedCategoriesList -> adapter.submitList(savedCategoriesList) }
         }
 
-        initRecyclerView()
-
-        if (categories == null) {
+        if (!isCategoriesLoaded) {
             loadCategories()
         }
     }
@@ -67,7 +66,6 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     override fun onDestroyView() {
         super.onDestroyView()
         executor.shutdown()
-
         isCategoriesLoaded = false
     }
 
@@ -84,10 +82,6 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategories() {
-        if (isCategoriesLoaded) {
-            return
-        }
-
         binding.progressBarHelp.isVisible = true
         executor.execute {
             Thread.sleep(TIMEOUT)
@@ -95,15 +89,16 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
             val helpCategories = parsedCategories?.map(CategoryMapper::toHelpCategory)
 
             Handler(Looper.getMainLooper()).post {
-                if (!isAdded) {
-                    return@post
+                if (isAdded) {
+                    categories = helpCategories
+                    helpCategories?.let { loadedHelpCategories ->
+                        adapter.submitList(
+                            loadedHelpCategories
+                        )
+                    }
+                    binding.progressBarHelp.isVisible = false
+                    isCategoriesLoaded = true
                 }
-
-                categories = helpCategories
-                adapter.submitList(helpCategories)
-                binding.progressBarHelp.isVisible = false
-
-                isCategoriesLoaded = true
             }
         }
     }

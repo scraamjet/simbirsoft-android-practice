@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.News
-import java.lang.ref.WeakReference
 import java.util.concurrent.Executors
 
 private const val TIMEOUT = 5000L
@@ -30,15 +29,12 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun loadNews(callback: (List<News>) -> Unit) {
-        val callbackRef = WeakReference(callback)
+    fun loadNews(newsLoadedListener: (loadedNews: List<News>) -> Unit) {
         executor.execute {
             Thread.sleep(TIMEOUT)
             val newsList = jsonParser?.parseNews()
             handler.post {
-                callbackRef.get()?.let { safeCallback ->
-                    newsList?.let { safeCallback(it) }
-                }
+                newsList?.let { loadedNews -> newsLoadedListener(loadedNews) }
             }
         }
     }
