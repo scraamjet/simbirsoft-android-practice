@@ -2,9 +2,9 @@ package com.example.simbirsoft_android_practice.news
 
 import android.app.Service
 import android.content.Intent
-import android.os.IBinder
 import android.os.Binder
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.News

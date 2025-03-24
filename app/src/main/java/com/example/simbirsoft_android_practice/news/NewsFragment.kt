@@ -31,19 +31,23 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var serviceState: NewsServiceState = NewsServiceState.Disconnected
     private var newsItems: List<NewsItem>? = null
     private var isNewsLoaded: Boolean = false
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            newsService = (service as NewsService.LocalBinder).getService()
-            serviceState = NewsServiceState.Connected
-            if (!isNewsLoaded) {
-                loadNewsData()
+    private val connection =
+        object : ServiceConnection {
+            override fun onServiceConnected(
+                className: ComponentName,
+                service: IBinder,
+            ) {
+                newsService = (service as NewsService.LocalBinder).getService()
+                serviceState = NewsServiceState.Connected
+                if (!isNewsLoaded) {
+                    loadNewsData()
+                }
+            }
+
+            override fun onServiceDisconnected(name: ComponentName) {
+                serviceState = NewsServiceState.Disconnected
             }
         }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            serviceState = NewsServiceState.Disconnected
-        }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -51,7 +55,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         requireContext().bindService(
             Intent(requireContext(), NewsService::class.java),
             connection,
-            Context.BIND_AUTO_CREATE
+            Context.BIND_AUTO_CREATE,
         )
     }
 
@@ -63,7 +67,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -98,10 +105,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         showLoading()
         newsService?.loadNews { loadedNewsList ->
             if (isAdded) {
-                val selectedCategories = filterPrefs.getSelectedCategories() ?: emptySet()
-                val filteredNewsItems = loadedNewsList.filter { newsItem -> // Explicit name here
-                    newsItem.listHelpCategoryId.any(selectedCategories::contains)
-                }.map(NewsMapper::toNewsItem)
+                val selectedCategories = filterPrefs.getSelectedCategories()
+                val filteredNewsItems =
+                    loadedNewsList.filter { newsItem ->
+                        newsItem.listHelpCategoryId.any(selectedCategories::contains)
+                    }.map(NewsMapper::toNewsItem)
                 updateNewsList(filteredNewsItems)
                 isNewsLoaded = true
             }
@@ -148,4 +156,3 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         fun newInstance() = NewsFragment()
     }
 }
-

@@ -14,16 +14,15 @@ import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
-
 import dev.androidbroadcast.vbpd.viewBinding
 import java.util.concurrent.Executors
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
 private const val TIMEOUT = 5000L
+private const val IS_CATEGORIES_LOADED = "isCategoriesLoaded"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
-
     private val binding by viewBinding(FragmentHelpBinding::bind)
     private var jsonParser: JsonParser? = null
     private val adapter by lazy { HelpAdapter() }
@@ -36,19 +35,23 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         jsonParser = JsonParser(context)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
 
         if (savedInstanceState != null) {
-            val savedCategories = BundleCompat.getParcelableArrayList(
-                savedInstanceState,
-                KEY_CATEGORIES,
-                HelpCategory::class.java
-            )
+            val savedCategories =
+                BundleCompat.getParcelableArrayList(
+                    savedInstanceState,
+                    KEY_CATEGORIES,
+                    HelpCategory::class.java,
+                )
             categories = savedCategories
-            isCategoriesLoaded = savedInstanceState.getBoolean("isCategoriesLoaded", false)
+            isCategoriesLoaded = savedInstanceState.getBoolean(IS_CATEGORIES_LOADED, false)
             savedCategories?.let { savedCategoriesList -> adapter.submitList(savedCategoriesList) }
         }
 
@@ -60,7 +63,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         categories?.let { outState.putParcelableArrayList(KEY_CATEGORIES, ArrayList(it)) }
-        outState.putBoolean("isCategoriesLoaded", isCategoriesLoaded)
+        outState.putBoolean(IS_CATEGORIES_LOADED, isCategoriesLoaded)
     }
 
     override fun onDestroyView() {
@@ -93,7 +96,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
                     categories = helpCategories
                     helpCategories?.let { loadedHelpCategories ->
                         adapter.submitList(
-                            loadedHelpCategories
+                            loadedHelpCategories,
                         )
                     }
                     binding.progressBarHelp.isVisible = false
