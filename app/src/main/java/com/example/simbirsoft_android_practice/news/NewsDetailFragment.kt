@@ -16,26 +16,17 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
-
         getNewsDetail()?.let(::bindNewsDetails)
         initClickListeners()
     }
 
     private fun getNewsDetail(): NewsDetail? {
-        val selectedNewsId = newsPrefs.getSelectedNewsId()
-        if (selectedNewsId == -1) {
-            return null
-        }
-
+        val selectedNewsId = newsPrefs.getSelectedNewsId() ?: return null
         val newsList = AssetJsonReader(requireContext()).parseNews()
         val selectedNews = newsList.find { news -> news.id == selectedNewsId }
-
         return selectedNews?.let(NewsMapper::toNewsDetail)
     }
 
@@ -43,18 +34,19 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         with(binding) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
-            textViewNewsDetailTime.text =
-                DateUtils.formatEventDates(requireContext(), news.startDateTime, news.endDateTime)
+            textViewNewsDetailTime.text = DateUtils.formatEventDates(
+                requireContext(),
+                news.startDateTime,
+                news.endDateTime
+            )
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
-
             listOf(imageViewNewsDetailImage1, imageViewNewsDetailImage2, imageViewNewsDetailImage3)
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
-
 
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
