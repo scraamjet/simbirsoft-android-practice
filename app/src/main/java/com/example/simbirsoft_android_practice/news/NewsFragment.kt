@@ -10,8 +10,10 @@ import com.example.simbirsoft_android_practice.core.AssetJsonReader
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
-import com.example.simbirsoft_android_practice.utils.updateScrollFlags
+import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
+
+private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
@@ -30,10 +32,24 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         loadNewsData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadNewsData()
+    }
+
     private fun initRecyclerView() {
         binding.recyclerViewItemNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter
+        }
+    }
+
+    private fun initClickListeners() {
+        binding.imageViewButtonFilters.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -54,16 +70,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.apply {
             textViewNoNews.isVisible = filteredNewsItems.isEmpty()
             recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
-            toolbarNews.updateScrollFlags(filteredNewsItems.isEmpty())
-        }
-    }
-
-    private fun initClickListeners() {
-        binding.imageViewButtonFilters.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            updateScrollFlags(filteredNewsItems.isEmpty())
         }
     }
 
@@ -75,9 +82,17 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             .commit()
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadNewsData()
+    private fun updateScrollFlags(isListEmpty: Boolean) {
+        (binding.toolbarNews.layoutParams as AppBarLayout.LayoutParams).apply {
+            scrollFlags =
+                if (isListEmpty) {
+                    SCROLL_FLAG_NONE
+                } else {
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                }
+        }
     }
 
     companion object {
