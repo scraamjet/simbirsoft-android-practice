@@ -19,11 +19,11 @@ object DateUtils {
 
     fun formatEventDates(
         context: Context,
-        startDate: String,
-        endDate: String,
+        startDateTime: Long,
+        endDateTime: Long
     ): String {
-        val start = parseDateOrTimestamp(startDate)
-        val end = parseDateOrTimestamp(endDate)
+        val start = convertTimestampToLocalDate(startDateTime)
+        val end = convertTimestampToLocalDate(endDateTime)
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
         val daysLeft = now.daysUntil(start)
 
@@ -45,16 +45,6 @@ object DateUtils {
         }
     }
 
-    private fun parseDateOrTimestamp(dateString: String): LocalDate {
-        return dateString.toLongOrNull()
-            ?.let { timestamp -> convertTimestampToLocalDate(timestamp) }
-            ?: LocalDate.parse(dateString)
-    }
-
-    private fun convertTimestampToLocalDate(timestamp: Long): LocalDate {
-        return Instant.fromEpochSeconds(timestamp)
-            .toLocalDateTime(TimeZone.currentSystemDefault()).date
-    }
 
     private fun formatDaysText(context: Context, days: Int): String {
         return context.resources.getQuantityString(R.plurals.days, days, days)
@@ -63,7 +53,14 @@ object DateUtils {
     private fun formatDate(date: LocalDate): String {
         return date.toJavaLocalDate().format(dateFormatter)
     }
+
+    private fun convertTimestampToLocalDate(timestamp: Long): LocalDate {
+        return Instant.fromEpochSeconds(timestamp)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
 }
+
+
 
 
 

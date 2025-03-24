@@ -63,3 +63,4 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         fun newInstance() = NewsDetailFragment()
     }
 }
+
