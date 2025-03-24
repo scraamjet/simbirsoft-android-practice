@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.core.AssetJsonReader
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
@@ -33,7 +33,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             return null
         }
 
-        val newsList = JsonParser(requireContext()).parseNews()
+        val newsList = AssetJsonReader(requireContext()).parseNews()
         val selectedNews = newsList.find { news -> news.id == selectedNewsId }
 
         return selectedNews?.let(NewsMapper::toNewsDetail)

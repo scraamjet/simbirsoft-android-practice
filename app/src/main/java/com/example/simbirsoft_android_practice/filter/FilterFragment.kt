@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.core.AssetJsonReader
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
@@ -42,7 +42,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val categories = JsonParser(requireContext()).parseCategories()
+        val categories = AssetJsonReader(requireContext()).parseCategories()
         val filterCategories =
             categories.map { category ->
                 CategoryMapper.toFilterCategory(category, filterPrefs)

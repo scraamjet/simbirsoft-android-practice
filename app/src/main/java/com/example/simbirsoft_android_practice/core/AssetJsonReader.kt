@@ -6,7 +6,7 @@ import com.example.simbirsoft_android_practice.data.News
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class JsonParser(private val context: Context) {
+class AssetJsonReader(private val context: Context) {
     private val gson = Gson()
 
     private fun readJsonFile(filename: String): String {
