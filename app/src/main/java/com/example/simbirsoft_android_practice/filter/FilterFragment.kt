@@ -15,7 +15,7 @@ import dev.androidbroadcast.vbpd.viewBinding
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
-    private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
+    private val filterPrefs by lazy { FilterPreferences(requireContext()) }
 
     override fun onViewCreated(
         view: View,

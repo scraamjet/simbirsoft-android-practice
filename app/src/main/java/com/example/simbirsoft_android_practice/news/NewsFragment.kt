@@ -9,14 +9,14 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.JsonParser
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
-import com.example.simbirsoft_android_practice.filter.FilterPreferencesManager
+import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.utils.updateScrollFlags
 import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
-    private val filterPrefs by lazy { FilterPreferencesManager(requireContext()) }
-    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
+    private val filterPrefs by lazy { FilterPreferences(requireContext()) }
+    private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
 
     override fun onViewCreated(

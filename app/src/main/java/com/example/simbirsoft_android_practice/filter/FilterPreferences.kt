@@ -5,7 +5,7 @@ import android.content.Context
 private const val PREFS_NAME = "filter_prefs"
 private const val KEY_SELECTED_CATEGORIES = "selected_categories"
 
-class FilterPreferencesManager(context: Context) {
+class FilterPreferences(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun isCategorySelected(categoryId: Int): Boolean {

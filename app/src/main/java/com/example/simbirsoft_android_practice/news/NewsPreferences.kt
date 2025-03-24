@@ -6,7 +6,7 @@ private const val PREFS_NAME = "news_prefs"
 private const val KEY_SELECTED_NEWS_ID = "selected_news_id"
 private const val DEFAULT_NEWS_ID = -1
 
-class NewsPreferencesManager(context: Context) {
+class NewsPreferences(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveSelectedNewsId(newsId: Int) {

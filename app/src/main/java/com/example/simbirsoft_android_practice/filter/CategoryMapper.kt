@@ -7,7 +7,7 @@ import com.example.simbirsoft_android_practice.data.HelpCategory
 object CategoryMapper {
     fun toFilterCategory(
         category: Category,
-        filterPrefs: FilterPreferencesManager,
+        filterPrefs: FilterPreferences,
     ): FilterCategory {
         return FilterCategory(
             id = category.id,

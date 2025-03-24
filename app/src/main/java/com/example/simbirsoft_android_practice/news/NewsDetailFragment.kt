@@ -14,7 +14,7 @@ import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
-    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
+    private val newsPrefs by lazy { NewsPreferences(requireContext()) }
 
     override fun onViewCreated(
         view: View,
