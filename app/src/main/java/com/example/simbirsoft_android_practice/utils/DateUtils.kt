@@ -1,5 +1,7 @@
 package com.example.simbirsoft_android_practice.utils
 
+import android.content.Context
+import com.example.simbirsoft_android_practice.R
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -12,32 +14,38 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 object DateUtils {
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))
 
     fun formatEventDates(
+        context: Context,
         startDate: String,
         endDate: String,
     ): String {
-        val start = convertTimestampToLocalDate(startDate)
-        val end = convertTimestampToLocalDate(endDate)
+        val start = parseDateOrTimestamp(startDate)
+        val end = parseDateOrTimestamp(endDate)
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
-
         val daysLeft = now.daysUntil(start)
-        val dateRange =
-            if (start == end) {
-                "(${formatDate(start)})"
-            } else {
-                "(${formatDate(start)} – ${formatDate(end)})"
-            }
+
+        val dateRange = if (start == end) {
+            context.getString(R.string.date_single, formatDate(start))
+        } else {
+            context.getString(R.string.date_range, formatDate(start), formatDate(end))
+        }
 
         return when {
-            now < start -> "Осталось ${formatDaysText(daysLeft)} $dateRange"
-            now in start..end -> "Событие сегодня $dateRange"
-            else -> "Событие завершено $dateRange"
+            now < start -> context.getString(
+                R.string.event_upcoming,
+                formatDaysText(context, daysLeft),
+                dateRange
+            )
+
+            now in start..end -> context.getString(R.string.event_today, dateRange)
+            else -> context.getString(R.string.event_finished, dateRange)
         }
     }
 
-    private fun convertTimestampToLocalDate(dateString: String): LocalDate {
+    private fun parseDateOrTimestamp(dateString: String): LocalDate {
         return dateString.toLongOrNull()
             ?.let { timestamp -> convertTimestampToLocalDate(timestamp) }
             ?: LocalDate.parse(dateString)
@@ -48,17 +56,14 @@ object DateUtils {
             .toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 
-    private fun formatDaysText(days: Int): String {
-        val word =
-            when {
-                days % 10 == 1 && days % 100 != 11 -> "день"
-                days % 10 in 2..4 && days % 100 !in 12..14 -> "дня"
-                else -> "дней"
-            }
-        return "$days $word"
+    private fun formatDaysText(context: Context, days: Int): String {
+        return context.resources.getQuantityString(R.plurals.days, days, days)
     }
 
     private fun formatDate(date: LocalDate): String {
-        return date.toJavaLocalDate().format(DATE_FORMATTER)
+        return date.toJavaLocalDate().format(dateFormatter)
     }
 }
+
+
+

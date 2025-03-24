@@ -44,7 +44,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
             textViewNewsDetailTime.text =
-                DateUtils.formatEventDates(news.startDateTime, news.endDateTime)
+                DateUtils.formatEventDates(requireContext(), news.startDateTime, news.endDateTime)
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
@@ -54,6 +54,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
+
 
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
