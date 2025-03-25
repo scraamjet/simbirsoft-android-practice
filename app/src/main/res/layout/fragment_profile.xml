@@ -89,7 +89,7 @@
 
             <TextView
                 android:id="@+id/textViewBirthdayHint"
-                style="@style/CaptionSmallBlack38"
+                style="@style/CaptionSmallBlackSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_birthday_hint_margin_top"
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/textViewFieldOfActivity"
-                style="@style/CaptionSmallBlack38"
+                style="@style/CaptionSmallBlackSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_field_of_activity_margin_top"
@@ -160,7 +160,7 @@
 
             <TextView
                 android:id="@+id/textViewYourFriends"
-                style="@style/CaptionSmallBlack38"
+                style="@style/CaptionSmallBlackSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_friends_margin_top"

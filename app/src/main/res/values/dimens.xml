@@ -127,9 +127,8 @@
     <dimen name="width_item_news_detail">0dp</dimen>
     <dimen name="width_default_frame">0dp</dimen>
 
-    <dimen name="margin_default_small_2">8dp</dimen>
-    <dimen name="margin_default_2">16dp</dimen>
-    <dimen name="margin_default_1">20dp</dimen>
-    <dimen name="margin_default_small_1">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
 </resources>
 

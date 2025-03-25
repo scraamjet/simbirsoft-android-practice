@@ -9,10 +9,10 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/itemFilter"
-        style="@style/BodyTextMediumBlack87"
+        style="@style/BodyTextMediumBlackRich"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_default_small_1"
+        android:layout_marginEnd="@dimen/margin_medium"
         app:trackTint="@drawable/color_switch_selector" />
 
 </LinearLayout>

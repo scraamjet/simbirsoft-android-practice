@@ -127,7 +127,7 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailOwner"
-                    style="@style/CaptionSmallBlack60"
+                    style="@style/CaptionSmallBlackMuted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_top_news_detail_owner"
@@ -257,7 +257,7 @@
 
                 <TextView
                     android:id="@+id/textViewNewsDetailDescription"
-                    style="@style/BodyTextRegularBlack70"
+                    style="@style/BodyTextRegularBlackDeep"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default"
@@ -342,12 +342,12 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/BodyTextSmallBlack54"
+                        style="@style/BodyTextSmallBlackMuted"
                         android:layout_width="@dimen/size_news_detail_subscriber_image"
                         android:layout_height="@dimen/size_news_detail_subscriber_image"
                         android:layout_marginStart="@dimen/margin_start_news_detail_subscriber"
                         android:gravity="center"
-                        android:text="@string/temp_count_102" />
+                        android:text="@string/temp_count_count" />
 
                 </LinearLayout>
 
@@ -383,7 +383,7 @@
                 android:src="@drawable/ic_shirt" />
 
             <TextView
-                style="@style/CaptionExtraSmallBlack40"
+                style="@style/CaptionExtraSmallBlackSoft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_things" />
@@ -410,7 +410,7 @@
                 android:src="@drawable/ic_hands" />
 
             <TextView
-                style="@style/CaptionExtraSmallBlack40"
+                style="@style/CaptionExtraSmallBlackSoft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_volunteer" />
@@ -437,7 +437,7 @@
                 android:src="@drawable/ic_tools" />
 
             <TextView
-                style="@style/CaptionExtraSmallBlack40"
+                style="@style/CaptionExtraSmallBlackSoft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_prof" />
@@ -464,7 +464,7 @@
                 android:src="@drawable/ic_coins" />
 
             <TextView
-                style="@style/CaptionExtraSmallBlack40"
+                style="@style/CaptionExtraSmallBlackSoft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_money" />

@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/textViewNoNews"
-        style="@style/BodyTextRegularBlack70"
+        style="@style/BodyTextRegularBlackDeep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
