@@ -37,20 +37,13 @@ object DateUtils {
             now < start ->
                 context.getString(
                     R.string.event_upcoming,
-                    formatDaysText(context, daysLeft),
+                    context.resources.getQuantityString(R.plurals.days, daysLeft, daysLeft),
                     dateRange,
                 )
 
             now in start..end -> context.getString(R.string.event_today, dateRange)
             else -> context.getString(R.string.event_finished, dateRange)
         }
-    }
-
-    private fun formatDaysText(
-        context: Context,
-        days: Int,
-    ): String {
-        return context.resources.getQuantityString(R.plurals.days, days, days)
     }
 
     private fun formatDate(date: LocalDate): String {
