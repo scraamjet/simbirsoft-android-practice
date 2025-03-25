@@ -89,8 +89,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }

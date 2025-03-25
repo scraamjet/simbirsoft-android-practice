@@ -8,6 +8,7 @@ private const val KEY_SELECTED_NEWS_ID = "selected_news_id"
 
 class NewsPreferences(context: Context) {
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
     fun saveSelectedNewsId(newsId: Int) {
         prefs.edit { putString(KEY_SELECTED_NEWS_ID, newsId.toString()) }
     }

@@ -16,7 +16,10 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
         getNewsDetail()?.let(::bindNewsDetails)
@@ -34,11 +37,12 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         with(binding) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
-            textViewNewsDetailTime.text = DateUtils.formatEventDates(
-                requireContext(),
-                news.startDateTime,
-                news.endDateTime
-            )
+            textViewNewsDetailTime.text =
+                DateUtils.formatEventDates(
+                    requireContext(),
+                    news.startDateTime,
+                    news.endDateTime,
+                )
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
@@ -63,4 +67,3 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         fun newInstance() = NewsDetailFragment()
     }
 }
-

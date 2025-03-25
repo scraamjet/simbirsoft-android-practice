@@ -14,39 +14,42 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 object DateUtils {
-
     private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))
 
     fun formatEventDates(
         context: Context,
         startDateTime: Long,
-        endDateTime: Long
+        endDateTime: Long,
     ): String {
         val start = convertTimestampToLocalDate(startDateTime)
         val end = convertTimestampToLocalDate(endDateTime)
         val now = Clock.System.todayIn(TimeZone.currentSystemDefault())
         val daysLeft = now.daysUntil(start)
 
-        val dateRange = if (start == end) {
-            context.getString(R.string.date_single, formatDate(start))
-        } else {
-            context.getString(R.string.date_range, formatDate(start), formatDate(end))
-        }
+        val dateRange =
+            if (start == end) {
+                context.getString(R.string.date_single, formatDate(start))
+            } else {
+                context.getString(R.string.date_range, formatDate(start), formatDate(end))
+            }
 
         return when {
-            now < start -> context.getString(
-                R.string.event_upcoming,
-                formatDaysText(context, daysLeft),
-                dateRange
-            )
+            now < start ->
+                context.getString(
+                    R.string.event_upcoming,
+                    formatDaysText(context, daysLeft),
+                    dateRange,
+                )
 
             now in start..end -> context.getString(R.string.event_today, dateRange)
             else -> context.getString(R.string.event_finished, dateRange)
         }
     }
 
-
-    private fun formatDaysText(context: Context, days: Int): String {
+    private fun formatDaysText(
+        context: Context,
+        days: Int,
+    ): String {
         return context.resources.getQuantityString(R.plurals.days, days, days)
     }
 
@@ -59,8 +62,3 @@ object DateUtils {
             .toLocalDateTime(TimeZone.currentSystemDefault()).date
     }
 }
-
-
-
-
-
