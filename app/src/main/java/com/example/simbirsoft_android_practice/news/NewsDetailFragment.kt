@@ -47,7 +47,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
-            listOf(imageViewNewsDetailImage1, imageViewNewsDetailImage2, imageViewNewsDetailImage3)
+            listOf(imageViewNewsDetailMainImage, imageViewNewsDetailPrimaryImage, imageViewNewsDetailSecondaryImage)
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }

@@ -216,9 +216,9 @@
                     app:layout_constraintTop_toTopOf="@id/imageViewNewsDetailMail" />
 
                 <ImageView
-                    android:id="@+id/imageViewNewsDetailImage1"
-                    android:layout_width="@dimen/width_news_detail_image_1"
-                    android:layout_height="@dimen/height_news_detail_image_1"
+                    android:id="@+id/imageViewNewsDetailMainImage"
+                    android:layout_width="@dimen/width_news_detail_main_image"
+                    android:layout_height="@dimen/height_news_detail_main_image"
                     android:layout_marginTop="@dimen/margin_default"
                     android:adjustViewBounds="true"
                     android:importantForAccessibility="no"
@@ -234,20 +234,20 @@
                     android:layout_marginTop="@dimen/margin_default"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailImage1"
+                    app:layout_constraintStart_toEndOf="@id/imageViewNewsDetailMainImage"
                     app:layout_constraintTop_toBottomOf="@id/textViewNewsDetailMail">
 
                     <ImageView
-                        android:id="@+id/imageViewNewsDetailImage2"
-                        android:layout_width="@dimen/width_news_detail_image_2"
-                        android:layout_height="@dimen/height_news_detail_image_2"
+                        android:id="@+id/imageViewNewsDetailPrimaryImage"
+                        android:layout_width="@dimen/width_news_detail_primary_image"
+                        android:layout_height="@dimen/height_news_detail_primary_image"
                         android:importantForAccessibility="no"
                         android:scaleType="centerCrop" />
 
                     <ImageView
-                        android:id="@+id/imageViewNewsDetailImage3"
-                        android:layout_width="@dimen/width_news_detail_image_3"
-                        android:layout_height="@dimen/height_news_detail_image_3"
+                        android:id="@+id/imageViewNewsDetailSecondaryImage"
+                        android:layout_width="@dimen/width_news_detail_secondary_image"
+                        android:layout_height="@dimen/height_news_detail_secondary_image"
                         android:layout_marginTop="@dimen/margin_top_news_detail_title"
                         android:importantForAccessibility="no"
                         android:scaleType="centerCrop" />
@@ -263,7 +263,7 @@
                     android:layout_marginTop="@dimen/margin_default"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailImage1" />
+                    app:layout_constraintTop_toBottomOf="@id/imageViewNewsDetailMainImage" />
 
                 <TextView
                     android:id="@+id/textViewNewsDetailHyperLink"
