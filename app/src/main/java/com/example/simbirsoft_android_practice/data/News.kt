@@ -20,9 +20,9 @@ data class News(
     @SerializedName("full_description")
     val fullDescription: String,
     @SerializedName("start_date_time")
-    val startDateTime: String,
+    val startDateTime: Long,
     @SerializedName("end_date_time")
-    val endDateTime: String,
+    val endDateTime: Long,
     @SerializedName("list_help_category_id")
     val listHelpCategoryId: List<Int>,
 )

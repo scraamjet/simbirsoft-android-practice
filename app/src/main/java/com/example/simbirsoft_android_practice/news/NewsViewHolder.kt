@@ -12,8 +12,11 @@ class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHo
             textViewNewsTitle.text = newsItem.title
             textViewNewsDescription.text = newsItem.description
             textViewNewsTime.text =
-                DateUtils.formatEventDates(newsItem.startDateTime, newsItem.endDateTime)
-
+                DateUtils.formatEventDates(
+                    root.context,
+                    newsItem.startDateTime,
+                    newsItem.endDateTime,
+                )
             imageViewNewsItem.load(newsItem.imageUrl)
         }
     }

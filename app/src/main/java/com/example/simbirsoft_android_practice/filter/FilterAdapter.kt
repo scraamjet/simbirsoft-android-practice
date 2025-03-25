@@ -23,7 +23,6 @@ class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCa
         val category = getItem(position)
         holder.bind(category)
 
-        holder.binding.itemFilter.setOnCheckedChangeListener(null)
         holder.binding.itemFilter.isChecked = category.isEnabled
 
         holder.binding.itemFilter.setOnCheckedChangeListener { _, isChecked ->

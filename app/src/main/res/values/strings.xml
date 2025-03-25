@@ -78,7 +78,14 @@
     <string name="help_prof">Проф.\nпомощь</string>
     <string name="help_money">Помочь\nденьгами</string>
     <string name="questions_news">У вас есть вопросы?</string>
-    <string name="temp_count_102">+102</string>
+    <string name="temp_count_count">+102</string>
     <string name="filter_saved_toast">Фильтры успешно сохранены</string>
     <string name="no_news_available">Нет новостей, соответствующих выбранным фильтрам</string>
+
+    <string name="date_single">(%s)</string>
+    <string name="date_range">(%s – %s)</string>
+    <string name="event_upcoming">Осталось %s %s</string>
+    <string name="event_today">Событие сегодня %s</string>
+    <string name="event_finished">Событие завершено %s</string>
+
 </resources>

@@ -5,7 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
@@ -14,7 +15,8 @@ import dev.androidbroadcast.vbpd.viewBinding
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
-    private val newsPrefs by lazy { NewsPreferencesManager(requireContext()) }
+    private val newsPrefs by lazy { NewsPreferences(requireContext()) }
+    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
 
     override fun onViewCreated(
         view: View,
@@ -22,20 +24,14 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
-
         getNewsDetail()?.let(::bindNewsDetails)
         initClickListeners()
     }
 
     private fun getNewsDetail(): NewsDetail? {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
-        if (selectedNewsId == -1) {
-            return null
-        }
-
-        val newsList = JsonParser(requireContext()).parseNews()
+        val newsList = newsRepository.getNews()
         val selectedNews = newsList.find { news -> news.id == selectedNewsId }
-
         return selectedNews?.let(NewsMapper::toNewsDetail)
     }
 
@@ -44,13 +40,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
             textViewNewsDetailTime.text =
-                DateUtils.formatEventDates(news.startDateTime, news.endDateTime)
+                DateUtils.formatEventDates(
+                    requireContext(),
+                    news.startDateTime,
+                    news.endDateTime,
+                )
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
-
-            listOf(imageViewNewsDetailImage1, imageViewNewsDetailImage2, imageViewNewsDetailImage3)
+            listOf(imageViewNewsDetailMainImage, imageViewNewsDetailPrimaryImage, imageViewNewsDetailSecondaryImage)
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
