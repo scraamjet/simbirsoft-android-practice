@@ -5,7 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.AssetJsonReader
+import com.example.simbirsoft_android_practice.core.CategoryRepository
+import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
@@ -14,7 +15,7 @@ private const val RECYCLER_VIEW_SPAN_COUNT = 2
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
-    private val assetJsonReader by lazy { AssetJsonReader(requireContext()) }
+    private val categoryRepository by lazy { CategoryRepository(JsonAssetExtractor(requireContext())) }
     private val adapter by lazy { HelpAdapter() }
 
     override fun onViewCreated(
@@ -39,7 +40,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategories() {
-        val categories = assetJsonReader.parseCategories()
+        val categories = categoryRepository.getCategories()
         val helpCategories = categories.map(CategoryMapper::toHelpCategory)
         adapter.submitList(helpCategories)
     }

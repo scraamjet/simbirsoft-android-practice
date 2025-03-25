@@ -6,7 +6,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.AssetJsonReader
+import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
@@ -20,13 +21,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val filterPrefs by lazy { FilterPreferences(requireContext()) }
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
+    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
 
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
         initRecyclerView()
         initClickListeners()
         loadNewsData()
@@ -54,7 +55,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        val allNews = AssetJsonReader(requireContext()).parseNews()
+        val allNews = newsRepository.getNews()
         val selectedCategoryIds = filterPrefs.getSelectedCategories()
 
         val filteredNewsItems =

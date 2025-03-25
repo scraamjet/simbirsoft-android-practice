@@ -5,7 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.AssetJsonReader
+import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
@@ -15,6 +16,7 @@ import dev.androidbroadcast.vbpd.viewBinding
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
+    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
 
     override fun onViewCreated(
         view: View,
@@ -28,7 +30,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     private fun getNewsDetail(): NewsDetail? {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
-        val newsList = AssetJsonReader(requireContext()).parseNews()
+        val newsList = newsRepository.getNews()
         val selectedNews = newsList.find { news -> news.id == selectedNewsId }
         return selectedNews?.let(NewsMapper::toNewsDetail)
     }
