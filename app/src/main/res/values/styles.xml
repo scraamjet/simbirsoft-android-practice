@@ -16,7 +16,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="BodyTextSmallBlack54">
+    <style name="BodyTextSmallBlackMuted">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
@@ -56,7 +56,7 @@
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="BodyTextSmallBlack70Center">
+    <style name="BodyTextBlackDeepCenter">
         <item name="android:gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -73,7 +73,7 @@
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="CaptionSmallBlack38">
+    <style name="CaptionSmallBlackSubtle">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
@@ -88,7 +88,7 @@
         <item name="android:textColor">@color/black_87</item>
     </style>
 
-    <style name="BodyTextSmallBlack70End">
+    <style name="BodyTextBlackDeepEnd">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
@@ -126,6 +126,85 @@
     <style name="SearchViewTextStyle" parent="TextAppearance.Material3.SearchView">
         <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/black_38</item>
+    </style>
+
+    <style name="CaptionExtraSmallWhite">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BodyTextMediumBlackRich">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="BodyTextMediumBlackDeep">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">@color/black_70</item>
+    </style>
+
+    <style name="CaptionExtraSmallBlackSoft">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">@color/black_40</item>
+    </style>
+
+    <style name="CaptionSmallGray">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="CaptionSmallBlackMuted">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="HeadingMediumBlueGreyCenter">
+        <item name="android:fontFamily">@font/officina_sans_extra_bold</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:lineSpacingExtra">12sp</item>
+        <item name="android:textColor">@color/blue_grey</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="HeadingMediumBlueGreyEllipsize">
+        <item name="android:fontFamily">@font/officina_sans_extra_bold</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textColor">@color/blue_grey</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="BodyTextLinkGreen">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:minHeight">24dp</item>
+    </style>
+
+    <style name="BodyTextRegularBlackDeep">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black_70</item>
+        <item name="android:minHeight">24dp</item>
     </style>
 
 </resources>

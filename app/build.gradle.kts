@@ -59,6 +59,8 @@ ktlint {
 }
 
 dependencies {
+    implementation(libs.coil)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.viewbinding.property.delegate)
     implementation(libs.viewbinding.property.delegate.reflection)
     implementation(libs.androidx.core.ktx)

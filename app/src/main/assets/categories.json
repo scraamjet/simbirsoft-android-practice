@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "Дети",
+    "icon_url": "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/6B27CABD-79E9-4143-94BA-B7E8DDFD85F0.png"
+  },
+  {
+    "id": 2,
+    "title": "Взрослые",
+    "icon_url": "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/4E20F34C-3A0D-45FE-883C-423916FD55CD.png"
+  },
+  {
+    "id": 3,
+    "title": "Пожилые",
+    "icon_url": "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/03D41C55-FACE-4BFB-8D18-D17EA2CD4C23.png"
+  },
+  {
+    "id": 4,
+    "title": "Животные",
+    "icon_url": "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/175664A0-2D45-488B-809C-FF61C72CD975.png"
+  },
+  {
+    "id": 5,
+    "title": "Мероприятия",
+    "icon_url": "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/442C3908-3520-4837-B1E9-4F8B9518D8A1.png"
+  }
+]

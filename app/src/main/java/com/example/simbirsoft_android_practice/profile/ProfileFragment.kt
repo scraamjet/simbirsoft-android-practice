@@ -26,7 +26,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let { capturedImage -> updateAppBarImage(capturedImage) }
+            bitmap?.let { capturedImage -> updateAppBarImageFromCamera(capturedImage) }
+        }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { selectedImage -> updateAppBarImageFromCamera(selectedImage) }
         }
 
     private val cameraPermissionLauncher =
@@ -57,6 +62,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         EditPhotoDialogFragment.newInstance { action ->
             when (action) {
                 PhotoAction.TAKE_PHOTO -> handleTakePhoto()
+                PhotoAction.CHOOSE_PHOTO -> handleChoosePhoto()
                 PhotoAction.DELETE_PHOTO -> clearAppBarImage()
             }
         }.show(childFragmentManager, IMAGE_SELECTOR_TAG)
@@ -68,6 +74,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showSettingsDialog()
             else -> cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
+    }
+
+    private fun handleChoosePhoto() {
+        galleryLauncher.launch("image/*")
     }
 
     private fun showSettingsDialog() {
@@ -96,9 +106,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         return permissionStatus == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun updateAppBarImage(bitmap: Bitmap) {
+    private fun updateAppBarImageFromCamera(bitmap: Bitmap) {
         binding.appBarImageProfile.apply {
             setImageBitmap(bitmap)
+            scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+    }
+
+    private fun updateAppBarImageFromCamera(uri: Uri) {
+        binding.appBarImageProfile.apply {
+            setImageURI(uri)
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     }
