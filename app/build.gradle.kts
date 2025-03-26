@@ -59,6 +59,12 @@ ktlint {
 }
 
 dependencies {
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+    implementation(libs.rxbinding)
+    implementation(libs.rxbinding.core)
+    implementation(libs.rxbinding.appcompat)
+    implementation(libs.rxbinding.recyclerview)
     implementation(libs.coil)
     implementation(libs.kotlinx.datetime)
     implementation(libs.viewbinding.property.delegate)
