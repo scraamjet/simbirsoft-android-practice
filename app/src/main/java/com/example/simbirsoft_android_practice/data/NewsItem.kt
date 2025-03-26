@@ -15,10 +15,11 @@ data class NewsItem(
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readLong(),
+        parcel.readLong(),
         parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-    )
+    ) {
+    }
 
     override fun writeToParcel(
         parcel: Parcel,
@@ -27,8 +28,8 @@ data class NewsItem(
         parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeString(description)
-        parcel.writeString(startDateTime)
-        parcel.writeString(endDateTime)
+        parcel.writeLong(startDateTime)
+        parcel.writeLong(endDateTime)
         parcel.writeString(imageUrl)
     }
 

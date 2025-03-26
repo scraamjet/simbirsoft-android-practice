@@ -6,7 +6,8 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import com.example.simbirsoft_android_practice.core.JsonParser
+import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.News
 import java.util.concurrent.Executors
 
@@ -16,12 +17,7 @@ class NewsService : Service() {
     private val binder = LocalBinder()
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
-    private var jsonParser: JsonParser? = null
-
-    override fun onCreate() {
-        super.onCreate()
-        jsonParser = JsonParser(this)
-    }
+    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(this)) }
 
     override fun onBind(intent: Intent): IBinder = binder
 
@@ -32,9 +28,9 @@ class NewsService : Service() {
     fun loadNews(newsLoadedListener: (loadedNews: List<News>) -> Unit) {
         executor.execute {
             Thread.sleep(TIMEOUT)
-            val newsList = jsonParser?.parseNews()
+            val newsList = newsRepository.getNews()
             handler.post {
-                newsList?.let { loadedNews -> newsLoadedListener(loadedNews) }
+                newsLoadedListener(newsList)
             }
         }
     }
