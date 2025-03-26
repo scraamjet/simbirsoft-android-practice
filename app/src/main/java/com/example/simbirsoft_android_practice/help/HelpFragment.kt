@@ -34,7 +34,10 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         categoryRepository = CategoryRepository(JsonAssetExtractor(context))
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         restoreState(savedInstanceState)
@@ -57,8 +60,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
             addItemDecoration(
                 GridSpacingItemDecoration(
                     RECYCLER_VIEW_SPAN_COUNT,
-                    resources.getDimensionPixelSize(R.dimen.help_category_item_spacing)
-                )
+                    resources.getDimensionPixelSize(R.dimen.help_category_item_spacing),
+                ),
             )
         }
     }
@@ -119,5 +122,3 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         fun newInstance() = HelpFragment()
     }
 }
-
-

@@ -39,7 +39,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             },
             onServiceDisconnected = {
                 serviceState = NewsServiceState.Disconnected
-            }
+            },
         )
 
     override fun onStart() {
@@ -48,7 +48,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         requireContext().bindService(
             Intent(requireContext(), NewsService::class.java),
             connection,
-            Context.BIND_AUTO_CREATE
+            Context.BIND_AUTO_CREATE,
         )
     }
 
@@ -60,7 +60,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -99,11 +102,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             if (isAdded) {
                 val selectedCategories = filterPrefs.getSelectedCategories()
                 val filteredNewsItems =
-                    loadedNewsList.filter { newsItem ->
-                        newsItem.listHelpCategoryId.any { categoryId ->
-                            selectedCategories.contains(categoryId)
+                    loadedNewsList
+                        .filter { newsItem ->
+                            newsItem.listHelpCategoryId.any { categoryId ->
+                                selectedCategories.contains(categoryId)
+                            }
                         }
-                    }.map(NewsMapper::toNewsItem)
+                        .map(NewsMapper::toNewsItem)
                 newsItems = filteredNewsItems
                 showData(filteredNewsItems)
             }
@@ -158,8 +163,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }
@@ -168,5 +173,3 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         fun newInstance() = NewsFragment()
     }
 }
-
-
