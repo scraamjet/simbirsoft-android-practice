@@ -88,4 +88,26 @@
     <string name="event_today">Событие сегодня %s</string>
     <string name="event_finished">Событие завершено %s</string>
 
+    <string name="tab_name_search_by_events">По мероприятиям</string>
+    <string name="tab_name_search_by_nko">По НКО</string>
+    <string name="hint_input_name_organization">Введите название организации</string>
+    <string name="hint_input_title_event">Введите название мероприятия</string>
+
+    <!-- SearchFragmentEvents -->
+    <string name="init_help_search_text">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
+    <string name="exemple">Например,</string>
+    <string name="example_items"><u>мастер-класс, помощь</u></string>
+
+    <!-- AuthorizationFragment -->
+    <string name="title_authorization">Авторизация</string>
+    <string name="sign_in_through_social_networks">Для участия в мероприятиях войдите\nв приложение через социальные сети</string>
+    <string name="login_authorization">Или авторизуйтесь через приложение</string>
+    <string name="email_title">E-mail</string>
+    <string name="hint_input_e_mail">Введите e-mail</string>
+    <string name="password_title">Пароль</string>
+    <string name="hint_input_password">Введите пароль</string>
+    <string name="login_button_text">Войти</string>
+    <string name="forgot_your_password"><u>Забыли пароль?</u></string>
+    <string name="registration"><u>Регистрация</u></string>
+
 </resources>
