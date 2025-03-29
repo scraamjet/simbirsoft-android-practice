@@ -110,4 +110,9 @@
     <string name="forgot_your_password"><u>Забыли пароль?</u></string>
     <string name="registration"><u>Регистрация</u></string>
 
+    <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
+    <string name="search_by_events_example_text">Например,</string>
+    <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
+
+
 </resources>

@@ -132,5 +132,12 @@
     <dimen name="margin_large">20dp</dimen>
     <dimen name="margin_default_large">26dp</dimen>
 
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <dimen name="item_card_margin">8dp</dimen>
+    <dimen name="recycler_view_spacing">8dp</dimen>
+    <dimen name="icon_margin_top">40dp</dimen>
+    <dimen name="text_margin_top">10dp</dimen>
+    <dimen name="text_margin_start">4dp</dimen>
+
 </resources>
 
