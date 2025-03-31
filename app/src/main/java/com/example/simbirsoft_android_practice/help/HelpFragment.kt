@@ -1,6 +1,8 @@
 package com.example.simbirsoft_android_practice.help
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,6 +12,8 @@ import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 
@@ -39,10 +43,14 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         )
     }
 
+    @SuppressLint("CheckResult")
     private fun loadCategories() {
-        val categories = categoryRepository.getCategories()
-        val helpCategories = categories.map(CategoryMapper::toHelpCategory)
-        adapter.submitList(helpCategories)
+        categoryRepository.getCategories()
+            .observeOn(Schedulers.computation())
+            .map { categories -> categories.map(CategoryMapper::toHelpCategory) }
+            .doOnNext { Log.d("RxJava", "Processed help categories on: ${Thread.currentThread().name}") }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { adapter.submitList(it) }
     }
 
     companion object {
