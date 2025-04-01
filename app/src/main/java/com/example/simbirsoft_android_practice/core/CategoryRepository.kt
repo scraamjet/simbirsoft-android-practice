@@ -12,7 +12,6 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private val executor = Executors.newSingleThreadExecutor()
 
-
     fun getCategories(): List<Category> {
         val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
         val type = object : TypeToken<List<Category>>() {}.type

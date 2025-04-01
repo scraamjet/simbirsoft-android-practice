@@ -110,7 +110,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun filterAndMapNews(
         loadedNewsList: List<News>,
-        selectedCategories: Set<Int>
+        selectedCategories: Set<Int>,
     ): List<NewsItem> {
         return loadedNewsList
             .filter { news ->
@@ -169,8 +169,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }

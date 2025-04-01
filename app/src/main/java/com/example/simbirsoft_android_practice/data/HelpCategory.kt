@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data
 
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class HelpCategory(
