@@ -18,13 +18,13 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
         return gson.fromJson(json, type)
     }
 
-    fun getCategoriesAsync(onCategoriesLoaded: (List<Category>?) -> Unit) {
+    fun getCategoriesAsync(categoriesLoadedListener: (List<Category>?) -> Unit) {
         executor.execute {
             Thread.sleep(TIMEOUT_IN_MILLIS)
             val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
             val type = object : TypeToken<List<Category>>() {}.type
             val categories: List<Category>? = gson.fromJson(json, type)
-            onCategoriesLoaded(categories)
+            categoriesLoadedListener(categories)
         }
     }
 
