@@ -26,26 +26,25 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
     private var newsService: NewsService? = null
-    private var serviceState: NewsServiceState = NewsServiceState.Disconnected
+    private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
 
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { connectedService ->
                 newsService = connectedService
-                serviceState = NewsServiceState.Connected
+                isServiceConnected = true
                 if (newsItems == null) {
                     loadNewsData()
                 }
             },
             onServiceDisconnected = {
-                serviceState = NewsServiceState.Disconnected
+                isServiceConnected = false
             },
         )
 
     override fun onStart() {
         super.onStart()
-        serviceState = NewsServiceState.Connecting
         requireContext().bindService(
             Intent(requireContext(), NewsService::class.java),
             connection,
@@ -55,9 +54,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onStop() {
         super.onStop()
-        if (serviceState == NewsServiceState.Connected) {
+        if (isServiceConnected) {
             requireContext().unbindService(connection)
-            serviceState = NewsServiceState.Disconnected
+            isServiceConnected = false
         }
     }
 
