@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.data.News
 import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
@@ -101,18 +102,24 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         newsService?.loadNews { loadedNewsList ->
             if (isAdded) {
                 val selectedCategories = filterPrefs.getSelectedCategories()
-                val filteredNewsItems =
-                    loadedNewsList
-                        .filter { newsItem ->
-                            newsItem.listHelpCategoryId.any { categoryId ->
-                                selectedCategories.contains(categoryId)
-                            }
-                        }
-                        .map(NewsMapper::toNewsItem)
+                val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
                 newsItems = filteredNewsItems
                 showData(filteredNewsItems)
             }
         }
+    }
+
+    private fun filterAndMapNews(
+        loadedNewsList: List<News>,
+        selectedCategories: Set<Int>
+    ): List<NewsItem> {
+        return loadedNewsList
+            .filter { news ->
+                news.listHelpCategoryId.any { categoryId ->
+                    selectedCategories.contains(categoryId)
+                }
+            }
+            .map(NewsMapper::toNewsItem)
     }
 
     private fun showLoading() {
@@ -163,8 +170,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }
