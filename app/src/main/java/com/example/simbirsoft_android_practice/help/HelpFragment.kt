@@ -16,17 +16,14 @@ import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
-import java.util.concurrent.Executors
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
-private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
     private var categoryRepository: CategoryRepository? = null
     private val adapter by lazy { HelpAdapter() }
-    private val executor = Executors.newSingleThreadExecutor()
     private var categories: List<HelpCategory>? = null
 
     override fun onAttach(context: Context) {
@@ -50,7 +47,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        executor.shutdown()
+        categoryRepository?.releaseResources()
     }
 
     private fun initRecyclerView() {
@@ -68,11 +65,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private fun loadCategories() {
         showLoading()
-        executor.execute {
-            Thread.sleep(TIMEOUT_IN_MILLIS)
-            val parsedCategories = categoryRepository?.getCategories()
+        categoryRepository?.getCategoriesAsync { parsedCategories ->
             val helpCategories = parsedCategories?.map(CategoryMapper::toHelpCategory)
-
             Handler(Looper.getMainLooper()).post {
                 if (isAdded) {
                     showData(helpCategories)
