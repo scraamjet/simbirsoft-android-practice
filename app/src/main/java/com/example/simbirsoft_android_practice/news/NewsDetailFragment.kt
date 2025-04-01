@@ -1,6 +1,8 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
@@ -12,27 +14,44 @@ import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBin
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
-        getNewsDetail()?.let(::bindNewsDetails)
+        loadNewsDetail()
         initClickListeners()
     }
 
-    private fun getNewsDetail(): NewsDetail? {
+    @SuppressLint("CheckResult")
+    private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
-        val newsList = newsRepository.getNews()
-        val selectedNews = newsList.find { news -> news.id == selectedNewsId }
-        return selectedNews?.let(NewsMapper::toNewsDetail)
+
+        newsRepository.getNews()
+            .subscribeOn(Schedulers.io())
+            .doOnNext { Log.d("RxJava", "Fetched news on thread: ${Thread.currentThread().name}") }
+            .observeOn(Schedulers.computation())
+            .map { newsList ->
+                newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)!!
+            }
+            .doOnNext {
+                Log.d(
+                    "RxJava",
+                    "Mapped news detail on thread: ${Thread.currentThread().name}"
+                )
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ newsDetail ->
+                newsDetail?.let(::bindNewsDetails)
+            }, { error ->
+                Log.e("RxJava", "Error fetching news details", error)
+            })
     }
 
     private fun bindNewsDetails(news: NewsDetail) {
@@ -40,16 +59,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailToolbarTitle.text = news.title
             textViewNewsDetailTitle.text = news.title
             textViewNewsDetailTime.text =
-                DateUtils.formatEventDates(
-                    requireContext(),
-                    news.startDateTime,
-                    news.endDateTime,
-                )
+                DateUtils.formatEventDates(requireContext(), news.startDateTime, news.endDateTime)
             textViewNewsDetailOwner.text = news.owner
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
-            listOf(imageViewNewsDetailMainImage, imageViewNewsDetailPrimaryImage, imageViewNewsDetailSecondaryImage)
+            listOf(
+                imageViewNewsDetailMainImage,
+                imageViewNewsDetailPrimaryImage,
+                imageViewNewsDetailSecondaryImage
+            )
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
@@ -69,3 +88,4 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         fun newInstance() = NewsDetailFragment()
     }
 }
+

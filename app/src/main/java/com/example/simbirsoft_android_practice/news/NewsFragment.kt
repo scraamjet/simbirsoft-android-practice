@@ -1,6 +1,8 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,6 +15,10 @@ import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlin.random.Random
 
 private const val SCROLL_FLAG_NONE = 0
 
@@ -54,25 +60,43 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun loadNewsData() {
-        val allNews = newsRepository.getNews()
-        val selectedCategoryIds = filterPrefs.getSelectedCategories()
+        val newsObservable = newsRepository.getNews()
+            .observeOn(Schedulers.computation())
+            .doOnNext { Log.d("RxJava", "Processing news on thread: ${Thread.currentThread().name}") }
+            .observeOn(AndroidSchedulers.mainThread())
 
-        val filteredNewsItems =
-            allNews
-                .filter { news ->
-                    news.listHelpCategoryId.any { categoryId ->
-                        selectedCategoryIds.contains(categoryId)
-                    }
-                }
-                .map(NewsMapper::toNewsItem)
-
-        newsAdapter.submitList(filteredNewsItems)
-        binding.apply {
-            textViewNoNews.isVisible = filteredNewsItems.isEmpty()
-            recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
-            updateScrollFlags(filteredNewsItems.isEmpty())
+        val randomObservable = Observable.fromCallable {
+            List(10) { Random.nextInt(100) }
         }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.io())
+            .doOnNext { Log.d("RxJava", "Generated random data on thread: ${Thread.currentThread().name}") }
+
+        Observable.zip(newsObservable, randomObservable) { newsList, _ ->
+            Log.d("RxJava", "Combined on thread: ${Thread.currentThread().name}")
+            newsList
+        }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { newsList ->
+                val selectedCategoryIds = filterPrefs.getSelectedCategories()
+                val filteredNewsItems =
+                    newsList
+                        .filter { news ->
+                            news.listHelpCategoryId.any { categoryId ->
+                                selectedCategoryIds.contains(categoryId)
+                            }
+                        }
+                        .map(NewsMapper::toNewsItem)
+                newsAdapter.submitList(filteredNewsItems)
+                binding.apply {
+                    textViewNoNews.isVisible = filteredNewsItems.isEmpty()
+                    recyclerViewItemNews.isVisible = filteredNewsItems.isNotEmpty()
+                    updateScrollFlags(filteredNewsItems.isEmpty())
+                }
+            }
     }
 
     private fun onNewsItemSelected(newsId: Int) {
