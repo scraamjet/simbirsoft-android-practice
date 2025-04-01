@@ -11,7 +11,7 @@ import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.News
 import java.util.concurrent.Executors
 
-private const val TIMEOUT = 5000L
+private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class NewsService : Service() {
     private val binder = LocalBinder()
@@ -27,7 +27,7 @@ class NewsService : Service() {
 
     fun loadNews(newsLoadedListener: (loadedNews: List<News>) -> Unit) {
         executor.execute {
-            Thread.sleep(TIMEOUT)
+            Thread.sleep(TIMEOUT_IN_MILLIS)
             val newsList = newsRepository.getNews()
             handler.post {
                 newsLoadedListener(newsList)
