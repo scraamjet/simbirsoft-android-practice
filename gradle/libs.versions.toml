@@ -14,6 +14,7 @@ constraintlayout = "2.2.0"
 retrofit = "2.11.0"
 ktlint = "12.1.2"
 viewbinding-property-delegate = "2.0.4"
+kotlin-parcelize = "2.1.20"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,3 +36,6 @@ viewbinding-property-delegate-reflection = { module = "dev.androidbroadcast.vbpd
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin-parcelize" }
+
+
