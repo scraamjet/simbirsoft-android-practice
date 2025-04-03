@@ -18,7 +18,7 @@ class NewsPreferences(context: Context) {
         }
     }
 
-    fun getReadNewsIds(): Set<Int> {
+    private fun getReadNewsIds(): Set<Int> {
         val readNewsIdStrings = prefs.getStringSet(KEY_READ_NEWS_IDS, emptySet()) ?: emptySet()
         return readNewsIdStrings.mapNotNull { it.toIntOrNull() }.toSet()
     }

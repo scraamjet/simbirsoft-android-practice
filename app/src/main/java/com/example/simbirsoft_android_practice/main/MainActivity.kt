@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun setupBottomNavigation() {
+        binding.bottomNavigationView.selectedItemId = R.id.help
+
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.help -> loadFragment(HelpFragment.newInstance())

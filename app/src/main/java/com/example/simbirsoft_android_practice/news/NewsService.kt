@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
@@ -7,7 +8,11 @@ import android.os.IBinder
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.News
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+
+private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class NewsService : Service() {
     private val binder = LocalBinder()
@@ -19,7 +24,15 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun loadNews(): Observable<List<News>> {
-        return newsRepository.getNews()
+    @SuppressLint("CheckResult")
+    fun loadNews(newsLoadedListener: (List<News>) -> Unit) {
+        newsRepository.getNews()
+            .delay(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { loadedNews ->
+                newsLoadedListener(loadedNews)
+            }
     }
 }
+
