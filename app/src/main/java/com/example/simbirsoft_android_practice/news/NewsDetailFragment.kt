@@ -15,6 +15,7 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
@@ -37,8 +38,8 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             .subscribeOn(Schedulers.io())
             .doOnNext { Log.d("RxJava", "Fetched news on thread: ${Thread.currentThread().name}") }
             .observeOn(Schedulers.computation())
-            .map { newsList ->
-                newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)!!
+            .mapNotNull { newsList ->
+                newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)
             }
             .doOnNext {
                 Log.d(
@@ -48,7 +49,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ newsDetail ->
-                newsDetail?.let(::bindNewsDetails)
+                newsDetail.let(::bindNewsDetails)
             }, { error ->
                 Log.e("RxJava", "Error fetching news details", error)
             })
@@ -87,5 +88,10 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     companion object {
         fun newInstance() = NewsDetailFragment()
     }
+
+    private fun <T : Any, R : Any> Observable<T>.mapNotNull(transform: (T) -> R?) =
+        flatMapIterable { value ->
+            listOfNotNull(transform(value))
+        }
 }
 
