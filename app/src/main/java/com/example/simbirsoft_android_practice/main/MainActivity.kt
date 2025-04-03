@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initAuthorizationFragment(savedInstanceState)
         setupBottomNavigation()
     }
@@ -30,8 +29,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun setupBottomNavigation() {
-        binding.bottomNavigationView.selectedItemId = R.id.help
-
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.help -> loadFragment(HelpFragment.newInstance())
@@ -54,13 +51,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         transaction.commit()
     }
 
-
     fun hideBottomNavigation() {
         binding.bottomNavigationView.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun updateUnreadNewsBadge(count: Int) {
+        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.news)
+        if (count > 0) {
+            badge.isVisible = true
+            badge.number = count
+        } else {
+            badge.isVisible = false
+        }
     }
 }
 

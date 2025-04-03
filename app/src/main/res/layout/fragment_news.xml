@@ -26,18 +26,32 @@
                 android:layout_gravity="center"
                 android:text="@string/title_news" />
 
-            <ImageView
-                android:id="@+id/imageViewButtonFilters"
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/margin_end_button_filters"
-                android:importantForAccessibility="no"
-                android:padding="@dimen/padding_default_toolbar_action_button"
-                android:src="@drawable/ic_filter" />
+                android:layout_marginEnd="@dimen/margin_end_button_filters">
 
+                <ImageView
+                    android:id="@+id/imageViewButtonFilters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:padding="@dimen/padding_default_toolbar_action_button"
+                    android:src="@drawable/ic_filter" />
+
+                <TextView
+                    android:id="@+id/textViewUnreadCount"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/unread_count_background"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </FrameLayout>
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -64,6 +78,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
