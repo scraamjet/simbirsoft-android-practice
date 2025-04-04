@@ -9,10 +9,8 @@ import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.News
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
-
-private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class NewsService : Service() {
     private val binder = LocalBinder()
@@ -25,14 +23,11 @@ class NewsService : Service() {
     }
 
     @SuppressLint("CheckResult")
-    fun loadNews(newsLoadedListener: (List<News>) -> Unit) {
-        newsRepository.getNews()
-            .delay(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+    fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
+        return newsRepository.getNewsWithDelay()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { loadedNews ->
-                newsLoadedListener(loadedNews)
-            }
+            .subscribe { loadedNews -> newsLoadedListener(loadedNews) }
     }
 }
 

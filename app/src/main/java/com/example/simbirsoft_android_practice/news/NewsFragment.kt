@@ -14,8 +14,11 @@ import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
+import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 private const val KEY_NEWS_ITEMS = "news_items"
 private const val SCROLL_FLAG_NONE = 0
@@ -28,6 +31,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
+    private val unreadNewsCountSubject = BehaviorSubject.createDefault(0)
+    private val compositeDisposable = CompositeDisposable()
 
     private val connection =
         NewsServiceConnection(
@@ -84,8 +89,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        compositeDisposable.clear()
         newsItems = null
     }
+
 
     private fun initRecyclerView() {
         binding.recyclerViewItemNews.apply {
@@ -104,16 +111,18 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        showLoading()
-        newsService?.loadNews { loadedNewsList ->
-            if (isAdded) {
+        if (isServiceConnected) {
+            showLoading()
+            val disposable = newsService?.loadNews { loadedNewsList ->
                 val selectedCategories = filterPrefs.getSelectedCategories()
                 val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
                 newsItems = filteredNewsItems
                 showData(filteredNewsItems)
             }
+            disposable?.let { compositeDisposable.add(it) }
         }
     }
+
 
     private fun filterAndMapNews(
         loadedNewsList: List<News>,
@@ -144,10 +153,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
         newsAdapter.submitList(newsList)
         updateScrollFlags(newsList.isEmpty())
+        updateUnreadNewsCount(newsList)
     }
 
     private fun onNewsItemSelected(newsId: Int) {
-        newsPrefs.saveReadNewsId(newsId)
+        newsPrefs.markNewsAsReadAndSelected(newsId)
         parentFragmentManager.beginTransaction()
             .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
             .addToBackStack(null)
@@ -180,6 +190,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                             AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
+    }
+
+    private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
+        val readNewsIds = newsPrefs.getReadNewsIds()
+        val unreadCount = newsList.count { it.id !in readNewsIds }
+        unreadNewsCountSubject.onNext(unreadCount)
+        (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
     }
 
     companion object {

@@ -1,8 +1,6 @@
 package com.example.simbirsoft_android_practice.filter
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -15,21 +13,26 @@ import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlin.random.Random
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
     private val filterPrefs by lazy { FilterPreferences(requireContext()) }
     private val categoryRepository by lazy { CategoryRepository(JsonAssetExtractor(requireContext())) }
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
         loadCategoryData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
     }
 
     private fun initRecyclerView() {
@@ -45,35 +48,17 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         }
     }
 
-    @SuppressLint("CheckResult")
     private fun loadCategoryData() {
-        val categoriesObservable = categoryRepository.getCategories()
-            .observeOn(Schedulers.computation())
+        val disposable = categoryRepository.getCategories()
             .map { categories ->
                 categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
             }
-            .doOnNext { Log.d("RxJava", "Mapped data on thread: ${Thread.currentThread().name}") }
             .observeOn(AndroidSchedulers.mainThread())
-
-        val randomObservable = Observable.fromCallable {
-            List(10) { Random.nextInt(100) }
-        }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(Schedulers.io())
-            .doOnNext {
-                Log.d(
-                    "RxJava",
-                    "Generated random data on thread: ${Thread.currentThread().name}"
-                )
+            .subscribe { mappedCategories ->
+                filterAdapter.submitList(mappedCategories)
             }
 
-        Observable.zip(categoriesObservable, randomObservable) { categories, _ ->
-            Log.d("RxJava", "Combined on thread: ${Thread.currentThread().name}")
-            categories
-        }
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { filterAdapter.submitList(it) }
+        compositeDisposable.add(disposable)
     }
 
     private fun initClickListeners() {

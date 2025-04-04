@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.news
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
@@ -15,13 +14,14 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,29 +30,25 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         initClickListeners()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
+    }
+
     @SuppressLint("CheckResult")
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         newsRepository.getNews()
-            .subscribeOn(Schedulers.io())
-            .doOnNext { Log.d("RxJava", "Fetched news on thread: ${Thread.currentThread().name}") }
-            .observeOn(Schedulers.computation())
-            .mapNotNull { newsList ->
-                newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)
-            }
-            .doOnNext {
-                Log.d(
-                    "RxJava",
-                    "Mapped news detail on thread: ${Thread.currentThread().name}"
+            .flatMapIterable { newsList ->
+                listOfNotNull(
+                    newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ newsDetail ->
+            .subscribe { newsDetail ->
                 newsDetail.let(::bindNewsDetails)
-            }, { error ->
-                Log.e("RxJava", "Error fetching news details", error)
-            })
+            }
     }
 
     private fun bindNewsDetails(news: NewsDetail) {
@@ -88,10 +84,5 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     companion object {
         fun newInstance() = NewsDetailFragment()
     }
-
-    private fun <T : Any, R : Any> Observable<T>.mapNotNull(transform: (T) -> R?) =
-        flatMapIterable { value ->
-            listOfNotNull(transform(value))
-        }
 }
 
