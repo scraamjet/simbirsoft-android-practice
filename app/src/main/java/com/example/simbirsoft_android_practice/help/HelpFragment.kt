@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.help
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
@@ -17,6 +18,7 @@ import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
@@ -71,12 +73,27 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         showLoading()
         categoryRepository?.let { repo ->
             val disposable = repo.getCategoriesWithDelay()
+                .doOnSubscribe {
+                    Log.d(
+                        "HelpFragment",
+                        "Subscribed on thread: ${Thread.currentThread().name}"
+                    )
+                }
+                .subscribeOn(Schedulers.io())
                 .map { categories -> categories.map(CategoryMapper::toHelpCategory) }
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d(
+                        "HelpFragment",
+                        "Received categories on thread: ${Thread.currentThread().name}"
+                    )
+                }
                 .subscribe { categories -> showData(categories) }
+
             compositeDisposable.add(disposable)
         }
     }
+
 
     private fun showLoading() {
         binding.progressBarHelp.isVisible = true

@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -14,6 +15,7 @@ import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
@@ -50,16 +52,19 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun loadCategoryData() {
         val disposable = categoryRepository.getCategories()
-            .map { categories ->
-                categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
-            }
+            .doOnSubscribe { Log.d("FilterFragment", "Subscribed on thread: ${Thread.currentThread().name}") }
+            .subscribeOn(Schedulers.io())
+            .map { categories -> categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) } }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { Log.d("FilterFragment", "Mapped categories on thread: ${Thread.currentThread().name}") }
             .subscribe { mappedCategories ->
                 filterAdapter.submitList(mappedCategories)
             }
 
         compositeDisposable.add(disposable)
     }
+
+
 
     private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {

@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.news
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
@@ -15,6 +16,7 @@ import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
@@ -40,16 +42,21 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         newsRepository.getNews()
+            .doOnSubscribe { Log.d("NewsDetailFragment", "Subscribed on thread: ${Thread.currentThread().name}") }
+            .subscribeOn(Schedulers.io())
             .flatMapIterable { newsList ->
                 listOfNotNull(
                     newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)
                 )
             }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { Log.d("NewsDetailFragment", "Binding detail on thread: ${Thread.currentThread().name}") }
             .subscribe { newsDetail ->
                 newsDetail.let(::bindNewsDetails)
             }
     }
+
+
 
     private fun bindNewsDetails(news: NewsDetail) {
         with(binding) {

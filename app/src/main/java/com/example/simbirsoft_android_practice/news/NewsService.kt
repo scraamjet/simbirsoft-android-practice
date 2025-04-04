@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.News
@@ -25,8 +26,20 @@ class NewsService : Service() {
     @SuppressLint("CheckResult")
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
         return newsRepository.getNewsWithDelay()
+            .doOnSubscribe {
+                Log.d(
+                    "NewsService",
+                    "Subscribed on thread: ${Thread.currentThread().name}"
+                )
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                Log.d(
+                    "NewsService",
+                    "Received news on thread: ${Thread.currentThread().name}"
+                )
+            }
             .subscribe { loadedNews -> newsLoadedListener(loadedNews) }
     }
 }
