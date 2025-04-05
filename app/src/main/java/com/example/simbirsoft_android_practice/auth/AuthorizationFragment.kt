@@ -83,7 +83,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun togglePasswordVisibility() {
         val passwordField = binding.editTextAuthorizationPassword
-        val cursorPosition = passwordField.selectionStart
 
         passwordVisibility = passwordVisibility.toggle()
 
@@ -99,8 +98,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             ContextCompat.getDrawable(requireContext(), passwordVisibility.iconRes),
             null
         )
-
-        passwordField.setSelection(cursorPosition)
     }
 
 
