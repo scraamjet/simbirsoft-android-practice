@@ -17,6 +17,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+private const val TAG_FILTER_FRAGMENT = "FilterFragment"
+private const val TAG_RANDOM_STRING = "RandomString"
+
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
@@ -51,20 +54,33 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val disposable = categoryRepository.getCategories()
-            .doOnSubscribe { Log.d("FilterFragment", "Subscribed on thread: ${Thread.currentThread().name}") }
+        val disposable = categoryRepository.getCombinedCategories()
+            .doOnSubscribe {
+                Log.d(
+                    TAG_FILTER_FRAGMENT,
+                    "Subscribed on thread: ${Thread.currentThread().name}"
+                )
+            }
             .subscribeOn(Schedulers.io())
-            .map { categories -> categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) } }
+            .doOnNext { (_, randomString) ->
+                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
+            }
+            .map { (categories, _) ->
+                categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
+            }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { Log.d("FilterFragment", "Mapped categories on thread: ${Thread.currentThread().name}") }
+            .doOnNext {
+                Log.d(
+                    TAG_FILTER_FRAGMENT,
+                    "Mapped categories on thread: ${Thread.currentThread().name}"
+                )
+            }
             .subscribe { mappedCategories ->
                 filterAdapter.submitList(mappedCategories)
             }
 
         compositeDisposable.add(disposable)
     }
-
-
 
     private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {

@@ -13,6 +13,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+private const val TAG_NEWS_SERVICE = "NewsService"
+private const val TAG_RANDOM_STRING = "RandomString"
+
 class NewsService : Service() {
     private val binder = LocalBinder()
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(this)) }
@@ -25,22 +28,23 @@ class NewsService : Service() {
 
     @SuppressLint("CheckResult")
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsWithDelay()
+        return newsRepository.getZippedNewsWithDelay()
             .doOnSubscribe {
-                Log.d(
-                    "NewsService",
-                    "Subscribed on thread: ${Thread.currentThread().name}"
-                )
+                Log.d(TAG_NEWS_SERVICE, "Subscribed on thread: ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
+            .doOnNext { (_, randomString) ->
+                Log.d(TAG_RANDOM_STRING , "Generated random string: $randomString")
+            }
+            .map { (newsList, _) ->
+                newsList
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                Log.d(
-                    "NewsService",
-                    "Received news on thread: ${Thread.currentThread().name}"
-                )
+                Log.d(TAG_NEWS_SERVICE, "Received news on thread: ${Thread.currentThread().name}")
             }
             .subscribe { loadedNews -> newsLoadedListener(loadedNews) }
     }
+
 }
 

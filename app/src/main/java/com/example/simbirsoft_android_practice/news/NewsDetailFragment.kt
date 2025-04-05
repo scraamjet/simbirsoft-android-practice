@@ -18,6 +18,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
+private const val TAG_RANDOM_STRING = "RandomString"
+
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
@@ -41,21 +44,34 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
-        newsRepository.getNews()
-            .doOnSubscribe { Log.d("NewsDetailFragment", "Subscribed on thread: ${Thread.currentThread().name}") }
-            .subscribeOn(Schedulers.io())
-            .flatMapIterable { newsList ->
-                listOfNotNull(
-                    newsList.find { it.id == selectedNewsId }?.let(NewsMapper::toNewsDetail)
+        val disposable = newsRepository.getZippedNews()
+            .doOnSubscribe {
+                Log.d(
+                    TAG_NEWS_DETAIL_FRAGMENT,
+                    "Subscribed on thread: ${Thread.currentThread().name}"
                 )
             }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { Log.d("NewsDetailFragment", "Binding detail on thread: ${Thread.currentThread().name}") }
-            .subscribe { newsDetail ->
-                newsDetail.let(::bindNewsDetails)
+            .subscribeOn(Schedulers.io())
+            .doOnNext { (_, randomString) ->
+                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
             }
-    }
+            .flatMapIterable { (newsList, _) ->
+                listOfNotNull(newsList.find { it.id == selectedNewsId }
+                    ?.let(NewsMapper::toNewsDetail))
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                Log.d(
+                    TAG_NEWS_DETAIL_FRAGMENT,
+                    "Binding detail on thread: ${Thread.currentThread().name}"
+                )
+            }
+            .subscribe { newsDetail ->
+                bindNewsDetails(newsDetail)
+            }
 
+        compositeDisposable.add(disposable)
+    }
 
 
     private fun bindNewsDetails(news: NewsDetail) {

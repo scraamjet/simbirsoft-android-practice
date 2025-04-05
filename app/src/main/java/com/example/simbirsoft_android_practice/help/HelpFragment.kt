@@ -22,6 +22,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_CATEGORIES = "key_categories"
+private const val TAG_HELP_FRAGMENT = "HelpFragment"
+private const val TAG_RANDOM_STRING = "RandomString"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
@@ -72,24 +74,25 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun loadCategories() {
         showLoading()
         categoryRepository?.let { repo ->
-            val disposable = repo.getCategoriesWithDelay()
+            val disposable = repo.getCombinedCategoriesWithDelay()
                 .doOnSubscribe {
-                    Log.d(
-                        "HelpFragment",
-                        "Subscribed on thread: ${Thread.currentThread().name}"
-                    )
+                    Log.d(TAG_HELP_FRAGMENT, "Subscribed on thread: ${Thread.currentThread().name}")
                 }
                 .subscribeOn(Schedulers.io())
-                .map { categories -> categories.map(CategoryMapper::toHelpCategory) }
+                .doOnNext { (_, randomString) ->
+                    Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
+                }
+                .map { (categories, _) ->
+                    categories.map(CategoryMapper::toHelpCategory)
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     Log.d(
-                        "HelpFragment",
+                        TAG_HELP_FRAGMENT,
                         "Received categories on thread: ${Thread.currentThread().name}"
                     )
                 }
                 .subscribe { categories -> showData(categories) }
-
             compositeDisposable.add(disposable)
         }
     }
