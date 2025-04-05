@@ -83,9 +83,13 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             childFragmentManager,
             binding.viewPagerSearch.currentItem
         )
-        if (fragment is EventListFragment) {
-            fragment.searchQuery = currentQuery
-            fragment.refreshData()
+        when (fragment) {
+            is EventListFragment -> {
+                fragment.searchQuery = currentQuery
+                fragment.refreshData()
+            }
+
+            is OrganizationListFragment -> fragment.refreshData()
         }
     }
 

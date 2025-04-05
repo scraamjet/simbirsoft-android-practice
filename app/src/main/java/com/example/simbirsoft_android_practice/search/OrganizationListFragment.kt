@@ -31,7 +31,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    private fun refreshData() {
+    fun refreshData() {
         adapter.submitList(generateEventsList())
     }
 

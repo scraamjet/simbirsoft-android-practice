@@ -17,7 +17,7 @@ private const val TAG = "NewsRepository"
 class NewsRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
 
-    private fun getNews(): Observable<List<News>> {
+    fun getNews(): Observable<List<News>> {
         return Observable.fromCallable {
             val json = extractor.readJsonFile(NEWS_JSON_FILE)
             val type = object : TypeToken<List<News>>() {}.type

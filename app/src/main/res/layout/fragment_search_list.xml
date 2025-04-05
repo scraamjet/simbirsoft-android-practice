@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/search_list_search_results_label"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -41,16 +41,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/search_list_layout_margin_vertical"
             android:background="@android:color/transparent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:divider="@drawable/item_search_result_divider"/>
+            android:divider="@drawable/item_search_result_divider"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <LinearLayout
             android:id="@+id/linearLayoutSearchNoQuery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/light_grey_two"
             android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -18,6 +18,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val adapter = EventAdapter()
+    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
     var searchQuery: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +37,10 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     @SuppressLint("CheckResult")
     fun refreshData() {
-        EventRepository(JsonAssetExtractor(requireContext())).getEvents()
+        newsRepository.getNews()
+            .map { newsList ->
+                newsList.map(SearchMapper::toEvent)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
