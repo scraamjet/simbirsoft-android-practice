@@ -29,7 +29,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
     private var categoryRepository: CategoryRepository? = null
     private val adapter by lazy { HelpAdapter() }
-    private var categories: List<HelpCategory>? = null
+    private var categoriesItems: List<HelpCategory>? = null
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -104,33 +104,35 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun showData(helpCategories: List<HelpCategory>?) {
-        categories = helpCategories
-        adapter.submitList(helpCategories)
         binding.apply {
             progressBarHelp.isVisible = false
             recyclerViewHelpItem.isVisible = true
         }
+        categoriesItems = helpCategories
+        adapter.submitList(helpCategories)
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            loadCategories()
-        } else {
-            val savedCategories =
-                BundleCompat.getParcelableArrayList(
-                    savedInstanceState,
-                    KEY_CATEGORIES,
-                    HelpCategory::class.java,
-                )
-            savedCategories?.let { restoredCategories ->
-                categories = restoredCategories
-                adapter.submitList(restoredCategories)
+        if (savedInstanceState?.containsKey(KEY_CATEGORIES) == true) {
+            savedInstanceState.let { bundle ->
+                val savedCategories =
+                    BundleCompat.getParcelableArrayList(
+                        bundle,
+                        KEY_CATEGORIES,
+                        HelpCategory::class.java,
+                    )
+                savedCategories?.let { restoredCategories ->
+                    categoriesItems = restoredCategories
+                    showData(restoredCategories)
+                }
             }
+        } else {
+            loadCategories()
         }
     }
 
     private fun saveState(outState: Bundle) {
-        categories?.let { savedCategoriesList ->
+        categoriesItems?.let { savedCategoriesList ->
             outState.putParcelableArrayList(KEY_CATEGORIES, ArrayList(savedCategoriesList))
         }
     }

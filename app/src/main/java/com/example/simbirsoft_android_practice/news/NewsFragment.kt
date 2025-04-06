@@ -65,13 +65,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (newsItems == null) {
-            loadNewsData()
-        }
-    }
-
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
