@@ -114,5 +114,8 @@
     <string name="search_by_events_example_text">Например,</string>
     <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
 
+    <string name="search_no_results">По вашему запросу ничего не найдено</string>
+
+
 
 </resources>

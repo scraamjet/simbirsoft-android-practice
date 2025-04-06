@@ -70,6 +70,7 @@
     <dimen name="search_list_layout_margin_horizontal">8dp</dimen>
     <dimen name="search_list_layout_margin_top">8dp</dimen>
     <dimen name="search_list_layout_margin_end">72dp</dimen>
+    <dimen name="margin_top_search_list_linear_layout_no_query">33dp</dimen>
 
     <!-- item_search_result -->
     <dimen name="item_search_result_margin_top">17dp</dimen>

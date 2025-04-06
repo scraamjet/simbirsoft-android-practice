@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.search
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
@@ -8,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
+import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.ZoomOutPageTransformer
 import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
@@ -23,6 +26,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
     private val searchSubject = PublishSubject.create<String>()
+    private val compositeDisposable = CompositeDisposable()
     private var currentQuery: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,6 +34,12 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         initViewPager()
         initTabLayout()
         initSearchView()
+        observeKeyboardVisibility()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.clear()
     }
 
     private fun initViewPager() {
@@ -71,19 +81,24 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             }
         })
 
-        searchSubject
+        val disposable = searchSubject
             .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { refreshCurrentFragment() }
+            .subscribe { refreshEventFragment() }
+        compositeDisposable.add(disposable)
     }
 
-    private fun refreshCurrentFragment() {
-        val fragment = binding.viewPagerSearch.findFragmentAtPosition(
+
+    private fun getCurrentFragment(): Fragment? {
+        return binding.viewPagerSearch.findFragmentAtPosition(
             childFragmentManager,
             binding.viewPagerSearch.currentItem
         )
-        when (fragment) {
+    }
+
+    private fun refreshCurrentFragment() {
+        when (val fragment = getCurrentFragment()) {
             is EventListFragment -> {
                 fragment.searchQuery = currentQuery
                 fragment.refreshData()
@@ -92,6 +107,34 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             is OrganizationListFragment -> fragment.refreshData()
         }
     }
+
+    private fun refreshEventFragment() {
+        val fragment = getCurrentFragment()
+        if (fragment is EventListFragment) {
+            fragment.searchQuery = currentQuery
+            fragment.refreshData()
+        }
+    }
+
+    private fun observeKeyboardVisibility() {
+        val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+
+            val screenHeight = rootView.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+
+            val isKeyboardVisible = keypadHeight > screenHeight * 0.15 // эмпирический порог
+
+            if (isKeyboardVisible) {
+                (activity as? MainActivity)?.hideBottomNavigation()
+            } else {
+                (activity as? MainActivity)?.showBottomNavigation()
+            }
+        }
+    }
+
 
     companion object {
         fun newInstance() = SearchContainerFragment()
