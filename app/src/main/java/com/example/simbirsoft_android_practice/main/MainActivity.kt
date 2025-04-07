@@ -42,9 +42,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun loadFragment(fragment: Fragment, addToBackStack: Boolean = true) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayoutFragmentContainer, fragment)
+    private fun loadFragment(
+        fragment: Fragment,
+        addToBackStack: Boolean = true,
+    ) {
+        val transaction =
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, fragment)
 
         if (addToBackStack) {
             transaction.addToBackStack(null)
@@ -71,4 +75,3 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 }
-

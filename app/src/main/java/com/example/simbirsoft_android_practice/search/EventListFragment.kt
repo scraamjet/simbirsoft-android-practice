@@ -18,14 +18,16 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
-
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
     private val compositeDisposable = CompositeDisposable()
     var searchQuery: String = ""
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         refreshData()
@@ -51,29 +53,31 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     @SuppressLint("CheckResult")
     fun refreshData() {
-        val disposable = newsRepository.getNews()
-            .subscribeOn(Schedulers.io())
-            .map { newsList -> newsList.map(SearchMapper::toEvent) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { fetchedEvents ->
-                    val filteredEvents = fetchedEvents.filter { event ->
-                        event.title.contains(searchQuery, ignoreCase = true)
-                    }
+        val disposable =
+            newsRepository.getNews()
+                .subscribeOn(Schedulers.io())
+                .map { newsList -> newsList.map(SearchMapper::toEvent) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { fetchedEvents ->
+                        val filteredEvents =
+                            fetchedEvents.filter { event ->
+                                event.title.contains(searchQuery, ignoreCase = true)
+                            }
 
-                    when {
-                        searchQuery.isBlank() -> showSearchStub()
-                        filteredEvents.isEmpty() -> showNoResults()
-                        else -> showResults(filteredEvents)
-                    }
+                        when {
+                            searchQuery.isBlank() -> showSearchStub()
+                            filteredEvents.isEmpty() -> showNoResults()
+                            else -> showResults(filteredEvents)
+                        }
 
-                    eventAdapter.submitList(filteredEvents)
-                },
-                {
-                    showSearchStub()
-                    eventAdapter.submitList(emptyList())
-                }
-            )
+                        eventAdapter.submitList(filteredEvents)
+                    },
+                    {
+                        showSearchStub()
+                        eventAdapter.submitList(emptyList())
+                    },
+                )
         compositeDisposable.add(disposable)
     }
 
@@ -104,20 +108,16 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.visibility = View.GONE
             textViewKeyWords.visibility = View.VISIBLE
             textViewEventCount.visibility = View.VISIBLE
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                events.size,
-                events.size
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    events.size,
+                    events.size,
+                )
         }
     }
-
 
     companion object {
         fun newInstance() = EventListFragment()
     }
 }
-
-
-
-

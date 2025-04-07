@@ -86,7 +86,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         newsItems = null
     }
 
-
     private fun initRecyclerView() {
         binding.recyclerViewItemNews.apply {
             layoutManager = LinearLayoutManager(context)
@@ -106,16 +105,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun loadNewsData() {
         if (isServiceConnected) {
             showLoading()
-            val disposable = newsService?.loadNews { loadedNewsList ->
-                val selectedCategories = filterPrefs.getSelectedCategories()
-                val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
-                newsItems = filteredNewsItems
-                showData(filteredNewsItems)
-            }
+            val disposable =
+                newsService?.loadNews { loadedNewsList ->
+                    val selectedCategories = filterPrefs.getSelectedCategories()
+                    val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
+                    newsItems = filteredNewsItems
+                    showData(filteredNewsItems)
+                }
             disposable?.let { compositeDisposable.add(it) }
         }
     }
-
 
     private fun filterAndMapNews(
         loadedNewsList: List<News>,
@@ -179,8 +178,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }
@@ -196,5 +195,3 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         fun newInstance() = NewsFragment()
     }
 }
-
-

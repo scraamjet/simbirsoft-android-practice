@@ -22,13 +22,15 @@ private const val KEY_PASSWORD = "key_password"
 private const val MIN_INPUT_LENGTH = 6
 private const val DRAWABLE_END_INDEX = 2
 
-
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
     private val compositeDisposable = CompositeDisposable()
     private var passwordVisibility = VisibilityPassword.OPEN
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
 
@@ -62,21 +64,25 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             }
             return@setOnTouchListener false
         }
-
     }
 
     private fun observeInputFields() {
-        val emailObservable = binding.editTextAuthorizationEmail.textChanges()
-            .map { email -> email.length >= MIN_INPUT_LENGTH }
+        val emailObservable =
+            binding.editTextAuthorizationEmail.textChanges()
+                .map { email -> email.length >= MIN_INPUT_LENGTH }
 
-        val passwordObservable = binding.editTextAuthorizationPassword.textChanges()
-            .map { password -> password.length >= MIN_INPUT_LENGTH }
+        val passwordObservable =
+            binding.editTextAuthorizationPassword.textChanges()
+                .map { password -> password.length >= MIN_INPUT_LENGTH }
 
-        val combinedDisposable = Observable.combineLatest(emailObservable, passwordObservable)
-        { isEmailValid, isPasswordValid -> isEmailValid && isPasswordValid }
-            .subscribe { isFormValid ->
-                binding.buttonAuthorization.isEnabled = isFormValid
-            }
+        val combinedDisposable =
+            Observable.combineLatest(
+                emailObservable,
+                passwordObservable,
+            ) { isEmailValid, isPasswordValid -> isEmailValid && isPasswordValid }
+                .subscribe { isFormValid ->
+                    binding.buttonAuthorization.isEnabled = isFormValid
+                }
 
         compositeDisposable.add(combinedDisposable)
     }
@@ -86,20 +92,20 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         passwordVisibility = passwordVisibility.toggle()
 
-        passwordField.transformationMethod = if (passwordVisibility.isVisible) {
-            PasswordTransformationMethod.getInstance()
-        } else {
-            HideReturnsTransformationMethod.getInstance()
-        }
+        passwordField.transformationMethod =
+            if (passwordVisibility.isVisible) {
+                PasswordTransformationMethod.getInstance()
+            } else {
+                HideReturnsTransformationMethod.getInstance()
+            }
 
         passwordField.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
             ContextCompat.getDrawable(requireContext(), passwordVisibility.iconRes),
-            null
+            null,
         )
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

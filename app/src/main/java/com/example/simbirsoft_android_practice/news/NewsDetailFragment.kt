@@ -27,8 +27,10 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
     private val compositeDisposable = CompositeDisposable()
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
         loadNewsDetail()
@@ -44,35 +46,37 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
-        val disposable = newsRepository.getZippedNews()
-            .doOnSubscribe {
-                Log.d(
-                    TAG_NEWS_DETAIL_FRAGMENT,
-                    "Subscribed on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnNext { (_, randomString) ->
-                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
-            }
-            .flatMapIterable { (newsList, _) ->
-                listOfNotNull(newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                    ?.let(NewsMapper::toNewsDetail))
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d(
-                    TAG_NEWS_DETAIL_FRAGMENT,
-                    "Binding detail on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribe { newsDetail ->
-                bindNewsDetails(newsDetail)
-            }
+        val disposable =
+            newsRepository.getZippedNews()
+                .doOnSubscribe {
+                    Log.d(
+                        TAG_NEWS_DETAIL_FRAGMENT,
+                        "Subscribed on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .doOnNext { (_, randomString) ->
+                    Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
+                }
+                .flatMapIterable { (newsList, _) ->
+                    listOfNotNull(
+                        newsList.find { newsItem -> newsItem.id == selectedNewsId }
+                            ?.let(NewsMapper::toNewsDetail),
+                    )
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d(
+                        TAG_NEWS_DETAIL_FRAGMENT,
+                        "Binding detail on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribe { newsDetail ->
+                    bindNewsDetails(newsDetail)
+                }
 
         compositeDisposable.add(disposable)
     }
-
 
     private fun bindNewsDetails(news: NewsDetail) {
         with(binding) {
@@ -87,7 +91,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             listOf(
                 imageViewNewsDetailMainImage,
                 imageViewNewsDetailPrimaryImage,
-                imageViewNewsDetailSecondaryImage
+                imageViewNewsDetailSecondaryImage,
             )
                 .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
@@ -108,4 +112,3 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         fun newInstance() = NewsDetailFragment()
     }
 }
-

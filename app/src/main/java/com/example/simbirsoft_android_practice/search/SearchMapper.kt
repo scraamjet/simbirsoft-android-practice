@@ -7,6 +7,6 @@ object SearchMapper {
     fun toEvent(news: News): Event =
         Event(
             id = news.id,
-            title = news.title
+            title = news.title,
         )
 }

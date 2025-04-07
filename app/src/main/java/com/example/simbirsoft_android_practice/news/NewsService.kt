@@ -34,7 +34,7 @@ class NewsService : Service() {
             }
             .subscribeOn(Schedulers.io())
             .doOnNext { (_, randomString) ->
-                Log.d(TAG_RANDOM_STRING , "Generated random string: $randomString")
+                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
             }
             .map { (newsList, _) ->
                 newsList
@@ -45,6 +45,4 @@ class NewsService : Service() {
             }
             .subscribe { loadedNews -> newsLoadedListener(loadedNews) }
     }
-
 }
-

@@ -26,25 +26,27 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
     }
 
     fun getCombinedCategories(): Observable<Pair<List<Category>, String>> {
-        val categoriesObservable = getCategories()
-            .doOnSubscribe {
-                Log.d(TAG, "Subscribed to categories on thread: ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d(TAG, "Emitted categories on thread: ${Thread.currentThread().name}")
-            }
+        val categoriesObservable =
+            getCategories()
+                .doOnSubscribe {
+                    Log.d(TAG, "Subscribed to categories on thread: ${Thread.currentThread().name}")
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d(TAG, "Emitted categories on thread: ${Thread.currentThread().name}")
+                }
 
-        val randomStringObservable = Observable.fromCallable { generateRandomString() }
-            .doOnSubscribe {
-                Log.d(TAG, "Subscribed to random string on thread: ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d("CategoryRepository", "Emitted random string on thread: ${Thread.currentThread().name}")
-            }
+        val randomStringObservable =
+            Observable.fromCallable { generateRandomString() }
+                .doOnSubscribe {
+                    Log.d(TAG, "Subscribed to random string on thread: ${Thread.currentThread().name}")
+                }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d("CategoryRepository", "Emitted random string on thread: ${Thread.currentThread().name}")
+                }
 
         return Observable.combineLatest(categoriesObservable, randomStringObservable) { categories, randomString ->
             Log.d(TAG, "Combining on thread: ${Thread.currentThread().name}")
@@ -56,5 +58,4 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
         return getCombinedCategories()
             .delay(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
-
 }

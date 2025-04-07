@@ -23,15 +23,16 @@ import java.util.concurrent.TimeUnit
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
 
-
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
-
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
     private val searchSubject = PublishSubject.create<String>()
     private val compositeDisposable = CompositeDisposable()
     private var currentQuery: String = ""
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
         initTabLayout()
@@ -70,32 +71,33 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     @SuppressLint("CheckResult")
     private fun initSearchView() {
+        binding.searchViewSearch.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
 
-        binding.searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    currentQuery = newText.orEmpty()
+                    searchSubject.onNext(currentQuery)
+                    return true
+                }
+            },
+        )
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                currentQuery = newText.orEmpty()
-                searchSubject.onNext(currentQuery)
-                return true
-            }
-        })
-
-        val disposable = searchSubject
-            .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
-            .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { refreshEventFragment() }
+        val disposable =
+            searchSubject
+                .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { refreshEventFragment() }
         compositeDisposable.add(disposable)
     }
-
 
     private fun getCurrentFragment(): Fragment? {
         return binding.viewPagerSearch.findFragmentAtPosition(
             childFragmentManager,
-            binding.viewPagerSearch.currentItem
+            binding.viewPagerSearch.currentItem,
         )
     }
 
@@ -137,7 +139,6 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             }
         }
     }
-
 
     companion object {
         fun newInstance() = SearchContainerFragment()

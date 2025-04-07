@@ -6,11 +6,11 @@ import android.os.IBinder
 
 class NewsServiceConnection(
     private val onServiceConnected: (NewsService) -> Unit,
-    private val onServiceDisconnected: () -> Unit
+    private val onServiceDisconnected: () -> Unit,
 ) : ServiceConnection {
     override fun onServiceConnected(
         className: ComponentName,
-        service: IBinder
+        service: IBinder,
     ) {
         val newsService = (service as NewsService.LocalBinder).getService()
         onServiceConnected(newsService)

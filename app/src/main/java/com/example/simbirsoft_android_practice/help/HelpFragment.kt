@@ -32,7 +32,6 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private var categoriesItems: List<HelpCategory>? = null
     private val compositeDisposable = CompositeDisposable()
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         categoryRepository = CategoryRepository(JsonAssetExtractor(context))
@@ -74,29 +73,29 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun loadCategories() {
         showLoading()
         categoryRepository?.let { repo ->
-            val disposable = repo.getCombinedCategoriesWithDelay()
-                .doOnSubscribe {
-                    Log.d(TAG_HELP_FRAGMENT, "Subscribed on thread: ${Thread.currentThread().name}")
-                }
-                .subscribeOn(Schedulers.io())
-                .doOnNext { (_, randomString) ->
-                    Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
-                }
-                .map { (categories, _) ->
-                    categories.map(CategoryMapper::toHelpCategory)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
-                    Log.d(
-                        TAG_HELP_FRAGMENT,
-                        "Received categories on thread: ${Thread.currentThread().name}"
-                    )
-                }
-                .subscribe { categories -> showData(categories) }
+            val disposable =
+                repo.getCombinedCategoriesWithDelay()
+                    .doOnSubscribe {
+                        Log.d(TAG_HELP_FRAGMENT, "Subscribed on thread: ${Thread.currentThread().name}")
+                    }
+                    .subscribeOn(Schedulers.io())
+                    .doOnNext { (_, randomString) ->
+                        Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
+                    }
+                    .map { (categories, _) ->
+                        categories.map(CategoryMapper::toHelpCategory)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext {
+                        Log.d(
+                            TAG_HELP_FRAGMENT,
+                            "Received categories on thread: ${Thread.currentThread().name}",
+                        )
+                    }
+                    .subscribe { categories -> showData(categories) }
             compositeDisposable.add(disposable)
         }
     }
-
 
     private fun showLoading() {
         binding.progressBarHelp.isVisible = true

@@ -27,8 +27,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val categoryRepository by lazy { CategoryRepository(JsonAssetExtractor(requireContext())) }
     private val compositeDisposable = CompositeDisposable()
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -54,35 +56,36 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val disposable = categoryRepository.getCombinedCategories()
-            .doOnSubscribe {
-                Log.d(
-                    TAG_FILTER_FRAGMENT,
-                    "Subscribed on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnNext { (_, randomString) ->
-                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
-            }
-            .map { (categories, _) ->
-                categories.map { category ->
-                    CategoryMapper.toFilterCategory(
-                        category,
-                        filterPrefs
+        val disposable =
+            categoryRepository.getCombinedCategories()
+                .doOnSubscribe {
+                    Log.d(
+                        TAG_FILTER_FRAGMENT,
+                        "Subscribed on thread: ${Thread.currentThread().name}",
                     )
                 }
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d(
-                    TAG_FILTER_FRAGMENT,
-                    "Mapped categories on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribe { mappedCategories ->
-                filterAdapter.submitList(mappedCategories)
-            }
+                .subscribeOn(Schedulers.io())
+                .doOnNext { (_, randomString) ->
+                    Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
+                }
+                .map { (categories, _) ->
+                    categories.map { category ->
+                        CategoryMapper.toFilterCategory(
+                            category,
+                            filterPrefs,
+                        )
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d(
+                        TAG_FILTER_FRAGMENT,
+                        "Mapped categories on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribe { mappedCategories ->
+                    filterAdapter.submitList(mappedCategories)
+                }
 
         compositeDisposable.add(disposable)
     }

@@ -21,7 +21,10 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         refreshData()
@@ -49,7 +52,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         return List(ORGANIZATIONS_LIST_SIZE) {
             Event(
                 Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
-                generateRandomString()
+                generateRandomString(),
             )
         }
     }
@@ -61,11 +64,12 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.visibility = View.GONE
             textViewKeyWords.visibility = View.VISIBLE
             textViewEventCount.visibility = View.VISIBLE
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                ORGANIZATIONS_LIST_SIZE,
-                ORGANIZATIONS_LIST_SIZE
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    ORGANIZATIONS_LIST_SIZE,
+                    ORGANIZATIONS_LIST_SIZE,
+                )
         }
     }
 
