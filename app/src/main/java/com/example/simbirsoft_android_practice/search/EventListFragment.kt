@@ -80,7 +80,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private fun showSearchStub() {
         binding.apply {
             recyclerViewEventItem.visibility = View.GONE
-            linearLayoutSearchNoQuery.visibility = View.VISIBLE
+            scrollViewSearchNoQuery.visibility = View.VISIBLE
             textViewKeyWords.visibility = View.GONE
             textViewEventCount.visibility = View.GONE
             textViewNoResults.visibility = View.GONE
@@ -90,7 +90,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private fun showNoResults() {
         binding.apply {
             recyclerViewEventItem.visibility = View.GONE
-            linearLayoutSearchNoQuery.visibility = View.GONE
+            scrollViewSearchNoQuery.visibility = View.GONE
             textViewKeyWords.visibility = View.GONE
             textViewEventCount.visibility = View.GONE
             textViewNoResults.visibility = View.VISIBLE
@@ -99,7 +99,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     private fun showResults(events: List<Event>) {
         binding.apply {
-            linearLayoutSearchNoQuery.visibility = View.GONE
+            scrollViewSearchNoQuery.visibility = View.GONE
             recyclerViewEventItem.visibility = View.VISIBLE
             textViewNoResults.visibility = View.GONE
             textViewKeyWords.visibility = View.VISIBLE

@@ -6,6 +6,74 @@
     android:background="@color/light_grey_two"
     android:orientation="vertical">
 
+
+    <ScrollView
+        android:id="@+id/scrollViewSearchNoQuery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutSearchNoQuery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_search_list_linear_layout_no_query"
+            android:background="@color/light_grey_two"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/icon_zoom" />
+
+            <TextView
+                style="@style/BodyTextMediumBlackDeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/icon_margin_top"
+                android:gravity="center"
+                android:text="@string/search_by_events_text_hint" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/text_margin_top"
+                android:layout_marginBottom="@dimen/margin_bottom_linear_layout_no_query_scroll"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BodyTextBlackDeepEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_by_events_example_text" />
+
+                <TextView
+                    style="@style/BodyTextLinkGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/text_margin_start"
+                    android:text="@string/search_by_events_example_keywords"
+                    android:textColor="@color/green" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewNoResults"
+        style="@style/BodyTextMediumBlackDeep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_top_search_list_linear_layout_no_query"
+        android:text="@string/search_no_results"
+        android:textAlignment="center"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,66 +102,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/search_list_search_results_label"
                 android:visibility="gone" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewNoResults"
-            style="@style/BodyTextMediumBlackDeep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/search_no_results"
-            android:textAlignment="center"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSearchNoQuery"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_top_search_list_linear_layout_no_query"
-            android:background="@color/light_grey_two"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/icon_zoom" />
-
-            <TextView
-                style="@style/BodyTextMediumBlackDeep"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/icon_margin_top"
-                android:gravity="center"
-                android:text="@string/search_by_events_text_hint" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/text_margin_top"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/BodyTextBlackDeepEnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_by_events_example_text" />
-
-                <TextView
-                    style="@style/BodyTextLinkGreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/text_margin_start"
-                    android:text="@string/search_by_events_example_keywords"
-                    android:textColor="@color/green" />
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -103,6 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_search_result_border">
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewEventItem"
