@@ -21,6 +21,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
+private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
+
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
@@ -125,7 +127,8 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             val screenHeight = rootView.rootView.height
             val keypadHeight = screenHeight - rect.bottom
 
-            val isKeyboardVisible = keypadHeight > screenHeight * 0.15 // эмпирический порог
+            val isKeyboardVisible =
+                keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
             if (isKeyboardVisible) {
                 (activity as? MainActivity)?.hideBottomNavigation()
