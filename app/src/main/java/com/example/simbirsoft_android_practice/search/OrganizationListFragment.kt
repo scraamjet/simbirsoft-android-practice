@@ -14,6 +14,8 @@ import dev.androidbroadcast.vbpd.viewBinding
 import kotlin.random.Random
 
 private const val ORGANIZATIONS_LIST_SIZE = 5
+private const val EVENT_ID_MIN = 1
+private const val EVENT_ID_MAX = 100
 
 class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
@@ -46,7 +48,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private fun generateEventsList(): List<Event> {
         return List(ORGANIZATIONS_LIST_SIZE) {
             Event(
-                Random.nextInt(1, 100),
+                Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
                 generateRandomString()
             )
         }
