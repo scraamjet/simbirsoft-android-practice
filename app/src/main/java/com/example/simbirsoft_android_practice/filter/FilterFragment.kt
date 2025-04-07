@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.data.Category
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -66,7 +67,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                 Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
             }
             .map { (categories, _) ->
-                categories.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
+                categories.map { category ->
+                    CategoryMapper.toFilterCategory(
+                        category,
+                        filterPrefs
+                    )
+                }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {

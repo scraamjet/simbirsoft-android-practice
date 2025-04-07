@@ -187,7 +187,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
         val readNewsIds = newsPrefs.getReadNewsIds()
-        val unreadCount = newsList.count { it.id !in readNewsIds }
+        val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
         unreadNewsCountSubject.onNext(unreadCount)
         (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
     }

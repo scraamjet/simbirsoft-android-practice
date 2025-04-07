@@ -56,7 +56,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
             }
             .flatMapIterable { (newsList, _) ->
-                listOfNotNull(newsList.find { it.id == selectedNewsId }
+                listOfNotNull(newsList.find { newsItem -> newsItem.id == selectedNewsId }
                     ?.let(NewsMapper::toNewsDetail))
             }
             .observeOn(AndroidSchedulers.mainThread())
