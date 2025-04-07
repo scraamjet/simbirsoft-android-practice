@@ -55,7 +55,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private fun showResults() {
         binding.apply {
             linearLayoutSearchNoQuery.visibility = View.GONE
-            frameLayoutRecyclerViewContainer.visibility = View.VISIBLE
+            recyclerViewEventItem.visibility = View.VISIBLE
             textViewNoResults.visibility = View.GONE
             textViewKeyWords.visibility = View.VISIBLE
             textViewEventCount.visibility = View.VISIBLE

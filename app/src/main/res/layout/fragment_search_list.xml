@@ -38,7 +38,7 @@
 
         <TextView
             android:id="@+id/textViewNoResults"
-            style="@style/TextStyle10"
+            style="@style/BodyTextMediumBlackDeep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -65,7 +65,7 @@
                 android:src="@drawable/icon_zoom" />
 
             <TextView
-                style="@style/TextStyle10"
+                style="@style/BodyTextMediumBlackDeep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -81,13 +81,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/TextStyle20"
+                    style="@style/BodyTextBlackDeepEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/search_by_events_example_text" />
 
                 <TextView
-                    style="@style/TextStyle7"
+                    style="@style/BodyTextLinkGreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/text_margin_start"
