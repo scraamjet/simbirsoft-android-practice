@@ -14,14 +14,14 @@ class NewsPreferences(context: Context) {
         val readNewsIds = getReadNewsIds().toMutableSet()
         readNewsIds.add(newsId)
         prefs.edit {
-            putStringSet(KEY_READ_NEWS_IDS, readNewsIds.map { it.toString() }.toSet())
+            putStringSet(KEY_READ_NEWS_IDS, readNewsIds.map { id -> id.toString() }.toSet())
             putString(KEY_SELECTED_NEWS_ID, newsId.toString())
         }
     }
 
     fun getReadNewsIds(): Set<Int> {
         val readNewsIdStrings = prefs.getStringSet(KEY_READ_NEWS_IDS, emptySet()) ?: emptySet()
-        return readNewsIdStrings.mapNotNull { it.toIntOrNull() }.toSet()
+        return readNewsIdStrings.mapNotNull { newsIdString -> newsIdString.toIntOrNull() }.toSet()
     }
 
     fun getSelectedNewsId(): Int? {
