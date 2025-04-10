@@ -8,16 +8,25 @@ import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.util.concurrent.TimeUnit
 
 private const val NEWS_JSON_FILE = "news.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 private const val TAG = "NewsRepository"
 
-class NewsRepository(private val extractor: JsonAssetExtractor) {
+class NewsRepository(
+    private val extractor: JsonAssetExtractor,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+) {
     private val gson = Gson()
 
-    fun getNews(): Observable<List<News>> {
+    private fun getNews(): Observable<List<News>> {
         return Observable.fromCallable {
             val json = extractor.readJsonFile(NEWS_JSON_FILE)
             val type = object : TypeToken<List<News>>() {}.type
@@ -40,7 +49,10 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
         val randomStringObservable =
             Observable.fromCallable { generateRandomString() }
                 .doOnSubscribe {
-                    Log.d(TAG, "Subscribed to random string on thread: ${Thread.currentThread().name}")
+                    Log.d(
+                        TAG,
+                        "Subscribed to random string on thread: ${Thread.currentThread().name}",
+                    )
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -58,4 +70,15 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
         return getZippedNews()
             .delay(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
+
+    fun getNewsFlow(): Flow<List<News>> =
+        flow {
+            val json = extractor.readJsonFile(NEWS_JSON_FILE)
+            val type = object : TypeToken<List<News>>() {}.type
+            val newsList: List<News> = gson.fromJson(json, type)
+            emit(newsList)
+        }.catch { exception ->
+            Log.e(TAG, "Error while loading news: ${exception.localizedMessage}")
+            emit(emptyList())
+        }.flowOn(dispatcher)
 }

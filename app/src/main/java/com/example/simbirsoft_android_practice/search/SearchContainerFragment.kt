@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice.search
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -12,22 +12,31 @@ import com.example.simbirsoft_android_practice.databinding.FragmentSearchContain
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.ZoomOutPageTransformer
 import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
+private const val TAG = "SearchContainerFragment"
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
-    private val searchSubject = PublishSubject.create<String>()
-    private val compositeDisposable = CompositeDisposable()
+    private val searchQueryFlow = MutableStateFlow("")
     private var currentQuery: String = ""
+
+    private val job = SupervisorJob()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onViewCreated(
         view: View,
@@ -38,60 +47,68 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         initTabLayout()
         initSearchView()
         observeKeyboardVisibility()
+        observeSearchFlow()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.clear()
+        job.cancel()
     }
 
     private fun initViewPager() {
-        val viewPager: ViewPager2 = binding.viewPagerSearch
         val adapter = SearchViewPagerAdapter(this)
-        viewPager.adapter = adapter
-
-        viewPager.setPageTransformer(ZoomOutPageTransformer())
-
-        viewPager.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    refreshCurrentFragment()
-                }
-            },
-        )
+        binding.viewPagerSearch.apply {
+            this.adapter = adapter
+            setPageTransformer(ZoomOutPageTransformer())
+            registerOnPageChangeCallback(
+                object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        refreshCurrentFragment()
+                    }
+                },
+            )
+        }
     }
 
     private fun initTabLayout() {
-        val tabLayout: TabLayout = binding.tabLayoutSearch
-        TabLayoutMediator(tabLayout, binding.viewPagerSearch) { tab, position ->
+        TabLayoutMediator(binding.tabLayoutSearch, binding.viewPagerSearch) { tab, position ->
             tab.text = getString(SearchTab.fromPosition(position).titleResId)
         }.attach()
     }
 
-    @SuppressLint("CheckResult")
     private fun initSearchView() {
         binding.searchViewSearch.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
+                override fun onQueryTextSubmit(query: String?): Boolean = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    currentQuery = newText.orEmpty()
-                    searchSubject.onNext(currentQuery)
+                    val query = newText.orEmpty()
+                    currentQuery = query
+                    searchQueryFlow.value = query
                     return true
                 }
             },
         )
+    }
 
-        val disposable =
-            searchSubject
-                .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
+    @OptIn(FlowPreview::class)
+    private fun observeSearchFlow() {
+        coroutineScope.launch {
+            searchQueryFlow
+                .debounce(DEBOUNCE_DELAY_MILLISECONDS)
                 .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { refreshEventFragment() }
-        compositeDisposable.add(disposable)
+                .flowOn(Dispatchers.Default)
+                .catch { exception ->
+                    Log.e(
+                        TAG,
+                        "Error while processing search query: ${exception.localizedMessage}",
+                    )
+                }
+                .collectLatest {
+                    refreshEventFragment()
+                }
+        }
     }
 
     private fun getCurrentFragment(): Fragment? {
@@ -128,7 +145,6 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
             val screenHeight = rootView.rootView.height
             val keypadHeight = screenHeight - rect.bottom
-
             val isKeyboardVisible =
                 keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 

@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.search
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -13,15 +13,22 @@ import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+
+private const val TAG = "EventListFragment"
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
     private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
-    private val compositeDisposable = CompositeDisposable()
+    private val job = SupervisorJob()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
+
     var searchQuery: String = ""
 
     override fun onViewCreated(
@@ -35,7 +42,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.clear()
+        job.cancel()
     }
 
     private fun initRecyclerView() {
@@ -51,34 +58,34 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    @SuppressLint("CheckResult")
     fun refreshData() {
-        val disposable =
-            newsRepository.getNews()
-                .subscribeOn(Schedulers.io())
-                .map { newsList -> newsList.map(SearchMapper::toEvent) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { fetchedEvents ->
-                        val filteredEvents =
-                            fetchedEvents.filter { event ->
-                                event.title.contains(searchQuery, ignoreCase = true)
-                            }
-
-                        when {
-                            searchQuery.isBlank() -> showSearchStub()
-                            filteredEvents.isEmpty() -> showNoResults()
-                            else -> showResults(filteredEvents)
+        coroutineScope.launch {
+            newsRepository.getNewsFlow()
+                .map { newsList ->
+                    newsList.map(SearchMapper::toEvent)
+                }
+                .catch { exception ->
+                    Log.e(
+                        TAG,
+                        "Error while mapping or collecting news: ${exception.localizedMessage}",
+                    )
+                    showSearchStub()
+                    eventAdapter.submitList(emptyList())
+                }
+                .collect { eventList ->
+                    val filteredEvents =
+                        eventList.filter { event ->
+                            event.title.contains(searchQuery, ignoreCase = true)
                         }
 
-                        eventAdapter.submitList(filteredEvents)
-                    },
-                    {
-                        showSearchStub()
-                        eventAdapter.submitList(emptyList())
-                    },
-                )
-        compositeDisposable.add(disposable)
+                    when {
+                        searchQuery.isBlank() -> showSearchStub()
+                        filteredEvents.isEmpty() -> showNoResults()
+                        else -> showResults(filteredEvents)
+                    }
+                    eventAdapter.submitList(filteredEvents)
+                }
+        }
     }
 
     private fun showSearchStub() {
