@@ -8,13 +8,21 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
+import com.example.simbirsoft_android_practice.news.NewsFlowHolder
 import com.example.simbirsoft_android_practice.news.NewsFragment
 import com.example.simbirsoft_android_practice.profile.ProfileFragment
 import com.example.simbirsoft_android_practice.search.SearchContainerFragment
 import dev.androidbroadcast.vbpd.viewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
+    private val mainScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,5 +81,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         } else {
             badge.isVisible = false
         }
+    }
+
+    private fun observeUnreadNewsCount() {
+        mainScope.launch {
+            NewsFlowHolder.unreadNewsCount.collect { count ->
+                updateUnreadNewsBadge(count)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainScope.cancel()
     }
 }

@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.news
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
@@ -19,6 +20,12 @@ import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.withContext
 
 private const val KEY_NEWS_ITEMS = "news_items"
 private const val SCROLL_FLAG_NONE = 0
@@ -184,11 +191,30 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
-        val readNewsIds = newsPrefs.getReadNewsIds()
-        val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
-        unreadNewsCountSubject.onNext(unreadCount)
-        (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                val readNewsIds = withContext(Dispatchers.IO) {
+                    newsPrefs.getReadNewsIds()
+                }
+
+                val unreadCount = withContext(Dispatchers.Default) {
+                    newsList.count { it.id !in readNewsIds }
+                }
+
+                withContext(newSingleThreadContext("UnreadCountThread")) {
+                    NewsFlowHolder.updateUnreadCount(unreadCount)
+                }
+
+                withContext(Dispatchers.Main) {
+                    (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
+                }
+
+            } catch (e: Exception) {
+                Log.e("UnreadNews", "Ошибка при обновлении счётчика", e)
+            }
+        }
     }
 
     companion object {
