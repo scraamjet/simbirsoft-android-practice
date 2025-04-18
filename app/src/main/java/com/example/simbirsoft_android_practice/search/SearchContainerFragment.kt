@@ -23,11 +23,13 @@ import java.util.concurrent.TimeUnit
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
 
-class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
+class SearchContainerFragment : Fragment(R.layout.fragment_search_container), SearchQueryProvider {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
     private val searchSubject = PublishSubject.create<String>()
     private val compositeDisposable = CompositeDisposable()
     private var currentQuery: String = ""
+    override fun getSearchQuery(): String = currentQuery
+
 
     override fun onViewCreated(
         view: View,
@@ -104,7 +106,6 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private fun refreshCurrentFragment() {
         when (val fragment = getCurrentFragment()) {
             is EventListFragment -> {
-                fragment.searchQuery = currentQuery
                 fragment.refreshData()
             }
 
@@ -115,7 +116,6 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private fun refreshEventFragment() {
         val fragment = getCurrentFragment()
         if (fragment is EventListFragment) {
-            fragment.searchQuery = currentQuery
             fragment.refreshData()
         }
     }

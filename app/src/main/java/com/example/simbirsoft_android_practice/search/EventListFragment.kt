@@ -23,7 +23,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val newsRepository: NewsRepository
         get() = (requireActivity().application as RepositoryProvider).newsRepository
     private val compositeDisposable = CompositeDisposable()
-    var searchQuery: String = ""
 
     override fun onViewCreated(
         view: View,
@@ -53,6 +52,8 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun refreshData() {
+        val searchQuery = (parentFragment as? SearchQueryProvider)?.getSearchQuery()
+            .orEmpty()
         val disposable = if (newsRepository.getCachedNews() == null) {
             showLoading()
             newsRepository.getNewsWithDelay()
@@ -64,7 +65,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { fetchedEvents ->
-                    handleFetchedEvents(fetchedEvents)
+                    handleFetchedEvents(fetchedEvents, searchQuery)
                 },
                 {
                     showSearchStub()
@@ -74,7 +75,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
         compositeDisposable.add(disposable)
     }
-
 
 
     private fun showSearchStub() {
@@ -127,7 +127,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    private fun handleFetchedEvents(fetchedEvents: List<Event>) {
+    private fun handleFetchedEvents(fetchedEvents: List<Event>, searchQuery: String) {
         val filteredEvents = fetchedEvents.filter { event ->
             event.title.contains(searchQuery, ignoreCase = true)
         }
