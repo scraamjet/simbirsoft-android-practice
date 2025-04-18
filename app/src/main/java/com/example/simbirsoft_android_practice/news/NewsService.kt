@@ -1,24 +1,23 @@
 package com.example.simbirsoft_android_practice.news
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.core.NewsRepository
+import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.News
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-private const val TAG_NEWS_SERVICE = "NewsService"
-private const val TAG_RANDOM_STRING = "RandomString"
+private const val TAG = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
-    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(this)) }
+    private val newsRepository: NewsRepository
+        get() = (application as RepositoryProvider).newsRepository
 
     override fun onBind(intent: Intent): IBinder = binder
 
@@ -26,23 +25,39 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    @SuppressLint("CheckResult")
+    fun isNewsAlreadyLoaded(): Boolean {
+        return newsRepository.getCachedNews() != null
+    }
+
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getZippedNewsWithDelay()
+        return newsRepository.getNewsFromCache()
             .doOnSubscribe {
-                Log.d(TAG_NEWS_SERVICE, "Subscribed on thread: ${Thread.currentThread().name}")
+                Log.d(TAG, "Subscribed to news on thread: ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
-            .doOnNext { (_, randomString) ->
-                Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
-            }
-            .map { (newsList, _) ->
-                newsList
-            }
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d(TAG_NEWS_SERVICE, "Received news on thread: ${Thread.currentThread().name}")
+            .doOnNext { news ->
+                Log.d(
+                    TAG,
+                    "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}"
+                )
             }
-            .subscribe { loadedNews -> newsLoadedListener(loadedNews) }
+            .subscribe { news -> newsLoadedListener(news) }
+    }
+
+    fun loadNewsWithDelay(newsLoadedListener: (List<News>) -> Unit): Disposable {
+        return newsRepository.getNewsWithDelay()
+            .doOnSubscribe {
+                Log.d(TAG, "Subscribed to news on thread: ${Thread.currentThread().name}")
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { news ->
+                Log.d(
+                    TAG,
+                    "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}"
+                )
+            }
+            .subscribe { news -> newsLoadedListener(news) }
     }
 }
