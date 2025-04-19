@@ -25,7 +25,7 @@ private const val DRAWABLE_END_INDEX = 2
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
     private val compositeDisposable = CompositeDisposable()
-    private var passwordVisibility = VisibilityPassword.OPEN
+    private var isPasswordVisible = false
 
     override fun onViewCreated(
         view: View,
@@ -90,20 +90,26 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private fun togglePasswordVisibility() {
         val passwordField = binding.editTextAuthorizationPassword
 
-        passwordVisibility = passwordVisibility.toggle()
+        isPasswordVisible = !isPasswordVisible
 
-        passwordField.transformationMethod =
-            if (passwordVisibility.isVisible) {
-                PasswordTransformationMethod.getInstance()
-            } else {
-                HideReturnsTransformationMethod.getInstance()
-            }
+        passwordField.transformationMethod = if (isPasswordVisible) {
+            HideReturnsTransformationMethod.getInstance()
+        } else {
+            PasswordTransformationMethod.getInstance()
+        }
 
         passwordField.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
-            ContextCompat.getDrawable(requireContext(), passwordVisibility.iconRes),
-            null,
+            ContextCompat.getDrawable(
+                requireContext(),
+                if (isPasswordVisible) {
+                    R.drawable.ic_hide_password
+                } else {
+                    R.drawable.ic_open_password
+                }
+            ),
+            null
         )
     }
 
