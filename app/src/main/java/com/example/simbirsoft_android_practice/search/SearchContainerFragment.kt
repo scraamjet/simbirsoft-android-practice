@@ -87,13 +87,12 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
             },
         )
 
-        val disposable =
-            searchSubject
-                .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { refreshEventFragment() }
-        compositeDisposable.add(disposable)
+          searchSubject
+              .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
+              .distinctUntilChanged()
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe { refreshEventFragment() }
+              .let(compositeDisposable::add)
     }
 
     private fun getCurrentFragment(): Fragment? {
