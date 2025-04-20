@@ -77,9 +77,9 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             }
             .subscribe(
                 { fetchedEvents ->
-                    val updatedQuery =
+                    val searchQuery =
                         (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                    handleFetchedEvents(fetchedEvents, updatedQuery)
+                    handleFetchedEvents(fetchedEvents, searchQuery)
                 },
                 {
                     showSearchStub()
