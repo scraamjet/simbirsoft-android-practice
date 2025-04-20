@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -8,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
@@ -17,11 +17,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
+
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
-    private val newsRepository: NewsRepository
-        get() = (requireActivity().application as RepositoryProvider).newsRepository
+    private val newsRepository by lazy {
+        (requireContext().applicationContext as RepositoryProvider).newsRepository
+    }
     private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(
@@ -37,7 +40,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         compositeDisposable.clear()
     }
 
-
     private fun initRecyclerView() {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
@@ -52,20 +54,32 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun refreshData() {
-        val searchQuery = (parentFragment as? SearchQueryProvider)?.getSearchQuery()
-            .orEmpty()
-        val disposable = if (newsRepository.getCachedNews() == null) {
+        val disposable = if (newsRepository.hasCachedNews()) {
+            newsRepository.getNewsFromCache()
+        } else {
             showLoading()
             newsRepository.getNewsWithDelay()
-        } else {
-            newsRepository.getNewsFromCache()
         }
+            .doOnSubscribe {
+                Log.d(
+                    TAG_EVENT_LIST_FRAGMENT,
+                    "Subscribed to news on thread: ${Thread.currentThread().name}"
+                )
+            }
             .subscribeOn(Schedulers.io())
             .map { newsList -> newsList.map(SearchMapper::toEvent) }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { events ->
+                Log.d(
+                    TAG_EVENT_LIST_FRAGMENT,
+                    "Received events on thread: ${Thread.currentThread().name}, count: ${events.size}"
+                )
+            }
             .subscribe(
                 { fetchedEvents ->
-                    handleFetchedEvents(fetchedEvents, searchQuery)
+                    val updatedQuery =
+                        (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
+                    handleFetchedEvents(fetchedEvents, updatedQuery)
                 },
                 {
                     showSearchStub()
@@ -76,6 +90,19 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         compositeDisposable.add(disposable)
     }
 
+    private fun handleFetchedEvents(fetchedEvents: List<Event>, searchQuery: String) {
+        val filteredEvents = fetchedEvents.filter { event ->
+            event.title.contains(searchQuery, ignoreCase = true)
+        }
+
+        when {
+            searchQuery.isBlank() -> showSearchStub()
+            filteredEvents.isEmpty() -> showNoResults()
+            else -> showResults(filteredEvents)
+        }
+
+        eventAdapter.submitList(filteredEvents)
+    }
 
     private fun showSearchStub() {
         binding.apply {
@@ -126,21 +153,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
         }
     }
-
-    private fun handleFetchedEvents(fetchedEvents: List<Event>, searchQuery: String) {
-        val filteredEvents = fetchedEvents.filter { event ->
-            event.title.contains(searchQuery, ignoreCase = true)
-        }
-
-        when {
-            searchQuery.isBlank() -> showSearchStub()
-            filteredEvents.isEmpty() -> showNoResults()
-            else -> showResults(filteredEvents)
-        }
-
-        eventAdapter.submitList(filteredEvents)
-    }
-
 
     companion object {
         fun newInstance() = EventListFragment()

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.News
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -16,8 +15,9 @@ private const val TAG = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
-    private val newsRepository: NewsRepository
-        get() = (application as RepositoryProvider).newsRepository
+    private val newsRepository by lazy {
+        (applicationContext as RepositoryProvider).newsRepository
+    }
 
     override fun onBind(intent: Intent): IBinder = binder
 
@@ -26,7 +26,7 @@ class NewsService : Service() {
     }
 
     fun isNewsAlreadyLoaded(): Boolean {
-        return newsRepository.getCachedNews() != null
+        return newsRepository.hasCachedNews()
     }
 
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {

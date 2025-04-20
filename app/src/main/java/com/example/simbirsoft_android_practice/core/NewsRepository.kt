@@ -13,14 +13,11 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private var cachedNews: List<News>? = null
 
-    fun getCachedNews(): List<News>? = cachedNews
+    fun hasCachedNews(): Boolean = cachedNews != null
 
     fun getNewsFromCache(): Observable<List<News>> {
-        return cachedNews?.let { cachedNewsList ->
-            Observable.just(cachedNewsList)
-        } ?: run {
-            Observable.empty()
-        }
+        val news = cachedNews ?: return Observable.empty()
+        return Observable.just(news)
     }
 
     fun getNewsWithDelay(): Observable<List<News>> {

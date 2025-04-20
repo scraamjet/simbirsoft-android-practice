@@ -6,7 +6,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
@@ -23,9 +22,9 @@ private const val TAG = "NewsDetailFragment"
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
-    private val newsRepository: NewsRepository
-        get() = (requireActivity().application as RepositoryProvider).newsRepository
-
+    private val newsRepository by lazy {
+        (requireContext().applicationContext as RepositoryProvider).newsRepository
+    }
     private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(

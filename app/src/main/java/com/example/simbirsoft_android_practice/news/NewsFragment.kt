@@ -172,9 +172,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun saveState(outState: Bundle) {
-        newsItems?.let { savedNewsList ->
-            outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(savedNewsList))
-        }
+        val newsItems = newsItems?.let(::ArrayList) ?: return
+        outState.putParcelableArrayList(KEY_NEWS_ITEMS, newsItems)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
