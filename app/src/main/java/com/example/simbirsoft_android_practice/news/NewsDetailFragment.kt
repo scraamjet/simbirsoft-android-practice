@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-private const val TAG = "NewsDetailFragment"
+private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
@@ -47,7 +47,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
         val disposable = newsRepository.getNewsFromCache()
             .doOnSubscribe {
-                Log.d(TAG, "Subscribed to news on thread: ${Thread.currentThread().name}")
+                Log.d(TAG_NEWS_DETAIL_FRAGMENT, "Subscribed to news on thread: ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
             .flatMap { newsList ->
@@ -62,7 +62,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 Log.d(
-                    TAG,
+                    TAG_NEWS_DETAIL_FRAGMENT,
                     "Binding detail on thread: ${Thread.currentThread().name}"
                 )
             }

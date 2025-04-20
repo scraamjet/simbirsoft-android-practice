@@ -18,7 +18,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
-private const val KEY_CATEGORIES = "key_categories"
+private const val KEY_HELP_CATEGORIES = "key_help_categories"
 private const val TAG_HELP_FRAGMENT = "HelpFragment"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
@@ -98,12 +98,12 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {
-        if (savedInstanceState?.containsKey(KEY_CATEGORIES) == true) {
+        if (savedInstanceState?.containsKey(KEY_HELP_CATEGORIES) == true) {
             savedInstanceState.let { bundle ->
                 val savedCategories =
                     BundleCompat.getParcelableArrayList(
                         bundle,
-                        KEY_CATEGORIES,
+                        KEY_HELP_CATEGORIES,
                         HelpCategory::class.java,
                     )
                 savedCategories?.let { restoredCategories ->
@@ -118,7 +118,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private fun saveState(outState: Bundle) {
         val categories = categoriesItems?.let(::ArrayList) ?: return
-        outState.putParcelableArrayList(KEY_CATEGORIES, categories)
+        outState.putParcelableArrayList(KEY_HELP_CATEGORIES, categories)
     }
 
     companion object {

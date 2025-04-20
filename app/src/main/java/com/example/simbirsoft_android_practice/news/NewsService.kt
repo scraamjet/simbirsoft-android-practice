@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-private const val TAG = "NewsService"
+private const val TAG_NEWS_SERVICE = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
@@ -32,13 +32,13 @@ class NewsService : Service() {
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
         return newsRepository.getNewsFromCache()
             .doOnSubscribe {
-                Log.d(TAG, "Subscribed to news on thread: ${Thread.currentThread().name}")
+                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { news ->
                 Log.d(
-                    TAG,
+                    TAG_NEWS_SERVICE,
                     "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}"
                 )
             }
@@ -48,13 +48,13 @@ class NewsService : Service() {
     fun loadNewsWithDelay(newsLoadedListener: (List<News>) -> Unit): Disposable {
         return newsRepository.getNewsWithDelay()
             .doOnSubscribe {
-                Log.d(TAG, "Subscribed to news on thread: ${Thread.currentThread().name}")
+                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { news ->
                 Log.d(
-                    TAG,
+                    TAG_NEWS_SERVICE,
                     "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}"
                 )
             }
