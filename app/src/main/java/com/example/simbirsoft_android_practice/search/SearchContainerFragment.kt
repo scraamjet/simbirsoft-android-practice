@@ -28,8 +28,8 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
     private val searchSubject = PublishSubject.create<String>()
     private val compositeDisposable = CompositeDisposable()
     private var currentQuery: String = ""
-    override fun getSearchQuery(): String = currentQuery
 
+    override fun getSearchQuery(): String = currentQuery
 
     override fun onViewCreated(
         view: View,
@@ -86,13 +86,12 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
                 }
             },
         )
-
-          searchSubject
-              .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
-              .distinctUntilChanged()
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribe { refreshEventFragment() }
-              .let(compositeDisposable::add)
+        searchSubject
+            .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { refreshEventFragment() }
+            .let(compositeDisposable::add)
     }
 
     private fun getCurrentFragment(): Fragment? {

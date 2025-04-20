@@ -63,22 +63,26 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategoryData() {
-        val disposable = if (categoryRepository.hasCachedCategories()) {
-            categoryRepository.getCategoriesFromCache()
-        } else {
-            showLoading()
-            categoryRepository.getCategoriesWithDelay()
-        }
-            .doOnSubscribe {
-                Log.d(TAG_HELP_FRAGMENT, "Subscribed to categories on thread: ${Thread.currentThread().name}")
+        val disposable =
+            if (categoryRepository.hasCachedCategories()) {
+                categoryRepository.getCategoriesFromCache()
+            } else {
+                showLoading()
+                categoryRepository.getCategoriesWithDelay()
             }
-            .subscribeOn(Schedulers.io())
-            .map { list -> list.map(CategoryMapper::toHelpCategory) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { categories ->
-                Log.d(TAG_HELP_FRAGMENT, "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}")
-            }
-            .subscribe { categories -> showData(categories) }
+                .doOnSubscribe {
+                    Log.d(TAG_HELP_FRAGMENT, "Subscribed to categories on thread: ${Thread.currentThread().name}")
+                }
+                .subscribeOn(Schedulers.io())
+                .map { list -> list.map(CategoryMapper::toHelpCategory) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { categories ->
+                    Log.d(
+                        TAG_HELP_FRAGMENT,
+                        "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                    )
+                }
+                .subscribe { categories -> showData(categories) }
 
         compositeDisposable.add(disposable)
     }

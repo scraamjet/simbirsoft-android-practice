@@ -39,7 +39,7 @@ class NewsService : Service() {
             .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}"
+                    "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}",
                 )
             }
             .subscribe { news -> newsLoadedListener(news) }
@@ -55,7 +55,7 @@ class NewsService : Service() {
             .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}"
+                    "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}",
                 )
             }
             .subscribe { news -> newsLoadedListener(news) }

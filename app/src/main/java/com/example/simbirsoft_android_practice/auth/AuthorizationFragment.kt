@@ -92,11 +92,12 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         isPasswordVisible = !isPasswordVisible
 
-        passwordField.transformationMethod = if (isPasswordVisible) {
-            HideReturnsTransformationMethod.getInstance()
-        } else {
-            PasswordTransformationMethod.getInstance()
-        }
+        passwordField.transformationMethod =
+            if (isPasswordVisible) {
+                HideReturnsTransformationMethod.getInstance()
+            } else {
+                PasswordTransformationMethod.getInstance()
+            }
 
         passwordField.setCompoundDrawablesWithIntrinsicBounds(
             null,
@@ -107,9 +108,9 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                     R.drawable.ic_hide_password
                 } else {
                     R.drawable.ic_open_password
-                }
+                },
             ),
-            null
+            null,
         )
     }
 

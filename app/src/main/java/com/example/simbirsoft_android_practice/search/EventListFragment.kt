@@ -54,46 +54,51 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun refreshData() {
-        val disposable = if (newsRepository.hasCachedNews()) {
-            newsRepository.getNewsFromCache()
-        } else {
-            showLoading()
-            newsRepository.getNewsWithDelay()
-        }
-            .doOnSubscribe {
-                Log.d(
-                    TAG_EVENT_LIST_FRAGMENT,
-                    "Subscribed to news on thread: ${Thread.currentThread().name}"
-                )
+        val disposable =
+            if (newsRepository.hasCachedNews()) {
+                newsRepository.getNewsFromCache()
+            } else {
+                showLoading()
+                newsRepository.getNewsWithDelay()
             }
-            .subscribeOn(Schedulers.io())
-            .map { newsList -> newsList.map(SearchMapper::toEvent) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { events ->
-                Log.d(
-                    TAG_EVENT_LIST_FRAGMENT,
-                    "Received events on thread: ${Thread.currentThread().name}, count: ${events.size}"
-                )
-            }
-            .subscribe(
-                { fetchedEvents ->
-                    val searchQuery =
-                        (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                    handleFetchedEvents(fetchedEvents, searchQuery)
-                },
-                {
-                    showSearchStub()
-                    eventAdapter.submitList(emptyList())
+                .doOnSubscribe {
+                    Log.d(
+                        TAG_EVENT_LIST_FRAGMENT,
+                        "Subscribed to news on thread: ${Thread.currentThread().name}",
+                    )
                 }
-            )
+                .subscribeOn(Schedulers.io())
+                .map { newsList -> newsList.map(SearchMapper::toEvent) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { events ->
+                    Log.d(
+                        TAG_EVENT_LIST_FRAGMENT,
+                        "Received events on thread: ${Thread.currentThread().name}, count: ${events.size}",
+                    )
+                }
+                .subscribe(
+                    { fetchedEvents ->
+                        val searchQuery =
+                            (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
+                        handleFetchedEvents(fetchedEvents, searchQuery)
+                    },
+                    {
+                        showSearchStub()
+                        eventAdapter.submitList(emptyList())
+                    },
+                )
 
         compositeDisposable.add(disposable)
     }
 
-    private fun handleFetchedEvents(fetchedEvents: List<Event>, searchQuery: String) {
-        val filteredEvents = fetchedEvents.filter { event ->
-            event.title.contains(searchQuery, ignoreCase = true)
-        }
+    private fun handleFetchedEvents(
+        fetchedEvents: List<Event>,
+        searchQuery: String,
+    ) {
+        val filteredEvents =
+            fetchedEvents.filter { event ->
+                event.title.contains(searchQuery, ignoreCase = true)
+            }
 
         when {
             searchQuery.isBlank() -> showSearchStub()

@@ -32,7 +32,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val compositeDisposable = CompositeDisposable()
     private var filterCategories: List<FilterCategory>? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -63,30 +66,31 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val disposable = if (categoryRepository.hasCachedCategories()) {
-            categoryRepository.getCategoriesFromCache()
-        } else {
-            showLoading()
-            categoryRepository.getCategoriesWithDelay()
-        }
-            .doOnSubscribe {
-                Log.d(
-                    TAG_FILTER_FRAGMENT,
-                    "Subscribed to categories on thread: ${Thread.currentThread().name}"
-                )
+        val disposable =
+            if (categoryRepository.hasCachedCategories()) {
+                categoryRepository.getCategoriesFromCache()
+            } else {
+                showLoading()
+                categoryRepository.getCategoriesWithDelay()
             }
-            .subscribeOn(Schedulers.io())
-            .map { list ->
-                list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { categories ->
-                Log.d(
-                    TAG_FILTER_FRAGMENT,
-                    "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}"
-                )
-            }
-            .subscribe { categories -> showData(categories) }
+                .doOnSubscribe {
+                    Log.d(
+                        TAG_FILTER_FRAGMENT,
+                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .map { list ->
+                    list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { categories ->
+                    Log.d(
+                        TAG_FILTER_FRAGMENT,
+                        "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                    )
+                }
+                .subscribe { categories -> showData(categories) }
 
         compositeDisposable.add(disposable)
     }
@@ -128,11 +132,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun restoreState(savedInstanceState: Bundle?) {
         if (savedInstanceState?.containsKey(KEY_FILTER_CATEGORIES) == true) {
-            val saved = BundleCompat.getParcelableArrayList(
-                savedInstanceState,
-                KEY_FILTER_CATEGORIES,
-                FilterCategory::class.java
-            )
+            val saved =
+                BundleCompat.getParcelableArrayList(
+                    savedInstanceState,
+                    KEY_FILTER_CATEGORIES,
+                    FilterCategory::class.java,
+                )
             saved?.let { restoredCategories ->
                 filterCategories = restoredCategories
                 showData(restoredCategories)
@@ -151,4 +156,3 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         fun newInstance() = FilterFragment()
     }
 }
-

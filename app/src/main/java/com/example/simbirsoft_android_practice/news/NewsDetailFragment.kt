@@ -45,34 +45,35 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
-        val disposable = newsRepository.getNewsFromCache()
-            .doOnSubscribe {
-                Log.d(TAG_NEWS_DETAIL_FRAGMENT, "Subscribed to news on thread: ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.io())
-            .flatMap { newsList ->
-                val selectedNews = newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                    ?.let(NewsMapper::toNewsDetail)
-                if (selectedNews != null) {
-                    Observable.just(selectedNews)
-                } else {
-                    Observable.empty()
+        val disposable =
+            newsRepository.getNewsFromCache()
+                .doOnSubscribe {
+                    Log.d(TAG_NEWS_DETAIL_FRAGMENT, "Subscribed to news on thread: ${Thread.currentThread().name}")
                 }
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-                Log.d(
-                    TAG_NEWS_DETAIL_FRAGMENT,
-                    "Binding detail on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribe { newsDetail ->
-                bindNewsDetails(newsDetail)
-            }
+                .subscribeOn(Schedulers.io())
+                .flatMap { newsList ->
+                    val selectedNews =
+                        newsList.find { newsItem -> newsItem.id == selectedNewsId }
+                            ?.let(NewsMapper::toNewsDetail)
+                    if (selectedNews != null) {
+                        Observable.just(selectedNews)
+                    } else {
+                        Observable.empty()
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    Log.d(
+                        TAG_NEWS_DETAIL_FRAGMENT,
+                        "Binding detail on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribe { newsDetail ->
+                    bindNewsDetails(newsDetail)
+                }
 
         compositeDisposable.add(disposable)
     }
-
 
     private fun bindNewsDetails(news: NewsDetail) {
         with(binding) {

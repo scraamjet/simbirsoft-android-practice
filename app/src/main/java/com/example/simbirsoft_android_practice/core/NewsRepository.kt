@@ -27,8 +27,6 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
             gson.fromJson<List<News>>(json, type).also { loadedNews ->
                 cachedNews = loadedNews
             }
-        }
-            .delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+        }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
 }
-
