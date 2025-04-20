@@ -1,30 +1,30 @@
 package com.example.simbirsoft_android_practice.news
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
-import com.example.simbirsoft_android_practice.core.NewsRepository
+import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
-private const val TAG_RANDOM_STRING = "RandomString"
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
-    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(requireContext())) }
+    private val newsRepository by lazy {
+        (requireContext().applicationContext as RepositoryProvider).newsRepository
+    }
     private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(
@@ -42,27 +42,24 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         compositeDisposable.clear()
     }
 
-    @SuppressLint("CheckResult")
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getZippedNews()
+            newsRepository.getNewsFromCache()
                 .doOnSubscribe {
-                    Log.d(
-                        TAG_NEWS_DETAIL_FRAGMENT,
-                        "Subscribed on thread: ${Thread.currentThread().name}",
-                    )
+                    Log.d(TAG_NEWS_DETAIL_FRAGMENT, "Subscribed to news on thread: ${Thread.currentThread().name}")
                 }
                 .subscribeOn(Schedulers.io())
-                .doOnNext { (_, randomString) ->
-                    Log.d(TAG_RANDOM_STRING, "Generated random string: $randomString")
-                }
-                .flatMapIterable { (newsList, _) ->
-                    listOfNotNull(
+                .flatMap { newsList ->
+                    val selectedNews =
                         newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                            ?.let(NewsMapper::toNewsDetail),
-                    )
+                            ?.let(NewsMapper::toNewsDetail)
+                    if (selectedNews != null) {
+                        Observable.just(selectedNews)
+                    } else {
+                        Observable.empty()
+                    }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {

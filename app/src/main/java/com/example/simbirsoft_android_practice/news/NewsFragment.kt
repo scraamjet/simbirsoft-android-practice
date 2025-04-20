@@ -19,6 +19,7 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
-private const val KEY_NEWS_ITEMS = "news_items"
+private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
@@ -46,9 +47,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             onServiceConnected = { connectedService ->
                 newsService = connectedService
                 isServiceConnected = true
-                if (newsItems == null) {
-                    loadNewsData()
-                }
+                loadNewsData()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
@@ -90,7 +89,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     override fun onDestroyView() {
         super.onDestroyView()
         compositeDisposable.clear()
-        newsItems = null
     }
 
     private fun initRecyclerView() {
@@ -110,17 +108,25 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
-        if (isServiceConnected) {
+        val newsService = newsService ?: return
+
+        if (newsService.isNewsAlreadyLoaded()) {
+            subscribeToNewsLoading(newsService::loadNews)
+        } else {
             showLoading()
-            val disposable =
-                newsService?.loadNews { loadedNewsList ->
-                    val selectedCategories = filterPrefs.getSelectedCategories()
-                    val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
-                    newsItems = filteredNewsItems
-                    showData(filteredNewsItems)
-                }
-            disposable?.let { compositeDisposable.add(it) }
+            subscribeToNewsLoading(newsService::loadNewsWithDelay)
         }
+    }
+
+    private fun subscribeToNewsLoading(loadFunction: ((List<News>) -> Unit) -> Disposable) {
+        val disposable =
+            loadFunction { loadedNewsList ->
+                val selectedCategories = filterPrefs.getSelectedCategories()
+                val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
+                newsItems = filteredNewsItems
+                showData(filteredNewsItems)
+            }
+        compositeDisposable.add(disposable)
     }
 
     private fun filterAndMapNews(
@@ -173,9 +179,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun saveState(outState: Bundle) {
-        newsItems?.let { savedNewsList ->
-            outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(savedNewsList))
-        }
+        val newsItems = newsItems?.let(::ArrayList) ?: return
+        outState.putParcelableArrayList(KEY_NEWS_ITEMS, newsItems)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
