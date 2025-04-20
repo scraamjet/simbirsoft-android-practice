@@ -71,7 +71,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBarHelp"
+        android:id="@+id/progressBarFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

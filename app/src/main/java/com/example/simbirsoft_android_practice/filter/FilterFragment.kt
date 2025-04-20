@@ -117,13 +117,13 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun showLoading() {
-        binding.progressBarHelp.isVisible = true
+        binding.progressBarFilter.isVisible = true
         binding.imageViewFilterApplySettings.isVisible = false
         binding.recyclerViewFilterItem.isVisible = false
     }
 
     private fun showData(categories: List<FilterCategory>) {
-        binding.progressBarHelp.isVisible = false
+        binding.progressBarFilter.isVisible = false
         binding.imageViewFilterApplySettings.isVisible = true
         binding.recyclerViewFilterItem.isVisible = true
         filterCategories = categories
