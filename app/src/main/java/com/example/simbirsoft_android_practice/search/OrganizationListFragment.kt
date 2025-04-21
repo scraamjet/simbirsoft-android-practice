@@ -27,6 +27,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        refreshData()
         showResults()
     }
 

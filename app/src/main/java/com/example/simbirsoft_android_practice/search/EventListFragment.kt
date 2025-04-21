@@ -13,9 +13,14 @@ import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
 
@@ -25,7 +30,15 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val newsRepository by lazy {
         (requireContext().applicationContext as RepositoryProvider).newsRepository
     }
-    private val compositeDisposable = CompositeDisposable()
+
+    private val supervisorJob = SupervisorJob()
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e(TAG_EVENT_LIST_FRAGMENT, "Coroutine error", throwable)
+        showSearchStub()
+        eventAdapter.submitList(emptyList())
+    }
+    private val coroutineScope =
+        CoroutineScope(Dispatchers.Main + supervisorJob + coroutineExceptionHandler)
 
     override fun onViewCreated(
         view: View,
@@ -37,7 +50,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.clear()
+        coroutineScope.cancel()
     }
 
     private fun initRecyclerView() {
@@ -54,42 +67,25 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun refreshData() {
-        val disposable =
-            if (newsRepository.hasCachedNews()) {
-                newsRepository.getNewsFromCache()
+        coroutineScope.launch {
+            val newsFlow = if (newsRepository.hasCachedNews()) {
+                newsRepository.getNewsFromCacheFlow()
             } else {
                 showLoading()
-                newsRepository.getNewsWithDelay()
+                newsRepository.getNewsWithDelayFlow()
             }
-                .doOnSubscribe {
-                    Log.d(
-                        TAG_EVENT_LIST_FRAGMENT,
-                        "Subscribed to news on thread: ${Thread.currentThread().name}",
-                    )
-                }
-                .subscribeOn(Schedulers.io())
-                .map { newsList -> newsList.map(SearchMapper::toEvent) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { events ->
-                    Log.d(
-                        TAG_EVENT_LIST_FRAGMENT,
-                        "Received events on thread: ${Thread.currentThread().name}, count: ${events.size}",
-                    )
-                }
-                .subscribe(
-                    { fetchedEvents ->
-                        val searchQuery =
-                            (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                        handleFetchedEvents(fetchedEvents, searchQuery)
-                    },
-                    {
-                        showSearchStub()
-                        eventAdapter.submitList(emptyList())
-                    },
-                )
 
-        compositeDisposable.add(disposable)
+            newsFlow
+                .map { list -> list.map(SearchMapper::toEvent) }
+                .flowOn(Dispatchers.IO)
+                .collect { events ->
+                    val searchQuery =
+                        (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
+                    handleFetchedEvents(events, searchQuery)
+                }
+        }
     }
+
 
     private fun handleFetchedEvents(
         fetchedEvents: List<Event>,
