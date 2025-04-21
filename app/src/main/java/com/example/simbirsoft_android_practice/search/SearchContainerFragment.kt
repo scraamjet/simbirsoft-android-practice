@@ -38,9 +38,12 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
     private val searchQueryFlow = MutableStateFlow("")
     private val supervisorJob = SupervisorJob()
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e(TAG_SEARCH_CONTAINER_FRAGMENT, "Coroutine exception", throwable)
+        Log.e(
+            TAG_SEARCH_CONTAINER_FRAGMENT,
+            "Coroutine exception: ${throwable.localizedMessage}",
+            throwable
+        )
     }
-
     private val coroutineScope = CoroutineScope(
         Dispatchers.Main + supervisorJob + coroutineExceptionHandler
     )
