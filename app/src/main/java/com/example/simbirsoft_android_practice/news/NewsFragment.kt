@@ -20,12 +20,13 @@ import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
@@ -39,8 +40,15 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
-    private val unreadNewsCountSubject = BehaviorSubject.createDefault(0)
     private val compositeDisposable = CompositeDisposable()
+
+    private val unreadNewsCount = MutableStateFlow(0)
+    private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("UnreadNews", "Coroutine exception: ${throwable.localizedMessage}", throwable)
+    }
+    private val coroutineScope =
+        CoroutineScope(SupervisorJob() + Dispatchers.IO + coroutineExceptionHandler)
 
     private val connection =
         NewsServiceConnection(
@@ -190,34 +198,19 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
-        CoroutineScope(Dispatchers.Default).launch {
-            try {
-                val readNewsIds = withContext(Dispatchers.IO) {
-                    newsPrefs.getReadNewsIds()
-                }
-
-                val unreadCount = withContext(Dispatchers.Default) {
-                    newsList.count { it.id !in readNewsIds }
-                }
-
-                withContext(newSingleThreadContext("UnreadCountThread")) {
-                    NewsFlowHolder.updateUnreadCount(unreadCount)
-                }
-
-                withContext(Dispatchers.Main) {
-                    (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
-                }
-
-            } catch (e: Exception) {
-                Log.e("UnreadNews", "Ошибка при обновлении счётчика", e)
+        coroutineScope.launch {
+            val readNewsIds = newsPrefs.getReadNewsIds()
+            val unreadCount = newsList.count { newsItem ->  newsItem.id !in readNewsIds }
+            unreadNewsCount.value = unreadCount
+            withContext(dispatcherMain) {
+                (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
             }
         }
     }
