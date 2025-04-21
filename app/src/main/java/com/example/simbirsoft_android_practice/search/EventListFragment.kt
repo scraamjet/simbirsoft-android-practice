@@ -32,15 +32,16 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private val supervisorJob = SupervisorJob()
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e(
-            TAG_EVENT_LIST_FRAGMENT,
-            "Coroutine exception: ${throwable.localizedMessage}",
-            throwable
-        )
-        showSearchStub()
-        eventAdapter.submitList(emptyList())
-    }
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            Log.e(
+                TAG_EVENT_LIST_FRAGMENT,
+                "Coroutine exception: ${throwable.localizedMessage}",
+                throwable,
+            )
+            showSearchStub()
+            eventAdapter.submitList(emptyList())
+        }
     private val coroutineScope =
         CoroutineScope(Dispatchers.Main + supervisorJob + coroutineExceptionHandler)
 
@@ -72,12 +73,13 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     fun refreshData() {
         coroutineScope.launch {
-            val newsFlow = if (newsRepository.hasCachedNews()) {
-                newsRepository.getNewsFromCacheFlow()
-            } else {
-                showLoading()
-                newsRepository.getNewsWithDelayFlow()
-            }
+            val newsFlow =
+                if (newsRepository.hasCachedNews()) {
+                    newsRepository.getNewsFromCacheFlow()
+                } else {
+                    showLoading()
+                    newsRepository.getNewsWithDelayFlow()
+                }
 
             newsFlow
                 .map { list -> list.map(SearchMapper::toEvent) }
@@ -89,7 +91,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                 }
         }
     }
-
 
     private fun handleFetchedEvents(
         fetchedEvents: List<Event>,

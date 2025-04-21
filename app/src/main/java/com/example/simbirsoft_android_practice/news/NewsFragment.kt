@@ -44,9 +44,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val unreadNewsCount = MutableStateFlow(0)
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("UnreadNews", "Coroutine exception: ${throwable.localizedMessage}", throwable)
-    }
+    private val coroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            Log.e("UnreadNews", "Coroutine exception: ${throwable.localizedMessage}", throwable)
+        }
     private val coroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.IO + coroutineExceptionHandler)
 

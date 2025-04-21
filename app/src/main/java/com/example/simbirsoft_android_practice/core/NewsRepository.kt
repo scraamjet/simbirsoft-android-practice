@@ -33,17 +33,18 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
         }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
 
-    fun getNewsFromCacheFlow(): Flow<List<News>> = flow {
-        cachedNews?.let { cachedNewsList -> emit(cachedNewsList) }
-    }
+    fun getNewsFromCacheFlow(): Flow<List<News>> =
+        flow {
+            cachedNews?.let { cachedNewsList -> emit(cachedNewsList) }
+        }
 
-    fun getNewsWithDelayFlow(): Flow<List<News>> = flow {
-        delay(TIMEOUT_IN_MILLIS)
-        val json = extractor.readJsonFile(NEWS_JSON_FILE)
-        val type = object : TypeToken<List<News>>() {}.type
-        val news = gson.fromJson<List<News>>(json, type)
-        cachedNews = news
-        emit(news)
-    }
-
+    fun getNewsWithDelayFlow(): Flow<List<News>> =
+        flow {
+            delay(TIMEOUT_IN_MILLIS)
+            val json = extractor.readJsonFile(NEWS_JSON_FILE)
+            val type = object : TypeToken<List<News>>() {}.type
+            val news = gson.fromJson<List<News>>(json, type)
+            cachedNews = news
+            emit(news)
+        }
 }
