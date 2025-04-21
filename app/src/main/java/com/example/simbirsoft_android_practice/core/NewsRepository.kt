@@ -34,7 +34,7 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
     }
 
     fun getNewsFromCacheFlow(): Flow<List<News>> = flow {
-        cachedNews?.let { emit(it) }
+        cachedNews?.let { cachedNewsList -> emit(cachedNewsList) }
     }
 
     fun getNewsWithDelayFlow(): Flow<List<News>> = flow {

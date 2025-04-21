@@ -33,7 +33,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     private val supervisorJob = SupervisorJob()
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e(TAG_EVENT_LIST_FRAGMENT, "Coroutine error", throwable)
+        Log.e(TAG_EVENT_LIST_FRAGMENT, "Coroutine exception", throwable)
         showSearchStub()
         eventAdapter.submitList(emptyList())
     }
