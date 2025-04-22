@@ -6,7 +6,7 @@ import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.core.NewsRepository
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 
-class WantHelpApplication : Application(), RepositoryProvider {
+class App : Application(), RepositoryProvider {
     override val newsRepository: NewsRepository by lazy {
         NewsRepository(JsonAssetExtractor(this))
     }
