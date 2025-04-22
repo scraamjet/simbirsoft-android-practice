@@ -27,7 +27,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
