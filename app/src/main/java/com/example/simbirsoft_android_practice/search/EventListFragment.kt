@@ -73,15 +73,9 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     fun refreshData() {
         coroutineScope.launch {
-            val newsFlow =
-                if (newsRepository.hasCachedNews()) {
-                    newsRepository.getNewsFromCacheFlow()
-                } else {
-                    showLoading()
-                    newsRepository.getNewsWithDelayFlow()
-                }
+            showLoading()
 
-            newsFlow
+            newsRepository.getNewsFlow()
                 .map { list -> list.map(SearchMapper::toEvent) }
                 .flowOn(Dispatchers.IO)
                 .collect { events ->
