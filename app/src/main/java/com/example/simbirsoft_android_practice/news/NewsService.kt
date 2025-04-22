@@ -30,7 +30,7 @@ class NewsService : Service() {
             .doOnSubscribe {
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Subscribed to news on thread: ${Thread.currentThread().name}"
+                    "Subscribed to news on thread: ${Thread.currentThread().name}",
                 )
             }
             .subscribeOn(Schedulers.io())
@@ -38,7 +38,7 @@ class NewsService : Service() {
             .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}"
+                    "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}",
                 )
             }
             .subscribe { news -> newsLoadedListener(news) }

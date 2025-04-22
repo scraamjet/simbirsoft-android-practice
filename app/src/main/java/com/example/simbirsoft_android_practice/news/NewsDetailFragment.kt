@@ -50,7 +50,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,
-                        "Subscribed to news on thread: ${Thread.currentThread().name}"
+                        "Subscribed to news on thread: ${Thread.currentThread().name}",
                     )
                 }
                 .subscribeOn(Schedulers.io())

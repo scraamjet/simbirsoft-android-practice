@@ -36,4 +36,3 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
         }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
 }
-

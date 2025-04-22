@@ -65,27 +65,27 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun loadCategoryData() {
         showLoading()
 
-        val disposable = categoryRepository.getCategoriesObservable()
-            .doOnSubscribe {
-                Log.d(
-                    TAG_HELP_FRAGMENT,
-                    "Subscribed to categories on thread: ${Thread.currentThread().name}"
-                )
-            }
-            .subscribeOn(Schedulers.io())
-            .map { list -> list.map(CategoryMapper::toHelpCategory) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { categories ->
-                Log.d(
-                    TAG_HELP_FRAGMENT,
-                    "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}"
-                )
-            }
-            .subscribe { categories -> showData(categories) }
+        val disposable =
+            categoryRepository.getCategoriesObservable()
+                .doOnSubscribe {
+                    Log.d(
+                        TAG_HELP_FRAGMENT,
+                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .map { list -> list.map(CategoryMapper::toHelpCategory) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { categories ->
+                    Log.d(
+                        TAG_HELP_FRAGMENT,
+                        "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                    )
+                }
+                .subscribe { categories -> showData(categories) }
 
         compositeDisposable.add(disposable)
     }
-
 
     private fun showLoading() {
         binding.progressBarHelp.isVisible = true
