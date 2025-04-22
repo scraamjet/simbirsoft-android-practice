@@ -23,7 +23,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
     private val newsRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).newsRepository
+        RepositoryProvider.fromContext(requireContext()).newsRepository
     }
     private val compositeDisposable = CompositeDisposable()
 

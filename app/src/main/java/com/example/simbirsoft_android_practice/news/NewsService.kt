@@ -16,7 +16,7 @@ private const val TAG_NEWS_SERVICE = "NewsService"
 class NewsService : Service() {
     private val binder = LocalBinder()
     private val newsRepository by lazy {
-        (applicationContext as RepositoryProvider).newsRepository
+        RepositoryProvider.fromContext(applicationContext).newsRepository
     }
 
     override fun onBind(intent: Intent): IBinder = binder

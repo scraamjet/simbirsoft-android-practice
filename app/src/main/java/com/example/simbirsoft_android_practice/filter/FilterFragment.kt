@@ -27,7 +27,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val filterAdapter by lazy { FilterAdapter() }
     private val filterPrefs by lazy { FilterPreferences(requireContext()) }
     private val categoryRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).categoryRepository
+        RepositoryProvider.fromContext(requireContext()).categoryRepository
     }
     private val compositeDisposable = CompositeDisposable()
     private var filterCategories: List<FilterCategory>? = null

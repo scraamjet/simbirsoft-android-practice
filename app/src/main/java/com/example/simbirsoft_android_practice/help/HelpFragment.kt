@@ -24,7 +24,7 @@ private const val TAG_HELP_FRAGMENT = "HelpFragment"
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
     private val categoryRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).categoryRepository
+        RepositoryProvider.fromContext(requireContext()).categoryRepository
     }
     private val adapter by lazy { HelpAdapter() }
     private var categoriesItems: List<HelpCategory>? = null
