@@ -16,7 +16,7 @@ private const val TAG_NEWS_SERVICE = "NewsService"
 class NewsService : Service() {
     private val binder = LocalBinder()
     private val newsRepository by lazy {
-        (applicationContext as RepositoryProvider).newsRepository
+        RepositoryProvider.fromContext(applicationContext).newsRepository
     }
 
     override fun onBind(intent: Intent): IBinder = binder
@@ -25,37 +25,20 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun isNewsAlreadyLoaded(): Boolean {
-        return newsRepository.hasCachedNews()
-    }
-
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsFromCache()
+        return newsRepository.getNewsObservable()
             .doOnSubscribe {
-                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}",
+                    "Subscribed to news on thread: ${Thread.currentThread().name}",
                 )
             }
-            .subscribe { news -> newsLoadedListener(news) }
-    }
-
-    fun loadNewsWithDelay(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsWithDelay()
-            .doOnSubscribe {
-                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
-            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}",
+                    "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}",
                 )
             }
             .subscribe { news -> newsLoadedListener(news) }

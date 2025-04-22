@@ -19,7 +19,6 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +27,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
@@ -118,23 +118,16 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun loadNewsData() {
         val newsService = newsService ?: return
+        showLoading()
 
-        if (newsService.isNewsAlreadyLoaded()) {
-            subscribeToNewsLoading(newsService::loadNews)
-        } else {
-            showLoading()
-            subscribeToNewsLoading(newsService::loadNewsWithDelay)
-        }
-    }
-
-    private fun subscribeToNewsLoading(loadFunction: ((List<News>) -> Unit) -> Disposable) {
         val disposable =
-            loadFunction { loadedNewsList ->
+            newsService.loadNews { loadedNewsList ->
                 val selectedCategories = filterPrefs.getSelectedCategories()
                 val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
                 newsItems = filteredNewsItems
                 showData(filteredNewsItems)
             }
+
         compositeDisposable.add(disposable)
     }
 

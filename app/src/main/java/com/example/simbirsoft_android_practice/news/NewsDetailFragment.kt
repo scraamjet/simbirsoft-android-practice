@@ -23,7 +23,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).newsRepository
+        RepositoryProvider.fromContext(requireContext()).newsRepository
     }
     private val compositeDisposable = CompositeDisposable()
 
@@ -46,9 +46,12 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getNewsFromCache()
+            newsRepository.getNewsObservable()
                 .doOnSubscribe {
-                    Log.d(TAG_NEWS_DETAIL_FRAGMENT, "Subscribed to news on thread: ${Thread.currentThread().name}")
+                    Log.d(
+                        TAG_NEWS_DETAIL_FRAGMENT,
+                        "Subscribed to news on thread: ${Thread.currentThread().name}",
+                    )
                 }
                 .subscribeOn(Schedulers.io())
                 .flatMap { newsList ->

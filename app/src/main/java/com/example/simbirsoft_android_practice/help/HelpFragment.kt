@@ -24,7 +24,7 @@ private const val TAG_HELP_FRAGMENT = "HelpFragment"
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
     private val categoryRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).categoryRepository
+        RepositoryProvider.fromContext(requireContext()).categoryRepository
     }
     private val adapter by lazy { HelpAdapter() }
     private var categoriesItems: List<HelpCategory>? = null
@@ -63,15 +63,15 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun loadCategoryData() {
+        showLoading()
+
         val disposable =
-            if (categoryRepository.hasCachedCategories()) {
-                categoryRepository.getCategoriesFromCache()
-            } else {
-                showLoading()
-                categoryRepository.getCategoriesWithDelay()
-            }
+            categoryRepository.getCategoriesObservable()
                 .doOnSubscribe {
-                    Log.d(TAG_HELP_FRAGMENT, "Subscribed to categories on thread: ${Thread.currentThread().name}")
+                    Log.d(
+                        TAG_HELP_FRAGMENT,
+                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
+                    )
                 }
                 .subscribeOn(Schedulers.io())
                 .map { list -> list.map(CategoryMapper::toHelpCategory) }
