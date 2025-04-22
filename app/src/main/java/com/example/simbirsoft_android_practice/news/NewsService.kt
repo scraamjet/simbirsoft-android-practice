@@ -25,37 +25,20 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun isNewsAlreadyLoaded(): Boolean {
-        return newsRepository.hasCachedNews()
-    }
-
     fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsFromCache()
+        return newsRepository.getNewsObservable()
             .doOnSubscribe {
-                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting cached news on thread: ${Thread.currentThread().name}, count: ${news.size}",
+                    "Subscribed to news on thread: ${Thread.currentThread().name}"
                 )
             }
-            .subscribe { news -> newsLoadedListener(news) }
-    }
-
-    fun loadNewsWithDelay(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsFromStorage()
-            .doOnSubscribe {
-                Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
-            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
-                    "Emitting delayed news on thread: ${Thread.currentThread().name}, count: ${news.size}",
+                    "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}"
                 )
             }
             .subscribe { news -> newsLoadedListener(news) }

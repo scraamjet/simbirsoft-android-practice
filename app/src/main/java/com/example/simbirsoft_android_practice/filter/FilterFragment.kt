@@ -66,31 +66,27 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun loadCategoryData() {
-        val disposable =
-            if (categoryRepository.hasCachedCategories()) {
-                categoryRepository.getCategoriesFromCache()
-            } else {
-                showLoading()
-                categoryRepository.getCategoriesFromStorage()
+        showLoading()
+
+        val disposable = categoryRepository.getCategoriesObservable()
+            .doOnSubscribe {
+                Log.d(
+                    TAG_FILTER_FRAGMENT,
+                    "Subscribed to categories on thread: ${Thread.currentThread().name}",
+                )
             }
-                .doOnSubscribe {
-                    Log.d(
-                        TAG_FILTER_FRAGMENT,
-                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
-                    )
-                }
-                .subscribeOn(Schedulers.io())
-                .map { list ->
-                    list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { categories ->
-                    Log.d(
-                        TAG_FILTER_FRAGMENT,
-                        "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
-                    )
-                }
-                .subscribe { categories -> showData(categories) }
+            .subscribeOn(Schedulers.io())
+            .map { list ->
+                list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { categories ->
+                Log.d(
+                    TAG_FILTER_FRAGMENT,
+                    "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                )
+            }
+            .subscribe { categories -> showData(categories) }
 
         compositeDisposable.add(disposable)
     }

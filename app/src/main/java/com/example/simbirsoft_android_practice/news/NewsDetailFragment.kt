@@ -46,7 +46,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getNewsFromCache()
+            newsRepository.getNewsObservable()
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,

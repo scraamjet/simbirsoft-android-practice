@@ -18,7 +18,6 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
@@ -102,18 +101,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun loadNewsData() {
         val newsService = newsService ?: return
+        showLoading()
 
-        if (newsService.isNewsAlreadyLoaded()) {
-            subscribeToNewsLoading(newsService::loadNews)
-        } else {
-            showLoading()
-            subscribeToNewsLoading(newsService::loadNewsWithDelay)
-        }
-    }
-
-    private fun subscribeToNewsLoading(loadFunction: ((List<News>) -> Unit) -> Disposable) {
         val disposable =
-            loadFunction { loadedNewsList ->
+            newsService.loadNews { loadedNewsList ->
                 val selectedCategories = filterPrefs.getSelectedCategories()
                 val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
                 newsItems = filteredNewsItems
@@ -183,8 +174,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }

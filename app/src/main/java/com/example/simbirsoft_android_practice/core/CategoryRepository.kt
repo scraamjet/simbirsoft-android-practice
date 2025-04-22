@@ -13,14 +13,20 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private var cachedCategories: List<Category>? = null
 
-    fun hasCachedCategories(): Boolean = cachedCategories != null
+    fun getCategoriesObservable(): Observable<List<Category>> {
+        return if (cachedCategories != null) {
+            getCategoriesFromCache()
+        } else {
+            getCategoriesFromStorage()
+        }
+    }
 
-    fun getCategoriesFromCache(): Observable<List<Category>> {
+    private fun getCategoriesFromCache(): Observable<List<Category>> {
         val categories = cachedCategories ?: return Observable.empty()
         return Observable.just(categories)
     }
 
-    fun getCategoriesFromStorage(): Observable<List<Category>> {
+    private fun getCategoriesFromStorage(): Observable<List<Category>> {
         return Observable.fromCallable {
             val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
             val type = object : TypeToken<List<Category>>() {}.type
@@ -30,3 +36,4 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
         }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
 }
+
