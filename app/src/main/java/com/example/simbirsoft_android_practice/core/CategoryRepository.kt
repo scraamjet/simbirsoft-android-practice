@@ -20,7 +20,7 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
         return Observable.just(categories)
     }
 
-    fun getCategoriesWithDelay(): Observable<List<Category>> {
+    fun getCategoriesFromStorage(): Observable<List<Category>> {
         return Observable.fromCallable {
             val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
             val type = object : TypeToken<List<Category>>() {}.type

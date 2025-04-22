@@ -20,7 +20,7 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
         return Observable.just(news)
     }
 
-    fun getNewsWithDelay(): Observable<List<News>> {
+    fun getNewsFromStorage(): Observable<List<News>> {
         return Observable.fromCallable {
             val json = extractor.readJsonFile(NEWS_JSON_FILE)
             val type = object : TypeToken<List<News>>() {}.type

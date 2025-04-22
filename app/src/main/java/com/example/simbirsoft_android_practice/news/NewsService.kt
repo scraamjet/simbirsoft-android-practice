@@ -46,7 +46,7 @@ class NewsService : Service() {
     }
 
     fun loadNewsWithDelay(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsWithDelay()
+        return newsRepository.getNewsFromStorage()
             .doOnSubscribe {
                 Log.d(TAG_NEWS_SERVICE, "Subscribed to news on thread: ${Thread.currentThread().name}")
             }

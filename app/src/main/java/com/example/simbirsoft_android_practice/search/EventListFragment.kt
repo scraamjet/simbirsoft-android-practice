@@ -59,7 +59,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                 newsRepository.getNewsFromCache()
             } else {
                 showLoading()
-                newsRepository.getNewsWithDelay()
+                newsRepository.getNewsFromStorage()
             }
                 .doOnSubscribe {
                     Log.d(

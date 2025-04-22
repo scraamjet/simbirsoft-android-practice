@@ -68,7 +68,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
                 categoryRepository.getCategoriesFromCache()
             } else {
                 showLoading()
-                categoryRepository.getCategoriesWithDelay()
+                categoryRepository.getCategoriesFromStorage()
             }
                 .doOnSubscribe {
                     Log.d(TAG_HELP_FRAGMENT, "Subscribed to categories on thread: ${Thread.currentThread().name}")

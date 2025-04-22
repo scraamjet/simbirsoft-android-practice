@@ -71,7 +71,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                 categoryRepository.getCategoriesFromCache()
             } else {
                 showLoading()
-                categoryRepository.getCategoriesWithDelay()
+                categoryRepository.getCategoriesFromStorage()
             }
                 .doOnSubscribe {
                     Log.d(
