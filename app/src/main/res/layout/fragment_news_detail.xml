@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="none"
-                        android:gravity="center"
+                        android:gravity="start|center_vertical"
                         android:maxLines="@integer/toolbar_title_max_lines"
                         android:singleLine="true" />
 

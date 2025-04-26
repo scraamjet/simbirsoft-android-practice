@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
 import com.example.simbirsoft_android_practice.news.NewsFragment
@@ -17,14 +18,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        initHelpFragment(savedInstanceState)
+        initAuthorizationFragment(savedInstanceState)
         setupBottomNavigation()
     }
 
-    private fun initHelpFragment(savedInstanceState: Bundle?) {
+    private fun initAuthorizationFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            loadFragment(HelpFragment.newInstance())
+            loadFragment(AuthorizationFragment.newInstance(), addToBackStack = false)
         }
     }
 
@@ -42,10 +42,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayoutFragmentContainer, fragment)
-            .commit()
+    private fun loadFragment(
+        fragment: Fragment,
+        addToBackStack: Boolean = true,
+    ) {
+        val transaction =
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, fragment)
+
+        if (addToBackStack) {
+            transaction.addToBackStack(null)
+        }
+
+        transaction.commit()
     }
 
     fun hideBottomNavigation() {
@@ -54,5 +63,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     fun showBottomNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun updateUnreadNewsBadge(count: Int) {
+        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.news)
+        if (count > 0) {
+            badge.isVisible = true
+            badge.number = count
+        } else {
+            badge.isVisible = false
+        }
     }
 }

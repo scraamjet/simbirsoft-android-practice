@@ -1,3 +1,3 @@
 package com.example.simbirsoft_android_practice.data
 
-data class Event(val title: String)
+data class Event(val id: Int, val title: String)

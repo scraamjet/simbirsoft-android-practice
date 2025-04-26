@@ -3,32 +3,36 @@ package com.example.simbirsoft_android_practice.core
 import com.example.simbirsoft_android_practice.data.Category
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.util.concurrent.Executors
+import io.reactivex.rxjava3.core.Observable
+import java.util.concurrent.TimeUnit
 
 private const val CATEGORIES_JSON_FILE = "categories.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class CategoryRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
-    private val executor = Executors.newSingleThreadExecutor()
+    private var cachedCategories: List<Category>? = null
 
-    fun getCategories(): List<Category> {
-        val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
-        val type = object : TypeToken<List<Category>>() {}.type
-        return gson.fromJson(json, type)
-    }
-
-    fun getCategoriesAsync(categoriesLoadedListener: (List<Category>?) -> Unit) {
-        executor.execute {
-            Thread.sleep(TIMEOUT_IN_MILLIS)
-            val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
-            val type = object : TypeToken<List<Category>>() {}.type
-            val categories: List<Category>? = gson.fromJson(json, type)
-            categoriesLoadedListener(categories)
+    fun getCategoriesObservable(): Observable<List<Category>> {
+        return if (cachedCategories != null) {
+            getCategoriesFromCache()
+        } else {
+            getCategoriesFromStorage()
         }
     }
 
-    fun releaseResources() {
-        executor.shutdown()
+    private fun getCategoriesFromCache(): Observable<List<Category>> {
+        val categories = cachedCategories ?: return Observable.empty()
+        return Observable.just(categories)
+    }
+
+    private fun getCategoriesFromStorage(): Observable<List<Category>> {
+        return Observable.fromCallable {
+            val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
+            val type = object : TypeToken<List<Category>>() {}.type
+            gson.fromJson<List<Category>>(json, type).also { loadedCategories ->
+                cachedCategories = loadedCategories
+            }
+        }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
 }

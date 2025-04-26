@@ -70,6 +70,9 @@
     <dimen name="search_list_layout_margin_horizontal">8dp</dimen>
     <dimen name="search_list_layout_margin_top">8dp</dimen>
     <dimen name="search_list_layout_margin_end">72dp</dimen>
+    <dimen name="margin_top_search_list_linear_layout_no_query">53dp</dimen>
+    <dimen name="margin_top_text_view_no_results">53dp</dimen>
+
 
     <!-- item_search_result -->
     <dimen name="item_search_result_margin_top">17dp</dimen>
@@ -130,5 +133,34 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_default_large">26dp</dimen>
+
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <dimen name="item_card_margin">8dp</dimen>
+    <dimen name="recycler_view_spacing">8dp</dimen>
+    <dimen name="icon_margin_top">40dp</dimen>
+    <dimen name="text_margin_top">10dp</dimen>
+    <dimen name="text_margin_start">4dp</dimen>
+
+    <dimen name="margin_bottom_linear_layout_no_query_scroll">80dp</dimen>
+
+    <!-- AuthorizationFragment -->
+
+    <dimen name="size_authorization_zero">0dp</dimen>
+
+    <dimen name="margin_extra_small_authorization">8dp</dimen>
+    <dimen name="margin_small_authorization">20dp</dimen>
+    <dimen name="margin_medium_authorization">32dp</dimen>
+    <dimen name="margin_large_authorization">40dp</dimen>
+    <dimen name="margin_extra_large_authorization">60dp</dimen>
+
+    <dimen name="margin_horizontal_authorization_image_view_social">24dp</dimen>
+
+    <dimen name="size_authorization_imageview_social">40dp</dimen>
+
+    <dimen name="radius_authorization_button">2dp</dimen>
+    <dimen name="translationZ_authorization_button">2dp</dimen>
+    <dimen name="elevation_authorization_button">2dp</dimen>
+
 </resources>
 

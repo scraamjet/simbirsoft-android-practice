@@ -3,21 +3,21 @@ package com.example.simbirsoft_android_practice.news
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
-import com.example.simbirsoft_android_practice.core.NewsRepository
+import android.util.Log
+import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.News
-import java.util.concurrent.Executors
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-private const val TIMEOUT_IN_MILLIS = 5_000L
+private const val TAG_NEWS_SERVICE = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
-    private val executor = Executors.newSingleThreadExecutor()
-    private val handler = Handler(Looper.getMainLooper())
-    private val newsRepository by lazy { NewsRepository(JsonAssetExtractor(this)) }
+    private val newsRepository by lazy {
+        RepositoryProvider.fromContext(applicationContext).newsRepository
+    }
 
     override fun onBind(intent: Intent): IBinder = binder
 
@@ -25,18 +25,22 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun loadNews(newsLoadedListener: (loadedNews: List<News>) -> Unit) {
-        executor.execute {
-            Thread.sleep(TIMEOUT_IN_MILLIS)
-            val newsList = newsRepository.getNews()
-            handler.post {
-                newsLoadedListener(newsList)
+    fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
+        return newsRepository.getNewsObservable()
+            .doOnSubscribe {
+                Log.d(
+                    TAG_NEWS_SERVICE,
+                    "Subscribed to news on thread: ${Thread.currentThread().name}",
+                )
             }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        executor.shutdown()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { news ->
+                Log.d(
+                    TAG_NEWS_SERVICE,
+                    "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}",
+                )
+            }
+            .subscribe { news -> newsLoadedListener(news) }
     }
 }

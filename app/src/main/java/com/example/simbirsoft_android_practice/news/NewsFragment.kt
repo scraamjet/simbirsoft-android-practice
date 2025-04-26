@@ -14,10 +14,13 @@ import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
+import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-private const val KEY_NEWS_ITEMS = "news_items"
+private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
@@ -28,15 +31,15 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
+    private val unreadNewsCountSubject = BehaviorSubject.createDefault(0)
+    private val compositeDisposable = CompositeDisposable()
 
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { connectedService ->
                 newsService = connectedService
                 isServiceConnected = true
-                if (newsItems == null) {
-                    loadNewsData()
-                }
+                loadNewsData()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
@@ -77,7 +80,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        newsItems = null
+        compositeDisposable.clear()
     }
 
     private fun initRecyclerView() {
@@ -97,15 +100,18 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun loadNewsData() {
+        val newsService = newsService ?: return
         showLoading()
-        newsService?.loadNews { loadedNewsList ->
-            if (isAdded) {
+
+        val disposable =
+            newsService.loadNews { loadedNewsList ->
                 val selectedCategories = filterPrefs.getSelectedCategories()
                 val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
                 newsItems = filteredNewsItems
                 showData(filteredNewsItems)
             }
-        }
+
+        compositeDisposable.add(disposable)
     }
 
     private fun filterAndMapNews(
@@ -133,14 +139,15 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.apply {
             textViewNoNews.isVisible = newsList.isEmpty()
             recyclerViewItemNews.isVisible = newsList.isNotEmpty()
-            updateScrollFlags(newsList.isEmpty())
             progressBarNews.isVisible = false
         }
         newsAdapter.submitList(newsList)
+        updateScrollFlags(newsList.isEmpty())
+        updateUnreadNewsCount(newsList)
     }
 
     private fun onNewsItemSelected(newsId: Int) {
-        newsPrefs.saveSelectedNewsId(newsId)
+        newsPrefs.markNewsAsReadAndSelected(newsId)
         parentFragmentManager.beginTransaction()
             .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
             .addToBackStack(null)
@@ -157,9 +164,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun saveState(outState: Bundle) {
-        newsItems?.let { savedNewsList ->
-            outState.putParcelableArrayList(KEY_NEWS_ITEMS, ArrayList(savedNewsList))
-        }
+        val newsItems = newsItems?.let(::ArrayList) ?: return
+        outState.putParcelableArrayList(KEY_NEWS_ITEMS, newsItems)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
@@ -173,6 +179,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                         AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
+    }
+
+    private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
+        val readNewsIds = newsPrefs.getReadNewsIds()
+        val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
+        unreadNewsCountSubject.onNext(unreadCount)
+        (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
     }
 
     companion object {
