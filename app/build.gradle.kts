@@ -60,6 +60,7 @@ ktlint {
 }
 
 dependencies {
+    implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)

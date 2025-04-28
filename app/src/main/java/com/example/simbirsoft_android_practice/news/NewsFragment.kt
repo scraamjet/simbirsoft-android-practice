@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.data.News
@@ -19,17 +20,15 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
+private const val TAG_NEWS_FRAGMENT = "NewsFragment"
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
@@ -42,13 +41,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private val compositeDisposable = CompositeDisposable()
 
     private val unreadNewsCount = MutableStateFlow(0)
-    private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
-            Log.e("UnreadNews", "Coroutine exception: ${throwable.localizedMessage}", throwable)
+            Log.e(TAG_NEWS_FRAGMENT, "Flow exception: ${throwable.localizedMessage}", throwable)
         }
-    private val coroutineScope =
-        CoroutineScope(SupervisorJob() + Dispatchers.IO + coroutineExceptionHandler)
 
     private val connection =
         NewsServiceConnection(
@@ -198,11 +194,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
-        coroutineScope.launch {
+        lifecycleScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val readNewsIds = newsPrefs.getReadNewsIds()
             val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
+
             unreadNewsCount.value = unreadCount
-            withContext(dispatcherMain) {
+
+            withContext(Dispatchers.Main) {
                 (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
             }
         }

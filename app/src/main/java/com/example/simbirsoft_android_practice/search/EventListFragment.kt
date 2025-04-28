@@ -6,6 +6,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
@@ -13,11 +16,8 @@ import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -31,31 +31,12 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         (requireContext().applicationContext as RepositoryProvider).newsRepository
     }
 
-    private val supervisorJob = SupervisorJob()
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, throwable ->
-            Log.e(
-                TAG_EVENT_LIST_FRAGMENT,
-                "Coroutine exception: ${throwable.localizedMessage}",
-                throwable,
-            )
-            showSearchStub()
-            eventAdapter.submitList(emptyList())
-        }
-    private val coroutineScope =
-        CoroutineScope(Dispatchers.Main + supervisorJob + coroutineExceptionHandler)
-
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        coroutineScope.cancel()
     }
 
     private fun initRecyclerView() {
@@ -72,17 +53,28 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     fun refreshData() {
-        coroutineScope.launch {
-            showLoading()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                showLoading()
 
-            newsRepository.getNewsFlow()
-                .map { list -> list.map(SearchMapper::toEvent) }
-                .flowOn(Dispatchers.IO)
-                .collect { events ->
-                    val searchQuery =
-                        (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                    handleFetchedEvents(events, searchQuery)
-                }
+                newsRepository.getNewsFlow()
+                    .map { list -> list.map(SearchMapper::toEvent) }
+                    .flowOn(Dispatchers.IO)
+                    .catch { throwable ->
+                        Log.e(
+                            TAG_EVENT_LIST_FRAGMENT,
+                            "Flow exception: ${throwable.localizedMessage}",
+                            throwable
+                        )
+                        showSearchStub()
+                        eventAdapter.submitList(emptyList())
+                    }
+                    .collect { events ->
+                        val searchQuery =
+                            (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
+                        handleFetchedEvents(events, searchQuery)
+                    }
+            }
         }
     }
 

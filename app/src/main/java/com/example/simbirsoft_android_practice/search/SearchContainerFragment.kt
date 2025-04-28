@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
@@ -16,13 +19,9 @@ import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -34,21 +33,7 @@ private const val TAG_SEARCH_CONTAINER_FRAGMENT = "SearchContainerFragment"
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container), SearchQueryProvider {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
-
     private val searchQueryFlow = MutableStateFlow("")
-    private val supervisorJob = SupervisorJob()
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, throwable ->
-            Log.e(
-                TAG_SEARCH_CONTAINER_FRAGMENT,
-                "Coroutine exception: ${throwable.localizedMessage}",
-                throwable,
-            )
-        }
-    private val coroutineScope =
-        CoroutineScope(
-            Dispatchers.Main + supervisorJob + coroutineExceptionHandler,
-        )
 
     override fun getSearchQuery(): String = searchQueryFlow.value
 
@@ -62,11 +47,6 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
         initSearchView()
         observeKeyboardVisibility()
         observeSearchFlow()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        coroutineScope.cancel()
     }
 
     private fun initViewPager() {
@@ -111,13 +91,22 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
 
     @OptIn(FlowPreview::class)
     private fun observeSearchFlow() {
-        coroutineScope.launch {
-            searchQueryFlow
-                .debounce(DEBOUNCE_DELAY_MILLISECONDS)
-                .distinctUntilChanged()
-                .collectLatest {
-                    refreshEventFragment()
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchQueryFlow
+                    .debounce(DEBOUNCE_DELAY_MILLISECONDS)
+                    .distinctUntilChanged()
+                    .catch { throwable ->
+                        Log.e(
+                            TAG_SEARCH_CONTAINER_FRAGMENT,
+                            "Flow exception: ${throwable.localizedMessage}",
+                            throwable
+                        )
+                    }
+                    .collectLatest {
+                        refreshEventFragment()
+                    }
+            }
         }
     }
 
