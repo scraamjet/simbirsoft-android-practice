@@ -64,7 +64,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                         Log.e(
                             TAG_EVENT_LIST_FRAGMENT,
                             "Flow exception: ${throwable.localizedMessage}",
-                            throwable
+                            throwable,
                         )
                         showSearchStub()
                         eventAdapter.submitList(emptyList())

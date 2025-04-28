@@ -100,7 +100,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
                         Log.e(
                             TAG_SEARCH_CONTAINER_FRAGMENT,
                             "Flow exception: ${throwable.localizedMessage}",
-                            throwable
+                            throwable,
                         )
                     }
                     .collectLatest {
