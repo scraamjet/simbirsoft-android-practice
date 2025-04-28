@@ -60,7 +60,6 @@ ktlint {
 }
 
 dependencies {
-    implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)
@@ -71,6 +70,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.viewbinding.property.delegate)
     implementation(libs.viewbinding.property.delegate.reflection)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
