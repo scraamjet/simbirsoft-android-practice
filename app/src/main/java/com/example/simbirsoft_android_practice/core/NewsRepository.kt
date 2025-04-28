@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.TimeUnit
 
 private const val NEWS_JSON_FILE = "news.json"
@@ -48,9 +49,7 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
     }
 
     private fun getNewsFromCacheFlow(): Flow<List<News>> =
-        flow {
-            cachedNews?.let { cachedNewsList -> emit(cachedNewsList) }
-        }
+        flowOf(cachedNews ?: error("News cache is empty"))
 
     private fun getNewsFromStorageFlow(): Flow<List<News>> =
         flow {
