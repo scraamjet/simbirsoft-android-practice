@@ -3,9 +3,13 @@ package com.example.simbirsoft_android_practice.search
 import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
@@ -15,21 +19,23 @@ import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
+private const val TAG_SEARCH_CONTAINER_FRAGMENT = "SearchContainerFragment"
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container), SearchQueryProvider {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
-    private val searchSubject = PublishSubject.create<String>()
-    private val compositeDisposable = CompositeDisposable()
-    private var currentQuery: String = ""
+    private val searchQueryFlow = MutableStateFlow("")
 
-    override fun getSearchQuery(): String = currentQuery
+    override fun getSearchQuery(): String = searchQueryFlow.value
 
     override fun onViewCreated(
         view: View,
@@ -40,11 +46,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
         initTabLayout()
         initSearchView()
         observeKeyboardVisibility()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
+        observeSearchFlow()
     }
 
     private fun initViewPager() {
@@ -80,18 +82,32 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    currentQuery = newText.orEmpty()
-                    searchSubject.onNext(currentQuery)
+                    searchQueryFlow.value = newText.orEmpty()
                     return true
                 }
             },
         )
-        searchSubject
-            .debounce(DEBOUNCE_DELAY_MILLISECONDS, TimeUnit.MILLISECONDS)
-            .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { refreshEventFragment() }
-            .let(compositeDisposable::add)
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeSearchFlow() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchQueryFlow
+                    .debounce(DEBOUNCE_DELAY_MILLISECONDS)
+                    .distinctUntilChanged()
+                    .catch { throwable ->
+                        Log.e(
+                            TAG_SEARCH_CONTAINER_FRAGMENT,
+                            "Flow exception: ${throwable.localizedMessage}",
+                            throwable,
+                        )
+                    }
+                    .collectLatest {
+                        refreshEventFragment()
+                    }
+            }
+        }
     }
 
     private fun getCurrentFragment(): Fragment? {

@@ -4,6 +4,10 @@ import com.example.simbirsoft_android_practice.data.News
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.TimeUnit
 
 private const val NEWS_JSON_FILE = "news.json"
@@ -35,4 +39,26 @@ class NewsRepository(private val extractor: JsonAssetExtractor) {
             }
         }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
     }
+
+    fun getNewsFlow(): Flow<List<News>> {
+        return if (cachedNews != null) {
+            getNewsFromCacheFlow()
+        } else {
+            getNewsFromStorageFlow()
+        }
+    }
+
+    private fun getNewsFromCacheFlow(): Flow<List<News>> =
+        flowOf(cachedNews ?: error("News cache is empty"))
+
+    private fun getNewsFromStorageFlow(): Flow<List<News>> =
+        flow {
+            delay(TIMEOUT_IN_MILLIS)
+            val json = extractor.readJsonFile(NEWS_JSON_FILE)
+            val type = object : TypeToken<List<News>>() {}.type
+            gson.fromJson<List<News>>(json, type).also { loadedNews ->
+                cachedNews = loadedNews
+                emit(loadedNews)
+            }
+        }
 }
