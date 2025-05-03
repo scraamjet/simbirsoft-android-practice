@@ -3,12 +3,10 @@ package com.example.simbirsoft_android_practice.news
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.data.News
@@ -20,15 +18,10 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
-private const val TAG_NEWS_FRAGMENT = "NewsFragment"
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
@@ -39,12 +32,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
     private val compositeDisposable = CompositeDisposable()
-
-    private val unreadNewsCount = MutableStateFlow(0)
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, throwable ->
-            Log.e(TAG_NEWS_FRAGMENT, "Flow exception: ${throwable.localizedMessage}", throwable)
-        }
 
     private val connection =
         NewsServiceConnection(
@@ -73,6 +60,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             requireContext().unbindService(connection)
             isServiceConnected = false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.loadAndUpdateUnreadNewsCount()
     }
 
     override fun onViewCreated(
@@ -155,7 +147,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
         newsAdapter.submitList(newsList)
         updateScrollFlags(newsList.isEmpty())
-        updateUnreadNewsCount(newsList)
     }
 
     private fun onNewsItemSelected(newsId: Int) {
@@ -190,19 +181,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                             AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
                             AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
-        }
-    }
-
-    private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
-        lifecycleScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val readNewsIds = newsPrefs.getReadNewsIds()
-            val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
-
-            unreadNewsCount.value = unreadCount
-
-            withContext(Dispatchers.Main) {
-                (activity as? MainActivity)?.updateUnreadNewsBadge(unreadCount)
-            }
         }
     }
 

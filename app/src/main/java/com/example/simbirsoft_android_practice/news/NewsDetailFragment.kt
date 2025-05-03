@@ -9,7 +9,6 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
-import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -32,7 +31,6 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.hideBottomNavigation()
         loadNewsDetail()
         initClickListeners()
     }
@@ -101,11 +99,6 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        (activity as? MainActivity)?.showBottomNavigation()
     }
 
     companion object {
