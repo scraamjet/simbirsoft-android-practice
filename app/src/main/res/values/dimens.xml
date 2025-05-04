@@ -23,12 +23,14 @@
     <dimen name="profile_line_height">1dp</dimen>
     <dimen name="profile_friends_margin_top">20dp</dimen>
     <dimen name="profile_friend_margin_start">20dp</dimen>
-    <dimen name="margin_top_recycler_view_friend_list">16dp</dimen>
     <dimen name="profile_line_2_margin_top">10dp</dimen>
     <dimen name="profile_logout_margin_top">20dp</dimen>
     <dimen name="profile_logout_margin_bottom">92dp</dimen>
     <dimen name="profile_guideline_margin_start">20dp</dimen>
     <dimen name="bottom_nav_height">54dp</dimen>
+
+    <dimen name="margin_top_recycler_view_friend_list">16dp</dimen>
+    <dimen name="margin_bottom_profile_item_friend">10dp</dimen>
     <dimen name="size_profile_image_friend">48dp</dimen>
 
     <!-- edit_photo_dialog -->
