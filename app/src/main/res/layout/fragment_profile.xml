@@ -168,68 +168,15 @@
                 app:layout_constraintStart_toStartOf="@id/guidelineVertical"
                 app:layout_constraintTop_toBottomOf="@+id/view1" />
 
-            <TextView
-                android:id="@+id/textViewSampleFriend1"
-                style="@style/BodyTextRegularBlack"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewFriends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_1"
-                android:text="@string/profile_sample_friend_1"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend1"
-                app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_1"
+                android:layout_marginTop="@dimen/margin_top_recycler_view_friend_list"
+                app:layout_constraintTop_toBottomOf="@+id/textViewYourFriends"
                 app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewYourFriends" />
-
-            <TextView
-                android:id="@+id/textViewSampleFriend2"
-                style="@style/BodyTextRegularBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_2"
-                android:text="@string/profile_sample_friend_2"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend2"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSampleFriend1" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_2"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend1" />
-
-            <TextView
-                android:id="@+id/textViewSampleFriend3"
-                style="@style/BodyTextRegularBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_3"
-                android:text="@string/profile_sample_friend_3"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend3"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSampleFriend2" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_3"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend2" />
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"/>
 
             <View
                 android:id="@+id/view2"
@@ -239,7 +186,7 @@
                 android:background="@color/cool_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend3" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewFriends" />
 
             <Button
                 android:id="@+id/buttonLogout"

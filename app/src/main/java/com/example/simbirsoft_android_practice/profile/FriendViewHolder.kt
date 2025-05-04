@@ -1,0 +1,23 @@
+package com.example.simbirsoft_android_practice.profile
+
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.request.CachePolicy
+import coil.transform.CircleCropTransformation
+import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.data.Friend
+import com.example.simbirsoft_android_practice.databinding.ItemFriendBinding
+
+class FriendViewHolder(private val binding: ItemFriendBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: Friend) {
+        binding.friendName.text = item.name
+        binding.friendImage.load(item.imageSrc) {
+            placeholder(R.drawable.image_load)
+            error(R.drawable.image_load)
+            memoryCachePolicy(CachePolicy.DISABLED)
+            diskCachePolicy(CachePolicy.DISABLED)
+            transformations(CircleCropTransformation())
+        }
+    }
+}

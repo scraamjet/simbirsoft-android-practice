@@ -15,7 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.data.Friend
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
@@ -23,6 +25,7 @@ private const val IMAGE_SELECTOR_TAG = "IMAGE_SELECTOR_TAG"
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val binding by viewBinding(FragmentProfileBinding::bind)
+    private val friendAdapter by lazy { FriendAdapter() }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -43,13 +46,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.appBarImageProfile.setOnClickListener { showEditPhotoDialog() }
+
+        initRecyclerView()
         handleBackPress()
+    }
+
+    private fun initRecyclerView(){
+        binding.recyclerViewFriends.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = friendAdapter
+        }
+        val list: List<Friend> = listOf(
+            Friend(1,"Алексис Санчес", "https://photobooth.cdn.sports.ru/preset/tc_person/4/02/2c8b043f747e8b03764db15fc1d2d.png"),
+            Friend(2,"Деклан Райс", "https://photobooth.cdn.sports.ru/preset/tags/3/1a/c964ab3eb44d883cca720b243570a.png"),
+            Friend(3,"Букайо Сака", "https://photobooth.cdn.sports.ru/preset/tc_person/a/8b/0e7d6eba2431fa68d0275d1124d82.jpeg"),
+            Friend(4,"Алексей Гладков2", "https://thumb.tildacdn.com/tild3739-3337-4530-b562-643539663265/-/format/webp/_.jpg"),
+            Friend(5,"Филлип Киркоров2", "https://s1.bloknot-voronezh.ru/thumb/850x0xcut/upload/iblock/1ae/8r55oxgxldtr24o21gorz5bjvkqf1d74/Kirkorov.png"),
+            Friend(6,"Наруто Узумаки2", "https://arthive.net/res/media/img/orig/work/58b/7525132.jpg")
+        )
+        friendAdapter.submitList(list)
     }
 
     private fun handleBackPress() {
