@@ -29,6 +29,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val TAG_MAIN_ACTIVITY = "MainActivity"
+
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
-            Log.e("MainActivity", "Flow exception: ${throwable.localizedMessage}", throwable)
+            Log.e(TAG_MAIN_ACTIVITY, "Flow exception: ${throwable.localizedMessage}", throwable)
         }
 
     private val connection = NewsServiceConnection(
@@ -60,18 +62,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         initAuthorizationFragment(savedInstanceState)
         setupBottomNavigation()
-        val currentFragment =
-            supportFragmentManager.findFragmentById(R.id.frameLayoutFragmentContainer)
-        if (currentFragment is NewsDetailFragment) {
-            hideBottomNavigation()
-        } else {
-            showBottomNavigation()
-        }
     }
 
-    override fun onStart() {
-        super.onStart()
-        bindService(Intent(this, NewsService::class.java), connection, Context.BIND_AUTO_CREATE)
+    fun startAndBindNewsService() {
+        val intent = Intent(this, NewsService::class.java)
+        bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
     override fun onStop() {
@@ -88,7 +83,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         service.loadNews { loadedNews ->
             val selectedCategories = filterPrefs.getSelectedCategories()
             val filteredNewsItems = loadedNews
-                .filter { news -> news.listHelpCategoryId.any { it in selectedCategories } }
+                .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
                 .map(NewsMapper::toNewsItem)
 
             updateUnreadNewsCount(filteredNewsItems)
@@ -132,9 +127,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         fragment: Fragment,
         addToBackStack: Boolean = true,
     ) {
-        val transaction =
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, fragment)
+        when (fragment) {
+            is AuthorizationFragment,
+            is NewsDetailFragment -> hideBottomNavigation()
+
+            else -> showBottomNavigation()
+        }
+
+        val transaction = supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayoutFragmentContainer, fragment)
 
         if (addToBackStack) {
             transaction.addToBackStack(null)
@@ -142,6 +143,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         transaction.commit()
     }
+
 
     fun hideBottomNavigation() {
         binding.bottomNavigationView.visibility = View.GONE

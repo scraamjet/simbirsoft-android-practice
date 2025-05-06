@@ -9,6 +9,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
+import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -22,7 +23,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsRepository by lazy {
-        RepositoryProvider.fromContext(requireContext()).newsRepository
+        RepositoryProvider.fromContext(requireContext()).eventRepository
     }
     private val compositeDisposable = CompositeDisposable()
 
@@ -31,6 +32,8 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.hideBottomNavigation()
+
         loadNewsDetail()
         initClickListeners()
     }
@@ -40,11 +43,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         compositeDisposable.clear()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        (activity as? MainActivity)?.showBottomNavigation()
+    }
+
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getNewsObservable()
+            newsRepository.getEventsObservable(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,

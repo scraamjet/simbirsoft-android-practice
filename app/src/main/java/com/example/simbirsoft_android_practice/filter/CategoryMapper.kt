@@ -11,7 +11,7 @@ object CategoryMapper {
     ): FilterCategory {
         return FilterCategory(
             id = category.id,
-            title = category.title,
+            title = category.name,
             isEnabled = filterPrefs.isCategorySelected(category.id),
         )
     }
@@ -19,8 +19,8 @@ object CategoryMapper {
     fun toHelpCategory(category: Category): HelpCategory {
         return HelpCategory(
             id = category.id,
-            title = category.title,
-            iconUrl = category.iconUrl,
+            title = category.name,
+            iconUrl = category.image,
         )
     }
 }

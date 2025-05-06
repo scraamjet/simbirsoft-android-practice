@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.data.News
+import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
@@ -65,6 +65,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     override fun onResume() {
         super.onResume()
         (activity as? MainActivity)?.loadAndUpdateUnreadNewsCount()
+        (activity as? MainActivity)?.showBottomNavigation()
     }
 
     override fun onViewCreated(
@@ -119,12 +120,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun filterAndMapNews(
-        loadedNewsList: List<News>,
+        loadedNewsList: List<Event>,
         selectedCategories: Set<Int>,
     ): List<NewsItem> {
         return loadedNewsList
             .filter { news ->
-                news.listHelpCategoryId.any { categoryId ->
+                news.categoryIds.any { categoryId ->
                     selectedCategories.contains(categoryId)
                 }
             }
@@ -156,6 +157,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             .addToBackStack(null)
             .commit()
     }
+
 
     private fun restoreState(savedInstanceState: Bundle?) {
         savedInstanceState?.let { bundle ->

@@ -50,7 +50,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                 .replace(R.id.frameLayoutFragmentContainer, HelpFragment.newInstance())
                 .commit()
 
-            (activity as? MainActivity)?.loadAndUpdateUnreadNewsCount()
+            (activity as? MainActivity)?.startAndBindNewsService()
         }
 
         binding.editTextAuthorizationPassword.setOnTouchListener { _, event ->

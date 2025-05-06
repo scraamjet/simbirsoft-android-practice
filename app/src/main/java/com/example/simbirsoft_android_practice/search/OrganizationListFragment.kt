@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.data.SearchEvent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import com.example.simbirsoft_android_practice.utils.generateRandomString
 import dev.androidbroadcast.vbpd.viewBinding
@@ -48,9 +48,9 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         eventAdapter.submitList(generateEventsList())
     }
 
-    private fun generateEventsList(): List<Event> {
+    private fun generateEventsList(): List<SearchEvent> {
         return List(ORGANIZATIONS_LIST_SIZE) {
-            Event(
+            SearchEvent(
                 Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
                 generateRandomString(),
             )
