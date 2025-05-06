@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.data.Event
@@ -17,6 +18,7 @@ import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
+import kotlinx.coroutines.launch
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
@@ -100,13 +102,17 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val newsService = newsService ?: return
         showLoading()
 
-        newsService.loadNews { loadedNewsList ->
-            val selectedCategories = filterPrefs.getSelectedCategories()
-            val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
-            newsItems = filteredNewsItems
-            showData(filteredNewsItems)
+        viewLifecycleOwner.lifecycleScope.launch {
+            newsService.loadNews()
+                .collect { loadedNewsList ->
+                    val selectedCategories = filterPrefs.getSelectedCategories()
+                    val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
+                    newsItems = filteredNewsItems
+                    showData(filteredNewsItems)
+                }
         }
     }
+
 
     private fun filterAndMapNews(
         loadedNewsList: List<Event>,
