@@ -5,8 +5,12 @@ import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
 import com.example.simbirsoft_android_practice.data.Event
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.rxjava3.core.Observable
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 
 private const val TAG_EVENT_REPOSITORY = "EventRepository"
 private const val NEWS_JSON_FILE = "events.json"
@@ -16,39 +20,38 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private var cachedEvents: List<Event>? = null
 
-    fun getEventsObservable(categoryId: Int?): Observable<List<Event>> {
+    fun getEventsFlow(categoryId: Int?): Flow<List<Event>> {
         return if (cachedEvents != null) {
-            getEventsFromCache()
+            getEventsFromCacheFlow()
         } else {
-            getEventsFromRemote(categoryId)
+            getEventsFromRemoteFlow(categoryId)
         }
     }
 
-    private fun getEventsFromCache(): Observable<List<Event>> {
-        val news = cachedEvents ?: return Observable.empty()
-        return Observable.just(news)
-    }
-
-    private fun getEventsFromRemote(categoryId: Int?): Observable<List<Event>> {
+    private fun getEventsFromRemoteFlow(categoryId: Int?): Flow<List<Event>> {
         val body = categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
-        return apiService.getEvents(body)
-            .doOnNext { events -> cachedEvents = events }
-            .onErrorResumeNext { throwable: Throwable ->
-                Log.w(
-                    TAG_EVENT_REPOSITORY,
-                    "Remote fetch failed: ${throwable.message}, loading from storage",
-                )
-                getEventsFromStorage()
-            }
+        return flow {
+            val events = apiService.getEvents(body).blockingFirst()
+            cachedEvents = events
+            emit(events)
+        }.catch { error ->
+            Log.w(TAG_EVENT_REPOSITORY, "Remote fetch failed: ${error.message}, loading from storage")
+            emitAll(getEventsFromStorageFlow())
+        }
     }
 
-    private fun getEventsFromStorage(): Observable<List<Event>> {
-        return Observable.fromCallable {
+    private fun getEventsFromCacheFlow(): Flow<List<Event>> =
+        flowOf(cachedEvents ?: error("News cache is empty"))
+
+    private fun getEventsFromStorageFlow(): Flow<List<Event>> =
+        flow {
+            delay(TIMEOUT_IN_MILLIS)
             val json = extractor.readJsonFile(NEWS_JSON_FILE)
             val type = object : TypeToken<List<Event>>() {}.type
-            gson.fromJson<List<Event>>(json, type).also { loadedEvent ->
-                cachedEvents = loadedEvent
+            gson.fromJson<List<Event>>(json, type).also { loadedNews ->
+                cachedEvents = loadedNews
+                emit(loadedNews)
             }
-        }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
-    }
+        }
 }
+

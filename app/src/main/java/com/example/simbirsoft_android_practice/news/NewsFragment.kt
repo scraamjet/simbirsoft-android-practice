@@ -17,7 +17,6 @@ import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
@@ -30,7 +29,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
     private var newsItems: List<NewsItem>? = null
-    private val compositeDisposable = CompositeDisposable()
 
     private val connection =
         NewsServiceConnection(
@@ -82,11 +80,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         saveState(outState)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
-    }
-
     private fun initRecyclerView() {
         binding.recyclerViewItemNews.apply {
             layoutManager = LinearLayoutManager(context)
@@ -107,15 +100,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         val newsService = newsService ?: return
         showLoading()
 
-        val disposable =
-            newsService.loadNews { loadedNewsList ->
-                val selectedCategories = filterPrefs.getSelectedCategories()
-                val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
-                newsItems = filteredNewsItems
-                showData(filteredNewsItems)
-            }
-
-        compositeDisposable.add(disposable)
+        newsService.loadNews { loadedNewsList ->
+            val selectedCategories = filterPrefs.getSelectedCategories()
+            val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
+            newsItems = filteredNewsItems
+            showData(filteredNewsItems)
+        }
     }
 
     private fun filterAndMapNews(
@@ -178,8 +168,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }

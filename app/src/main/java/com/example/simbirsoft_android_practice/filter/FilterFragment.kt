@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
@@ -15,9 +16,10 @@ import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.data.FilterCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private const val TAG_FILTER_FRAGMENT = "FilterFragment"
 private const val KEY_FILTER_CATEGORIES = "key_filter_categories"
@@ -68,28 +70,21 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun loadCategoryData() {
         showLoading()
 
-        val disposable =
-            categoryRepository.getCategoriesObservable()
-                .doOnSubscribe {
-                    Log.d(
-                        TAG_FILTER_FRAGMENT,
-                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
-                    )
-                }
-                .subscribeOn(Schedulers.io())
+        viewLifecycleOwner.lifecycleScope.launch {
+            categoryRepository.getCategoriesFlow()
                 .map { list ->
-                    list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
+                    list.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
                 }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { categories ->
-                    Log.d(
-                        TAG_FILTER_FRAGMENT,
-                        "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                .catch { throwable ->
+                    Log.w(
+                        TAG_FILTER_FRAGMENT, "Flow exception: ${throwable.localizedMessage}",
+                        throwable
                     )
                 }
-                .subscribe { categories -> showData(categories) }
-
-        compositeDisposable.add(disposable)
+                .collect { categories ->
+                    showData(categories)
+                }
+        }
     }
 
     private fun initClickListeners() {

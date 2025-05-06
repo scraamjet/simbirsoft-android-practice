@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
@@ -13,9 +14,10 @@ import com.example.simbirsoft_android_practice.data.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_HELP_CATEGORIES = "key_help_categories"
@@ -65,26 +67,19 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun loadCategoryData() {
         showLoading()
 
-        val disposable =
-            categoryRepository.getCategoriesObservable()
-                .doOnSubscribe {
-                    Log.d(
-                        TAG_HELP_FRAGMENT,
-                        "Subscribed to categories on thread: ${Thread.currentThread().name}",
-                    )
-                }
-                .subscribeOn(Schedulers.io())
+        viewLifecycleOwner.lifecycleScope.launch {
+            categoryRepository.getCategoriesFlow()
                 .map { list -> list.map(CategoryMapper::toHelpCategory) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { categories ->
-                    Log.d(
-                        TAG_HELP_FRAGMENT,
-                        "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",
+                .catch { throwable ->
+                    Log.w(
+                        TAG_HELP_FRAGMENT, "Flow exception: ${throwable.localizedMessage}",
+                        throwable
                     )
                 }
-                .subscribe { categories -> showData(categories) }
-
-        compositeDisposable.add(disposable)
+                .collect { categories ->
+                    showData(categories)
+                }
+        }
     }
 
     private fun showLoading() {

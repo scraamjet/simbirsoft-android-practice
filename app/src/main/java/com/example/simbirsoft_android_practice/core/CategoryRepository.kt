@@ -5,8 +5,13 @@ import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
 import com.example.simbirsoft_android_practice.data.Category
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.rxjava3.core.Observable
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+
 
 private const val TAG_CATEGORY_REPOSITORY = "CategoryRepository"
 private const val CATEGORIES_JSON_FILE = "categories.json"
@@ -16,39 +21,34 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private var cachedCategories: List<Category>? = null
 
-    fun getCategoriesObservable(): Observable<List<Category>> {
+    fun getCategoriesFlow(): Flow<List<Category>> {
         return if (cachedCategories != null) {
-            getCategoriesFromCache()
+            getCategoriesFromCacheFlow()
         } else {
-            getCategoriesFromRemote()
+            getCategoriesFromRemoteFlow()
         }
     }
 
-    private fun getCategoriesFromRemote(): Observable<List<Category>> {
-        return apiService.getCategories()
-            .map { responseMap -> responseMap.values.toList() }
-            .doOnNext { fetchedCategories -> cachedCategories = fetchedCategories }
-            .onErrorResumeNext { error: Throwable ->
-                Log.w(
-                    TAG_CATEGORY_REPOSITORY,
-                    "Remote fetch failed: ${error.message}, loading from storage",
-                )
-                getCategoriesFromStorage()
-            }
+    private fun getCategoriesFromRemoteFlow(): Flow<List<Category>> = flow {
+        val responseMap = apiService.getCategories().blockingFirst()
+        val fetchedCategories = responseMap.values.toList()
+        cachedCategories = fetchedCategories
+        emit(fetchedCategories)
+    }.catch { error ->
+        Log.w(TAG_CATEGORY_REPOSITORY, "Remote fetch failed: ${error.message}, loading from storage")
+        emitAll(getCategoriesFromStorageFlow())
     }
 
-    private fun getCategoriesFromCache(): Observable<List<Category>> {
-        val categories = cachedCategories ?: return Observable.empty()
-        return Observable.just(categories)
-    }
+    private fun getCategoriesFromCacheFlow(): Flow<List<Category>> =
+        flowOf(cachedCategories ?: error("Category cache is empty"))
 
-    private fun getCategoriesFromStorage(): Observable<List<Category>> {
-        return Observable.fromCallable {
-            val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
-            val type = object : TypeToken<List<Category>>() {}.type
-            gson.fromJson<List<Category>>(json, type).also { loadedCategories ->
-                cachedCategories = loadedCategories
-            }
-        }.delaySubscription(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+    private fun getCategoriesFromStorageFlow(): Flow<List<Category>> = flow {
+        delay(TIMEOUT_IN_MILLIS)
+        val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
+        val type = object : TypeToken<List<Category>>() {}.type
+        gson.fromJson<List<Category>>(json, type).also { loadedCategories ->
+            cachedCategories = loadedCategories
+            emit(loadedCategories)
+        }
     }
 }
