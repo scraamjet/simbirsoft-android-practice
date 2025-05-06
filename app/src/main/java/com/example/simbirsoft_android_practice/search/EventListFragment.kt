@@ -22,7 +22,7 @@ private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
-    private val newsRepository by lazy {
+    private val eventRepository by lazy {
         RepositoryProvider.fromContext(requireContext()).eventRepository
     }
     private val compositeDisposable = CompositeDisposable()
@@ -57,7 +57,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         showLoading()
 
         val disposable =
-            newsRepository.getEventsObservable(null)
+            eventRepository.getEventsObservable(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_EVENT_LIST_FRAGMENT,

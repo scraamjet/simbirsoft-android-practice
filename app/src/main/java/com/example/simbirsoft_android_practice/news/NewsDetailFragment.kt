@@ -22,7 +22,7 @@ private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
-    private val newsRepository by lazy {
+    private val eventRepository by lazy {
         RepositoryProvider.fromContext(requireContext()).eventRepository
     }
     private val compositeDisposable = CompositeDisposable()
@@ -52,7 +52,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getEventsObservable(null)
+            eventRepository.getEventsObservable(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,

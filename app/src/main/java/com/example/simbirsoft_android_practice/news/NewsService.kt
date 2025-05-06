@@ -15,7 +15,7 @@ private const val TAG_NEWS_SERVICE = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
-    private val newsRepository by lazy {
+    private val eventRepository by lazy {
         RepositoryProvider.fromContext(applicationContext).eventRepository
     }
 
@@ -26,7 +26,7 @@ class NewsService : Service() {
     }
 
     fun loadNews(newsLoadedListener: (List<Event>) -> Unit): Disposable {
-        return newsRepository.getEventsObservable(null)
+        return eventRepository.getEventsObservable(null)
             .doOnSubscribe {
                 Log.d(
                     TAG_NEWS_SERVICE,

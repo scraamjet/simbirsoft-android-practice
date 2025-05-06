@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
-private const val TAG_NEWS_REPOSITORY = "NewsRepository"
+private const val TAG_EVENT_REPOSITORY = "EventRepository"
 private const val NEWS_JSON_FILE = "events.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
@@ -36,7 +36,7 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
             .doOnNext { events -> cachedEvents = events }
             .onErrorResumeNext { throwable: Throwable ->
                 Log.w(
-                    TAG_NEWS_REPOSITORY,
+                    TAG_EVENT_REPOSITORY,
                     "Remote fetch failed: ${throwable.message}, loading from storage"
                 )
                 getEventsFromStorage()
