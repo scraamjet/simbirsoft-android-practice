@@ -31,7 +31,7 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
             .onErrorResumeNext { error: Throwable ->
                 Log.w(
                     TAG_CATEGORY_REPOSITORY,
-                    "Remote fetch failed: ${error.message}, loading from storage"
+                    "Remote fetch failed: ${error.message}, loading from storage",
                 )
                 getCategoriesFromStorage()
             }

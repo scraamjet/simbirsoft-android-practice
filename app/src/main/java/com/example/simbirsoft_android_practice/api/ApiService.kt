@@ -12,5 +12,5 @@ interface ApiService {
     fun getCategories(): Observable<Map<String, Category>>
 
     @POST("events")
-    fun getEvents(@Body categoryId: Map<String, Int>): Observable<List<Event>>
+    fun getEvents(@Body categoryId: Map<String, Int>, ): Observable<List<Event>>
 }

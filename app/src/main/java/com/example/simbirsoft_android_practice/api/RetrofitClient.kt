@@ -10,14 +10,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val BASE_URL = BuildConfig.BASE_URL
 
 object RetrofitClient {
+    private val loggingInterceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
-    private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
+    private val okHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
 
     val apiService: ApiService by lazy {
         Retrofit.Builder()

@@ -14,7 +14,6 @@ import com.example.simbirsoft_android_practice.data.NewsItem
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.help.HelpFragment
-import com.example.simbirsoft_android_practice.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.news.NewsFragment
 import com.example.simbirsoft_android_practice.news.NewsMapper
 import com.example.simbirsoft_android_practice.news.NewsPreferences
@@ -47,16 +46,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             Log.e(TAG_MAIN_ACTIVITY, "Flow exception: ${throwable.localizedMessage}", throwable)
         }
 
-    private val connection = NewsServiceConnection(
-        onServiceConnected = { service ->
-            newsService = service
-            isServiceConnected = true
-            loadAndUpdateUnreadNewsCount()
-        },
-        onServiceDisconnected = {
-            isServiceConnected = false
-        }
-    )
+    private val connection =
+        NewsServiceConnection(
+            onServiceConnected = { service ->
+                newsService = service
+                isServiceConnected = true
+                loadAndUpdateUnreadNewsCount()
+            },
+            onServiceDisconnected = {
+                isServiceConnected = false
+            },
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +82,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         service.loadNews { loadedNews ->
             val selectedCategories = filterPrefs.getSelectedCategories()
-            val filteredNewsItems = loadedNews
-                .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
-                .map(NewsMapper::toNewsItem)
+            val filteredNewsItems =
+                loadedNews
+                    .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
+                    .map(NewsMapper::toNewsItem)
 
             updateUnreadNewsCount(filteredNewsItems)
         }
@@ -127,8 +128,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         fragment: Fragment,
         addToBackStack: Boolean = true,
     ) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayoutFragmentContainer, fragment)
+        val transaction =
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayoutFragmentContainer, fragment)
 
         if (addToBackStack) {
             transaction.addToBackStack(null)
@@ -136,7 +138,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         transaction.commit()
     }
-
 
     fun hideBottomNavigation() {
         binding.bottomNavigationView.visibility = View.GONE

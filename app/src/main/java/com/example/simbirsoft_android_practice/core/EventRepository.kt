@@ -21,7 +21,6 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
             getEventsFromCache()
         } else {
             getEventsFromRemote(categoryId)
-
         }
     }
 
@@ -37,7 +36,7 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
             .onErrorResumeNext { throwable: Throwable ->
                 Log.w(
                     TAG_EVENT_REPOSITORY,
-                    "Remote fetch failed: ${throwable.message}, loading from storage"
+                    "Remote fetch failed: ${throwable.message}, loading from storage",
                 )
                 getEventsFromStorage()
             }

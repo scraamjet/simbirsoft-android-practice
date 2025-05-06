@@ -12,4 +12,3 @@ data class Category(
     @SerializedName("image")
     val image: String,
 )
-
