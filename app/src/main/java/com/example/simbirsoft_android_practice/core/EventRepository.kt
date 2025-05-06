@@ -31,11 +31,14 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
     private fun getEventsFromRemoteFlow(categoryId: Int?): Flow<List<Event>> {
         val body = categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
         return flow {
-            val events = apiService.getEvents(body).blockingFirst()
+            val events = apiService.getEvents(body)
             cachedEvents = events
             emit(events)
         }.catch { error ->
-            Log.w(TAG_EVENT_REPOSITORY, "Remote fetch failed: ${error.message}, loading from storage")
+            Log.w(
+                TAG_EVENT_REPOSITORY,
+                "Remote fetch failed: ${error.message}, loading from storage"
+            )
             emitAll(getEventsFromStorageFlow())
         }
     }

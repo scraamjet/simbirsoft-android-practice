@@ -30,16 +30,20 @@ class CategoryRepository(private val extractor: JsonAssetExtractor) {
 
     private fun getCategoriesFromRemoteFlow(): Flow<List<Category>> =
         flow {
-            val responseMap = apiService.getCategories().blockingFirst()
+            val responseMap = apiService.getCategories()
             val fetchedCategories = responseMap.values.toList()
             cachedCategories = fetchedCategories
             emit(fetchedCategories)
         }.catch { error ->
-            Log.w(TAG_CATEGORY_REPOSITORY, "Remote fetch failed: ${error.message}, loading from storage")
+            Log.w(
+                TAG_CATEGORY_REPOSITORY,
+                "Remote fetch failed: ${error.message}, loading from storage"
+            )
             emitAll(getCategoriesFromStorageFlow())
         }
 
-    private fun getCategoriesFromCacheFlow(): Flow<List<Category>> = flowOf(cachedCategories ?: error("Category cache is empty"))
+    private fun getCategoriesFromCacheFlow(): Flow<List<Category>> =
+        flowOf(cachedCategories ?: error("Category cache is empty"))
 
     private fun getCategoriesFromStorageFlow(): Flow<List<Category>> =
         flow {
