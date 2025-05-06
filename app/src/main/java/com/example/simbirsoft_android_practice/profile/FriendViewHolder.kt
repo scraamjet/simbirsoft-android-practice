@@ -13,8 +13,8 @@ class FriendViewHolder(private val binding: ItemFriendBinding) :
     fun bind(item: Friend) {
         binding.friendName.text = item.name
         binding.friendImage.load(item.imageSrc) {
-            placeholder(R.drawable.image_load)
-            error(R.drawable.image_load)
+            placeholder(R.drawable.user_icon)
+            error(R.drawable.user_icon)
             memoryCachePolicy(CachePolicy.DISABLED)
             diskCachePolicy(CachePolicy.DISABLED)
             transformations(CircleCropTransformation())
