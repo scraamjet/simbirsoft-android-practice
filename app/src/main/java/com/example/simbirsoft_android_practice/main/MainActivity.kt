@@ -127,13 +127,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         fragment: Fragment,
         addToBackStack: Boolean = true,
     ) {
-        when (fragment) {
-            is AuthorizationFragment,
-            is NewsDetailFragment -> hideBottomNavigation()
-
-            else -> showBottomNavigation()
-        }
-
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayoutFragmentContainer, fragment)
 
