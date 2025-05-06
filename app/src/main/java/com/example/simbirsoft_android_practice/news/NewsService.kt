@@ -26,7 +26,7 @@ class NewsService : Service() {
     }
 
     fun loadNews(newsLoadedListener: (List<Event>) -> Unit): Disposable {
-        return eventRepository.getEventsObservable(null)
+        return eventRepository.getEvents(null)
             .doOnSubscribe {
                 Log.d(
                     TAG_NEWS_SERVICE,
@@ -35,7 +35,7 @@ class NewsService : Service() {
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { news ->
+            .doOnSuccess { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
                     "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}",

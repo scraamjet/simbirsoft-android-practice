@@ -66,7 +66,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         showLoading()
 
         val disposable =
-            categoryRepository.getCategoriesObservable()
+            categoryRepository.getCategories()
                 .doOnSubscribe {
                     Log.d(
                         TAG_HELP_FRAGMENT,
@@ -76,7 +76,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
                 .subscribeOn(Schedulers.io())
                 .map { list -> list.map(CategoryMapper::toHelpCategory) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { categories ->
+                .doOnSuccess { categories ->
                     Log.d(
                         TAG_HELP_FRAGMENT,
                         "Received help categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",

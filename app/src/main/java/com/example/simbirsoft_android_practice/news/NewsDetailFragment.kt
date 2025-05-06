@@ -13,7 +13,7 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -52,7 +52,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            eventRepository.getEventsObservable(null)
+            eventRepository.getEvents(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,
@@ -64,14 +64,15 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                     val selectedNews =
                         newsList.find { newsItem -> newsItem.id == selectedNewsId }
                             ?.let(NewsMapper::toNewsDetail)
+
                     if (selectedNews != null) {
-                        Observable.just(selectedNews)
+                        Single.just(selectedNews)
                     } else {
-                        Observable.empty()
+                        Single.error(NoSuchElementException("News not found"))
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
+                .doOnSuccess {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,
                         "Binding detail on thread: ${Thread.currentThread().name}",

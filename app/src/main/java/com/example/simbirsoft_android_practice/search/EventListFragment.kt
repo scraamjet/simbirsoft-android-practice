@@ -57,7 +57,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         showLoading()
 
         val disposable =
-            eventRepository.getEventsObservable(null)
+            eventRepository.getEvents(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_EVENT_LIST_FRAGMENT,
@@ -67,7 +67,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                 .subscribeOn(Schedulers.io())
                 .map { newsList -> newsList.map(SearchMapper::toSearchEvent) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { events ->
+                .doOnSuccess { events ->
                     Log.d(
                         TAG_EVENT_LIST_FRAGMENT,
                         "Received events on thread: ${Thread.currentThread().name}, count: ${events.size}",
