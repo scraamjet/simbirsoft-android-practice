@@ -58,8 +58,8 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                 showLoading()
 
                 eventRepository.getEventsFlow(null)
-                    .map { list -> list.map(SearchMapper::toSearchEvent) }
                     .flowOn(Dispatchers.IO)
+                    .map { list -> list.map(SearchMapper::toSearchEvent) }
                     .catch { throwable ->
                         Log.e(
                             TAG_EVENT_LIST_FRAGMENT,

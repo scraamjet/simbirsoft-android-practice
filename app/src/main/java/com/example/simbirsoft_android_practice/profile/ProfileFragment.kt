@@ -57,7 +57,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         handleBackPress()
     }
 
-    private fun initRecyclerView()  {
+    private fun initRecyclerView() {
         binding.recyclerViewFriends.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = friendAdapter

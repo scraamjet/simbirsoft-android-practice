@@ -33,5 +33,4 @@ class NewsService : Service() {
                 Log.e(TAG_NEWS_SERVICE, "Flow exception: ${throwable.localizedMessage}", throwable)
             }
     }
-
 }

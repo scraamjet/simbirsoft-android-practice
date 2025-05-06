@@ -84,15 +84,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             service.loadNews()
                 .collect { loadedNews ->
                     val selectedCategories = filterPrefs.getSelectedCategories()
-                    val filteredNewsItems = loadedNews
-                        .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
-                        .map(NewsMapper::toNewsItem)
+                    val filteredNewsItems =
+                        loadedNews
+                            .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
+                            .map(NewsMapper::toNewsItem)
 
                     updateUnreadNewsCount(filteredNewsItems)
                 }
         }
     }
-
 
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
         lifecycleScope.launch(Dispatchers.IO + coroutineExceptionHandler) {

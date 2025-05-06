@@ -17,7 +17,9 @@ import com.example.simbirsoft_android_practice.data.FilterCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -72,13 +74,15 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             categoryRepository.getCategoriesFlow()
+                .flowOn(Dispatchers.IO)
                 .map { list ->
                     list.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
                 }
                 .catch { throwable ->
                     Log.w(
-                        TAG_FILTER_FRAGMENT, "Flow exception: ${throwable.localizedMessage}",
-                        throwable
+                        TAG_FILTER_FRAGMENT,
+                        "Flow exception: ${throwable.localizedMessage}",
+                        throwable,
                     )
                 }
                 .collect { categories ->

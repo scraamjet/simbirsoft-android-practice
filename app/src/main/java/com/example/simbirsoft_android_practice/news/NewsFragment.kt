@@ -113,7 +113,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-
     private fun filterAndMapNews(
         loadedNewsList: List<Event>,
         selectedCategories: Set<Int>,

@@ -15,7 +15,9 @@ import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -69,11 +71,13 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             categoryRepository.getCategoriesFlow()
+                .flowOn(Dispatchers.IO)
                 .map { list -> list.map(CategoryMapper::toHelpCategory) }
                 .catch { throwable ->
                     Log.w(
-                        TAG_HELP_FRAGMENT, "Flow exception: ${throwable.localizedMessage}",
-                        throwable
+                        TAG_HELP_FRAGMENT,
+                        "Flow exception: ${throwable.localizedMessage}",
+                        throwable,
                     )
                 }
                 .collect { categories ->

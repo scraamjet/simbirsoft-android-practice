@@ -58,8 +58,9 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .filterNotNull()
                 .catch { throwable ->
                     Log.e(
-                        TAG_NEWS_DETAIL_FRAGMENT, "Flow exception: ${throwable.localizedMessage}",
-                        throwable
+                        TAG_NEWS_DETAIL_FRAGMENT,
+                        "Flow exception: ${throwable.localizedMessage}",
+                        throwable,
                     )
                 }
                 .collect { newsDetail ->

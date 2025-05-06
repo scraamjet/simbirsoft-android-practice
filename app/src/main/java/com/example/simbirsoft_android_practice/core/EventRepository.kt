@@ -54,4 +54,3 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
             }
         }
 }
-
