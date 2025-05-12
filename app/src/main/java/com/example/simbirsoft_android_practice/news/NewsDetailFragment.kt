@@ -49,7 +49,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            eventRepository.getEventsFlow(null)
+            eventRepository.getEvents(null)
                 .flowOn(Dispatchers.IO)
                 .map { newsList ->
                     newsList.find { newsItem -> newsItem.id == selectedNewsId }

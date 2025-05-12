@@ -73,7 +73,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         showLoading()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            categoryRepository.getCategoriesFlow()
+            categoryRepository.getCategories()
                 .flowOn(Dispatchers.IO)
                 .map { list ->
                     list.map { CategoryMapper.toFilterCategory(it, filterPrefs) }

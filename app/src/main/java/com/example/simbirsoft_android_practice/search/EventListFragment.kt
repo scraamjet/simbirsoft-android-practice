@@ -57,7 +57,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 showLoading()
 
-                eventRepository.getEventsFlow(null)
+                eventRepository.getEvents(null)
                     .flowOn(Dispatchers.IO)
                     .map { list -> list.map(SearchMapper::toSearchEvent) }
                     .catch { throwable ->

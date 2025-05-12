@@ -20,15 +20,15 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
     private val gson = Gson()
     private var cachedEvents: List<Event>? = null
 
-    fun getEventsFlow(categoryId: Int?): Flow<List<Event>> {
+    fun getEvents(categoryId: Int?): Flow<List<Event>> {
         return if (cachedEvents != null) {
-            getEventsFromCacheFlow()
+            getEventsFromCache()
         } else {
-            getEventsFromRemoteFlow(categoryId)
+            getEventsFromRemote(categoryId)
         }
     }
 
-    private fun getEventsFromRemoteFlow(categoryId: Int?): Flow<List<Event>> {
+    private fun getEventsFromRemote(categoryId: Int?): Flow<List<Event>> {
         val body = categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
         return flow {
             val events = apiService.getEvents(body)
@@ -39,14 +39,14 @@ class EventRepository(private val extractor: JsonAssetExtractor) {
                 TAG_EVENT_REPOSITORY,
                 "Remote fetch failed: ${error.message}, loading from storage"
             )
-            emitAll(getEventsFromStorageFlow())
+            emitAll(getEventsFromStorage())
         }
     }
 
-    private fun getEventsFromCacheFlow(): Flow<List<Event>> =
+    private fun getEventsFromCache(): Flow<List<Event>> =
         flowOf(cachedEvents ?: error("News cache is empty"))
 
-    private fun getEventsFromStorageFlow(): Flow<List<Event>> =
+    private fun getEventsFromStorage(): Flow<List<Event>> =
         flow {
             delay(TIMEOUT_IN_MILLIS)
             val json = extractor.readJsonFile(NEWS_JSON_FILE)

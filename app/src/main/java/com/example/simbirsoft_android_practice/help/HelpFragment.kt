@@ -70,7 +70,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         showLoading()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            categoryRepository.getCategoriesFlow()
+            categoryRepository.getCategories()
                 .flowOn(Dispatchers.IO)
                 .map { list -> list.map(CategoryMapper::toHelpCategory) }
                 .catch { throwable ->

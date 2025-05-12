@@ -27,7 +27,7 @@ class NewsService : Service() {
     }
 
     fun loadNews(): Flow<List<Event>> {
-        return eventRepository.getEventsFlow(null)
+        return eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
             .catch { throwable ->
                 Log.e(TAG_NEWS_SERVICE, "Flow exception: ${throwable.localizedMessage}", throwable)
