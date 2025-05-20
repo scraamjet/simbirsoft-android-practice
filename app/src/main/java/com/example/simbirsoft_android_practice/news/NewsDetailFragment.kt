@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
@@ -12,10 +13,12 @@ import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBin
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 
@@ -25,7 +28,6 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val eventRepository by lazy {
         RepositoryProvider.fromContext(requireContext()).eventRepository
     }
-    private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(
         view: View,
@@ -38,11 +40,6 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         initClickListeners()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
-    }
-
     override fun onDetach() {
         super.onDetach()
         (activity as? MainActivity)?.showBottomNavigation()
@@ -51,38 +48,25 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
-        val disposable =
+        viewLifecycleOwner.lifecycleScope.launch {
             eventRepository.getEvents(null)
-                .doOnSubscribe {
-                    Log.d(
+                .flowOn(Dispatchers.IO)
+                .map { newsList ->
+                    newsList.find { newsItem -> newsItem.id == selectedNewsId }
+                        ?.let(NewsMapper::eventToNewsDetail)
+                }
+                .filterNotNull()
+                .catch { throwable ->
+                    Log.e(
                         TAG_NEWS_DETAIL_FRAGMENT,
-                        "Subscribed to news on thread: ${Thread.currentThread().name}",
+                        "Flow exception: ${throwable.localizedMessage}",
+                        throwable,
                     )
                 }
-                .subscribeOn(Schedulers.io())
-                .flatMap { newsList ->
-                    val selectedNews =
-                        newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                            ?.let(NewsMapper::eventToNewsDetail)
-
-                    if (selectedNews != null) {
-                        Single.just(selectedNews)
-                    } else {
-                        Single.error(NoSuchElementException("News not found"))
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess {
-                    Log.d(
-                        TAG_NEWS_DETAIL_FRAGMENT,
-                        "Binding detail on thread: ${Thread.currentThread().name}",
-                    )
-                }
-                .subscribe { newsDetail ->
+                .collect { newsDetail ->
                     bindNewsDetails(newsDetail)
                 }
-
-        compositeDisposable.add(disposable)
+        }
     }
 
     private fun bindNewsDetails(news: NewsDetail) {
