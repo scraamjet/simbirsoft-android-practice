@@ -63,7 +63,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .flatMap { newsList ->
                     val selectedNews =
                         newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                            ?.let(NewsMapper::toNewsDetail)
+                            ?.let(NewsMapper::eventToNewsDetail)
 
                     if (selectedNews != null) {
                         Single.just(selectedNews)
