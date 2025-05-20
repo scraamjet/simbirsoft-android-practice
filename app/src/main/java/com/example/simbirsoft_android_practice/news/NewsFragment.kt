@@ -123,7 +123,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     selectedCategories.contains(categoryId)
                 }
             }
-            .map(NewsMapper::toNewsItem)
+            .map(NewsMapper::eventToNewsItem)
     }
 
     private fun showLoading() {

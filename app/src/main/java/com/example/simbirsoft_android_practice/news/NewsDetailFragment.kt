@@ -53,7 +53,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .flowOn(Dispatchers.IO)
                 .map { newsList ->
                     newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                        ?.let(NewsMapper::toNewsDetail)
+                        ?.let(NewsMapper::eventToNewsDetail)
                 }
                 .filterNotNull()
                 .catch { throwable ->

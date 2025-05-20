@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     val filteredNewsItems =
                         loadedNews
                             .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
-                            .map(NewsMapper::toNewsItem)
+                            .map(NewsMapper::eventToNewsItem)
 
                     updateUnreadNewsCount(filteredNewsItems)
                 }

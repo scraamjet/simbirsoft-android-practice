@@ -5,7 +5,7 @@ import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.data.NewsItem
 
 object NewsMapper {
-    fun toNewsItem(event: Event): NewsItem =
+    fun eventToNewsItem(event: Event): NewsItem =
         NewsItem(
             id = event.id,
             title = event.name,
@@ -15,7 +15,7 @@ object NewsMapper {
             imageUrl = event.photos.first(),
         )
 
-    fun toNewsDetail(event: Event): NewsDetail =
+    fun eventToNewsDetail(event: Event): NewsDetail =
         NewsDetail(
             title = event.name,
             fullDescription = event.description,
