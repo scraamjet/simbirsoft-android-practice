@@ -13,7 +13,7 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -22,8 +22,8 @@ private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val newsPrefs by lazy { NewsPreferences(requireContext()) }
-    private val newsRepository by lazy {
-        RepositoryProvider.fromContext(requireContext()).newsRepository
+    private val eventRepository by lazy {
+        RepositoryProvider.fromContext(requireContext()).eventRepository
     }
     private val compositeDisposable = CompositeDisposable()
 
@@ -33,6 +33,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNavigation()
+
         loadNewsDetail()
         initClickListeners()
     }
@@ -42,11 +43,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         compositeDisposable.clear()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        (activity as? MainActivity)?.showBottomNavigation()
+    }
+
     private fun loadNewsDetail() {
         val selectedNewsId = newsPrefs.getSelectedNewsId()
 
         val disposable =
-            newsRepository.getNewsObservable()
+            eventRepository.getEvents(null)
                 .doOnSubscribe {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,
@@ -57,15 +63,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 .flatMap { newsList ->
                     val selectedNews =
                         newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                            ?.let(NewsMapper::toNewsDetail)
+                            ?.let(NewsMapper::eventToNewsDetail)
+
                     if (selectedNews != null) {
-                        Observable.just(selectedNews)
+                        Single.just(selectedNews)
                     } else {
-                        Observable.empty()
+                        Single.error(NoSuchElementException("News not found"))
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
+                .doOnSuccess {
                     Log.d(
                         TAG_NEWS_DETAIL_FRAGMENT,
                         "Binding detail on thread: ${Thread.currentThread().name}",
@@ -101,11 +108,6 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         binding.buttonBackNewsDetail.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        (activity as? MainActivity)?.showBottomNavigation()
     }
 
     companion object {

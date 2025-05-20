@@ -6,7 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
-import com.example.simbirsoft_android_practice.data.News
+import com.example.simbirsoft_android_practice.data.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -15,8 +15,8 @@ private const val TAG_NEWS_SERVICE = "NewsService"
 
 class NewsService : Service() {
     private val binder = LocalBinder()
-    private val newsRepository by lazy {
-        RepositoryProvider.fromContext(applicationContext).newsRepository
+    private val eventRepository by lazy {
+        RepositoryProvider.fromContext(applicationContext).eventRepository
     }
 
     override fun onBind(intent: Intent): IBinder = binder
@@ -25,8 +25,8 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun loadNews(newsLoadedListener: (List<News>) -> Unit): Disposable {
-        return newsRepository.getNewsObservable()
+    fun loadNews(newsLoadedListener: (List<Event>) -> Unit): Disposable {
+        return eventRepository.getEvents(null)
             .doOnSubscribe {
                 Log.d(
                     TAG_NEWS_SERVICE,
@@ -35,7 +35,7 @@ class NewsService : Service() {
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { news ->
+            .doOnSuccess { news ->
                 Log.d(
                     TAG_NEWS_SERVICE,
                     "Emitting news on thread: ${Thread.currentThread().name}, count: ${news.size}",

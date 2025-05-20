@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.data.SearchEvent
 import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBinding
 
-class EventAdapter : ListAdapter<Event, EventViewHolder>(EventDiffCallback) {
+class EventAdapter : ListAdapter<SearchEvent, EventViewHolder>(SearchEventDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -26,18 +26,18 @@ class EventAdapter : ListAdapter<Event, EventViewHolder>(EventDiffCallback) {
     }
 
     companion object {
-        private val EventDiffCallback =
-            object : DiffUtil.ItemCallback<Event>() {
+        private val SearchEventDiffCallback =
+            object : DiffUtil.ItemCallback<SearchEvent>() {
                 override fun areItemsTheSame(
-                    oldItem: Event,
-                    newItem: Event,
+                    oldItem: SearchEvent,
+                    newItem: SearchEvent,
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Event,
-                    newItem: Event,
+                    oldItem: SearchEvent,
+                    newItem: SearchEvent,
                 ): Boolean {
                     return oldItem == newItem
                 }

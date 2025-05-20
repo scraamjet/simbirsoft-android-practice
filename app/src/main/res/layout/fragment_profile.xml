@@ -78,85 +78,85 @@
             android:isScrollContainer="true">
 
             <TextView
-                android:id="@+id/textViewName"
+                android:id="@+id/textViewNameProfile"
                 style="@style/HeadingLargeBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_name_margin_top"
                 android:text="@string/profile_sample_name"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewBirthdayHint"
+                android:id="@+id/textViewBirthdayHintProfile"
                 style="@style/CaptionSmallBlackSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_birthday_hint_margin_top"
                 android:text="@string/profile_date_of_birth"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewName"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameProfile"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
-                android:id="@+id/textViewBirthday"
+                android:id="@+id/textViewBirthdayProfile"
                 style="@style/BodyTextRegularBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profile_sample_date"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayHint" />
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayHintProfile" />
 
             <TextView
-                android:id="@+id/textViewFieldOfActivity"
+                android:id="@+id/textViewFieldOfActivityProfile"
                 style="@style/CaptionSmallBlackSubtle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_field_of_activity_margin_top"
                 android:text="@string/profile_field_of_activity"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewBirthday"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayProfile"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
-                android:id="@+id/textViewActivity"
+                android:id="@+id/textViewActivityProfile"
                 style="@style/BodyTextRegularBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profile_sample_activity"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFieldOfActivity" />
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFieldOfActivityProfile" />
 
             <TextView
-                android:id="@+id/textViewPushUp"
+                android:id="@+id/textViewPushUpProfile"
                 style="@style/BodyTextRegularBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_push_notifications_margin_top"
                 android:text="@string/profile_push_notifications"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewActivity" />
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewActivityProfile" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/switchNotificationsProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/profile_switch_margin_end"
                 android:layout_marginBottom="@dimen/profile_switch_margin_bottom"
-                app:layout_constraintBottom_toTopOf="@id/view1"
+                app:layout_constraintBottom_toTopOf="@id/dividerProfileNotifications"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:theme="@style/Theme.Simbirsoftandroidpractice"
                 tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
 
             <View
-                android:id="@+id/view1"
+                android:id="@+id/dividerProfileNotifications"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/profile_line_height"
                 android:layout_marginTop="@dimen/profile_line_margin_top"
                 android:background="@color/cool_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPushUp" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewPushUpProfile" />
 
             <TextView
                 android:id="@+id/textViewYourFriends"
@@ -165,81 +165,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/profile_friends_margin_top"
                 android:text="@string/profile_friends_list"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/view1" />
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/dividerProfileNotifications" />
 
-            <TextView
-                android:id="@+id/textViewSampleFriend1"
-                style="@style/BodyTextRegularBlack"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewFriends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_1"
-                android:text="@string/profile_sample_friend_1"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend1"
-                app:layout_constraintTop_toBottomOf="@+id/view1" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_1"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/textViewYourFriends" />
-
-            <TextView
-                android:id="@+id/textViewSampleFriend2"
-                style="@style/BodyTextRegularBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_2"
-                android:text="@string/profile_sample_friend_2"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend2"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSampleFriend1" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_2"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend1" />
-
-            <TextView
-                android:id="@+id/textViewSampleFriend3"
-                style="@style/BodyTextRegularBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/profile_friend_margin_start"
-                android:layout_marginTop="@dimen/profile_friend_margin_top_3"
-                android:text="@string/profile_sample_friend_3"
-                app:layout_constraintStart_toEndOf="@+id/imageViewSampleFriend3"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSampleFriend2" />
-
-            <ImageView
-                android:id="@+id/imageViewSampleFriend3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/profile_friend_image_margin_top_small"
-                android:layout_marginEnd="@dimen/profile_friend_image_margin_end"
-                android:src="@drawable/avatar_3"
-                app:layout_constraintStart_toStartOf="@id/guidelineVertical"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend2" />
+                android:layout_marginTop="@dimen/margin_top_recycler_view_friend_list"
+                app:layout_constraintTop_toBottomOf="@+id/textViewYourFriends"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"/>
 
             <View
-                android:id="@+id/view2"
+                android:id="@+id/dividerProfileFriends"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/profile_line_height"
                 android:layout_marginTop="@dimen/profile_line_2_margin_top"
                 android:background="@color/cool_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewSampleFriend3" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewFriends" />
 
             <Button
                 android:id="@+id/buttonLogout"
@@ -254,10 +201,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toBottomOf="@+id/dividerProfileFriends" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineVertical"
+                android:id="@+id/guidelineVerticalProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

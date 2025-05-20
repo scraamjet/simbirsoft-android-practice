@@ -1,0 +1,593 @@
+[
+  {
+    "id": 1,
+    "name": "Спонсоры отремонтируют школу-интернат",
+    "startDate": 1742469625,
+    "endDate": 1742556025,
+    "description": "Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      1,
+      5
+    ],
+    "createAt": 1672531200,
+    "phone": "+7 (937) 037 37-73\n+7 (937) 016 16-16",
+    "address": "Санкт-Петербург, Кирочная улица, д. 50А, каб. 208",
+    "organisation": "Благотворительный Фонд «Счастливый Мир»"
+  },
+  {
+    "id": 2,
+    "name": "Конкурс по вокальному пению в детском доме №6",
+    "startDate": 1742815225,
+    "endDate": 1742901625,
+    "description": "Творческое мероприятие для детей, где они могут продемонстрировать свои вокальные таланты.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png"
+    ],
+    "category": [
+      5
+    ],
+    "createAt": 1675209600,
+    "phone": "+7 (812) 123 45-67\n+7 (937) 016 16-16",
+    "address": "Санкт-Петербург, Невский проспект, д. 100, каб. 12",
+    "organisation": "Благотворительный Фонд «Счастливый Голос»"
+  },
+  {
+    "id": 3,
+    "name": "Сбор средств на лечение детей",
+    "startDate": 1742815225,
+    "endDate": 1742901625,
+    "description": "Помощь детям с тяжелыми заболеваниями для прохождения лечения за границей.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      1
+    ],
+    "createAt": 1677888000,
+    "phone": "+7 (495) 123 45-67\n+7 (937) 016 16-16",
+    "address": "Москва, Ленинский проспект, д. 15, офис 203",
+    "organisation": "Благотворительный Фонд «Добрые Сердца»"
+  },
+  {
+    "id": 4,
+    "name": "Поддержка взрослых в трудной жизненной ситуации",
+    "startDate": 1743160825,
+    "endDate": 1743247225,
+    "description": "Помощь взрослым, оказавшимся в кризисной ситуации.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      2
+    ],
+    "createAt": 1680307200,
+    "phone": "+7 (343) 678 90-12\n+7 (937) 016 16-16",
+    "address": "Екатеринбург, ул. Малышева, д. 30, офис 12",
+    "organisation": "Благотворительный Фонд «Новая Жизнь»"
+  },
+  {
+    "id": 5,
+    "name": "Забота о пожилых людях",
+    "startDate": 1743333625,
+    "endDate": 1743420025,
+    "description": "Организация досуга и медицинской помощи для пожилых людей.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      3
+    ],
+    "createAt": 1682985600,
+    "phone": "+7 (843) 321 45-67\n+7 (937) 016 16-16",
+    "address": "Казань, ул. Баумана, д. 5, офис 101",
+    "organisation": "Благотворительный Фонд «Серебряный Век»"
+  },
+  {
+    "id": 6,
+    "name": "Помощь бездомным животным",
+    "startDate": 1743333625,
+    "endDate": 1743420025,
+    "description": "Сбор средств на корм, лечение и стерилизацию животных из приютов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      4
+    ],
+    "createAt": 1685664000,
+    "phone": "+7 (383) 456 78-90\n+7 (937) 016 16-16",
+    "address": "Новосибирск, ул. Красный проспект, д. 10, офис 3",
+    "organisation": "Благотворительный Фонд «Хвостики»"
+  },
+  {
+    "id": 7,
+    "name": "Благотворительный фестиваль «Солнечный День»",
+    "startDate": 1743679225,
+    "endDate": 1743852025,
+    "description": "Мероприятие в поддержку детей с ограниченными возможностями здоровья.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      5
+    ],
+    "createAt": 1688259600,
+    "phone": "+7 (863) 987 65-43\n+7 (937) 016 16-16",
+    "address": "Ростов-на-Дону, ул. Садовая, д. 25, офис 7",
+    "organisation": "Благотворительный Фонд «Свет Надежды»"
+  },
+  {
+    "id": 8,
+    "name": "Творческий вечер в поддержку детей с аутизмом",
+    "startDate": 1743938425,
+    "endDate": 1744111225,
+    "description": "Концерт и выставка работ детей с РАС для привлечения внимания к проблемам аутизма.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      1,
+      5
+    ],
+    "createAt": 1690938000,
+    "phone": "+7 (495) 222 33-44\n+7 (937) 016 16-16",
+    "address": "Москва, ул. Тверская, д. 22",
+    "organisation": "Благотворительный Фонд «Луч Надежды»"
+  },
+  {
+    "id": 9,
+    "name": "Благотворительный забег «Бежим за жизнь»",
+    "startDate": 1742468400,
+    "endDate": 1742468400,
+    "description": "Спортивное мероприятие для сбора средств на лечение онкобольных детей.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      1
+    ],
+    "createAt": 1693616400,
+    "phone": "+7 (812) 444 55-66\n+7 (937) 016 16-16",
+    "address": "Санкт-Петербург, ул. Ленина, д. 18",
+    "organisation": "Благотворительный Фонд «Время Добра»"
+  },
+  {
+    "id": 10,
+    "name": "Праздник в доме престарелых",
+    "startDate": 1742383225,
+    "endDate": 1742469625,
+    "description": "Организация концерта и чаепития для пожилых людей в пансионате.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      3,
+      5
+    ],
+    "createAt": 1696294800,
+    "phone": "+7 (843) 666 77-88\n+7 (937) 016 16-16",
+    "address": "Казань, ул. Кремлевская, д. 7",
+    "organisation": "Благотворительный Фонд «Тепло Родных Сердец»"
+  },
+  {
+    "id": 11,
+    "name": "Мастер-классы для детей из многодетных семей",
+    "startDate": 1742814000,
+    "endDate": 1742814000,
+    "description": "Фонд организует творческие и образовательные мастер-классы для детей.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      1,
+      5
+    ],
+    "createAt": 1698889200,
+    "phone": "+7 (383) 888 99-00\n+7 (937) 016 16-16",
+    "address": "Новосибирск, ул. Фрунзе, д. 30",
+    "organisation": "Благотворительный Фонд «Забота и Поддержка»"
+  },
+  {
+    "id": 12,
+    "name": "Ярмарка в поддержку приютов для животных",
+    "startDate": 1744284025,
+    "endDate": 1744456825,
+    "description": "Продажа хендмейд товаров для сбора средств на помощь животным.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/32838F1C-02E3-4902-89FD-1BC1072B71BC.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      4,
+      5
+    ],
+    "createAt": 1701567600,
+    "phone": "+7 (343) 999 88-77\n+7 (937) 016 16-16",
+    "address": "Екатеринбург, ул. Свердлова, д. 15",
+    "organisation": "Благотворительный Фонд «Друзья Животных»"
+  },
+  {
+    "id": 13,
+    "name": "Фестиваль для особенных детей",
+    "startDate": 1744284025,
+    "endDate": 1744456825,
+    "description": "Музыкально-танцевальный фестиваль для детей с инвалидностью.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      5
+    ],
+    "createAt": 1704159600,
+    "phone": "+7 (862) 111 22-33\n+7 (937) 016 16-16",
+    "address": "Сочи, ул. Курортная, д. 10",
+    "organisation": "Благотворительный Фонд «Светлая Душа»"
+  },
+  {
+    "id": 14,
+    "name": "Помощь детям-сиротам к новому учебному году",
+    "startDate": 1750389600,
+    "endDate": 1751253600,
+    "description": "Сбор канцелярских товаров и школьных принадлежностей для воспитанников детских домов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      1
+    ],
+    "createAt": 1706838000,
+    "phone": "+7 (861) 222 33-44\n+7 (937) 016 16-16",
+    "address": "Краснодар, ул. Красная, д. 100",
+    "organisation": "Благотворительный Фонд «Открытое Сердце»"
+  },
+  {
+    "id": 15,
+    "name": "Обучение компьютерной грамотности для пенсионеров",
+    "startDate": 1750648800,
+    "endDate": 1751512800,
+    "description": "Бесплатные курсы для пожилых людей по основам работы с компьютером и интернетом.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      3
+    ],
+    "createAt": 1709516400,
+    "phone": "+7 (473) 777 88-99\n+7 (937) 016 16-16",
+    "address": "Воронеж, пл. Ленина, д. 1",
+    "organisation": "Благотворительный Фонд «Рука Об Руку»"
+  },
+  {
+    "id": 16,
+    "name": "Акция «Подари дом питомцу»",
+    "startDate": 1750908000,
+    "endDate": 1750994400,
+    "description": "Выставка-пристройство бездомных кошек и собак из городских приютов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      4,
+      5
+    ],
+    "createAt": 1712194800,
+    "phone": "+7 (342) 555 66-77\n+7 (937) 016 16-16",
+    "address": "Пермь, Комсомольский пр-т, д. 50",
+    "organisation": "Благотворительный Фонд «Четыре Лапы»"
+  },
+  {
+    "id": 17,
+    "name": "Концерт классической музыки в поддержку молодых талантов",
+    "startDate": 1751167200,
+    "endDate": 1751253600,
+    "description": "Вечер с участием молодых музыкантов, сбор средств на развитие их творческих способностей.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      5
+    ],
+    "createAt": 1714786800,
+    "phone": "+7 (846) 999 00-11\n+7 (937) 016 16-16",
+    "address": "Самара, ул. Ленинградская, д. 77",
+    "organisation": "Благотворительный Фонд «Надежда Есть»"
+  },
+  {
+    "id": 18,
+    "name": "Оказание адресной помощи нуждающимся семьям",
+    "startDate": 1751426400,
+    "endDate": 1752290400,
+    "description": "Сбор продуктов питания, одежды и предметов первой необходимости для малоимущих.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-56687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      2
+    ],
+    "createAt": 1717465200,
+    "phone": "+7 (347) 111 22-33\n+7 (937) 016 16-16",
+    "address": "Уфа, пр. Октября, д. 120",
+    "organisation": "Благотворительный Фонд «Доброе Дело»"
+  },
+  {
+    "id": 19,
+    "name": "Организация летнего отдыха для детей из многодетных семей",
+    "startDate": 1751685600,
+    "endDate": 1752549600,
+    "description": "Оплата путевок в детские оздоровительные лагеря.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      1
+    ],
+    "createAt": 1720143600,
+    "phone": "+7 (4852) 333 44-55\n+7 (937) 016 16-16",
+    "address": "Ярославль, Волжская наб., д. 2",
+    "organisation": "Благотворительный Фонд «Солнечный Круг»"
+  },
+  {
+    "id": 20,
+    "name": "Поддержка людей с ограниченными возможностями здоровья",
+    "startDate": 1751944800,
+    "endDate": 1752808800,
+    "description": "Приобретение технических средств реабилитации и организация мероприятий.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      2
+    ],
+    "createAt": 1722822000,
+    "phone": "+7 (4822) 444 55-66\n+7 (937) 016 16-16",
+    "address": "Тверь, ул. Советская, д. 55",
+    "organisation": "Благотворительный Фонд «Вера и Милосердие»"
+  },
+  {
+    "id": 21,
+    "name": "Благотворительный аукцион в пользу приюта для животных",
+    "startDate": 1752204000,
+    "endDate": 1752290400,
+    "description": "Продажа картин и поделок, созданных волонтерами и друзьями фонда.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      4,
+      5
+    ],
+    "createAt": 1725500400,
+    "phone": "+7 (4932) 666 77-88\n+7 (937) 016 16-16",
+    "address": "Иваново, пр. Ленина, д. 33",
+    "organisation": "Благотворительный Фонд «Продвижение»"
+  },
+  {
+    "id": 23,
+    "name": "Обеспечение лекарствами одиноких пожилых людей",
+    "startDate": 1752722400,
+    "endDate": 1753586400,
+    "description": "Сбор средств на приобретение необходимых медикаментов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      3
+    ],
+    "createAt": 1728182400,
+    "phone": "+7 (4922) 888 99-00\n+7 (937) 016 16-16",
+    "address": "Владимир, ул. Большая Московская, д. 19",
+    "organisation": "Благотворительный Фонд «Милосердие»"
+  },
+  {
+    "id": 24,
+    "name": "Акция по сбору корма для бездомных животных",
+    "startDate": 1752981600,
+    "endDate": 1753068000,
+    "description": "Прием пожертвований корма и медикаментов для приютов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      4
+    ],
+    "createAt": 1730860800,
+    "phone": "+7 (4842) 999 00-11\n+7 (937) 016 16-16",
+    "address": "Калуга, ул. Кирова, д. 35",
+    "organisation": "Благотворительный Фонд «Зеленый Мир»"
+  },
+  {
+    "id": 25,
+    "name": "Спортивный праздник для детей с инвалидностью",
+    "startDate": 1753240800,
+    "endDate": 1753327200,
+    "description": "Организация соревнований и развлекательной программы.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      1,
+      5
+    ],
+    "createAt": 1733539200,
+    "phone": "+7 (4912) 111 22-33\n+7 (937) 016 16-16",
+    "address": "Рязань, ул. Ленина, д. 28",
+    "organisation": "Благотворительный Фонд «Новое Поколение»"
+  },
+  {
+    "id": 26,
+    "name": "Психологическая поддержка для людей в кризисных ситуациях",
+    "startDate": 1753500000,
+    "endDate": 1754364000,
+    "description": "Организация бесплатных консультаций психологов.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      2
+    ],
+    "createAt": 1736131200,
+    "phone": "+7 (4872) 222 33-44\n+7 (937) 016 16-16",
+    "address": "Тула, пр. Ленина, д. 75",
+    "organisation": "Благотворительный Фонд «Забота о Близких»"
+  },
+  {
+    "id": 27,
+    "name": "Поздравление ветеранов с Днем Победы",
+    "startDate": 1746703200,
+    "endDate": 1746789600,
+    "description": "Организация праздничных мероприятий и вручение подарков.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      3,
+      5
+    ],
+    "createAt": 1738809600,
+    "phone": "+7 (4742) 333 44-55\n+7 (937) 016 16-16",
+    "address": "Липецк, ул. Советская, д. 66",
+    "organisation": "Благотворительный Фонд «Старость в Радость»"
+  },
+  {
+    "id": 28,
+    "name": "Стерилизация бездомных животных",
+    "startDate": 1753759200,
+    "endDate": 1753845600,
+    "description": "Организация бесплатных процедур для снижения популяции.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png"
+    ],
+    "category": [
+      4
+    ],
+    "createAt": 1741488000,
+    "phone": "+7 (4862) 444 55-66\n+7 (937) 016 16-16",
+    "address": "Орел, ул. Ленина, д. 10",
+    "organisation": "Благотворительный Фонд «Друзья Меньших»"
+  },
+  {
+    "id": 29,
+    "name": "Проведение творческих мастер-классов для подростков",
+    "startDate": 1754018400,
+    "endDate": 1754104800,
+    "description": "Организация занятий по рисованию, лепке и рукоделию.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png"
+    ],
+    "category": [
+      1,
+      5
+    ],
+    "createAt": 1744166400,
+    "phone": "+7 (4812) 555 66-77\n+7 (937) 016 16-16",
+    "address": "Смоленск, ул. Октябрьской Революции, д. 9",
+    "organisation": "Благотворительный Фонд «Радуга Надежды»"
+  },
+  {
+    "id": 30,
+    "name": "Организация досуга для одиноких пенсионеров",
+    "startDate": 1754277600,
+    "endDate": 1755141600,
+    "description": "Проведение встреч, концертов и экскурсий.",
+    "status": 0,
+    "photos": [
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/518C0A5A-9E2B-4BAF-9580-939012EED968.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/53CACB8C-5687-404E-B42A-7845B045B19F.png",
+      "https://cdn.zeplin.io/5a8295e8de62056425a09dbc/assets/EFA1768D-0050-47A8-9BC1-643D5F26AAF8.png"
+    ],
+    "category": [
+      3,
+      5
+    ],
+    "createAt": 1746844800,
+    "phone": "+7 (4832) 777 88-99\n+7 (937) 016 16-16",
+    "address": "Брянск, пр. Ленина, д. 40",
+    "organisation": "Благотворительный Фонд «Сострадание»"
+  }
+]

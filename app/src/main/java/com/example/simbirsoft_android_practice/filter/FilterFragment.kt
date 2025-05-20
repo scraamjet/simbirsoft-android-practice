@@ -69,7 +69,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         showLoading()
 
         val disposable =
-            categoryRepository.getCategoriesObservable()
+            categoryRepository.getCategories()
                 .doOnSubscribe {
                     Log.d(
                         TAG_FILTER_FRAGMENT,
@@ -81,7 +81,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                     list.map { categories -> CategoryMapper.toFilterCategory(categories, filterPrefs) }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext { categories ->
+                .doOnSuccess { categories ->
                     Log.d(
                         TAG_FILTER_FRAGMENT,
                         "Received categories on thread: ${Thread.currentThread().name}, count: ${categories.size}",

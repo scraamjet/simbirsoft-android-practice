@@ -1,29 +1,29 @@
 package com.example.simbirsoft_android_practice.news
 
-import com.example.simbirsoft_android_practice.data.News
+import com.example.simbirsoft_android_practice.data.Event
 import com.example.simbirsoft_android_practice.data.NewsDetail
 import com.example.simbirsoft_android_practice.data.NewsItem
 
 object NewsMapper {
-    fun toNewsItem(news: News): NewsItem =
+    fun eventToNewsItem(event: Event): NewsItem =
         NewsItem(
-            id = news.id,
-            title = news.title,
-            description = news.description,
-            startDateTime = news.startDateTime,
-            endDateTime = news.endDateTime,
-            imageUrl = news.picturesUrl.first(),
+            id = event.id,
+            title = event.name,
+            description = event.description,
+            startDateTime = event.startDate,
+            endDateTime = event.endDate,
+            imageUrl = event.photos.first(),
         )
 
-    fun toNewsDetail(news: News): NewsDetail =
+    fun eventToNewsDetail(event: Event): NewsDetail =
         NewsDetail(
-            title = news.title,
-            fullDescription = news.fullDescription,
-            startDateTime = news.startDateTime,
-            endDateTime = news.endDateTime,
-            owner = news.owner,
-            ownerAddress = news.ownerAddress,
-            ownerContacts = news.ownerContacts,
-            picturesUrl = news.picturesUrl,
+            title = event.name,
+            fullDescription = event.description,
+            startDateTime = event.startDate,
+            endDateTime = event.endDate,
+            owner = event.organisation,
+            ownerAddress = event.address,
+            ownerContacts = event.phone,
+            picturesUrl = event.photos,
         )
 }

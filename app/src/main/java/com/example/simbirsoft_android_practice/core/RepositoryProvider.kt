@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.core
 import android.content.Context
 
 interface RepositoryProvider {
-    val newsRepository: NewsRepository
+    val eventRepository: EventRepository
     val categoryRepository: CategoryRepository
 
     companion object {
