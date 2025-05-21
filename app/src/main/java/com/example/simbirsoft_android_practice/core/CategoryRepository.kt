@@ -23,13 +23,12 @@ class CategoryRepository(
     private val categoryDao: CategoryDao,
 ) {
     private val gson = Gson()
-    private var isInitialized = false
+    private var isDataLoaded = false
 
     fun getCategories(): Flow<List<Category>> {
-        return if (isInitialized) {
+        return if (isDataLoaded) {
             getCategoriesFromDatabase()
         } else {
-            isInitialized = true
             getCategoriesFromRemote()
         }
     }
@@ -43,6 +42,8 @@ class CategoryRepository(
             categoryDao.insertAllCategories(categoryEntities)
 
             emit(fetchedCategories)
+
+            isDataLoaded = true
         }.catch { throwable ->
             Log.w(
                 TAG_CATEGORY_REPOSITORY,
@@ -63,6 +64,8 @@ class CategoryRepository(
             categoryDao.insertAllCategories(categoryEntities)
 
             emit(loadedCategories)
+
+            isDataLoaded = true
         }
 
     private fun getCategoriesFromDatabase(): Flow<List<Category>> {

@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 private const val TAG_EVENT_REPOSITORY = "EventRepository"
@@ -21,13 +20,12 @@ private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class EventRepository(private val extractor: JsonAssetExtractor, private val eventDao: EventDao) {
     private val gson = Gson()
-    private var isInitialized = false
+    private var isDataLoaded = false
 
     fun getEvents(categoryId: Int?): Flow<List<Event>> {
-        return if (isInitialized) {
+        return if (isDataLoaded) {
             getEventsFromDatabase()
         } else {
-            isInitialized = true
             getEventsFromRemote(categoryId)
         }
     }
@@ -37,11 +35,14 @@ class EventRepository(private val extractor: JsonAssetExtractor, private val eve
             val body =
                 categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
             val fetchedEvents = apiService.getEvents(body)
+
             val (entities, crossRefs) = EventEntityMapper.fromEventList(fetchedEvents)
             eventDao.insertEvents(entities)
             eventDao.insertEventCategoryCrossRefs(crossRefs)
 
             emit(fetchedEvents)
+
+            isDataLoaded = true
         }.catch { throwable ->
             Log.w(
                 TAG_EVENT_REPOSITORY,
@@ -63,6 +64,8 @@ class EventRepository(private val extractor: JsonAssetExtractor, private val eve
             eventDao.insertEventCategoryCrossRefs(crossRefs)
 
             emit(loadedEvents)
+
+            isDataLoaded = true
         }
 
     private fun getEventsFromDatabase(): Flow<List<Event>> {
