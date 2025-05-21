@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
@@ -83,7 +84,11 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit.adapter.rxjava3)
     implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
