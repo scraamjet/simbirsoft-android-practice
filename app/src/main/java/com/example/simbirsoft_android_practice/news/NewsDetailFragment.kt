@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
-import com.example.simbirsoft_android_practice.data.NewsDetail
+import com.example.simbirsoft_android_practice.model.NewsDetail
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.DateUtils

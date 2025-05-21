@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
 import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.model.Event
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

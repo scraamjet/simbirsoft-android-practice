@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.simbirsoft_android_practice.data.HelpCategory
+import com.example.simbirsoft_android_practice.model.HelpCategory
 import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
 
 class HelpAdapter : ListAdapter<HelpCategory, HelpViewHolder>(HelpCategoryDiffCallback) {

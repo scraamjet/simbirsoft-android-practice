@@ -5,7 +5,7 @@ import coil.load
 import coil.request.CachePolicy
 import coil.transform.CircleCropTransformation
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.data.Friend
+import com.example.simbirsoft_android_practice.model.Friend
 import com.example.simbirsoft_android_practice.databinding.ItemFriendBinding
 
 class FriendViewHolder(private val binding: ItemFriendBinding) :

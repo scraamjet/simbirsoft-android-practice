@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.search
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simbirsoft_android_practice.data.SearchEvent
+import com.example.simbirsoft_android_practice.model.SearchEvent
 import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBinding
 
 class EventViewHolder(private val binding: ItemSearchResultBinding) :

@@ -6,7 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.model.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
