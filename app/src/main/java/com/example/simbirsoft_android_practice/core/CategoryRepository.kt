@@ -47,7 +47,7 @@ class CategoryRepository(
         }.catch { throwable ->
             Log.w(
                 TAG_CATEGORY_REPOSITORY,
-                "Remote fetch failed: ${throwable.message}, loading from storage"
+                "Remote fetch failed: ${throwable.message}, loading from storage",
             )
             emitAll(getCategoriesFromJson())
         }
@@ -74,4 +74,3 @@ class CategoryRepository(
         }
     }
 }
-

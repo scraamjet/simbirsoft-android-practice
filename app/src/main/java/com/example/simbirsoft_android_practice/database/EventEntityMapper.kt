@@ -16,36 +16,37 @@ object EventEntityMapper {
             phone = eventWithCategories.event.phone,
             address = eventWithCategories.event.address,
             organisation = eventWithCategories.event.organisation,
-            categoryIds = eventWithCategories.categories.map { category -> category.id }
+            categoryIds = eventWithCategories.categories.map { category -> category.id },
         )
     }
 
     fun fromEventList(events: List<Event>): Pair<List<EventEntity>, List<EventCategoryCrossRef>> {
-        val eventEntities = events.map { event ->
-            EventEntity(
-                id = event.id,
-                name = event.name,
-                startDate = event.startDate,
-                endDate = event.endDate,
-                description = event.description,
-                status = event.status,
-                photos = event.photos,
-                createAt = event.createAt,
-                phone = event.phone,
-                address = event.address,
-                organisation = event.organisation
-            )
-        }
-
-        val crossRefs = events.flatMap { event ->
-            event.categoryIds.map { categoryId ->
-                EventCategoryCrossRef(eventId = event.id, categoryId = categoryId)
+        val eventEntities =
+            events.map { event ->
+                EventEntity(
+                    id = event.id,
+                    name = event.name,
+                    startDate = event.startDate,
+                    endDate = event.endDate,
+                    description = event.description,
+                    status = event.status,
+                    photos = event.photos,
+                    createAt = event.createAt,
+                    phone = event.phone,
+                    address = event.address,
+                    organisation = event.organisation,
+                )
             }
-        }
+
+        val crossRefs =
+            events.flatMap { event ->
+                event.categoryIds.map { categoryId ->
+                    EventCategoryCrossRef(eventId = event.id, categoryId = categoryId)
+                }
+            }
 
         return eventEntities to crossRefs
     }
-
 
     fun toEventList(eventsWithCategories: List<EventWithCategories>): List<Event> {
         return eventsWithCategories.map { eventWithCat -> toEvent(eventWithCat) }

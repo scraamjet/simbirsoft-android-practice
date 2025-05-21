@@ -9,11 +9,12 @@ data class EventWithCategories(
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
-        associateBy = Junction(
-            value = EventCategoryCrossRef::class,
-            parentColumn = "event_id",
-            entityColumn = "category_id"
-        )
+        associateBy =
+            Junction(
+                value = EventCategoryCrossRef::class,
+                parentColumn = "event_id",
+                entityColumn = "category_id",
+            ),
     )
-    val categories: List<CategoryEntity>
+    val categories: List<CategoryEntity>,
 )

@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
-import com.example.simbirsoft_android_practice.model.FilterCategory
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
+import com.example.simbirsoft_android_practice.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers

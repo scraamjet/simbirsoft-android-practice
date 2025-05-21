@@ -8,7 +8,7 @@ object CategoryEntityMapper {
             id = category.id,
             nameEn = category.nameEn,
             name = category.name,
-            image = category.image
+            image = category.image,
         )
     }
 
@@ -17,7 +17,7 @@ object CategoryEntityMapper {
             id = categoryEntity.id,
             nameEn = categoryEntity.nameEn,
             name = categoryEntity.name,
-            image = categoryEntity.image
+            image = categoryEntity.image,
         )
     }
 

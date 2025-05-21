@@ -27,5 +27,5 @@ data class EventEntity(
     @ColumnInfo(name = "address")
     val address: String,
     @ColumnInfo(name = "organisation")
-    val organisation: String
+    val organisation: String,
 )

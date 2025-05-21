@@ -23,11 +23,11 @@ class App : Application(), RepositoryProvider {
 
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+        database =
+            Room.databaseBuilder(
+                applicationContext,
+                AppDatabase::class.java,
+                DATABASE_NAME,
+            ).build()
     }
 }
-

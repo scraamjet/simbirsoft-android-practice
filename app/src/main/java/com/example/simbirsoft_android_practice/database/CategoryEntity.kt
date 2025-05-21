@@ -13,5 +13,5 @@ data class CategoryEntity(
     @ColumnInfo(name = "name_en")
     val nameEn: String,
     @ColumnInfo(name = "image")
-    val image: String
+    val image: String,
 )

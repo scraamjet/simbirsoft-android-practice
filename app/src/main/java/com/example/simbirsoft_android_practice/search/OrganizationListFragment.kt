@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.model.SearchEvent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.model.SearchEvent
 import com.example.simbirsoft_android_practice.utils.generateRandomString
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlin.random.Random

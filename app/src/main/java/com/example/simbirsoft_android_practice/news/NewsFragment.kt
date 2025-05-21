@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.model.Event
-import com.example.simbirsoft_android_practice.model.NewsItem
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.main.MainActivity
+import com.example.simbirsoft_android_practice.model.Event
+import com.example.simbirsoft_android_practice.model.NewsItem
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
@@ -173,8 +173,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }

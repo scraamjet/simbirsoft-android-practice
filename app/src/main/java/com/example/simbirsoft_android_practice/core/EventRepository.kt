@@ -46,7 +46,7 @@ class EventRepository(private val extractor: JsonAssetExtractor, private val eve
         }.catch { throwable ->
             Log.w(
                 TAG_EVENT_REPOSITORY,
-                "Remote fetch failed: ${throwable.message}, loading from storage"
+                "Remote fetch failed: ${throwable.message}, loading from storage",
             )
             emitAll(getEventsFromJson())
         }

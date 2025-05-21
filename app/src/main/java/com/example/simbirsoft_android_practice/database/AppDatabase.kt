@@ -8,13 +8,14 @@ import androidx.room.TypeConverters
     entities = [
         EventEntity::class,
         CategoryEntity::class,
-        EventCategoryCrossRef::class
+        EventCategoryCrossRef::class,
     ],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 @TypeConverters(ListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
+
     abstract fun categoryDao(): CategoryDao
 }
