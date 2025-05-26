@@ -8,14 +8,17 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
 import com.example.simbirsoft_android_practice.main.MainActivity
-import com.jakewharton.rxbinding4.widget.textChanges
+import com.example.simbirsoft_android_practice.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 private const val KEY_EMAIL = "key_email"
 private const val KEY_PASSWORD = "key_password"
@@ -24,7 +27,6 @@ private const val DRAWABLE_END_INDEX = 2
 
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
-    private val compositeDisposable = CompositeDisposable()
     private var isPasswordVisible = false
 
     override fun onViewCreated(
@@ -69,24 +71,18 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     }
 
     private fun observeInputFields() {
-        val emailObservable =
-            binding.editTextAuthorizationEmail.textChanges()
-                .map { email -> email.length >= MIN_INPUT_LENGTH }
-
-        val passwordObservable =
-            binding.editTextAuthorizationPassword.textChanges()
-                .map { password -> password.length >= MIN_INPUT_LENGTH }
-
-        val combinedDisposable =
-            Observable.combineLatest(
-                emailObservable,
-                passwordObservable,
-            ) { isEmailValid, isPasswordValid -> isEmailValid && isPasswordValid }
-                .subscribe { isFormValid ->
-                    binding.buttonAuthorization.isEnabled = isFormValid
-                }
-
-        compositeDisposable.add(combinedDisposable)
+        viewLifecycleOwner.lifecycleScope.launch {
+            combine(
+                binding.editTextAuthorizationEmail.textChangesFlow()
+                    .map { emailText -> emailText.length >= MIN_INPUT_LENGTH },
+                binding.editTextAuthorizationPassword.textChangesFlow()
+                    .map { passwordText -> passwordText.length >= MIN_INPUT_LENGTH },
+            ) { isEmailValid: Boolean, isPasswordValid: Boolean ->
+                isEmailValid && isPasswordValid
+            }.collectLatest { isFormValid: Boolean ->
+                binding.buttonAuthorization.isEnabled = isFormValid
+            }
+        }
     }
 
     private fun togglePasswordVisibility() {
@@ -129,11 +125,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
-    }
-
     override fun onDetach() {
         super.onDetach()
         (activity as? MainActivity)?.showBottomNavigation()
@@ -143,3 +134,4 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         fun newInstance() = AuthorizationFragment()
     }
 }
+
