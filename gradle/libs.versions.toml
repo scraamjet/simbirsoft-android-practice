@@ -23,6 +23,9 @@ kotlin-parcelize = "2.1.20"
 okhttp-logging-interceptor = "4.12.0"
 room = "2.7.1"
 ksp = "2.1.20-2.0.1"
+navigation = "2.7.7"
+navigationRuntimeAndroid = "2.9.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +56,10 @@ viewbinding-property-delegate-reflection = { module = "dev.androidbroadcast.vbpd
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
