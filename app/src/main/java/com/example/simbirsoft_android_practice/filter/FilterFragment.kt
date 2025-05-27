@@ -9,6 +9,7 @@ import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
@@ -93,7 +94,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigateUp()
         }
         binding.imageViewFilterApplySettings.setOnClickListener {
             saveFilterSettings()
@@ -109,7 +110,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         filterPrefs.saveSelectedCategories(selectedCategories)
         Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)
             .show()
-        parentFragmentManager.popBackStack()
+        findNavController().navigateUp()
     }
 
     private fun showLoading() {

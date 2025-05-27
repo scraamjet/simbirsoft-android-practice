@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.help.HelpFragment
@@ -34,7 +35,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.hideBottomNavigation()
 
         initClickListeners()
         observeInputFields()
@@ -48,10 +48,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
 
         binding.buttonAuthorization.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, HelpFragment.newInstance())
-                .commit()
-
+            findNavController().navigate(R.id.helpFragment)
             (activity as? MainActivity)?.startAndBindNewsService()
         }
 
@@ -123,11 +120,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             binding.editTextAuthorizationEmail.setText(bundle.getString(KEY_EMAIL, ""))
             binding.editTextAuthorizationPassword.setText(bundle.getString(KEY_PASSWORD, ""))
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        (activity as? MainActivity)?.showBottomNavigation()
     }
 
     companion object {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/authorizationFragment">
+
+    f<fragment
+        android:id="@+id/authorizationFragment"
+        android:name="com.example.simbirsoft_android_practice.auth.AuthorizationFragment"
+        android:label="Авторизация"/>
+
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.example.simbirsoft_android_practice.help.HelpFragment"
+        android:label="Помощь" />
+
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.example.simbirsoft_android_practice.news.NewsFragment"
+        android:label="Новости" />
+
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.example.simbirsoft_android_practice.news.NewsDetailFragment"
+        android:label="Детали" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.simbirsoft_android_practice.profile.ProfileFragment"
+        android:label="Профиль" />
+
+    <fragment
+        android:id="@+id/searchContainerFragment"
+        android:name="com.example.simbirsoft_android_practice.search.SearchContainerFragment"
+        android:label="Поиск" />
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.example.simbirsoft_android_practice.filter.FilterFragment"
+        android:label="Фильтры" />
+</navigation>

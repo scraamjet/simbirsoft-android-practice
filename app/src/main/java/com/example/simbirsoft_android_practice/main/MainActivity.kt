@@ -6,21 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
-import com.example.simbirsoft_android_practice.help.HelpFragment
 import com.example.simbirsoft_android_practice.model.NewsItem
-import com.example.simbirsoft_android_practice.news.NewsFragment
 import com.example.simbirsoft_android_practice.news.NewsMapper
 import com.example.simbirsoft_android_practice.news.NewsPreferences
 import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.news.NewsServiceConnection
-import com.example.simbirsoft_android_practice.profile.ProfileFragment
-import com.example.simbirsoft_android_practice.search.SearchContainerFragment
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -41,27 +38,48 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val unreadNewsCount = MutableStateFlow(0)
 
+    private lateinit var navController: NavController
+
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             Log.e(TAG_MAIN_ACTIVITY, "Flow exception: ${throwable.localizedMessage}", throwable)
         }
 
-    private val connection =
-        NewsServiceConnection(
-            onServiceConnected = { service ->
-                newsService = service
-                isServiceConnected = true
-                loadAndUpdateUnreadNewsCount()
-            },
-            onServiceDisconnected = {
-                isServiceConnected = false
-            },
-        )
+    private val connection = NewsServiceConnection(
+        onServiceConnected = { service ->
+            newsService = service
+            isServiceConnected = true
+            loadAndUpdateUnreadNewsCount()
+        },
+        onServiceDisconnected = {
+            isServiceConnected = false
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initAuthorizationFragment(savedInstanceState)
-        setupBottomNavigation()
+
+        setupNavigation()
+        startAndBindNewsService()
+    }
+
+    private fun setupNavigation() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.d("NavDebug", "Navigated to: ${destination.label}")
+
+            when (destination.id) {
+                R.id.authorizationFragment,
+                R.id.newsDetailFragment -> hideBottomNavigation()
+
+                else -> showBottomNavigation()
+            }
+        }
     }
 
     fun startAndBindNewsService() {
@@ -107,39 +125,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun initAuthorizationFragment(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) {
-            loadFragment(AuthorizationFragment.newInstance(), addToBackStack = false)
+    private fun updateUnreadNewsBadge(count: Int) {
+        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.newsFragment)
+        if (count > 0) {
+            badge.isVisible = true
+            badge.number = count
+        } else {
+            badge.isVisible = false
         }
-    }
-
-    private fun setupBottomNavigation() {
-        binding.bottomNavigationView.selectedItemId = R.id.help
-
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.help -> loadFragment(HelpFragment.newInstance())
-                R.id.profile -> loadFragment(ProfileFragment.newInstance())
-                R.id.search -> loadFragment(SearchContainerFragment.newInstance())
-                R.id.news -> loadFragment(NewsFragment.newInstance())
-            }
-            true
-        }
-    }
-
-    private fun loadFragment(
-        fragment: Fragment,
-        addToBackStack: Boolean = true,
-    ) {
-        val transaction =
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, fragment)
-
-        if (addToBackStack) {
-            transaction.addToBackStack(null)
-        }
-
-        transaction.commit()
     }
 
     fun hideBottomNavigation() {
@@ -148,15 +141,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     fun showBottomNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
-    }
-
-    private fun updateUnreadNewsBadge(count: Int) {
-        val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.news)
-        if (count > 0) {
-            badge.isVisible = true
-            badge.number = count
-        } else {
-            badge.isVisible = false
-        }
     }
 }
