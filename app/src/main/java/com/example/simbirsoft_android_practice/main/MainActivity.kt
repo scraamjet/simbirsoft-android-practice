@@ -38,7 +38,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val unreadNewsCount = MutableStateFlow(0)
 
-    private lateinit var navController: NavController
+    private val navController: NavController by lazy {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment.navController
+    }
 
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
@@ -64,10 +68,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun setupNavigation() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
         binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
