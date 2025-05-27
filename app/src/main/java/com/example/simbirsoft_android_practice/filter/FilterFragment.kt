@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
+import com.example.simbirsoft_android_practice.model.Category
 import com.example.simbirsoft_android_practice.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -34,7 +34,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val categoryRepository by lazy {
         RepositoryProvider.fromContext(requireContext()).categoryRepository
     }
-    private val compositeDisposable = CompositeDisposable()
     private var filterCategories: List<FilterCategory>? = null
 
     override fun onViewCreated(
@@ -45,11 +44,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         initRecyclerView()
         initClickListeners()
         restoreState(savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -77,7 +71,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             categoryRepository.getCategories()
                 .flowOn(Dispatchers.IO)
                 .map { list ->
-                    list.map { CategoryMapper.toFilterCategory(it, filterPrefs) }
+                    list.map { category: Category ->
+                        CategoryMapper.toFilterCategory(
+                            category,
+                            filterPrefs
+                        )
+                    }
                 }
                 .catch { throwable ->
                     Log.w(
