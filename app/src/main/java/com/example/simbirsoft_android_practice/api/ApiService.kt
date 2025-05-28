@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.api
 
-import com.example.simbirsoft_android_practice.data.Category
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.model.Category
+import com.example.simbirsoft_android_practice.model.Event
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

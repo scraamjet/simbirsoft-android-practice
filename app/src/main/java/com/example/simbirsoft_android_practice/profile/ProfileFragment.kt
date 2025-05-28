@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.data.Friend
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
+import com.example.simbirsoft_android_practice.model.Friend
 import dev.androidbroadcast.vbpd.viewBinding
 
 private const val IMAGE_SELECTOR_TAG = "IMAGE_SELECTOR_TAG"

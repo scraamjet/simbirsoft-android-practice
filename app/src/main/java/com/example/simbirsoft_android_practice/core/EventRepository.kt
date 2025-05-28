@@ -2,7 +2,9 @@ package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
 import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
-import com.example.simbirsoft_android_practice.data.Event
+import com.example.simbirsoft_android_practice.database.EventDao
+import com.example.simbirsoft_android_practice.database.EventEntityMapper
+import com.example.simbirsoft_android_practice.model.Event
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
@@ -10,50 +12,64 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 private const val TAG_EVENT_REPOSITORY = "EventRepository"
-private const val NEWS_JSON_FILE = "events.json"
+private const val EVENTS_JSON_FILE = "events.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class EventRepository(private val extractor: JsonAssetExtractor) {
+class EventRepository(private val extractor: JsonAssetExtractor, private val eventDao: EventDao) {
     private val gson = Gson()
-    private var cachedEvents: List<Event>? = null
+    private var isDataLoaded = false
 
     fun getEvents(categoryId: Int?): Flow<List<Event>> {
-        return if (cachedEvents != null) {
-            getEventsFromCache()
+        return if (isDataLoaded) {
+            getEventsFromDatabase()
         } else {
             getEventsFromRemote(categoryId)
         }
     }
 
-    private fun getEventsFromRemote(categoryId: Int?): Flow<List<Event>> {
-        val body = categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
-        return flow {
-            val events = apiService.getEvents(body)
-            cachedEvents = events
-            emit(events)
-        }.catch { error ->
+    private fun getEventsFromRemote(categoryId: Int?): Flow<List<Event>> =
+        flow {
+            val body =
+                categoryId?.let { id -> mapOf("id" to id) } ?: emptyMap()
+            val fetchedEvents = apiService.getEvents(body)
+
+            val (entities, crossRefs) = EventEntityMapper.fromEventList(fetchedEvents)
+            eventDao.insertEvents(entities)
+            eventDao.insertEventCategoryCrossRefs(crossRefs)
+
+            emit(fetchedEvents)
+
+            isDataLoaded = true
+        }.catch { throwable ->
             Log.w(
                 TAG_EVENT_REPOSITORY,
-                "Remote fetch failed: ${error.message}, loading from storage"
+                "Remote fetch failed: ${throwable.message}, loading from storage",
             )
-            emitAll(getEventsFromStorage())
+            emitAll(getEventsFromJson())
         }
-    }
 
-    private fun getEventsFromCache(): Flow<List<Event>> =
-        flowOf(cachedEvents ?: error("News cache is empty"))
-
-    private fun getEventsFromStorage(): Flow<List<Event>> =
+    private fun getEventsFromJson(): Flow<List<Event>> =
         flow {
             delay(TIMEOUT_IN_MILLIS)
-            val json = extractor.readJsonFile(NEWS_JSON_FILE)
+
+            val json = extractor.readJsonFile(EVENTS_JSON_FILE)
             val type = object : TypeToken<List<Event>>() {}.type
-            gson.fromJson<List<Event>>(json, type).also { loadedNews ->
-                cachedEvents = loadedNews
-                emit(loadedNews)
-            }
+            val loadedEvents = gson.fromJson<List<Event>>(json, type)
+
+            val (entities, crossRefs) = EventEntityMapper.fromEventList(loadedEvents)
+            eventDao.insertEvents(entities)
+            eventDao.insertEventCategoryCrossRefs(crossRefs)
+
+            emit(loadedEvents)
+
+            isDataLoaded = true
         }
+
+    private fun getEventsFromDatabase(): Flow<List<Event>> {
+        return eventDao.getAllEvents()
+            .map { eventsWithCategories -> EventEntityMapper.toEventList(eventsWithCategories) }
+    }
 }
