@@ -90,7 +90,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
-            findNavController().navigate(R.id.filterFragment)
+            findNavController().navigate(R.id.action_news_to_filter)
         }
     }
 
@@ -142,7 +142,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun onNewsItemSelected(newsId: Int) {
         newsPrefs.markNewsAsReadAndSelected(newsId)
-        findNavController().navigate(R.id.newsDetailFragment)
+        findNavController().navigate(R.id.action_news_to_news_detail)
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {

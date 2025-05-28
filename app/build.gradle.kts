@@ -89,6 +89,8 @@ dependencies {
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     ksp(libs.room.compiler)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)

@@ -15,13 +15,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
 import com.example.simbirsoft_android_practice.model.Friend
 import dev.androidbroadcast.vbpd.viewBinding
-
-private const val IMAGE_SELECTOR_TAG = "IMAGE_SELECTOR_TAG"
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val binding by viewBinding(FragmentProfileBinding::bind)
@@ -46,15 +45,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.appBarImageProfile.setOnClickListener { showEditPhotoDialog() }
 
         initRecyclerView()
         handleBackPress()
+        listenToPhotoDialog()
     }
 
     private fun initRecyclerView() {
@@ -80,14 +77,27 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
+    private fun listenToPhotoDialog() {
+        parentFragmentManager.setFragmentResultListener(
+            EditPhotoDialogFragment.REQUEST_KEY_PHOTO_ACTION,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val actionName = bundle.getString(EditPhotoDialogFragment.KEY_PHOTO_ACTION)
+            val action = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
+            handlePhotoAction(action)
+        }
+    }
+
+    private fun handlePhotoAction(action: PhotoAction) {
+        when (action) {
+            PhotoAction.TAKE_PHOTO -> handleTakePhoto()
+            PhotoAction.CHOOSE_PHOTO -> handleChoosePhoto()
+            PhotoAction.DELETE_PHOTO -> clearAppBarImage()
+        }
+    }
+
     private fun showEditPhotoDialog() {
-        EditPhotoDialogFragment.newInstance { action ->
-            when (action) {
-                PhotoAction.TAKE_PHOTO -> handleTakePhoto()
-                PhotoAction.CHOOSE_PHOTO -> handleChoosePhoto()
-                PhotoAction.DELETE_PHOTO -> clearAppBarImage()
-            }
-        }.show(childFragmentManager, IMAGE_SELECTOR_TAG)
+        findNavController().navigate(R.id.action_profile_to_edit_photo_dialog)
     }
 
     private fun handleTakePhoto() {
