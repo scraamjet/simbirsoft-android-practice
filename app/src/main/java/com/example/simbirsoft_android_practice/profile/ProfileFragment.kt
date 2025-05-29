@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.core.content.ContextCompat
@@ -33,7 +32,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { selectedImage -> updateAppBarImageFromCamera(selectedImage) }
+            uri?.let { selectedImage -> updateAppBarImageFromGallery(selectedImage) }
         }
 
     private val cameraPermissionLauncher =
@@ -47,10 +46,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.appBarImageProfile.setOnClickListener { showEditPhotoDialog() }
+        binding.appBarImageProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_edit_photo_dialog)
+        }
 
         initRecyclerView()
-        handleBackPress()
         listenToPhotoDialog()
     }
 
@@ -61,28 +61,46 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
         val list: List<Friend> =
             listOf(
-                Friend(1, "Алексис Санчес", "https://photobooth.cdn.sports.ru/preset/tc_person/4/02/2c8b043f747e8b03764db15fc1d2d.png"),
-                Friend(2, "Деклан Райс", "https://photobooth.cdn.sports.ru/preset/tags/3/1a/c964ab3eb44d883cca720b243570a.png"),
-                Friend(3, "Букайо Сака", "https://photobooth.cdn.sports.ru/preset/tc_person/a/8b/0e7d6eba2431fa68d0275d1124d82.jpeg"),
-                Friend(4, "Алексей Гладков", "https://thumb.tildacdn.com/tild3739-3337-4530-b562-643539663265/-/format/webp/_.jpg"),
-                Friend(5, "Кирилл Розов", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNtxwOwoQCubf4BzQpq4erjTloyf3O2uUblg&s"),
-                Friend(6, "Райан Гослинг", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_Gn1Em872bptcqUX2Yytct8--VEYCUv3kwQ&s"),
+                Friend(
+                    1,
+                    "Алексис Санчес",
+                    "https://photobooth.cdn.sports.ru/preset/tc_person/4/02/2c8b043f747e8b03764db15fc1d2d.png"
+                ),
+                Friend(
+                    2,
+                    "Деклан Райс",
+                    "https://photobooth.cdn.sports.ru/preset/tags/3/1a/c964ab3eb44d883cca720b243570a.png"
+                ),
+                Friend(
+                    3,
+                    "Букайо Сака",
+                    "https://photobooth.cdn.sports.ru/preset/tc_person/a/8b/0e7d6eba2431fa68d0275d1124d82.jpeg"
+                ),
+                Friend(
+                    4,
+                    "Алексей Гладков",
+                    "https://thumb.tildacdn.com/tild3739-3337-4530-b562-643539663265/-/format/webp/_.jpg"
+                ),
+                Friend(
+                    5,
+                    "Кирилл Розов",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNtxwOwoQCubf4BzQpq4erjTloyf3O2uUblg&s"
+                ),
+                Friend(
+                    6,
+                    "Райан Гослинг",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_Gn1Em872bptcqUX2Yytct8--VEYCUv3kwQ&s"
+                ),
             )
         friendAdapter.submitList(list)
     }
 
-    private fun handleBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            requireActivity().finishAffinity()
-        }
-    }
-
     private fun listenToPhotoDialog() {
         parentFragmentManager.setFragmentResultListener(
-            EditPhotoDialogFragment.REQUEST_KEY_PHOTO_ACTION,
+            EditPhotoDialogKeys.REQUEST_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            val actionName = bundle.getString(EditPhotoDialogFragment.KEY_PHOTO_ACTION)
+            val actionName = bundle.getString(EditPhotoDialogKeys.ACTION_KEY)
             val action = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
             handlePhotoAction(action)
         }
@@ -94,10 +112,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             PhotoAction.CHOOSE_PHOTO -> handleChoosePhoto()
             PhotoAction.DELETE_PHOTO -> clearAppBarImage()
         }
-    }
-
-    private fun showEditPhotoDialog() {
-        findNavController().navigate(R.id.action_profile_to_edit_photo_dialog)
     }
 
     private fun handleTakePhoto() {
@@ -145,7 +159,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun updateAppBarImageFromCamera(uri: Uri) {
+    private fun updateAppBarImageFromGallery(uri: Uri) {
         binding.appBarImageProfile.apply {
             setImageURI(uri)
             scaleType = ImageView.ScaleType.CENTER_CROP

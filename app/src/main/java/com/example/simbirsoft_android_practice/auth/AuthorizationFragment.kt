@@ -47,7 +47,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
 
         binding.buttonAuthorization.setOnClickListener {
-            findNavController().navigate(R.id.helpFragment)
+            findNavController().navigate(R.id.action_authorization_to_help)
             (activity as? MainActivity)?.startAndBindNewsService()
         }
 
@@ -110,10 +110,8 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (view != null) {
             outState.putString(KEY_EMAIL, binding.editTextAuthorizationEmail.text.toString())
             outState.putString(KEY_PASSWORD, binding.editTextAuthorizationPassword.text.toString())
-        }
     }
 
     private fun restoreInputState(savedInstanceState: Bundle?) {

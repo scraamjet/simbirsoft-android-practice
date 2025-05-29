@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
@@ -25,29 +26,23 @@ private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
-    private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val eventRepository by lazy {
         RepositoryProvider.fromContext(requireContext()).eventRepository
     }
+    private val args: NewsDetailFragmentArgs by navArgs()
 
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.hideBottomNavigation()
 
         loadNewsDetail()
         initClickListeners()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        (activity as? MainActivity)?.showBottomNavigation()
-    }
-
     private fun loadNewsDetail() {
-        val selectedNewsId = newsPrefs.getSelectedNewsId()
+        val selectedNewsId = args.newsId
 
         viewLifecycleOwner.lifecycleScope.launch {
             eventRepository.getEvents(null)

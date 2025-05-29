@@ -79,6 +79,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
                 else -> showBottomNavigation()
             }
+
+            Log.d("UI_DEBUG", "BottomNav visibility after: ${binding.bottomNavigationView.visibility}")
         }
     }
 
@@ -136,6 +138,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     fun hideBottomNavigation() {
+        binding.bottomNavigationView.clearAnimation()
         binding.bottomNavigationView.visibility = View.GONE
     }
 

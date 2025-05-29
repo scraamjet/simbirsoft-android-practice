@@ -29,7 +29,12 @@
     <fragment
         android:id="@+id/newsDetailFragment"
         android:name="com.example.simbirsoft_android_practice.news.NewsDetailFragment"
-        android:label="Детали" />
+        android:label="Детали" >
+        <argument
+            android:name="newsId"
+            app:argType="integer" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/profileFragment"

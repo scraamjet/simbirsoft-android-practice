@@ -142,7 +142,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun onNewsItemSelected(newsId: Int) {
         newsPrefs.markNewsAsReadAndSelected(newsId)
-        findNavController().navigate(R.id.action_news_to_news_detail)
+        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId)
+        findNavController().navigate(action)
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {

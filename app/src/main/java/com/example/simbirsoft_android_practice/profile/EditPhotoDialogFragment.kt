@@ -35,8 +35,8 @@ class EditPhotoDialogFragment : DialogFragment() {
 
     private fun setResult(action: PhotoAction) {
         parentFragmentManager.setFragmentResult(
-            REQUEST_KEY_PHOTO_ACTION,
-            bundleOf(KEY_PHOTO_ACTION to action.name)
+            EditPhotoDialogKeys.REQUEST_KEY,
+            bundleOf(EditPhotoDialogKeys.ACTION_KEY to action.name)
         )
         dismiss()
     }
@@ -44,11 +44,6 @@ class EditPhotoDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val REQUEST_KEY_PHOTO_ACTION = "photo_action_request"
-        const val KEY_PHOTO_ACTION = "photo_action"
     }
 }
 
