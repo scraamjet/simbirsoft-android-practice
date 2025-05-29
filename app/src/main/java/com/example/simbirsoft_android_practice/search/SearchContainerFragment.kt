@@ -139,22 +139,23 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
     private fun observeKeyboardVisibility() {
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
 
-        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-            val rect = Rect()
-            rootView.getWindowVisibleDisplayFrame(rect)
+        globalLayoutListener =
+            ViewTreeObserver.OnGlobalLayoutListener {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
 
-            val screenHeight = rootView.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
+                val screenHeight = rootView.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
 
-            val isKeyboardVisible =
-                keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+                val isKeyboardVisible =
+                    keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-            if (isKeyboardVisible) {
-                (activity as? MainActivity)?.hideBottomNavigation()
-            } else {
-                (activity as? MainActivity)?.showBottomNavigation()
+                if (isKeyboardVisible) {
+                    (activity as? MainActivity)?.hideBottomNavigation()
+                } else {
+                    (activity as? MainActivity)?.showBottomNavigation()
+                }
             }
-        }
 
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }

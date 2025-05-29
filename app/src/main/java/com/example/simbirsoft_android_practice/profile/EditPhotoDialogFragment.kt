@@ -36,7 +36,7 @@ class EditPhotoDialogFragment : DialogFragment() {
     private fun setResult(action: PhotoAction) {
         parentFragmentManager.setFragmentResult(
             EditPhotoDialogKeys.REQUEST_KEY,
-            bundleOf(EditPhotoDialogKeys.ACTION_KEY to action.name)
+            bundleOf(EditPhotoDialogKeys.ACTION_KEY to action.name),
         )
         dismiss()
     }
@@ -46,4 +46,3 @@ class EditPhotoDialogFragment : DialogFragment() {
         _binding = null
     }
 }
-

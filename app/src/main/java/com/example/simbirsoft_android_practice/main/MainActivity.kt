@@ -39,8 +39,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val unreadNewsCount = MutableStateFlow(0)
 
     private val navController: NavController by lazy {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.navController
     }
 
@@ -49,16 +50,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             Log.e(TAG_MAIN_ACTIVITY, "Flow exception: ${throwable.localizedMessage}", throwable)
         }
 
-    private val connection = NewsServiceConnection(
-        onServiceConnected = { service ->
-            newsService = service
-            isServiceConnected = true
-            loadAndUpdateUnreadNewsCount()
-        },
-        onServiceDisconnected = {
-            isServiceConnected = false
-        }
-    )
+    private val connection =
+        NewsServiceConnection(
+            onServiceConnected = { service ->
+                newsService = service
+                isServiceConnected = true
+                loadAndUpdateUnreadNewsCount()
+            },
+            onServiceDisconnected = {
+                isServiceConnected = false
+            },
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +75,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
             when (destination.id) {
                 R.id.authorizationFragment,
-                R.id.newsDetailFragment -> hideBottomNavigation()
+                R.id.newsDetailFragment,
+                -> hideBottomNavigation()
 
                 else -> showBottomNavigation()
             }

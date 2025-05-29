@@ -110,8 +110,8 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-            outState.putString(KEY_EMAIL, binding.editTextAuthorizationEmail.text.toString())
-            outState.putString(KEY_PASSWORD, binding.editTextAuthorizationPassword.text.toString())
+        outState.putString(KEY_EMAIL, binding.editTextAuthorizationEmail.text.toString())
+        outState.putString(KEY_PASSWORD, binding.editTextAuthorizationPassword.text.toString())
     }
 
     private fun restoreInputState(savedInstanceState: Bundle?) {
@@ -121,4 +121,3 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
     }
 }
-
