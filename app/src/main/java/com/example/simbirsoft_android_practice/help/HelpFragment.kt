@@ -116,8 +116,4 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         val categories = categoriesItems?.let(::ArrayList) ?: return
         outState.putParcelableArrayList(KEY_HELP_CATEGORIES, categories)
     }
-
-    companion object {
-        fun newInstance() = HelpFragment()
-    }
 }

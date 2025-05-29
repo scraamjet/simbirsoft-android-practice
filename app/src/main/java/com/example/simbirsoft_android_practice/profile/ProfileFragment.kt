@@ -172,8 +172,4 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             scaleType = ImageView.ScaleType.FIT_CENTER
         }
     }
-
-    companion object {
-        fun newInstance() = ProfileFragment()
-    }
 }

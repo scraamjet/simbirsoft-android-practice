@@ -64,14 +64,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         setupNavigation()
-        startAndBindNewsService()
     }
 
     private fun setupNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d("NavDebug", "Navigated to: ${destination.label}")
 
             when (destination.id) {
                 R.id.authorizationFragment,
@@ -79,8 +77,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
                 else -> showBottomNavigation()
             }
-
-            Log.d("UI_DEBUG", "BottomNav visibility after: ${binding.bottomNavigationView.visibility}")
         }
     }
 

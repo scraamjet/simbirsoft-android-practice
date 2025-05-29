@@ -120,9 +120,5 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             binding.editTextAuthorizationPassword.setText(bundle.getString(KEY_PASSWORD, ""))
         }
     }
-
-    companion object {
-        fun newInstance() = AuthorizationFragment()
-    }
 }
 

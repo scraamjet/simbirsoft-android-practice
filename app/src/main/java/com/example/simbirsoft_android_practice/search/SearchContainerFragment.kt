@@ -167,8 +167,4 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
         }
         globalLayoutListener = null
     }
-
-    companion object {
-        fun newInstance() = SearchContainerFragment()
-    }
 }

@@ -89,8 +89,4 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             findNavController().navigateUp()
         }
     }
-
-    companion object {
-        fun newInstance() = NewsDetailFragment()
-    }
 }

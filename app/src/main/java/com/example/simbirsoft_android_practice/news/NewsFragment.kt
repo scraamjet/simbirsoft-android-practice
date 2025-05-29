@@ -172,8 +172,4 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 }
         }
     }
-
-    companion object {
-        fun newInstance() = NewsFragment()
-    }
 }

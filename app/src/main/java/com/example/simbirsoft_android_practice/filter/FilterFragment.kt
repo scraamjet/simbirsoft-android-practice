@@ -147,8 +147,4 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         val categories = filterCategories?.let(::ArrayList) ?: return
         outState.putParcelableArrayList(KEY_FILTER_CATEGORIES, categories)
     }
-
-    companion object {
-        fun newInstance() = FilterFragment()
-    }
 }
