@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
@@ -88,9 +89,6 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.androidx.navigation.runtime.android)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     ksp(libs.room.compiler)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
