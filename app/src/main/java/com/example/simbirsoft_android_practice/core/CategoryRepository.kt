@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
+import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
@@ -13,16 +14,18 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 private const val TAG_CATEGORY_REPOSITORY = "CategoryRepository"
 private const val CATEGORIES_JSON_FILE = "categories.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class CategoryRepository(
+class CategoryRepository @Inject constructor(
     private val extractor: JsonAssetExtractor,
     private val categoryDao: CategoryDao,
+    private val gson: Gson,
+    private val apiService: ApiService
 ) {
-    private val gson = Gson()
     private var isDataLoaded = false
 
     fun getCategories(): Flow<List<Category>> {

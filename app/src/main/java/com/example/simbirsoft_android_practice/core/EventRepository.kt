@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
+import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
 import com.example.simbirsoft_android_practice.database.EventDao
 import com.example.simbirsoft_android_practice.database.EventEntityMapper
@@ -13,13 +14,19 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 private const val TAG_EVENT_REPOSITORY = "EventRepository"
 private const val EVENTS_JSON_FILE = "events.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class EventRepository(private val extractor: JsonAssetExtractor, private val eventDao: EventDao) {
-    private val gson = Gson()
+class EventRepository @Inject constructor(
+    private val extractor: JsonAssetExtractor,
+    private val eventDao: EventDao,
+    private val gson: Gson,
+    private val apiService: ApiService
+)
+ {
     private var isDataLoaded = false
 
     fun getEvents(categoryId: Int?): Flow<List<Event>> {
