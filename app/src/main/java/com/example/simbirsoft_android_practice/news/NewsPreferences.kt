@@ -23,9 +23,4 @@ class NewsPreferences(context: Context) {
         val readNewsIdStrings = prefs.getStringSet(KEY_READ_NEWS_IDS, emptySet()) ?: emptySet()
         return readNewsIdStrings.mapNotNull { newsIdString -> newsIdString.toIntOrNull() }.toSet()
     }
-
-    fun getSelectedNewsId(): Int? {
-        val newsIdString = prefs.getString(KEY_SELECTED_NEWS_ID, null)
-        return newsIdString?.toIntOrNull()
-    }
 }
