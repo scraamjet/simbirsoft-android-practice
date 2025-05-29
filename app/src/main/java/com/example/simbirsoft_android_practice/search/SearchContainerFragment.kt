@@ -162,8 +162,8 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
     override fun onDestroyView() {
         super.onDestroyView()
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
-        globalLayoutListener?.let {
-            rootView.viewTreeObserver.removeOnGlobalLayoutListener(it)
+        globalLayoutListener?.let { listener ->
+            rootView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
         globalLayoutListener = null
     }
