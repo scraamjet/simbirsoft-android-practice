@@ -8,25 +8,24 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.simbirsoft_android_practice.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-private const val KEY_EMAIL = "key_email"
-private const val KEY_PASSWORD = "key_password"
-private const val MIN_INPUT_LENGTH = 6
 private const val DRAWABLE_END_INDEX = 2
 
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
+    private val viewModel: AuthorizationViewModel by viewModels()
+
     private var isPasswordVisible = false
 
     override fun onViewCreated(
@@ -37,7 +36,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         initClickListeners()
         observeInputFields()
-        restoreInputState(savedInstanceState)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -68,18 +66,26 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun observeInputFields() {
         viewLifecycleOwner.lifecycleScope.launch {
-            combine(
-                binding.editTextAuthorizationEmail.textChangesFlow()
-                    .map { emailText -> emailText.length >= MIN_INPUT_LENGTH },
-                binding.editTextAuthorizationPassword.textChangesFlow()
-                    .map { passwordText -> passwordText.length >= MIN_INPUT_LENGTH },
-            ) { isEmailValid: Boolean, isPasswordValid: Boolean ->
-                isEmailValid && isPasswordValid
-            }.collectLatest { isFormValid: Boolean ->
+            binding.editTextAuthorizationEmail.textChangesFlow()
+                .collectLatest { text ->
+                    viewModel.onEmailChanged(text.toString())
+                }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            binding.editTextAuthorizationPassword.textChangesFlow()
+                .collectLatest { text ->
+                    viewModel.onPasswordChanged(text.toString())
+                }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isFormValid.collectLatest { isFormValid ->
                 binding.buttonAuthorization.isEnabled = isFormValid
             }
         }
     }
+
 
     private fun togglePasswordVisibility() {
         val passwordField = binding.editTextAuthorizationPassword
@@ -107,17 +113,5 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             null,
         )
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(KEY_EMAIL, binding.editTextAuthorizationEmail.text.toString())
-        outState.putString(KEY_PASSWORD, binding.editTextAuthorizationPassword.text.toString())
-    }
-
-    private fun restoreInputState(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { bundle ->
-            binding.editTextAuthorizationEmail.setText(bundle.getString(KEY_EMAIL, ""))
-            binding.editTextAuthorizationPassword.setText(bundle.getString(KEY_PASSWORD, ""))
-        }
-    }
 }
+
