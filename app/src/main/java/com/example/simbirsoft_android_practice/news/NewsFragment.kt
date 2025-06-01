@@ -8,10 +8,10 @@ import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
-import com.example.simbirsoft_android_practice.filter.FilterFragment
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.model.Event
@@ -64,7 +64,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     override fun onResume() {
         super.onResume()
         (activity as? MainActivity)?.loadAndUpdateUnreadNewsCount()
-        (activity as? MainActivity)?.showBottomNavigation()
     }
 
     override fun onViewCreated(
@@ -91,10 +90,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutFragmentContainer, FilterFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_news_to_filter)
         }
     }
 
@@ -146,10 +142,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun onNewsItemSelected(newsId: Int) {
         newsPrefs.markNewsAsReadAndSelected(newsId)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.frameLayoutFragmentContainer, NewsDetailFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId)
+        findNavController().navigate(action)
     }
 
     private fun restoreState(savedInstanceState: Bundle?) {
@@ -177,9 +171,5 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                         AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
-    }
-
-    companion object {
-        fun newInstance() = NewsFragment()
     }
 }

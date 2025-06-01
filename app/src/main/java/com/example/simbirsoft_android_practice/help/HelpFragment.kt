@@ -14,7 +14,6 @@ import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import com.example.simbirsoft_android_practice.model.HelpCategory
 import dev.androidbroadcast.vbpd.viewBinding
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -32,7 +31,6 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
     private val adapter by lazy { HelpAdapter() }
     private var categoriesItems: List<HelpCategory>? = null
-    private val compositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(
         view: View,
@@ -41,11 +39,6 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         restoreState(savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -122,9 +115,5 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun saveState(outState: Bundle) {
         val categories = categoriesItems?.let(::ArrayList) ?: return
         outState.putParcelableArrayList(KEY_HELP_CATEGORIES, categories)
-    }
-
-    companion object {
-        fun newInstance() = HelpFragment()
     }
 }

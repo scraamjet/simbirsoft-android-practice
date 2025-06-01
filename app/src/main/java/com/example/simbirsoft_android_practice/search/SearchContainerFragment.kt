@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -34,6 +35,7 @@ private const val TAG_SEARCH_CONTAINER_FRAGMENT = "SearchContainerFragment"
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container), SearchQueryProvider {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
     private val searchQueryFlow = MutableStateFlow("")
+    private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     override fun getSearchQuery(): String = searchQueryFlow.value
 
@@ -136,25 +138,34 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
 
     private fun observeKeyboardVisibility() {
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
-        rootView.viewTreeObserver.addOnGlobalLayoutListener {
-            val rect = Rect()
-            rootView.getWindowVisibleDisplayFrame(rect)
 
-            val screenHeight = rootView.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
+        globalLayoutListener =
+            ViewTreeObserver.OnGlobalLayoutListener {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
 
-            val isKeyboardVisible =
-                keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+                val screenHeight = rootView.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
 
-            if (isKeyboardVisible) {
-                (activity as? MainActivity)?.hideBottomNavigation()
-            } else {
-                (activity as? MainActivity)?.showBottomNavigation()
+                val isKeyboardVisible =
+                    keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+
+                if (isKeyboardVisible) {
+                    (activity as? MainActivity)?.hideBottomNavigation()
+                } else {
+                    (activity as? MainActivity)?.showBottomNavigation()
+                }
             }
-        }
+
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
 
-    companion object {
-        fun newInstance() = SearchContainerFragment()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
+        globalLayoutListener?.let { listener ->
+            rootView.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+        globalLayoutListener = null
     }
 }

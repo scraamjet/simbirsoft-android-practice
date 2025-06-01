@@ -3,14 +3,13 @@ package com.example.simbirsoft_android_practice.profile
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.example.simbirsoft_android_practice.databinding.EditPhotoDialogBinding
 
 class EditPhotoDialogFragment : DialogFragment() {
     private var _binding: EditPhotoDialogBinding? = null
     private val binding get() = _binding!!
-
-    private var actionCallback: (PhotoAction) -> Unit = {}
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = EditPhotoDialogBinding.inflate(layoutInflater)
@@ -22,31 +21,28 @@ class EditPhotoDialogFragment : DialogFragment() {
 
     private fun initClickListeners() {
         binding.choosePhoto.root.setOnClickListener {
-            actionCallback.invoke(PhotoAction.CHOOSE_PHOTO)
-            dismiss()
+            setResult(PhotoAction.CHOOSE_PHOTO)
         }
 
         binding.takePhoto.root.setOnClickListener {
-            actionCallback.invoke(PhotoAction.TAKE_PHOTO)
-            dismiss()
+            setResult(PhotoAction.TAKE_PHOTO)
         }
 
         binding.deletePhoto.root.setOnClickListener {
-            actionCallback.invoke(PhotoAction.DELETE_PHOTO)
-            dismiss()
+            setResult(PhotoAction.DELETE_PHOTO)
         }
+    }
+
+    private fun setResult(action: PhotoAction) {
+        parentFragmentManager.setFragmentResult(
+            EditPhotoDialogKeys.REQUEST_KEY,
+            bundleOf(EditPhotoDialogKeys.ACTION_KEY to action.name),
+        )
+        dismiss()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(callback: (PhotoAction) -> Unit): EditPhotoDialogFragment {
-            return EditPhotoDialogFragment().apply {
-                actionCallback = callback
-            }
-        }
     }
 }
