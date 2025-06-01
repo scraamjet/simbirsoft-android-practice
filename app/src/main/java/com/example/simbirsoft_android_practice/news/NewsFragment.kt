@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.main.MainActivity
@@ -19,14 +20,20 @@ import com.example.simbirsoft_android_practice.model.NewsItem
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
+
+    @Inject
+    lateinit var filterPrefs: FilterPreferences
+
+    @Inject
+    lateinit var newsPrefs: NewsPreferences
+
     private val binding by viewBinding(FragmentNewsBinding::bind)
-    private val filterPrefs by lazy { FilterPreferences(requireContext()) }
-    private val newsPrefs by lazy { NewsPreferences(requireContext()) }
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
@@ -43,6 +50,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 isServiceConnected = false
             },
         )
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onStart() {
         super.onStart()

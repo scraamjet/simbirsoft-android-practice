@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.help
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
+import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
@@ -19,18 +22,25 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
 private const val KEY_HELP_CATEGORIES = "key_help_categories"
 private const val TAG_HELP_FRAGMENT = "HelpFragment"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
+
+    @Inject
+    lateinit var categoryRepository: CategoryRepository
+
     private val binding by viewBinding(FragmentHelpBinding::bind)
-    private val categoryRepository by lazy {
-        RepositoryProvider.fromContext(requireContext()).categoryRepository
-    }
     private val adapter by lazy { HelpAdapter() }
     private var categoriesItems: List<HelpCategory>? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,

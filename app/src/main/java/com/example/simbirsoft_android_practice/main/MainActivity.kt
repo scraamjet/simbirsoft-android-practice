@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.model.NewsItem
@@ -24,14 +25,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 private const val TAG_MAIN_ACTIVITY = "MainActivity"
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
-    private val filterPrefs by lazy { FilterPreferences(this) }
-    private val newsPrefs by lazy { NewsPreferences(this) }
+    @Inject
+    lateinit var filterPrefs: FilterPreferences
+
+    @Inject
+    lateinit var newsPrefs: NewsPreferences
 
     private var newsService: NewsService? = null
     private var isServiceConnected = false
@@ -63,6 +68,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         setupNavigation()
