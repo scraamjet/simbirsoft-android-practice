@@ -13,14 +13,13 @@ import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
-
     @Provides
     @Singleton
     fun provideEventRepository(
         extractor: JsonAssetExtractor,
         eventDao: EventDao,
         gson: Gson,
-        apiService: ApiService
+        apiService: ApiService,
     ): EventRepository = EventRepository(extractor, eventDao, gson, apiService)
 
     @Provides
@@ -29,8 +28,6 @@ class RepositoryModule {
         extractor: JsonAssetExtractor,
         categoryDao: CategoryDao,
         gson: Gson,
-        apiService: ApiService
+        apiService: ApiService,
     ): CategoryRepository = CategoryRepository(extractor, categoryDao, gson, apiService)
 }
-
-

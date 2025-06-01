@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.CategoryRepository
-import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import com.example.simbirsoft_android_practice.model.Category
 import com.example.simbirsoft_android_practice.model.FilterCategory
@@ -32,6 +31,7 @@ private const val TAG_FILTER_FRAGMENT = "FilterFragment"
 private const val KEY_FILTER_CATEGORIES = "key_filter_categories"
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
+    private val binding by viewBinding(FragmentFilterBinding::bind)
 
     @Inject
     lateinit var categoryRepository: CategoryRepository
@@ -39,7 +39,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     @Inject
     lateinit var filterPrefs: FilterPreferences
 
-    private val binding by viewBinding(FragmentFilterBinding::bind)
     private val filterAdapter by lazy { FilterAdapter() }
     private var filterCategories: List<FilterCategory>? = null
 
@@ -86,7 +85,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                     list.map { category: Category ->
                         CategoryMapper.toFilterCategory(
                             category,
-                            filterPrefs
+                            filterPrefs,
                         )
                     }
                 }

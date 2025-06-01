@@ -13,7 +13,6 @@ private const val DATABASE_NAME = "app_database"
 
 @Module
 class DatabaseModule {
-
     @Provides
     @Singleton
     fun provideDatabase(context: Context): AppDatabase =

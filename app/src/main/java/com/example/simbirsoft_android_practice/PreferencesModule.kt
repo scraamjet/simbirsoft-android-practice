@@ -1,6 +1,5 @@
 package com.example.simbirsoft_android_practice
 
-import android.app.Application
 import android.content.Context
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.news.NewsPreferences
@@ -10,15 +9,11 @@ import javax.inject.Singleton
 
 @Module
 class PreferencesModule {
+    @Provides
+    @Singleton
+    fun provideFilterPreferences(context: Context): FilterPreferences = FilterPreferences(context)
 
     @Provides
     @Singleton
-    fun provideFilterPreferences(context: Context): FilterPreferences =
-        FilterPreferences(context)
-
-    @Provides
-    @Singleton
-    fun provideNewsPreferences(context: Context): NewsPreferences =
-        NewsPreferences(context)
+    fun provideNewsPreferences(context: Context): NewsPreferences = NewsPreferences(context)
 }
-

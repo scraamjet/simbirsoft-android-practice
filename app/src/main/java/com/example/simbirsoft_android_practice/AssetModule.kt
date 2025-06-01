@@ -8,7 +8,6 @@ import javax.inject.Singleton
 
 @Module
 class AssetModule {
-
     @Provides
     @Singleton
     fun provideJsonAssetExtractor(context: Context): JsonAssetExtractor {

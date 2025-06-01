@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.CategoryRepository
-import com.example.simbirsoft_android_practice.core.RepositoryProvider
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import com.example.simbirsoft_android_practice.model.HelpCategory
@@ -29,11 +28,11 @@ private const val KEY_HELP_CATEGORIES = "key_help_categories"
 private const val TAG_HELP_FRAGMENT = "HelpFragment"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
+    private val binding by viewBinding(FragmentHelpBinding::bind)
 
     @Inject
     lateinit var categoryRepository: CategoryRepository
 
-    private val binding by viewBinding(FragmentHelpBinding::bind)
     private val adapter by lazy { HelpAdapter() }
     private var categoriesItems: List<HelpCategory>? = null
 

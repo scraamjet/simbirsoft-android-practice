@@ -27,11 +27,11 @@ import javax.inject.Inject
 private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
+    private val binding by viewBinding(FragmentNewsDetailBinding::bind)
 
     @Inject
     lateinit var eventRepository: EventRepository
 
-    private val binding by viewBinding(FragmentNewsDetailBinding::bind)
     private val args: NewsDetailFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {

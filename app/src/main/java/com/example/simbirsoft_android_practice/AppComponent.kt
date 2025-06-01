@@ -20,8 +20,8 @@ import javax.inject.Singleton
         GsonModule::class,
         DatabaseModule::class,
         PreferencesModule::class,
-        AppModule::class
-    ]
+        AppModule::class,
+    ],
 )
 interface AppComponent {
 

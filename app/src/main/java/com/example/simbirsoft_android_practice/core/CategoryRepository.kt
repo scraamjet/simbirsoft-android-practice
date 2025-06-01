@@ -20,60 +20,62 @@ private const val TAG_CATEGORY_REPOSITORY = "CategoryRepository"
 private const val CATEGORIES_JSON_FILE = "categories.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class CategoryRepository @Inject constructor(
-    private val extractor: JsonAssetExtractor,
-    private val categoryDao: CategoryDao,
-    private val gson: Gson,
-    private val apiService: ApiService
-) {
-    private var isDataLoaded = false
+class CategoryRepository
+    @Inject
+    constructor(
+        private val extractor: JsonAssetExtractor,
+        private val categoryDao: CategoryDao,
+        private val gson: Gson,
+        private val apiService: ApiService,
+    ) {
+        private var isDataLoaded = false
 
-    fun getCategories(): Flow<List<Category>> {
-        return if (isDataLoaded) {
-            getCategoriesFromDatabase()
-        } else {
-            getCategoriesFromRemote()
+        fun getCategories(): Flow<List<Category>> {
+            return if (isDataLoaded) {
+                getCategoriesFromDatabase()
+            } else {
+                getCategoriesFromRemote()
+            }
+        }
+
+        private fun getCategoriesFromRemote(): Flow<List<Category>> =
+            flow {
+                val responseMap = apiService.getCategories()
+                val fetchedCategories = responseMap.values.toList()
+
+                val categoryEntities = CategoryEntityMapper.fromCategoryList(fetchedCategories)
+                categoryDao.insertAllCategories(categoryEntities)
+
+                emit(fetchedCategories)
+
+                isDataLoaded = true
+            }.catch { throwable ->
+                Log.w(
+                    TAG_CATEGORY_REPOSITORY,
+                    "Remote fetch failed: ${throwable.message}, loading from storage",
+                )
+                emitAll(getCategoriesFromJson())
+            }
+
+        private fun getCategoriesFromJson(): Flow<List<Category>> =
+            flow {
+                delay(TIMEOUT_IN_MILLIS)
+
+                val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
+                val type = object : TypeToken<List<Category>>() {}.type
+                val loadedCategories = gson.fromJson<List<Category>>(json, type)
+
+                val categoryEntities = CategoryEntityMapper.fromCategoryList(loadedCategories)
+                categoryDao.insertAllCategories(categoryEntities)
+
+                emit(loadedCategories)
+
+                isDataLoaded = true
+            }
+
+        private fun getCategoriesFromDatabase(): Flow<List<Category>> {
+            return categoryDao.getAllCategories().map { entities ->
+                CategoryEntityMapper.toCategoryList(entities)
+            }
         }
     }
-
-    private fun getCategoriesFromRemote(): Flow<List<Category>> =
-        flow {
-            val responseMap = apiService.getCategories()
-            val fetchedCategories = responseMap.values.toList()
-
-            val categoryEntities = CategoryEntityMapper.fromCategoryList(fetchedCategories)
-            categoryDao.insertAllCategories(categoryEntities)
-
-            emit(fetchedCategories)
-
-            isDataLoaded = true
-        }.catch { throwable ->
-            Log.w(
-                TAG_CATEGORY_REPOSITORY,
-                "Remote fetch failed: ${throwable.message}, loading from storage",
-            )
-            emitAll(getCategoriesFromJson())
-        }
-
-    private fun getCategoriesFromJson(): Flow<List<Category>> =
-        flow {
-            delay(TIMEOUT_IN_MILLIS)
-
-            val json = extractor.readJsonFile(CATEGORIES_JSON_FILE)
-            val type = object : TypeToken<List<Category>>() {}.type
-            val loadedCategories = gson.fromJson<List<Category>>(json, type)
-
-            val categoryEntities = CategoryEntityMapper.fromCategoryList(loadedCategories)
-            categoryDao.insertAllCategories(categoryEntities)
-
-            emit(loadedCategories)
-
-            isDataLoaded = true
-        }
-
-    private fun getCategoriesFromDatabase(): Flow<List<Category>> {
-        return categoryDao.getAllCategories().map { entities ->
-            CategoryEntityMapper.toCategoryList(entities)
-        }
-    }
-}

@@ -28,18 +28,17 @@ import javax.inject.Inject
 private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
+    private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
     lateinit var eventRepository: EventRepository
 
-    private val binding by viewBinding(FragmentSearchListBinding::bind)
     private val eventAdapter = EventAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
-
 
     override fun onViewCreated(
         view: View,

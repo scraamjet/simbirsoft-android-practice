@@ -26,6 +26,7 @@ private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
+    private val binding by viewBinding(FragmentNewsBinding::bind)
 
     @Inject
     lateinit var filterPrefs: FilterPreferences
@@ -33,7 +34,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     @Inject
     lateinit var newsPrefs: NewsPreferences
 
-    private val binding by viewBinding(FragmentNewsBinding::bind)
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
     private var newsService: NewsService? = null
     private var isServiceConnected: Boolean = false
