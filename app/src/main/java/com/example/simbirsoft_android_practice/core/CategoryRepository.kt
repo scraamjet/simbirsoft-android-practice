@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
 import com.example.simbirsoft_android_practice.api.ApiService
-import com.example.simbirsoft_android_practice.api.RetrofitClient.apiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
 import com.example.simbirsoft_android_practice.model.Category
