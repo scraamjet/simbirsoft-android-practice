@@ -1,7 +1,5 @@
 package com.example.simbirsoft_android_practice
 
-import android.app.Application
-import android.content.Context
 import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.core.EventRepository
@@ -33,10 +31,6 @@ class RepositoryModule {
         gson: Gson,
         apiService: ApiService
     ): CategoryRepository = CategoryRepository(extractor, categoryDao, gson, apiService)
-
-    @Provides
-    fun provideJsonAssetExtractor(context: Context): JsonAssetExtractor =
-        JsonAssetExtractor(context)
 }
 
 

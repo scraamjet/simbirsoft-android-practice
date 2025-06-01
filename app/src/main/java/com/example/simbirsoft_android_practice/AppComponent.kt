@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         RepositoryModule::class,
+        AssetModule::class,
         NetworkModule::class,
         GsonModule::class,
         DatabaseModule::class,
