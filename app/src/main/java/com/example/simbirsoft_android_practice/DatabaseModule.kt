@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice
 
-import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.simbirsoft_android_practice.database.AppDatabase
 import com.example.simbirsoft_android_practice.database.CategoryDao
@@ -16,8 +16,8 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): AppDatabase =
-        Room.databaseBuilder(app, AppDatabase::class.java, DATABASE_NAME)
+    fun provideDatabase(context: Context): AppDatabase =
+        Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
             .build()
 
     @Provides

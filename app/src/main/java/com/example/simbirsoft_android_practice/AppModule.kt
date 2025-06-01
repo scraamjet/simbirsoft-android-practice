@@ -1,14 +1,15 @@
 package com.example.simbirsoft_android_practice
 
-import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val app: Application) {
+class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideApplication(): Application = app
+    fun provideContext(): Context = context.applicationContext
 }
+
