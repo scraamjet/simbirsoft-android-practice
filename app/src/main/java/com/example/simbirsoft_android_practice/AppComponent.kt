@@ -20,6 +20,7 @@ import javax.inject.Singleton
         GsonModule::class,
         DatabaseModule::class,
         PreferencesModule::class,
+        ViewModelModule::class,
         AppModule::class,
     ],
 )

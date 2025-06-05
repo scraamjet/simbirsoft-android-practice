@@ -13,10 +13,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
-import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.model.NewsItem
 import com.example.simbirsoft_android_practice.news.NewsMapper
-import com.example.simbirsoft_android_practice.news.NewsPreferences
 import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.news.NewsServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
@@ -33,10 +31,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
     @Inject
-    lateinit var filterPrefs: FilterPreferences
-
-    @Inject
-    lateinit var newsPrefs: NewsPreferences
+    lateinit var mainViewModel: MainViewModel
 
     private var newsService: NewsService? = null
     private var isServiceConnected = false
@@ -109,7 +104,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         lifecycleScope.launch(coroutineExceptionHandler) {
             service.loadNews()
                 .collect { loadedNews ->
-                    val selectedCategories = filterPrefs.getSelectedCategories()
+                    val selectedCategories = mainViewModel.getSelectedCategories()
                     val filteredNewsItems =
                         loadedNews
                             .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
@@ -122,7 +117,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun updateUnreadNewsCount(newsList: List<NewsItem>) {
         lifecycleScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            val readNewsIds = newsPrefs.getReadNewsIds()
+            val readNewsIds = mainViewModel.getReadNewsIds()
             val unreadCount = newsList.count { newsItem -> newsItem.id !in readNewsIds }
 
             unreadNewsCount.value = unreadCount
