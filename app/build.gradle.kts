@@ -92,6 +92,7 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
