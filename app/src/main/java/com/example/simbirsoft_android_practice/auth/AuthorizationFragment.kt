@@ -9,7 +9,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.R
@@ -66,26 +68,29 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun observeInputFields() {
         viewLifecycleOwner.lifecycleScope.launch {
-            binding.editTextAuthorizationEmail.textChangesFlow()
-                .collectLatest { text ->
-                    viewModel.onEmailChanged(text.toString())
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    binding.editTextAuthorizationEmail.textChangesFlow()
+                        .collectLatest { text ->
+                            viewModel.onEmailChanged(text.toString())
+                        }
                 }
-        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            binding.editTextAuthorizationPassword.textChangesFlow()
-                .collectLatest { text ->
-                    viewModel.onPasswordChanged(text.toString())
+                launch {
+                    binding.editTextAuthorizationPassword.textChangesFlow()
+                        .collectLatest { text ->
+                            viewModel.onPasswordChanged(text.toString())
+                        }
                 }
-        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isFormValid.collectLatest { isFormValid ->
-                binding.buttonAuthorization.isEnabled = isFormValid
+                launch {
+                    viewModel.isFormValid.collectLatest { isFormValid ->
+                        binding.buttonAuthorization.isEnabled = isFormValid
+                    }
+                }
             }
         }
     }
-
 
     private fun togglePasswordVisibility() {
         val passwordField = binding.editTextAuthorizationPassword
