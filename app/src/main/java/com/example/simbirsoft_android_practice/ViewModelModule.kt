@@ -1,19 +1,27 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.filter.FilterPreferences
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.simbirsoft_android_practice.main.MainViewModel
-import com.example.simbirsoft_android_practice.news.NewsPreferences
+import com.example.simbirsoft_android_practice.news.NewsViewModel
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.multibindings.IntoMap
 
 @Module
-class ViewModelModule {
+abstract class ViewModelModule {
 
-    @Provides
-    fun provideMainViewModel(
-        filterPreferences: FilterPreferences,
-        newsPreferences: NewsPreferences,
-    ): MainViewModel {
-        return MainViewModel(filterPreferences, newsPreferences)
-    }
+    @Binds
+    abstract fun bindViewModelFactory(factory: MultiViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewsViewModel::class)
+    abstract fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
 }
+

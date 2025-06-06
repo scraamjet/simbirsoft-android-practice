@@ -1,81 +1,45 @@
 package com.example.simbirsoft_android_practice.news
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
-import com.example.simbirsoft_android_practice.filter.FilterPreferences
-import com.example.simbirsoft_android_practice.main.MainActivity
-import com.example.simbirsoft_android_practice.model.Event
+import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.model.NewsItem
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val KEY_NEWS_ITEMS = "key_news_items"
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
     private val binding by viewBinding(FragmentNewsBinding::bind)
 
     @Inject
-    lateinit var filterPrefs: FilterPreferences
+    lateinit var viewModelFactory: MultiViewModelFactory
 
-    @Inject
-    lateinit var newsPrefs: NewsPreferences
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val newsViewModel by viewModels<NewsViewModel> { viewModelFactory }
 
     private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
-    private var newsService: NewsService? = null
-    private var isServiceConnected: Boolean = false
-    private var newsItems: List<NewsItem>? = null
-
-    private val connection =
-        NewsServiceConnection(
-            onServiceConnected = { connectedService ->
-                newsService = connectedService
-                isServiceConnected = true
-                loadNewsData()
-            },
-            onServiceDisconnected = {
-                isServiceConnected = false
-            },
-        )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        requireContext().bindService(
-            Intent(requireContext(), NewsService::class.java),
-            connection,
-            Context.BIND_AUTO_CREATE,
-        )
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (isServiceConnected) {
-            requireContext().unbindService(connection)
-            isServiceConnected = false
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as? MainActivity)?.loadAndUpdateUnreadNewsCount()
     }
 
     override fun onViewCreated(
@@ -85,12 +49,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        restoreState(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveState(outState)
+        observeNews()
+        observeLoading()
     }
 
     private fun initRecyclerView() {
@@ -106,70 +66,53 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun loadNewsData() {
-        val newsService = newsService ?: return
-        showLoading()
-
+    private fun observeNews() {
         viewLifecycleOwner.lifecycleScope.launch {
-            newsService.loadNews()
-                .collect { loadedNewsList ->
-                    val selectedCategories = filterPrefs.getSelectedCategories()
-                    val filteredNewsItems = filterAndMapNews(loadedNewsList, selectedCategories)
-                    newsItems = filteredNewsItems
-                    showData(filteredNewsItems)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Первый collect — при изменении списка новостей
+                launch {
+                    newsViewModel.newsItems.collect { newsItems ->
+                        showData(newsItems)
+                        mainViewModel.updateBadge(newsItems)
+                    }
                 }
+                // Второй collect — при изменении прочитанных новостей
+                launch {
+                    mainViewModel.readNewsIds.collect {
+                        mainViewModel.updateBadge(newsViewModel.newsItems.value)
+                    }
+                }
+            }
         }
     }
 
-    private fun filterAndMapNews(
-        loadedNewsList: List<Event>,
-        selectedCategories: Set<Int>,
-    ): List<NewsItem> {
-        return loadedNewsList
-            .filter { news ->
-                news.categoryIds.any { categoryId ->
-                    selectedCategories.contains(categoryId)
+    private fun observeLoading() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    newsViewModel.loading.collect { isLoading ->
+                        binding.progressBarNews.isVisible = isLoading
+                        if (isLoading) {
+                            binding.recyclerViewItemNews.isVisible = false
+                            binding.textViewNoNews.isVisible = false
+                        }
+                    }
                 }
             }
-            .map(NewsMapper::eventToNewsItem)
-    }
-
-    private fun showLoading() {
-        binding.apply {
-            recyclerViewItemNews.isVisible = false
-            textViewNoNews.isVisible = false
-            progressBarNews.isVisible = true
         }
     }
 
     private fun showData(newsList: List<NewsItem>) {
-        binding.apply {
-            textViewNoNews.isVisible = newsList.isEmpty()
-            recyclerViewItemNews.isVisible = newsList.isNotEmpty()
-            progressBarNews.isVisible = false
-        }
+        binding.textViewNoNews.isVisible = newsList.isEmpty()
+        binding.recyclerViewItemNews.isVisible = newsList.isNotEmpty()
         newsAdapter.submitList(newsList)
         updateScrollFlags(newsList.isEmpty())
     }
 
     private fun onNewsItemSelected(newsId: Int) {
-        newsPrefs.markNewsAsReadAndSelected(newsId)
+        mainViewModel.updateReadNews(newsId)
         val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId)
         findNavController().navigate(action)
-    }
-
-    private fun restoreState(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { bundle ->
-            val savedNewsItems =
-                BundleCompat.getParcelableArrayList(bundle, KEY_NEWS_ITEMS, NewsItem::class.java)
-            savedNewsItems?.let { restoredNewsItems -> showData(restoredNewsItems) }
-            newsItems = savedNewsItems
-        }
-    }
-
-    private fun saveState(outState: Bundle) {
-        val newsItems = newsItems?.let(::ArrayList) ?: return
-        outState.putParcelableArrayList(KEY_NEWS_ITEMS, newsItems)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
@@ -179,8 +122,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                     SCROLL_FLAG_NONE
                 } else {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
+                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
                 }
         }
     }
