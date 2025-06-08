@@ -89,6 +89,8 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core.android)
     ksp(libs.room.compiler)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)

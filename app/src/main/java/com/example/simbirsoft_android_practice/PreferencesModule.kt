@@ -12,4 +12,10 @@ class PreferencesModule {
     @Provides
     @Singleton
     fun provideFilterPreferences(context: Context): FilterPreferences = FilterPreferences(context)
+
+    @Provides
+    @Singleton
+    fun provideNewsPreferences(context: Context): NewsPreferences {
+        return NewsPreferences(context)
+    }
 }

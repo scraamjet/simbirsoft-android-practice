@@ -9,10 +9,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.CategoryRepository
@@ -27,39 +31,28 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG_FILTER_FRAGMENT = "FilterFragment"
-private const val KEY_FILTER_CATEGORIES = "key_filter_categories"
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
 
     @Inject
-    lateinit var categoryRepository: CategoryRepository
+    lateinit var viewModelFactory: MultiViewModelFactory
 
-    @Inject
-    lateinit var filterPrefs: FilterPreferences
+    private val filterViewModel by viewModels<FilterViewModel> { viewModelFactory }
 
     private val filterAdapter by lazy { FilterAdapter() }
-    private var filterCategories: List<FilterCategory>? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        restoreState(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveState(outState)
+        observeCategories()
+        observeLoading()
     }
 
     private fun initRecyclerView() {
@@ -75,30 +68,25 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         }
     }
 
-    private fun loadCategoryData() {
-        showLoading()
-
+    private fun observeCategories() {
         viewLifecycleOwner.lifecycleScope.launch {
-            categoryRepository.getCategories()
-                .flowOn(Dispatchers.IO)
-                .map { list ->
-                    list.map { category: Category ->
-                        CategoryMapper.toFilterCategory(
-                            category,
-                            filterPrefs,
-                        )
-                    }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                filterViewModel.categories.collect { categories ->
+                    filterAdapter.submitList(categories)
                 }
-                .catch { throwable ->
-                    Log.w(
-                        TAG_FILTER_FRAGMENT,
-                        "Flow exception: ${throwable.localizedMessage}",
-                        throwable,
-                    )
+            }
+        }
+    }
+
+    private fun observeLoading() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                filterViewModel.loading.collect { isLoading ->
+                    binding.progressBarFilter.isVisible = isLoading
+                    binding.imageViewFilterApplySettings.isVisible = !isLoading
+                    binding.recyclerViewFilterItem.isVisible = !isLoading
                 }
-                .collect { categories ->
-                    showData(categories)
-                }
+            }
         }
     }
 
@@ -113,49 +101,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun saveFilterSettings() {
         val selectedCategories =
-            filterAdapter.currentList
-                .filter { category -> category.isEnabled }
-                .map { category -> category.id }
-                .toSet()
-        filterPrefs.saveSelectedCategories(selectedCategories)
+            filterAdapter.currentList.filter { category -> category.isEnabled }.map { it.id }.toSet()
+        filterViewModel.saveSelected(selectedCategories)
         Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)
             .show()
         findNavController().navigateUp()
     }
-
-    private fun showLoading() {
-        binding.progressBarFilter.isVisible = true
-        binding.imageViewFilterApplySettings.isVisible = false
-        binding.recyclerViewFilterItem.isVisible = false
-    }
-
-    private fun showData(categories: List<FilterCategory>) {
-        binding.progressBarFilter.isVisible = false
-        binding.imageViewFilterApplySettings.isVisible = true
-        binding.recyclerViewFilterItem.isVisible = true
-        filterCategories = categories
-        filterAdapter.submitList(categories)
-    }
-
-    private fun restoreState(savedInstanceState: Bundle?) {
-        if (savedInstanceState?.containsKey(KEY_FILTER_CATEGORIES) == true) {
-            val saved =
-                BundleCompat.getParcelableArrayList(
-                    savedInstanceState,
-                    KEY_FILTER_CATEGORIES,
-                    FilterCategory::class.java,
-                )
-            saved?.let { restoredCategories ->
-                filterCategories = restoredCategories
-                showData(restoredCategories)
-            }
-        } else {
-            loadCategoryData()
-        }
-    }
-
-    private fun saveState(outState: Bundle) {
-        val categories = filterCategories?.let(::ArrayList) ?: return
-        outState.putParcelableArrayList(KEY_FILTER_CATEGORIES, categories)
-    }
 }
+

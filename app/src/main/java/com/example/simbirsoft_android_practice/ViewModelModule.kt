@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.simbirsoft_android_practice.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.news.NewsViewModel
 import dagger.Binds
@@ -23,5 +24,10 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsViewModel::class)
     fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FilterViewModel::class)
+    fun bindFilterViewModel(viewModel: FilterViewModel): ViewModel
 }
 

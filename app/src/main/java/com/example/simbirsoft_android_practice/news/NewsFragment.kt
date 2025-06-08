@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -69,14 +68,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun observeNews() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Первый collect — при изменении списка новостей
                 launch {
                     newsViewModel.newsItems.collect { newsItems ->
                         showData(newsItems)
                         mainViewModel.updateBadge(newsItems)
                     }
                 }
-                // Второй collect — при изменении прочитанных новостей
                 launch {
                     mainViewModel.readNewsIds.collect {
                         mainViewModel.updateBadge(newsViewModel.newsItems.value)
@@ -89,14 +86,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun observeLoading() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    newsViewModel.loading.collect { isLoading ->
-                        binding.progressBarNews.isVisible = isLoading
-                        if (isLoading) {
-                            binding.recyclerViewItemNews.isVisible = false
-                            binding.textViewNoNews.isVisible = false
-                        }
-                    }
+                newsViewModel.loading.collect { isLoading ->
+                    binding.progressBarNews.isVisible = isLoading
+                    binding.recyclerViewItemNews.isVisible = !isLoading
                 }
             }
         }

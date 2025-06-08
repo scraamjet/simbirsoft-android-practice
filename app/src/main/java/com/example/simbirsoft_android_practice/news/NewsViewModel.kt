@@ -8,11 +8,11 @@ import com.example.simbirsoft_android_practice.model.NewsItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,32 +29,37 @@ class NewsViewModel @Inject constructor(
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
     private val _error = MutableSharedFlow<String>()
-    val error: SharedFlow<String> = _error.asSharedFlow()
 
     init {
-        loadNews()
+        observeSelectedCategories()
     }
 
-    private fun loadNews() {
+    private fun observeSelectedCategories() {
         viewModelScope.launch {
-            _loading.value = true
-
-            val selectedCategories = filterPreferences.getSelectedCategories()
-
-            eventRepository.getEvents(null)
-                .flowOn(Dispatchers.IO)
-                .catch { e ->
-                    _error.emit(e.localizedMessage ?: "Unknown error")
-                    _loading.value = false
-                }
-                .collect { events ->
-                    val filteredNews = events
-                        .filter { event -> event.categoryIds.any { it in selectedCategories } }
-                        .map(NewsMapper::eventToNewsItem)
-
-                    _newsItems.value = filteredNews
-                    _loading.value = false
+            filterPreferences.selectedCategories
+                .distinctUntilChanged()
+                .collectLatest { selectedCategories ->
+                    loadNews(selectedCategories)
                 }
         }
+    }
+
+    private suspend fun loadNews(selectedCategories: Set<Int>) {
+        _loading.value = true
+
+        eventRepository.getEvents(null)
+            .flowOn(Dispatchers.IO)
+            .catch { e ->
+                _error.emit(e.localizedMessage ?: "Unknown error")
+                _loading.value = false
+            }
+            .collect { events ->
+                val filteredNews = events
+                    .filter { event -> event.categoryIds.any { it in selectedCategories } }
+                    .map(NewsMapper::eventToNewsItem)
+
+                _newsItems.value = filteredNews
+                _loading.value = false
+            }
     }
 }

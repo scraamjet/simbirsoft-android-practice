@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,6 +20,9 @@ import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.news.NewsServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -63,7 +65,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         setupNavigation()
@@ -122,14 +123,20 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val service = newsService ?: return
 
         lifecycleScope.launch(coroutineExceptionHandler) {
-            service.loadNews()
-                .collect { loadedNews ->
-                    val selectedCategories = mainViewModel.getSelectedCategories()
-                    val filteredNewsItems = loadedNews
-                        .filter { news -> news.categoryIds.any { categoryId -> categoryId in selectedCategories } }
-                        .map(NewsMapper::eventToNewsItem)
+            mainViewModel.selectedCategories
+                .distinctUntilChanged()
+                .collectLatest { selectedCategories ->
+                    service.loadNews()
+                        .catch { e ->
+                            Log.e(TAG_MAIN_ACTIVITY, "News loading error: ${e.localizedMessage}", e)
+                        }
+                        .collect { loadedNews ->
+                            val filteredNewsItems = loadedNews
+                                .filter { news -> news.categoryIds.any { category -> category in selectedCategories } }
+                                .map(NewsMapper::eventToNewsItem)
 
-                    mainViewModel.updateBadge(filteredNewsItems)
+                            mainViewModel.updateBadge(filteredNewsItems)
+                        }
                 }
         }
     }
@@ -153,4 +160,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }
+
 
