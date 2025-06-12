@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import kotlin.random.Random
 
+private const val ORGANIZATIONS_LIST_SIZE = 5
+private const val EVENT_ID_MIN = 1
+private const val EVENT_ID_MAX = 100
+
 class OrganizationListViewModel @Inject constructor() : ViewModel() {
 
     private val _organizations = MutableStateFlow<List<SearchEvent>>(emptyList())
@@ -23,9 +27,9 @@ class OrganizationListViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun generateOrganizationList(): List<SearchEvent> {
-        return List(5) {
+        return List(ORGANIZATIONS_LIST_SIZE) {
             SearchEvent(
-                Random.nextInt(1, 100),
+                Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
                 generateRandomString(),
             )
         }

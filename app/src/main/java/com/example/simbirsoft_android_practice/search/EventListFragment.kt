@@ -90,14 +90,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    private fun handleFetchedEvents(events: List<SearchEvent>) {
-        when {
-            events.isEmpty() -> showNoResults()
-            else -> showResults(events)
-        }
-    }
-
-
     private fun showSearchStub() {
         binding.apply {
             progressBarSearch.isVisible = false

@@ -151,12 +151,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    fun hideBottomNavigation() {
+    private fun hideBottomNavigation() {
         binding.bottomNavigationView.clearAnimation()
         binding.bottomNavigationView.visibility = View.GONE
     }
 
-    fun showBottomNavigation() {
+    private fun showBottomNavigation() {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }

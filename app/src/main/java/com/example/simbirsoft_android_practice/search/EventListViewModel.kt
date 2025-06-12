@@ -27,7 +27,7 @@ class EventListViewModel @Inject constructor(
     private val _filteredEvents = MutableStateFlow<List<SearchEvent>>(emptyList())
     val filteredEvents: StateFlow<List<SearchEvent>> = _filteredEvents.asStateFlow()
 
-    private val _uiState = MutableStateFlow(UiState.BlankQuery)
+    private val _uiState = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -35,27 +35,23 @@ class EventListViewModel @Inject constructor(
         viewModelScope.launch {
             debouncedSearchFlow
                 .flatMapLatest { query ->
-                    if (query.isBlank()) {
-                        _uiState.value = UiState.BlankQuery
-                        _filteredEvents.value = emptyList()
-                        return@flatMapLatest emptyFlow()
-                    }
-
-                    _uiState.value = UiState.Loading
-
                     eventRepository.getEvents(null)
                         .map { list -> list.map(SearchMapper::toSearchEvent) }
                         .map { events ->
                             events.filter { it.title.contains(query, ignoreCase = true) }
+                        }
+                        .map { filteredList ->
+                            Pair(filteredList, query)
                         }
                 }
                 .catch {
                     _uiState.value = UiState.Error
                     _filteredEvents.value = emptyList()
                 }
-                .collect { events ->
+                .collect { (events, currentQuery) ->
                     _filteredEvents.value = events
                     _uiState.value = when {
+                        currentQuery.isBlank() -> UiState.BlankQuery
                         events.isEmpty() -> UiState.Empty
                         else -> UiState.Success
                     }
@@ -63,7 +59,6 @@ class EventListViewModel @Inject constructor(
         }
     }
 }
-
 
 
 
