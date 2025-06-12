@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.filter.FilterPreferences
+import com.example.simbirsoft_android_practice.filter.FilterPreferenceDataStore
 import com.example.simbirsoft_android_practice.model.NewsItem
 import com.example.simbirsoft_android_practice.news.NewsMapper
 import com.example.simbirsoft_android_practice.news.NewsPreferences
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    filterPreferences: FilterPreferences,
+    filterPreferenceDataStore: FilterPreferenceDataStore,
     private val newsPreferences: NewsPreferences
 ) : ViewModel() {
 
@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
     private val _badgeFlow = MutableStateFlow(0)
     val badgeFlow: StateFlow<Int> = _badgeFlow.asStateFlow()
 
-    private val selectedCategories: Flow<Set<Int>> = filterPreferences.selectedCategories
+    private val selectedCategories: Flow<Set<Int>> = filterPreferenceDataStore.selectedCategories
 
     private var serviceJob: Job? = null
 

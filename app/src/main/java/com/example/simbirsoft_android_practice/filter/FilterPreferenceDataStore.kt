@@ -12,7 +12,7 @@ import javax.inject.Inject
 private const val PREFS_NAME = "filter_prefs.preferences_pb"
 private const val KEY_SELECTED_CATEGORIES = "selected_categories"
 
-class FilterPreferences @Inject constructor(
+class FilterPreferenceDataStore @Inject constructor(
     context: Context
 ) {
 

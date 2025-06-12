@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class FilterViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
-    private val filterPreferences: FilterPreferences
+    private val filterPreferenceDataStore: FilterPreferenceDataStore
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<FilterCategory>>(emptyList())
@@ -31,7 +31,7 @@ class FilterViewModel @Inject constructor(
             _loading.value = true
             combine(
                 categoryRepository.getCategories(),
-                filterPreferences.selectedCategories
+                filterPreferenceDataStore.selectedCategories
             ) { categories, selectedIds ->
                 categories.map { category ->
                     CategoryMapper.toFilterCategory(category, selectedIds)
@@ -45,7 +45,7 @@ class FilterViewModel @Inject constructor(
 
     fun saveSelected(ids: Set<Int>) {
         viewModelScope.launch {
-            filterPreferences.saveSelectedCategories(ids)
+            filterPreferenceDataStore.saveSelectedCategories(ids)
         }
     }
 }

@@ -23,7 +23,7 @@ import javax.inject.Singleton
         NetworkModule::class,
         GsonModule::class,
         DatabaseModule::class,
-        PreferencesModule::class,
+        DataStoreModule::class,
         ViewModelModule::class,
         AppModule::class,
     ],
