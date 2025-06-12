@@ -7,8 +7,12 @@ import android.view.View
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.CategoryRepository
@@ -24,35 +28,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
-private const val KEY_HELP_CATEGORIES = "key_help_categories"
-private const val TAG_HELP_FRAGMENT = "HelpFragment"
 
 class HelpFragment : Fragment(R.layout.fragment_help) {
     private val binding by viewBinding(FragmentHelpBinding::bind)
 
     @Inject
-    lateinit var categoryRepository: CategoryRepository
+    lateinit var viewModelFactory: MultiViewModelFactory
+
+    private val helpViewModel by viewModels<HelpViewModel> { viewModelFactory }
 
     private val adapter by lazy { HelpAdapter() }
-    private var categoriesItems: List<HelpCategory>? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        restoreState(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveState(outState)
+        observeData()
     }
 
     private fun initRecyclerView() {
@@ -68,61 +63,22 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         }
     }
 
-    private fun loadCategoryData() {
-        showLoading()
-
+    private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            categoryRepository.getCategories()
-                .flowOn(Dispatchers.IO)
-                .map { list -> list.map(CategoryMapper::toHelpCategory) }
-                .catch { throwable ->
-                    Log.w(
-                        TAG_HELP_FRAGMENT,
-                        "Flow exception: ${throwable.localizedMessage}",
-                        throwable,
-                    )
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    helpViewModel.loading.collect { isLoading ->
+                        binding.progressBarHelp.isVisible = isLoading
+                        binding.recyclerViewHelpItem.isVisible = !isLoading
+                    }
                 }
-                .collect { categories ->
-                    showData(categories)
-                }
-        }
-    }
-
-    private fun showLoading() {
-        binding.progressBarHelp.isVisible = true
-        binding.recyclerViewHelpItem.isVisible = false
-    }
-
-    private fun showData(helpCategories: List<HelpCategory>?) {
-        binding.apply {
-            progressBarHelp.isVisible = false
-            recyclerViewHelpItem.isVisible = true
-        }
-        categoriesItems = helpCategories
-        adapter.submitList(helpCategories)
-    }
-
-    private fun restoreState(savedInstanceState: Bundle?) {
-        if (savedInstanceState?.containsKey(KEY_HELP_CATEGORIES) == true) {
-            savedInstanceState.let { bundle ->
-                val savedCategories =
-                    BundleCompat.getParcelableArrayList(
-                        bundle,
-                        KEY_HELP_CATEGORIES,
-                        HelpCategory::class.java,
-                    )
-                savedCategories?.let { restoredCategories ->
-                    categoriesItems = restoredCategories
-                    showData(restoredCategories)
+                launch {
+                    helpViewModel.categories.collect { categories ->
+                        adapter.submitList(categories)
+                    }
                 }
             }
-        } else {
-            loadCategoryData()
         }
     }
-
-    private fun saveState(outState: Bundle) {
-        val categories = categoriesItems?.let(::ArrayList) ?: return
-        outState.putParcelableArrayList(KEY_HELP_CATEGORIES, categories)
-    }
 }
+

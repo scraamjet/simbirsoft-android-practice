@@ -7,7 +7,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,31 +21,29 @@ import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBin
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
-
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
+
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
-    lateinit var eventRepository: EventRepository
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<EventListViewModel> { viewModelFactory }
 
-    private val eventAdapter = EventAdapter()
+    private val adapter = EventAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
     }
@@ -51,59 +51,52 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private fun initRecyclerView() {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = eventAdapter
-            val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            adapter = this@EventListFragment.adapter
             ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)
                 ?.let { drawable ->
-                    divider.setDrawable(drawable)
+                    addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            DividerItemDecoration.VERTICAL
+                        ).apply {
+                            setDrawable(drawable)
+                        }
+                    )
                 }
-            addItemDecoration(divider)
         }
     }
 
-    fun refreshData() {
+    fun refreshData(debouncedFlow: Flow<String>) {
+        viewModel.observeSearchQuery(debouncedFlow)
+
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                showLoading()
-
-                eventRepository.getEvents(null)
-                    .flowOn(Dispatchers.IO)
-                    .map { list -> list.map(SearchMapper::toSearchEvent) }
-                    .catch { throwable ->
-                        Log.e(
-                            TAG_EVENT_LIST_FRAGMENT,
-                            "Flow exception: ${throwable.localizedMessage}",
-                            throwable,
-                        )
-                        showSearchStub()
-                        eventAdapter.submitList(emptyList())
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            UiState.Loading -> showLoading()
+                            UiState.BlankQuery, UiState.Error -> showSearchStub() // объединили
+                            UiState.Empty -> showNoResults()
+                            UiState.Success -> showResults(viewModel.filteredEvents.value)
+                        }
                     }
-                    .collect { events ->
-                        val searchQuery =
-                            (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                        handleFetchedEvents(events, searchQuery)
+                }
+                launch {
+                    viewModel.filteredEvents.collect { events ->
+                        adapter.submitList(events)
                     }
+                }
             }
         }
     }
 
-    private fun handleFetchedEvents(
-        fetchedEvents: List<SearchEvent>,
-        searchQuery: String,
-    ) {
-        val filteredEvents =
-            fetchedEvents.filter { event ->
-                event.title.contains(searchQuery, ignoreCase = true)
-            }
-
+    private fun handleFetchedEvents(events: List<SearchEvent>) {
         when {
-            searchQuery.isBlank() -> showSearchStub()
-            filteredEvents.isEmpty() -> showNoResults()
-            else -> showResults(filteredEvents)
+            events.isEmpty() -> showNoResults()
+            else -> showResults(events)
         }
-
-        eventAdapter.submitList(filteredEvents)
     }
+
 
     private fun showSearchStub() {
         binding.apply {
@@ -135,12 +128,11 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text =
-                resources.getQuantityString(
-                    R.plurals.search_results_count,
-                    events.size,
-                    events.size,
-                )
+            textViewEventCount.text = resources.getQuantityString(
+                R.plurals.search_results_count,
+                events.size,
+                events.size
+            )
         }
     }
 
@@ -159,3 +151,4 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         fun newInstance() = EventListFragment()
     }
 }
+

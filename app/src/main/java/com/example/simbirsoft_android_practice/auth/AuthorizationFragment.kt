@@ -1,6 +1,7 @@
 package com.example.simbirsoft_android_practice.auth
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -10,25 +11,34 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val DRAWABLE_END_INDEX = 2
 
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
-    private val viewModel: AuthorizationViewModel by viewModels()
 
-    private var isPasswordVisible = false
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,
@@ -38,6 +48,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         initClickListeners()
         observeInputFields()
+        observePasswordVisibility()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,7 +69,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                 val rightDrawableX =
                     binding.editTextAuthorizationPassword.right - drawable.bounds.width()
                 if (event.rawX >= rightDrawableX) {
-                    togglePasswordVisibility()
+                    viewModel.togglePasswordVisibility()
                     return@setOnTouchListener true
                 }
             }
@@ -92,31 +103,28 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
     }
 
-    private fun togglePasswordVisibility() {
-        val passwordField = binding.editTextAuthorizationPassword
+    private fun observePasswordVisibility() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isPasswordVisible.collectLatest { isVisible ->
+                    val passwordField = binding.editTextAuthorizationPassword
+                    passwordField.transformationMethod = if (isVisible) {
+                        HideReturnsTransformationMethod.getInstance()
+                    } else {
+                        PasswordTransformationMethod.getInstance()
+                    }
 
-        isPasswordVisible = !isPasswordVisible
-
-        passwordField.transformationMethod =
-            if (isPasswordVisible) {
-                HideReturnsTransformationMethod.getInstance()
-            } else {
-                PasswordTransformationMethod.getInstance()
+                    passwordField.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null,
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            if (isVisible) R.drawable.ic_hide_password else R.drawable.ic_open_password
+                        ),
+                        null
+                    )
+                }
             }
-
-        passwordField.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(
-                requireContext(),
-                if (isPasswordVisible) {
-                    R.drawable.ic_hide_password
-                } else {
-                    R.drawable.ic_open_password
-                },
-            ),
-            null,
-        )
+        }
     }
 }
 

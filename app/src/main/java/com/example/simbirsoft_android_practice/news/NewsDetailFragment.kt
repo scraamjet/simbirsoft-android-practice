@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.EventRepository
@@ -24,52 +28,36 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
-
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
 
     @Inject
-    lateinit var eventRepository: EventRepository
+    lateinit var viewModelFactory: MultiViewModelFactory
 
     private val args: NewsDetailFragmentArgs by navArgs()
+    private val viewModel by viewModels<NewsDetailViewModel> { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        loadNewsDetail()
         initClickListeners()
+        observeNews()
+        viewModel.loadNewsDetail(args.newsId)
     }
 
-    private fun loadNewsDetail() {
-        val selectedNewsId = args.newsId
-
+    private fun observeNews() {
         viewLifecycleOwner.lifecycleScope.launch {
-            eventRepository.getEvents(null)
-                .flowOn(Dispatchers.IO)
-                .map { newsList ->
-                    newsList.find { newsItem -> newsItem.id == selectedNewsId }
-                        ?.let(NewsMapper::eventToNewsDetail)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.newsDetail.collect { news ->
+                        news?.let { bindNewsDetails(it) }
+                    }
                 }
-                .filterNotNull()
-                .catch { throwable ->
-                    Log.e(
-                        TAG_NEWS_DETAIL_FRAGMENT,
-                        "Flow exception: ${throwable.localizedMessage}",
-                        throwable,
-                    )
-                }
-                .collect { newsDetail ->
-                    bindNewsDetails(newsDetail)
-                }
+            }
         }
     }
 
@@ -83,12 +71,12 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             textViewNewsDetailAddress.text = news.ownerAddress
             textViewNewsDetailContacts.text = news.ownerContacts
             textViewNewsDetailDescription.text = news.fullDescription
+
             listOf(
                 imageViewNewsDetailMainImage,
                 imageViewNewsDetailPrimaryImage,
                 imageViewNewsDetailSecondaryImage,
-            )
-                .zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
+            ).zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
         }
     }
 
@@ -98,3 +86,4 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         }
     }
 }
+

@@ -34,7 +34,9 @@ class MainViewModel @Inject constructor(
                 val updated = current + newsId
                 newsPreferences.markNewsAsReadAndSelected(newsId)
                 updated
-            } else current
+            } else {
+                current
+            }
         }
     }
 
