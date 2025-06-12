@@ -49,7 +49,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         initRecyclerView()
         initClickListeners()
         observeNews()
-        observeLoading()
     }
 
     private fun initRecyclerView() {
@@ -69,37 +68,55 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    newsViewModel.newsItems.collect { newsItems ->
-                        showData(newsItems)
-                        mainViewModel.updateBadge(newsItems)
+                    newsViewModel.uiState.collect { state ->
+                        when (state) {
+                            is NewsUiState.Loading -> showLoading()
+                            is NewsUiState.Results -> showResults(state.news)
+                            is NewsUiState.NoResults -> showNoResults()
+                            is NewsUiState.Error -> showError()
+                        }
                     }
                 }
-                launch {
-                    mainViewModel.readNewsIds.collect {
-                        mainViewModel.updateBadge(newsViewModel.newsItems.value)
-                    }
-                }
+
             }
         }
     }
 
-    private fun observeLoading() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsViewModel.loading.collect { isLoading ->
-                    binding.progressBarNews.isVisible = isLoading
-                    binding.recyclerViewItemNews.isVisible = !isLoading
-                }
-            }
-        }
+    private fun showLoading() {
+        binding.progressBarNews.isVisible = true
+        binding.recyclerViewItemNews.isVisible = false
+        binding.textViewNoNews.isVisible = false
     }
 
-    private fun showData(newsList: List<NewsItem>) {
-        binding.textViewNoNews.isVisible = newsList.isEmpty()
-        binding.recyclerViewItemNews.isVisible = newsList.isNotEmpty()
+    private fun showResults(newsList: List<NewsItem>) {
+        binding.progressBarNews.isVisible = false
+        binding.recyclerViewItemNews.isVisible = true
+        binding.textViewNoNews.isVisible = false
+
         newsAdapter.submitList(newsList)
-        updateScrollFlags(newsList.isEmpty())
+        updateScrollFlags(isListEmpty = false)
+
+        mainViewModel.updateBadge(newsList)
     }
+
+    private fun showNoResults() {
+        binding.progressBarNews.isVisible = false
+        binding.recyclerViewItemNews.isVisible = false
+        binding.textViewNoNews.isVisible = true
+
+        updateScrollFlags(isListEmpty = true)
+        mainViewModel.updateBadge(emptyList())
+    }
+
+    private fun showError() {
+        binding.progressBarNews.isVisible = false
+        binding.recyclerViewItemNews.isVisible = false
+        binding.textViewNoNews.isVisible = true
+
+        updateScrollFlags(isListEmpty = true)
+        mainViewModel.updateBadge(emptyList())
+    }
+
 
     private fun onNewsItemSelected(newsId: Int) {
         mainViewModel.updateReadNews(newsId)

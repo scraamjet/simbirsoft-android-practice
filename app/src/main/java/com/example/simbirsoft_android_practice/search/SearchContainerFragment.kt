@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -29,7 +30,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
-    private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
@@ -101,11 +102,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             val keypadHeight = screenHeight - rect.bottom
             val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-            if (isKeyboardVisible) {
-                mainViewModel.hideBottomNavigation()
-            } else {
-                mainViewModel.showBottomNavigation()
-            }
+            mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
         }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }

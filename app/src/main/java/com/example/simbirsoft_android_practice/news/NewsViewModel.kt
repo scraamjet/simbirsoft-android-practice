@@ -22,13 +22,8 @@ class NewsViewModel @Inject constructor(
     private val filterPreferences: FilterPreferences
 ) : ViewModel() {
 
-    private val _newsItems = MutableStateFlow<List<NewsItem>>(emptyList())
-    val newsItems: StateFlow<List<NewsItem>> = _newsItems.asStateFlow()
-
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading.asStateFlow()
-
-    private val _error = MutableSharedFlow<String>()
+    private val _uiState = MutableStateFlow<NewsUiState>(NewsUiState.Loading)
+    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
 
     init {
         observeSelectedCategories()
@@ -45,21 +40,23 @@ class NewsViewModel @Inject constructor(
     }
 
     private suspend fun loadNews(selectedCategories: Set<Int>) {
-        _loading.value = true
+        _uiState.value = NewsUiState.Loading
 
         eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
             .catch { e ->
-                _error.emit(e.localizedMessage ?: "Unknown error")
-                _loading.value = false
+                _uiState.value = NewsUiState.Error(e.localizedMessage ?: "Unknown error")
             }
             .collect { events ->
                 val filteredNews = events
                     .filter { event -> event.categoryIds.any { it in selectedCategories } }
                     .map(NewsMapper::eventToNewsItem)
 
-                _newsItems.value = filteredNews
-                _loading.value = false
+                _uiState.value = if (filteredNews.isEmpty()) {
+                    NewsUiState.NoResults
+                } else {
+                    NewsUiState.Results(filteredNews)
+                }
             }
     }
 }

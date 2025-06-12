@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -46,17 +48,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, throwable ->
-            Log.e(TAG_MAIN_ACTIVITY, "Flow exception: ${throwable.localizedMessage}", throwable)
-        }
-
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { service ->
                 newsService = service
                 isServiceConnected = true
-                loadAndUpdateBadge()
+                mainViewModel.startNewsUpdates(service)
             },
             onServiceDisconnected = {
                 isServiceConnected = false
@@ -88,15 +85,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun observeBottomNavigationVisibility() {
         lifecycleScope.launch {
-            mainViewModel.bottomNavigationVisible.collect { visible ->
-                if (visible) {
-                    showBottomNavigation()
-                } else {
-                    hideBottomNavigation()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.bottomNavigationVisible.collect { visible ->
+                    if (visible) showBottomNavigation() else hideBottomNavigation()
                 }
             }
         }
     }
+
 
     private fun observeBadgeCount() {
         lifecycleScope.launch {
@@ -116,28 +112,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-        }
-    }
-
-    private fun loadAndUpdateBadge() {
-        val service = newsService ?: return
-
-        lifecycleScope.launch(coroutineExceptionHandler) {
-            mainViewModel.selectedCategories
-                .distinctUntilChanged()
-                .collectLatest { selectedCategories ->
-                    service.loadNews()
-                        .catch { e ->
-                            Log.e(TAG_MAIN_ACTIVITY, "News loading error: ${e.localizedMessage}", e)
-                        }
-                        .collect { loadedNews ->
-                            val filteredNewsItems = loadedNews
-                                .filter { news -> news.categoryIds.any { category -> category in selectedCategories } }
-                                .map(NewsMapper::eventToNewsItem)
-
-                            mainViewModel.updateBadge(filteredNewsItems)
-                        }
-                }
         }
     }
 

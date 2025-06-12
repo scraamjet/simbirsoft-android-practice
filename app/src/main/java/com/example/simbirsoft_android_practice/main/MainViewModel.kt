@@ -1,14 +1,23 @@
 package com.example.simbirsoft_android_practice.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.news.NewsMapper
 import com.example.simbirsoft_android_practice.news.NewsPreferences
+import com.example.simbirsoft_android_practice.news.NewsService
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -21,12 +30,34 @@ class MainViewModel @Inject constructor(
 
     private val _readNewsIds =
         MutableStateFlow(newsPreferences.getReadNewsIds())
-    val readNewsIds: StateFlow<Set<Int>> = _readNewsIds.asStateFlow()
 
     private val _badgeFlow = MutableStateFlow(0)
     val badgeFlow: StateFlow<Int> = _badgeFlow.asStateFlow()
 
-    val selectedCategories: Flow<Set<Int>> = filterPreferences.selectedCategories
+    private val selectedCategories: Flow<Set<Int>> = filterPreferences.selectedCategories
+
+    private var serviceJob: Job? = null
+
+    fun startNewsUpdates(service: NewsService) {
+        serviceJob?.cancel()
+        serviceJob = viewModelScope.launch {
+            selectedCategories
+                .distinctUntilChanged()
+                .collectLatest { selected ->
+                    service.loadNews()
+                        .catch { e ->
+                            Log.e("MainViewModel", "News loading error: ${e.localizedMessage}", e)
+                        }
+                        .collect { events ->
+                            val filtered = events
+                                .filter { it.categoryIds.any { id -> id in selected } }
+                                .map(NewsMapper::eventToNewsItem)
+
+                            updateBadge(filtered)
+                        }
+                }
+        }
+    }
 
     fun updateReadNews(newsId: Int) {
         _readNewsIds.update { current ->
@@ -43,6 +74,10 @@ class MainViewModel @Inject constructor(
     fun updateBadge(newsItems: List<NewsItem>) {
         val unreadCount = newsItems.count { newsItem -> newsItem.id !in _readNewsIds.value }
         _badgeFlow.value = unreadCount
+    }
+
+    fun setBottomNavigationVisible(visible: Boolean) {
+        _bottomNavVisible.value = visible
     }
 
     fun showBottomNavigation() {
