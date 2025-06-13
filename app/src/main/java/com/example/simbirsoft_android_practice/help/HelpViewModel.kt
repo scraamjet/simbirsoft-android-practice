@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "HelpViewModel"
+
 class HelpViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
@@ -35,13 +37,17 @@ class HelpViewModel @Inject constructor(
             _loading.value = true
             categoryRepository.getCategories()
                 .flowOn(Dispatchers.IO)
-                .map { list -> list.map(CategoryMapper::toHelpCategory) }
-                .catch { e ->
-                    Log.e("HelpViewModel", "Error loading categories: ${e.localizedMessage}", e)
+                .map { categoryList -> categoryList.map(CategoryMapper::toHelpCategory) }
+                .catch { exception ->
                     _categories.value = emptyList()
+                    Log.e(
+                        TAG,
+                        "Help categories loading exception: ${exception.localizedMessage}",
+                        exception
+                    )
                 }
-                .collect {
-                    _categories.value = it
+                .collect { helpCategories ->
+                    _categories.value = helpCategories
                     _loading.value = false
                 }
         }

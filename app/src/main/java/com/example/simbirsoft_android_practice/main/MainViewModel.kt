@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "MainViewModel"
+
 class MainViewModel @Inject constructor(
     filterPreferenceDataStore: FilterPreferenceDataStore,
     private val newsPreferences: NewsPreferences
@@ -45,8 +47,12 @@ class MainViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .collectLatest { selected ->
                     service.loadNews()
-                        .catch { e ->
-                            Log.e("MainViewModel", "News loading error: ${e.localizedMessage}", e)
+                        .catch { exception ->
+                            Log.e(
+                                TAG,
+                                "News Service loading exception: ${exception.localizedMessage}",
+                                exception
+                            )
                         }
                         .collect { events ->
                             val filtered = events
@@ -78,14 +84,6 @@ class MainViewModel @Inject constructor(
 
     fun setBottomNavigationVisible(visible: Boolean) {
         _bottomNavVisible.value = visible
-    }
-
-    fun showBottomNavigation() {
-        _bottomNavVisible.value = true
-    }
-
-    fun hideBottomNavigation() {
-        _bottomNavVisible.value = false
     }
 }
 

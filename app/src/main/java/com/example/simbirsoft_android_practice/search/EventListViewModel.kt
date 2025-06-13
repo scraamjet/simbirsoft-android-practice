@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.EventRepository
@@ -10,15 +11,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "EventListViewModel"
 
 class EventListViewModel @Inject constructor(
     private val eventRepository: EventRepository,
@@ -38,15 +36,25 @@ class EventListViewModel @Inject constructor(
                     eventRepository.getEvents(null)
                         .map { list -> list.map(SearchMapper::toSearchEvent) }
                         .map { events ->
-                            events.filter { it.title.contains(query, ignoreCase = true) }
+                            events.filter { event ->
+                                event.title.contains(
+                                    query,
+                                    ignoreCase = true
+                                )
+                            }
                         }
                         .map { filteredList ->
                             Pair(filteredList, query)
                         }
                 }
-                .catch {
+                .catch { exception ->
                     _uiState.value = UiState.Error
                     _filteredEvents.value = emptyList()
+                    Log.e(
+                        TAG,
+                        "Search events loading exception: ${exception.localizedMessage}",
+                        exception
+                    )
                 }
                 .collect { (events, currentQuery) ->
                     _filteredEvents.value = events

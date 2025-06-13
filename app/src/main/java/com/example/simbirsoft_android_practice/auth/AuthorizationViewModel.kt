@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,4 +39,3 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
         _isPasswordVisible.value = !_isPasswordVisible.value
     }
 }
-

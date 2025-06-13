@@ -28,8 +28,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG_MAIN_ACTIVITY = "MainActivity"
-
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val binding by viewBinding(ActivityMainBinding::bind)
 
@@ -76,9 +74,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
-                    -> mainViewModel.hideBottomNavigation()
+                    -> mainViewModel.setBottomNavigationVisible(visible = false)
 
-                else -> mainViewModel.showBottomNavigation()
+                else -> mainViewModel.setBottomNavigationVisible(visible = true)
             }
         }
     }
@@ -87,7 +85,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.bottomNavigationVisible.collect { visible ->
-                    if (visible) showBottomNavigation() else hideBottomNavigation()
+                    if (visible) {
+                        showBottomNavigation()
+                    } else {
+                        hideBottomNavigation()
+                    }
                 }
             }
         }

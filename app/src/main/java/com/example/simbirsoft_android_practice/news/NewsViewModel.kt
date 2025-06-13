@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.EventRepository
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "NewsViewModel"
 
 class NewsViewModel @Inject constructor(
     private val eventRepository: EventRepository,
@@ -42,12 +45,13 @@ class NewsViewModel @Inject constructor(
 
         eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
-            .catch { e ->
-                _uiState.value = NewsUiState.Error(e.localizedMessage ?: "Unknown error")
+            .catch { exception ->
+                _uiState.value = NewsUiState.Error(exception.localizedMessage ?: "Unknown error")
+                Log.e(TAG, "News loading exception: ${exception.localizedMessage}", exception)
             }
             .collect { events ->
                 val filteredNews = events
-                    .filter { event -> event.categoryIds.any { it in selectedCategories } }
+                    .filter { event -> event.categoryIds.any { categoryId -> categoryId in selectedCategories } }
                     .map(NewsMapper::eventToNewsItem)
 
                 _uiState.value = if (filteredNews.isEmpty()) {

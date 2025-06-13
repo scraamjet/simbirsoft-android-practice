@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "NewsDetailViewModel"
+
 class NewsDetailViewModel @Inject constructor(
     private val eventRepository: EventRepository
 ) : ViewModel() {
@@ -28,14 +30,18 @@ class NewsDetailViewModel @Inject constructor(
             eventRepository.getEvents(null)
                 .flowOn(Dispatchers.IO)
                 .map { list ->
-                    list.find { it.id == newsId }?.let(NewsMapper::eventToNewsDetail)
+                    list.find { event -> event.id == newsId }?.let(NewsMapper::eventToNewsDetail)
                 }
                 .filterNotNull()
-                .catch { e ->
-                    Log.e("NewsDetailViewModel", "Error: ${e.localizedMessage}", e)
+                .catch { exception ->
+                    Log.e(
+                        TAG,
+                        "News detail loading exception: ${exception.localizedMessage}",
+                        exception
+                    )
                 }
-                .collect {
-                    _newsDetail.value = it
+                .collect { newsDetail ->
+                    _newsDetail.value = newsDetail
                 }
         }
     }

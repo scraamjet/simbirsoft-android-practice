@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.filter
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.CategoryRepository
@@ -7,9 +8,12 @@ import com.example.simbirsoft_android_practice.model.FilterCategory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "FilterViewModel"
 
 class FilterViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
@@ -36,10 +40,19 @@ class FilterViewModel @Inject constructor(
                 categories.map { category ->
                     CategoryMapper.toFilterCategory(category, selectedIds)
                 }
-            }.collect { result ->
-                _categories.value = result
-                _loading.value = false
             }
+                .catch { exception ->
+                    _categories.value = emptyList()
+                    Log.e(
+                        TAG,
+                        "Filter categories loading exception: ${exception.localizedMessage}",
+                        exception
+                    )
+                }
+                .collect { result ->
+                    _categories.value = result
+                    _loading.value = false
+                }
         }
     }
 

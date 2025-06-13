@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.simbirsoft_android_practice.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
