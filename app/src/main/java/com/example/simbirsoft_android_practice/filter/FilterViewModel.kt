@@ -23,42 +23,42 @@ class FilterViewModel @Inject constructor(
     private val _categories = MutableStateFlow<List<FilterCategory>>(emptyList())
     val categories: StateFlow<List<FilterCategory>> = _categories.asStateFlow()
 
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading.asStateFlow()
+        private val _loading = MutableStateFlow(false)
+        val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    init {
-        loadCategoriesWithSelection()
-    }
+        init {
+            loadCategoriesWithSelection()
+        }
 
-    private fun loadCategoriesWithSelection() {
-        viewModelScope.launch {
-            _loading.value = true
-            combine(
-                categoryRepository.getCategories(),
-                filterPreferenceDataStore.selectedCategories
-            ) { categories, selectedIds ->
-                categories.map { category ->
-                    CategoryMapper.toFilterCategory(category, selectedIds)
+        private fun loadCategoriesWithSelection() {
+            viewModelScope.launch {
+                _loading.value = true
+                combine(
+                    categoryRepository.getCategories(),
+                    filterPreferenceDataStore.selectedCategories,
+                ) { categories, selectedIds ->
+                    categories.map { category ->
+                        CategoryMapper.toFilterCategory(category, selectedIds)
+                    }
                 }
+                    .catch { exception ->
+                        _categories.value = emptyList()
+                        Log.e(
+                            TAG,
+                            "Filter categories loading exception: ${exception.localizedMessage}",
+                            exception,
+                        )
+                    }
+                    .collect { result ->
+                        _categories.value = result
+                        _loading.value = false
+                    }
             }
-                .catch { exception ->
-                    _categories.value = emptyList()
-                    Log.e(
-                        TAG,
-                        "Filter categories loading exception: ${exception.localizedMessage}",
-                        exception
-                    )
-                }
-                .collect { result ->
-                    _categories.value = result
-                    _loading.value = false
-                }
         }
-    }
 
-    fun saveSelected(ids: Set<Int>) {
-        viewModelScope.launch {
-            filterPreferenceDataStore.saveSelectedCategories(ids)
+        fun saveSelected(ids: Set<Int>) {
+            viewModelScope.launch {
+                filterPreferenceDataStore.saveSelectedCategories(ids)
+            }
         }
     }
-}

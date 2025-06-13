@@ -2,9 +2,7 @@ package com.example.simbirsoft_android_practice.help
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,15 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
-import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
-import com.example.simbirsoft_android_practice.filter.CategoryMapper
-import com.example.simbirsoft_android_practice.model.HelpCategory
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,7 +35,10 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeData()
@@ -81,4 +75,3 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         }
     }
 }
-

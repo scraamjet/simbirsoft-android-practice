@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.EventRepository
-import com.example.simbirsoft_android_practice.model.SearchEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,33 +24,31 @@ class EventListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<SearchUiState>(SearchUiState.Loading)
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeSearchQuery(debouncedSearchFlow: Flow<String>) {
-        viewModelScope.launch {
-            debouncedSearchFlow
-                .flatMapLatest { query ->
-                    eventRepository.getEvents(null)
-                        .map { list -> list.map(SearchMapper::toSearchEvent) }
-                        .map { events ->
-                            events.filter { it.title.contains(query, ignoreCase = true) }
-                        }
-                        .map { filteredList -> Pair(filteredList, query) }
-                }
-                .catch { exception ->
-                    _uiState.value =
-                        SearchUiState.Error(exception.localizedMessage ?: "Unknown error")
-                    Log.e(TAG, "Search events loading exception", exception)
-                }
-                .collect { (events, query) ->
-                    _uiState.value = when {
-                        query.isBlank() -> SearchUiState.BlankQuery
-                        events.isEmpty() -> SearchUiState.Empty
-                        else -> SearchUiState.Success(events)
+        @OptIn(ExperimentalCoroutinesApi::class)
+        fun observeSearchQuery(debouncedSearchFlow: Flow<String>) {
+            viewModelScope.launch {
+                debouncedSearchFlow
+                    .flatMapLatest { query ->
+                        eventRepository.getEvents(null)
+                            .map { list -> list.map(SearchMapper::toSearchEvent) }
+                            .map { events ->
+                                events.filter { it.title.contains(query, ignoreCase = true) }
+                            }
+                            .map { filteredList -> Pair(filteredList, query) }
                     }
-                }
+                    .catch { exception ->
+                        _uiState.value =
+                            SearchUiState.Error(exception.localizedMessage ?: "Unknown error")
+                        Log.e(TAG, "Search events loading exception", exception)
+                    }
+                    .collect { (events, query) ->
+                        _uiState.value =
+                            when {
+                                query.isBlank() -> SearchUiState.BlankQuery
+                                events.isEmpty() -> SearchUiState.Empty
+                                else -> SearchUiState.Success(events)
+                            }
+                    }
+            }
         }
     }
-}
-
-
-

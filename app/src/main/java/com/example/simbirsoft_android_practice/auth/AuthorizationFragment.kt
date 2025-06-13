@@ -107,23 +107,24 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isPasswordVisible.collectLatest { isVisible ->
                     val passwordField = binding.editTextAuthorizationPassword
-                    passwordField.transformationMethod = if (isVisible) {
-                        HideReturnsTransformationMethod.getInstance()
-                    } else {
-                        PasswordTransformationMethod.getInstance()
-                    }
+                    passwordField.transformationMethod =
+                        if (isVisible) {
+                            HideReturnsTransformationMethod.getInstance()
+                        } else {
+                            PasswordTransformationMethod.getInstance()
+                        }
 
                     passwordField.setCompoundDrawablesWithIntrinsicBounds(
-                        null, null,
+                        null,
+                        null,
                         ContextCompat.getDrawable(
                             requireContext(),
-                            if (isVisible) R.drawable.ic_hide_password else R.drawable.ic_open_password
+                            if (isVisible) R.drawable.ic_hide_password else R.drawable.ic_open_password,
                         ),
-                        null
+                        null,
                     )
                 }
             }
         }
     }
 }
-

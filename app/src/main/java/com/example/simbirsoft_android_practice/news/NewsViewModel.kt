@@ -26,39 +26,41 @@ class NewsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<NewsUiState>(NewsUiState.Loading)
     val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
 
-    init {
-        observeSelectedCategories()
-    }
+        init {
+            observeSelectedCategories()
+        }
 
-    private fun observeSelectedCategories() {
-        viewModelScope.launch {
-            filterPreferenceDataStore.selectedCategories
-                .distinctUntilChanged()
-                .collectLatest { selectedCategories ->
-                    loadNews(selectedCategories)
+        private fun observeSelectedCategories() {
+            viewModelScope.launch {
+                filterPreferenceDataStore.selectedCategories
+                    .distinctUntilChanged()
+                    .collectLatest { selectedCategories ->
+                        loadNews(selectedCategories)
+                    }
+            }
+        }
+
+        private suspend fun loadNews(selectedCategories: Set<Int>) {
+            _uiState.value = NewsUiState.Loading
+
+            eventRepository.getEvents(null)
+                .flowOn(Dispatchers.IO)
+                .catch { exception ->
+                    _uiState.value = NewsUiState.Error(exception.localizedMessage ?: "Unknown error")
+                    Log.e(TAG, "News loading exception: ${exception.localizedMessage}", exception)
+                }
+                .collect { events ->
+                    val filteredNews =
+                        events
+                            .filter { event -> event.categoryIds.any { categoryId -> categoryId in selectedCategories } }
+                            .map(NewsMapper::eventToNewsItem)
+
+                    _uiState.value =
+                        if (filteredNews.isEmpty()) {
+                            NewsUiState.NoResults
+                        } else {
+                            NewsUiState.Results(filteredNews)
+                        }
                 }
         }
     }
-
-    private suspend fun loadNews(selectedCategories: Set<Int>) {
-        _uiState.value = NewsUiState.Loading
-
-        eventRepository.getEvents(null)
-            .flowOn(Dispatchers.IO)
-            .catch { exception ->
-                _uiState.value = NewsUiState.Error(exception.localizedMessage ?: "Unknown error")
-                Log.e(TAG, "News loading exception: ${exception.localizedMessage}", exception)
-            }
-            .collect { events ->
-                val filteredNews = events
-                    .filter { event -> event.categoryIds.any { categoryId -> categoryId in selectedCategories } }
-                    .map(NewsMapper::eventToNewsItem)
-
-                _uiState.value = if (filteredNews.isEmpty()) {
-                    NewsUiState.NoResults
-                } else {
-                    NewsUiState.Results(filteredNews)
-                }
-            }
-    }
-}

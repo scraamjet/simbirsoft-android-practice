@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
-
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
@@ -37,7 +36,10 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
     }
@@ -51,10 +53,10 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                     addItemDecoration(
                         DividerItemDecoration(
                             context,
-                            DividerItemDecoration.VERTICAL
+                            DividerItemDecoration.VERTICAL,
                         ).apply {
                             setDrawable(drawable)
-                        }
+                        },
                     )
                 }
         }
@@ -80,7 +82,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             }
         }
     }
-
 
     private fun showSearchStub() {
         binding.apply {
@@ -112,11 +113,12 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                events.size,
-                events.size
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    events.size,
+                    events.size,
+                )
         }
     }
 
@@ -135,4 +137,3 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         fun newInstance() = EventListFragment()
     }
 }
-

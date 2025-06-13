@@ -22,21 +22,20 @@ class FilterPreferenceDataStore @Inject constructor(
         }
     )
 
-    private val categoriesKey = stringSetPreferencesKey(KEY_SELECTED_CATEGORIES)
+        private val categoriesKey = stringSetPreferencesKey(KEY_SELECTED_CATEGORIES)
 
-    val selectedCategories: Flow<Set<Int>> = dataStore.data.map { preferences ->
-        preferences[categoriesKey]
-            ?.mapNotNull { category -> category.toIntOrNull() }
-            ?.toSet()
-            ?: emptySet()
-    }
+        val selectedCategories: Flow<Set<Int>> =
+            dataStore.data.map { preferences ->
+                preferences[categoriesKey]
+                    ?.mapNotNull { category -> category.toIntOrNull() }
+                    ?.toSet()
+                    ?: emptySet()
+            }
 
-    suspend fun saveSelectedCategories(categories: Set<Int>) {
-        dataStore.edit { mutablePreferences ->
-            mutablePreferences[categoriesKey] =
-                categories.map { category -> category.toString() }.toSet()
+        suspend fun saveSelectedCategories(categories: Set<Int>) {
+            dataStore.edit { mutablePreferences ->
+                mutablePreferences[categoriesKey] =
+                    categories.map { category -> category.toString() }.toSet()
+            }
         }
     }
-}
-
-

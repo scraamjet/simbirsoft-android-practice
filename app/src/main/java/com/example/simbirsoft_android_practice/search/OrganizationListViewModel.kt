@@ -18,20 +18,20 @@ class OrganizationListViewModel @Inject constructor() : ViewModel() {
     private val _organizations = MutableStateFlow<List<SearchEvent>>(emptyList())
     val organizations: StateFlow<List<SearchEvent>> = _organizations.asStateFlow()
 
-    init {
-        refreshOrganizationList()
-    }
+        init {
+            refreshOrganizationList()
+        }
 
-    fun refreshOrganizationList() {
-        _organizations.value = generateOrganizationList()
-    }
+        fun refreshOrganizationList() {
+            _organizations.value = generateOrganizationList()
+        }
 
-    private fun generateOrganizationList(): List<SearchEvent> {
-        return List(ORGANIZATIONS_LIST_SIZE) {
-            SearchEvent(
-                Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
-                generateRandomString(),
-            )
+        private fun generateOrganizationList(): List<SearchEvent> {
+            return List(ORGANIZATIONS_LIST_SIZE) {
+                SearchEvent(
+                    Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
+                    generateRandomString(),
+                )
+            }
         }
     }
-}

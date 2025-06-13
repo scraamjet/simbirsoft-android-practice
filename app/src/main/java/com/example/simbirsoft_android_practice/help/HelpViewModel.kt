@@ -25,31 +25,31 @@ class HelpViewModel @Inject constructor(
     private val _categories = MutableStateFlow<List<HelpCategory>?>(null)
     val categories: StateFlow<List<HelpCategory>?> = _categories.asStateFlow()
 
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading.asStateFlow()
+        private val _loading = MutableStateFlow(false)
+        val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    init {
-        loadCategories()
-    }
+        init {
+            loadCategories()
+        }
 
-    private fun loadCategories() {
-        viewModelScope.launch {
-            _loading.value = true
-            categoryRepository.getCategories()
-                .flowOn(Dispatchers.IO)
-                .map { categoryList -> categoryList.map(CategoryMapper::toHelpCategory) }
-                .catch { exception ->
-                    _categories.value = emptyList()
-                    Log.e(
-                        TAG,
-                        "Help categories loading exception: ${exception.localizedMessage}",
-                        exception
-                    )
-                }
-                .collect { helpCategories ->
-                    _categories.value = helpCategories
-                    _loading.value = false
-                }
+        private fun loadCategories() {
+            viewModelScope.launch {
+                _loading.value = true
+                categoryRepository.getCategories()
+                    .flowOn(Dispatchers.IO)
+                    .map { categoryList -> categoryList.map(CategoryMapper::toHelpCategory) }
+                    .catch { exception ->
+                        _categories.value = emptyList()
+                        Log.e(
+                            TAG,
+                            "Help categories loading exception: ${exception.localizedMessage}",
+                            exception,
+                        )
+                    }
+                    .collect { helpCategories ->
+                        _categories.value = helpCategories
+                        _loading.value = false
+                    }
+            }
         }
     }
-}

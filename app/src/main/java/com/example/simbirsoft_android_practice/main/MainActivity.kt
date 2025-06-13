@@ -3,7 +3,6 @@ package com.example.simbirsoft_android_practice.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +16,9 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
-import com.example.simbirsoft_android_practice.news.NewsMapper
 import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.news.NewsServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -74,7 +68,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
-                    -> mainViewModel.setBottomNavigationVisible(visible = false)
+                -> mainViewModel.setBottomNavigationVisible(visible = false)
 
                 else -> mainViewModel.setBottomNavigationVisible(visible = true)
             }
@@ -94,7 +88,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
     }
-
 
     private fun observeBadgeCount() {
         lifecycleScope.launch {
@@ -136,5 +129,3 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }
-
-

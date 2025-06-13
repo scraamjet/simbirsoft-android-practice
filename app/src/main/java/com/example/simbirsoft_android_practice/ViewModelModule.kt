@@ -17,7 +17,6 @@ import dagger.multibindings.IntoMap
 
 @Module
 interface ViewModelModule {
-
     @Binds
     fun bindViewModelFactory(factory: MultiViewModelFactory): ViewModelProvider.Factory
 
@@ -64,12 +63,10 @@ interface ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindProfileViewModel(viewModel:ProfileViewModel): ViewModel
-
+    abstract fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(AuthorizationViewModel::class)
     abstract fun bindAuthorizationViewModel(viewModel: AuthorizationViewModel): ViewModel
 }
-

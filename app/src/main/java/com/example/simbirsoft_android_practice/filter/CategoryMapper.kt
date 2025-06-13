@@ -7,12 +7,12 @@ import com.example.simbirsoft_android_practice.model.HelpCategory
 object CategoryMapper {
     fun toFilterCategory(
         category: Category,
-        selectedIds: Set<Int>
+        selectedIds: Set<Int>,
     ): FilterCategory {
         return FilterCategory(
             id = category.id,
             title = category.name,
-            isEnabled = category.id in selectedIds
+            isEnabled = category.id in selectedIds,
         )
     }
 

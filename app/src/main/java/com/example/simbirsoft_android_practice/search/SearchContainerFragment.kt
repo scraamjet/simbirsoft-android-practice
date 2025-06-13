@@ -24,7 +24,6 @@ import javax.inject.Inject
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
-
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
 
     @Inject
@@ -39,7 +38,10 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
         initTabLayout()
@@ -52,13 +54,15 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         binding.viewPagerSearch.adapter = adapter
         binding.viewPagerSearch.setPageTransformer(ZoomOutPageTransformer())
 
-        binding.viewPagerSearch.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                refreshCurrentFragment()
-            }
-        })
+        binding.viewPagerSearch.registerOnPageChangeCallback(
+            object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    refreshCurrentFragment()
+                }
+            },
+        )
     }
 
     private fun initTabLayout() {
@@ -68,15 +72,18 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     }
 
     private fun initSearchView() {
-        binding.searchViewSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                searchContainerViewModel.updateSearchQuery(newText.orEmpty())
-                return true
-            }
-        })
+        binding.searchViewSearch.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    searchContainerViewModel.updateSearchQuery(newText.orEmpty())
+                    return true
+                }
+            },
+        )
     }
 
     private fun refreshCurrentFragment() {
@@ -95,15 +102,16 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     private fun observeKeyboardVisibility() {
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
-        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-            val rect = Rect()
-            rootView.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = rootView.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
-            val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+        globalLayoutListener =
+            ViewTreeObserver.OnGlobalLayoutListener {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = rootView.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+                val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-            mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
-        }
+                mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
+            }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
 

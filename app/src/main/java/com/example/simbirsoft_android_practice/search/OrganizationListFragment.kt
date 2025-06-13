@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
-
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
@@ -35,7 +34,10 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeOrganizations()
@@ -46,9 +48,11 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@OrganizationListFragment.adapter
             ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)?.let { drawable ->
-                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                    setDrawable(drawable)
-                })
+                addItemDecoration(
+                    DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                        setDrawable(drawable)
+                    },
+                )
             }
         }
     }
@@ -75,11 +79,12 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                size,
-                size
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    size,
+                    size,
+                )
         }
     }
 

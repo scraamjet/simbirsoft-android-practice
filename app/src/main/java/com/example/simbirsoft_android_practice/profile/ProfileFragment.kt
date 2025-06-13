@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
     private val binding by viewBinding(FragmentProfileBinding::bind)
     private val friendAdapter by lazy { FriendAdapter() }
 
@@ -89,7 +88,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun listenToPhotoDialog() {
         parentFragmentManager.setFragmentResultListener(
             EditPhotoDialogKeys.REQUEST_KEY,
-            viewLifecycleOwner
+            viewLifecycleOwner,
         ) { _, bundle ->
             val actionName = bundle.getString(EditPhotoDialogKeys.ACTION_KEY)
             val action = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
@@ -115,7 +114,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 launch {
                     viewModel.cameraImageBitmap.collect { bitmap ->
                         updateAppBarImageFromCamera(
-                            bitmap
+                            bitmap,
                         )
                     }
                 }
