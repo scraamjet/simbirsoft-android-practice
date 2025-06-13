@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.search
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,7 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.RepositoryProvider
+import com.example.simbirsoft_android_practice.appComponent
+import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
@@ -21,14 +23,21 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
+
+    @Inject
+    lateinit var eventRepository: EventRepository
+
     private val eventAdapter = EventAdapter()
-    private val eventRepository by lazy {
-        (requireContext().applicationContext as RepositoryProvider).eventRepository
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     override fun onViewCreated(

@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.filter
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.RepositoryProvider
+import com.example.simbirsoft_android_practice.appComponent
+import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import com.example.simbirsoft_android_practice.model.Category
 import com.example.simbirsoft_android_practice.model.FilterCategory
@@ -23,18 +25,27 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TAG_FILTER_FRAGMENT = "FilterFragment"
 private const val KEY_FILTER_CATEGORIES = "key_filter_categories"
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
     private val binding by viewBinding(FragmentFilterBinding::bind)
+
+    @Inject
+    lateinit var categoryRepository: CategoryRepository
+
+    @Inject
+    lateinit var filterPrefs: FilterPreferences
+
     private val filterAdapter by lazy { FilterAdapter() }
-    private val filterPrefs by lazy { FilterPreferences(requireContext()) }
-    private val categoryRepository by lazy {
-        RepositoryProvider.fromContext(requireContext()).categoryRepository
-    }
     private var filterCategories: List<FilterCategory>? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,
@@ -74,7 +85,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                     list.map { category: Category ->
                         CategoryMapper.toFilterCategory(
                             category,
-                            filterPrefs
+                            filterPrefs,
                         )
                     }
                 }

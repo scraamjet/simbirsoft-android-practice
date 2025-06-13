@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,7 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.RepositoryProvider
+import com.example.simbirsoft_android_practice.appComponent
+import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.model.NewsDetail
 import com.example.simbirsoft_android_practice.utils.DateUtils
@@ -20,15 +22,22 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val TAG_NEWS_DETAIL_FRAGMENT = "NewsDetailFragment"
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
-    private val eventRepository by lazy {
-        RepositoryProvider.fromContext(requireContext()).eventRepository
-    }
+
+    @Inject
+    lateinit var eventRepository: EventRepository
+
     private val args: NewsDetailFragmentArgs by navArgs()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,
