@@ -22,11 +22,8 @@ class EventListViewModel @Inject constructor(
     private val eventRepository: EventRepository,
 ) : ViewModel() {
 
-    private val _filteredEvents = MutableStateFlow<List<SearchEvent>>(emptyList())
-    val filteredEvents: StateFlow<List<SearchEvent>> = _filteredEvents.asStateFlow()
-
-    private val _uiState = MutableStateFlow(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<SearchUiState>(SearchUiState.Loading)
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun observeSearchQuery(debouncedSearchFlow: Flow<String>) {
@@ -36,32 +33,20 @@ class EventListViewModel @Inject constructor(
                     eventRepository.getEvents(null)
                         .map { list -> list.map(SearchMapper::toSearchEvent) }
                         .map { events ->
-                            events.filter { event ->
-                                event.title.contains(
-                                    query,
-                                    ignoreCase = true
-                                )
-                            }
+                            events.filter { it.title.contains(query, ignoreCase = true) }
                         }
-                        .map { filteredList ->
-                            Pair(filteredList, query)
-                        }
+                        .map { filteredList -> Pair(filteredList, query) }
                 }
                 .catch { exception ->
-                    _uiState.value = UiState.Error
-                    _filteredEvents.value = emptyList()
-                    Log.e(
-                        TAG,
-                        "Search events loading exception: ${exception.localizedMessage}",
-                        exception
-                    )
+                    _uiState.value =
+                        SearchUiState.Error(exception.localizedMessage ?: "Unknown error")
+                    Log.e(TAG, "Search events loading exception", exception)
                 }
-                .collect { (events, currentQuery) ->
-                    _filteredEvents.value = events
+                .collect { (events, query) ->
                     _uiState.value = when {
-                        currentQuery.isBlank() -> UiState.BlankQuery
-                        events.isEmpty() -> UiState.Empty
-                        else -> UiState.Success
+                        query.isBlank() -> SearchUiState.BlankQuery
+                        events.isEmpty() -> SearchUiState.Empty
+                        else -> SearchUiState.Success(events)
                     }
                 }
         }

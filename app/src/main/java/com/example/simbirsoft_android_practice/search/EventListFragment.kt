@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -16,15 +15,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
-import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -71,24 +65,22 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.uiState.collect { state ->
-                        when (state) {
-                            UiState.Loading -> showLoading()
-                            UiState.BlankQuery, UiState.Error -> showSearchStub() // объединили
-                            UiState.Empty -> showNoResults()
-                            UiState.Success -> showResults(viewModel.filteredEvents.value)
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is SearchUiState.Loading -> showLoading()
+                        is SearchUiState.BlankQuery -> showSearchStub()
+                        is SearchUiState.Empty -> showNoResults()
+                        is SearchUiState.Success -> {
+                            showResults(state.results)
+                            adapter.submitList(state.results)
                         }
-                    }
-                }
-                launch {
-                    viewModel.filteredEvents.collect { events ->
-                        adapter.submitList(events)
+                        is SearchUiState.Error -> showSearchStub()
                     }
                 }
             }
         }
     }
+
 
     private fun showSearchStub() {
         binding.apply {

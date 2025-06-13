@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
+private const val SEARCH_STATE_TIMEOUT_MILLISECONDS = 5000L
+
 
 class SearchContainerViewModel @Inject constructor() : ViewModel() {
 
@@ -27,7 +29,7 @@ class SearchContainerViewModel @Inject constructor() : ViewModel() {
         .distinctUntilChanged()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = SEARCH_STATE_TIMEOUT_MILLISECONDS),
             initialValue = ""
         )
 
