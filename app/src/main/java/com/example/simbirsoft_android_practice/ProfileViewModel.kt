@@ -15,9 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProfileViewModel
-    @Inject
-    constructor() : ViewModel() {
+class ProfileViewModel @Inject constructor() : ViewModel() {
         private val _friends = MutableStateFlow<List<Friend>>(emptyList())
         val friends: StateFlow<List<Friend>> = _friends.asStateFlow()
 

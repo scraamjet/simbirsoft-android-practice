@@ -94,7 +94,8 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     private fun saveFilterSettings() {
         val selectedCategories =
-            filterAdapter.currentList.filter { category -> category.isEnabled }.map { it.id }.toSet()
+            filterAdapter.currentList.filter { category -> category.isEnabled }
+                .map { category -> category.id }.toSet()
         filterViewModel.saveSelected(selectedCategories)
         Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)
             .show()
