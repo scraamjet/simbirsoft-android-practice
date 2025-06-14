@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
-import com.example.simbirsoft_android_practice.model.Event
+import com.example.simbirsoft_android_practice.model.NewsItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -16,9 +16,9 @@ class NewsServiceProxy {
         this.newsService = null
     }
 
-    fun getNewsFlow(): Flow<List<Event>> =
+    fun getFilteredNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> =
         flow {
-            val flow = newsService?.loadNews()
+            val flow = newsService?.loadAndFilterNews(selectedCategoryIds)
             if (flow != null) {
                 emitAll(flow)
             } else {

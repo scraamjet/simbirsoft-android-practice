@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.NewsPreferencesUseCase
 import com.example.simbirsoft_android_practice.model.NewsItem
-import com.example.simbirsoft_android_practice.news.NewsService
+import com.example.simbirsoft_android_practice.news.NewsServiceProxy
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,16 +31,17 @@ class MainViewModel @Inject constructor(
 
     private var serviceJob: Job? = null
 
-    fun startNewsUpdates(newsService: NewsService) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeNews(newsServiceProxy: NewsServiceProxy) {
         serviceJob?.cancel()
         serviceJob = viewModelScope.launch {
             filterPreferencesUseCase.getSelectedCategoryIds()
                 .distinctUntilChanged()
-                .collectLatest { selected ->
-                    newsService.getFilteredNews(selected)
-                        .collect { newsItems ->
-                            updateBadge(newsItems)
-                        }
+                .flatMapLatest { selectedCategories ->
+                    newsServiceProxy.getFilteredNews(selectedCategories)
+                }
+                .collect { filteredNewsItems ->
+                    updateBadge(filteredNewsItems)
                 }
         }
     }

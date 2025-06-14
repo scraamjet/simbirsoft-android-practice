@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 newsService = service
                 isServiceConnected = true
                 newsServiceProxy.setService(service)
-                mainViewModel.observeNews(newsServiceProxy.getNewsFlow())
+                mainViewModel.observeNews(newsServiceProxy)
             },
             onServiceDisconnected = {
                 isServiceConnected = false

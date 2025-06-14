@@ -7,8 +7,6 @@ import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.EventRepository
-import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
-import com.example.simbirsoft_android_practice.model.Event
 import com.example.simbirsoft_android_practice.model.NewsItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -36,23 +34,20 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    private fun loadNews(): Flow<List<Event>> {
+    fun loadAndFilterNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
         return eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
-            .catch { throwable ->
-                Log.e(TAG_NEWS_SERVICE, "Flow exception: ${throwable.localizedMessage}", throwable)
-            }
-    }
-
-    fun getFilteredNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
-        return loadNews()
             .map { events ->
                 events
-                    .filter { it.categoryIds.any { id -> id in selectedCategoryIds } }
+                    .filter { event -> event.categoryIds.any { id -> id in selectedCategoryIds } }
                     .map(NewsMapper::eventToNewsItem)
             }
-            .catch { e ->
-                Log.e(TAG_NEWS_SERVICE, "Filtered flow exception: ${e.localizedMessage}", e)
+            .catch { exception ->
+                Log.e(
+                    TAG_NEWS_SERVICE,
+                    "News flow exception: ${exception.localizedMessage}",
+                    exception
+                )
                 emit(emptyList())
             }
     }
