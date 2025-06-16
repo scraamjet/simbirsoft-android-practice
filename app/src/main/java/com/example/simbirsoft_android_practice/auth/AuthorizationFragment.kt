@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
-import com.example.simbirsoft_android_practice.main.MainActivity
+import com.example.simbirsoft_android_practice.main.MainEvent
+import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -33,7 +35,8 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
+    private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory  }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,19 +56,21 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListeners() {
         binding.imageViewFilterBack.setOnClickListener {
-            viewModel.onEvent(AuthorizationEvent.BackClicked)
+            authorizationViewModel.onEvent(AuthorizationEvent.BackClicked)
         }
 
         binding.buttonAuthorization.setOnClickListener {
-            viewModel.onEvent(AuthorizationEvent.SubmitClicked)
+            authorizationViewModel.onEvent(AuthorizationEvent.SubmitClicked)
         }
 
         binding.editTextAuthorizationPassword.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
-                val drawableEnd = binding.editTextAuthorizationPassword.compoundDrawables[DRAWABLE_END_INDEX]
-                val drawableX = binding.editTextAuthorizationPassword.right - drawableEnd.bounds.width()
+                val drawableEnd =
+                    binding.editTextAuthorizationPassword.compoundDrawables[DRAWABLE_END_INDEX]
+                val drawableX =
+                    binding.editTextAuthorizationPassword.right - drawableEnd.bounds.width()
                 if (motionEvent.rawX >= drawableX) {
-                    viewModel.onEvent(AuthorizationEvent.TogglePasswordVisibility)
+                    authorizationViewModel.onEvent(AuthorizationEvent.TogglePasswordVisibility)
                     return@setOnTouchListener true
                 }
             }
@@ -77,14 +82,14 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                 launch {
                     binding.editTextAuthorizationEmail.textChangesFlow()
                         .collectLatest { editable ->
-                            viewModel.onEvent(AuthorizationEvent.EmailChanged(editable.toString()))
+                            authorizationViewModel.onEvent(AuthorizationEvent.EmailChanged(editable.toString()))
                         }
                 }
 
                 launch {
                     binding.editTextAuthorizationPassword.textChangesFlow()
                         .collectLatest { editable ->
-                            viewModel.onEvent(AuthorizationEvent.PasswordChanged(editable.toString()))
+                            authorizationViewModel.onEvent(AuthorizationEvent.PasswordChanged(editable.toString()))
                         }
                 }
             }
@@ -95,7 +100,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collectLatest { state ->
+                authorizationViewModel.state.collectLatest { state ->
                     binding.buttonAuthorization.isEnabled = state.isFormValid
 
                     binding.editTextAuthorizationPassword.transformationMethod =
@@ -124,7 +129,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private fun observeEffects() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collectLatest { effect ->
+                authorizationViewModel.effect.collectLatest { effect ->
                     when (effect) {
                         is AuthorizationEffect.FinishActivity -> {
                             requireActivity().finish()
@@ -132,10 +137,11 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
                         is AuthorizationEffect.NavigateToHelp -> {
                             findNavController().navigate(R.id.action_authorization_to_help)
-                            (requireActivity() as? MainActivity)?.startAndBindNewsService()
+                            mainViewModel.onEvent(MainEvent.RequestStartNewsService)
                         }
                     }
                 }
+
             }
         }
     }

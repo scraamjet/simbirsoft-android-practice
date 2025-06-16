@@ -84,18 +84,29 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeViewModelState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.state.collect { mainState ->
-                    if (mainState.isBottomNavigationVisible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
+                launch {
+                    mainViewModel.state.collect { mainState ->
+                        if (mainState.isBottomNavigationVisible) {
+                            showBottomNavigation()
+                        } else {
+                            hideBottomNavigation()
+                        }
 
-                    updateUnreadNewsBadge(count = mainState.badgeCount)
+                        updateUnreadNewsBadge(count = mainState.badgeCount)
+                    }
+                }
+
+                launch {
+                    mainViewModel.effect.collect { mainEffect ->
+                        when (mainEffect) {
+                            is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
+                        }
+                    }
                 }
             }
         }
     }
+
 
     fun startAndBindNewsService() {
         val intent = Intent(this, NewsService::class.java)

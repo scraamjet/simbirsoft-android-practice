@@ -8,8 +8,11 @@ import com.example.simbirsoft_android_practice.model.NewsItem
 import com.example.simbirsoft_android_practice.news.NewsServiceProxy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -25,6 +28,9 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow(MainState())
     val state: StateFlow<MainState> = _state.asStateFlow()
 
+    private val _effect = MutableSharedFlow<MainEffect>()
+    val effect: SharedFlow<MainEffect> = _effect.asSharedFlow()
+
     private var serviceJob: Job? = null
 
     init {
@@ -37,6 +43,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
+            is MainEvent.RequestStartNewsService -> handleRequestStartNewsService()
         }
     }
 
@@ -77,6 +84,12 @@ class MainViewModel @Inject constructor(
     private fun handleBottomNavVisibilityChange(visible: Boolean) {
         _state.update { previousState ->
             previousState.copy(isBottomNavigationVisible = visible)
+        }
+    }
+
+    private fun handleRequestStartNewsService() {
+        viewModelScope.launch {
+            _effect.emit(MainEffect.StartAndBindNewsService)
         }
     }
 
