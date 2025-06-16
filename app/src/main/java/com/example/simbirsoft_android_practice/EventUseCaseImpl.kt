@@ -15,7 +15,12 @@ class EventUseCaseImpl @Inject constructor(
         return repository.getEvents(null)
             .map { events ->
                 events.map(SearchMapper::toSearchEvent)
-                    .filter { it.title.contains(query, ignoreCase = true) }
+                    .filter { searchEvent ->
+                        searchEvent.title.contains(
+                            query,
+                            ignoreCase = true
+                        )
+                    }
             }
     }
 }

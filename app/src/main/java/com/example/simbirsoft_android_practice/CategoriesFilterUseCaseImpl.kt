@@ -13,8 +13,16 @@ class CategoriesFilterUseCaseImpl @Inject constructor(
     private val repository: CategoryRepository
 ) : CategoriesFilterUseCase {
     override suspend fun invoke(selectedIds: Flow<Set<Int>>): Flow<List<FilterCategory>> {
-        return combine(repository.getCategories(), selectedIds) { categories, ids ->
-            categories.map { CategoryMapper.toFilterCategory(it, ids) }
+        return combine(
+            repository.getCategories(),
+            selectedIds
+        ) { categories, ids ->
+            categories.map { category ->
+                CategoryMapper.toFilterCategory(
+                    category,
+                    ids
+                )
+            }
         }
     }
 }

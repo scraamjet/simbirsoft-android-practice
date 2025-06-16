@@ -1,14 +1,8 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.profile
 
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.model.Friend
-import com.example.simbirsoft_android_practice.profile.PhotoAction
-import com.example.simbirsoft_android_practice.profile.ProfileEffect
-import com.example.simbirsoft_android_practice.profile.ProfileEvent
-import com.example.simbirsoft_android_practice.profile.ProfileState
+import com.example.simbirsoft_android_practice.ProfileUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

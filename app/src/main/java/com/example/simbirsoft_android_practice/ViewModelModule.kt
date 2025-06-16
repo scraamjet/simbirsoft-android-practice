@@ -8,6 +8,7 @@ import com.example.simbirsoft_android_practice.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.news.NewsViewModel
+import com.example.simbirsoft_android_practice.profile.ProfileViewModel
 import com.example.simbirsoft_android_practice.search.EventListViewModel
 import com.example.simbirsoft_android_practice.search.OrganizationListViewModel
 import com.example.simbirsoft_android_practice.search.SearchContainerViewModel
@@ -48,25 +49,25 @@ interface ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SearchContainerViewModel::class)
-    abstract fun bindSearchContainerViewModel(viewModel: SearchContainerViewModel): ViewModel
+    fun bindSearchContainerViewModel(viewModel: SearchContainerViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(OrganizationListViewModel::class)
-    abstract fun bindOrganizationListViewModel(viewModel: OrganizationListViewModel): ViewModel
+    fun bindOrganizationListViewModel(viewModel: OrganizationListViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EventListViewModel::class)
-    abstract fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
+    fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
+    fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(AuthorizationViewModel::class)
-    abstract fun bindAuthorizationViewModel(viewModel: AuthorizationViewModel): ViewModel
+    fun bindAuthorizationViewModel(viewModel: AuthorizationViewModel): ViewModel
 }
