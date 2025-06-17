@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ class ProfileViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ProfileState>(ProfileState.Success(emptyList()))
+    private val _state = MutableStateFlow<ProfileState>(ProfileState.Idle)
     val state: StateFlow<ProfileState> = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<ProfileEffect>()
@@ -25,9 +26,9 @@ class ProfileViewModel @Inject constructor(
     fun onEvent(event: ProfileEvent) {
         when (event) {
             is ProfileEvent.Load -> loadFriends()
-            is ProfileEvent.PhotoActionSelected -> emitEffect(ProfileEffect.HandlePhotoAction(event.action))
-            is ProfileEvent.SetGalleryImage -> emitEffect(ProfileEffect.GalleryImage(event.uri))
-            is ProfileEvent.SetCameraImage -> emitEffect(ProfileEffect.CameraImage(event.bitmap))
+            is ProfileEvent.PhotoActionSelected -> handleAction(ProfileEffect.PhotoAction(event.action))
+            is ProfileEvent.SetGalleryImage -> handleAction(ProfileEffect.GalleryImage(event.uri))
+            is ProfileEvent.SetCameraImage -> handleAction(ProfileEffect.CameraImage(event.bitmap))
         }
     }
 
@@ -35,17 +36,17 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val friends = profileUseCase.loadFriends()
-                _state.value = ProfileState.Success(friends)
+                _state.value = ProfileState.Result(friends)
             } catch (exception: Exception) {
                 _state.value = ProfileState.Error
+                _effect.emit(ProfileEffect.ShowErrorToast(R.string.profile_load_error))
             }
         }
     }
 
-    private fun emitEffect(effect: ProfileEffect) {
+    private fun handleAction(effect: ProfileEffect) {
         viewModelScope.launch {
             _effect.emit(effect)
         }
     }
 }
-

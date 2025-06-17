@@ -27,22 +27,33 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<EventListViewModel> { viewModelFactory }
+    private val eventListViewModel by viewModels<EventListViewModel> { viewModelFactory }
+    private val searchContainerViewModel: SearchContainerViewModel by viewModels(ownerProducer = { requireParentFragment() }) { viewModelFactory }
 
-    private val adapter = EventAdapter()
+    private val adapter: EventAdapter by lazy { EventAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observeState()
+        observeUiState()
+        observeContainerState()
+    }
+
+    private fun observeContainerState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchContainerViewModel.state.collect { state: SearchContainerState ->
+                    if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.EVENTS) {
+                        eventListViewModel.onEvent(EventListEvent.SearchQueryChanged(query = state.query))
+                    }
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -63,22 +74,19 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    fun refreshData(query: String) {
-        viewModel.onEvent(EventListEvent.SearchQueryChanged(query))
-    }
-
-    private fun observeState() {
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
+                eventListViewModel.state.collect { state ->
                     when (state) {
                         is EventListState.Loading -> showLoading()
-                        is EventListState.BlankQuery -> showSearchStub()
+                        is EventListState.Idle -> showSearchStub()
                         is EventListState.Empty -> showNoResults()
-                        is EventListState.Success -> {
+                        is EventListState.Result -> {
                             showResults(state.results)
                             adapter.submitList(state.results)
                         }
+
                         is EventListState.Error -> showSearchStub()
                     }
                 }

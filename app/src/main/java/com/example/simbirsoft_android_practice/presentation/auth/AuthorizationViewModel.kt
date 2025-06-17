@@ -16,8 +16,8 @@ private const val MIN_INPUT_LENGTH = 6
 
 class AuthorizationViewModel @Inject constructor() : ViewModel() {
 
-    private val _state = MutableStateFlow(AuthorizationUiState())
-    val state: StateFlow<AuthorizationUiState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(AuthorizationState())
+    val state: StateFlow<AuthorizationState> = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<AuthorizationEffect>()
     val effect: SharedFlow<AuthorizationEffect> = _effect.asSharedFlow()
@@ -55,6 +55,7 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     private fun handleSubmit() {
         viewModelScope.launch {
             _effect.emit(AuthorizationEffect.NavigateToHelp)
+            _effect.emit(AuthorizationEffect.StartNewsService)
         }
     }
 
@@ -64,7 +65,7 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun validateForm(state: AuthorizationUiState): Boolean {
+    private fun validateForm(state: AuthorizationState): Boolean {
         return state.email.length >= MIN_INPUT_LENGTH &&
                 state.password.length >= MIN_INPUT_LENGTH
     }

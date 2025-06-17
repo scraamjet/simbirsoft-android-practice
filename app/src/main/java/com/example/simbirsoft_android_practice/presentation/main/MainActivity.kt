@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         setupNavigation()
-        observeViewModelState()
+        observeState()
+        observeEffect()
     }
 
     private fun setupNavigation() {
@@ -81,34 +82,35 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    private fun observeViewModelState() {
+    private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    mainViewModel.state.collect { mainState ->
-                        if (mainState.isBottomNavigationVisible) {
-                            showBottomNavigation()
-                        } else {
-                            hideBottomNavigation()
-                        }
-
-                        updateUnreadNewsBadge(count = mainState.badgeCount)
+                mainViewModel.state.collect { state ->
+                    if (state.isBottomNavigationVisible) {
+                        showBottomNavigation()
+                    } else {
+                        hideBottomNavigation()
                     }
-                }
 
-                launch {
-                    mainViewModel.effect.collect { mainEffect ->
-                        when (mainEffect) {
-                            is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
-                        }
+                    updateUnreadNewsBadge(count = state.badgeCount)
+                }
+            }
+        }
+    }
+
+    private fun observeEffect() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.effect.collect { effect ->
+                    when (effect) {
+                        is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
                     }
                 }
             }
         }
     }
 
-
-    fun startAndBindNewsService() {
+    private fun startAndBindNewsService() {
         val intent = Intent(this, NewsService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }

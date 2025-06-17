@@ -3,6 +3,8 @@ package com.example.simbirsoft_android_practice.presentation.news
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -48,7 +50,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        observeUiState()
+        observeState()
         observeEffects()
     }
 
@@ -61,11 +63,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun initClickListeners() {
         binding.imageViewButtonFilters.setOnClickListener {
-            findNavController().navigate(R.id.action_news_to_filter)
+            newsViewModel.onEvent(NewsEvent.FiltersClicked)
         }
     }
 
-    private fun observeUiState() {
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 newsViewModel.uiState.collect { state: NewsState ->
@@ -73,7 +75,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                         is NewsState.Loading -> showLoading()
                         is NewsState.Results -> showResults(newsList = state.newsList)
                         is NewsState.NoResults -> showNoResults()
-                        is NewsState.Error -> showError()
+                        is NewsState.Error -> hideContentOnError()
                     }
                 }
             }
@@ -86,6 +88,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 newsViewModel.effect.collect { effect: NewsEffect ->
                     when (effect) {
                         is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
+                        is NewsEffect.NavigateToFilter -> {
+                            findNavController().navigate(R.id.action_news_to_filter)
+                        }
+                        is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
                     }
                 }
             }
@@ -118,7 +124,11 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
-    private fun showError() {
+    private fun showToast(@StringRes messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideContentOnError() {
         binding.progressBarNews.isVisible = false
         binding.recyclerViewItemNews.isVisible = false
         binding.textViewNoNews.isVisible = true

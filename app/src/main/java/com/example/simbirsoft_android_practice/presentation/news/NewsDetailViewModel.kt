@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,21 +14,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "NewsDetailViewModel"
-
 class NewsDetailViewModel @Inject constructor(
     private val newsDetailUseCase: NewsDetailUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<NewsDetailState?>(null)
-    val state: StateFlow<NewsDetailState?> = _state.asStateFlow()
+    private val _state = MutableStateFlow<NewsDetailState>(NewsDetailState.Idle)
+    val state: StateFlow<NewsDetailState> = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<NewsDetailEffect>()
     val effect: SharedFlow<NewsDetailEffect> = _effect.asSharedFlow()
 
     fun onEvent(event: NewsDetailEvent) {
         when (event) {
-            is NewsDetailEvent.LoadNewsDetail -> loadNewsDetail(newsId = event.newsId)
+            is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
         }
     }
 
@@ -38,17 +37,20 @@ class NewsDetailViewModel @Inject constructor(
                 if (newsDetail != null) {
                     _state.value = NewsDetailState.Result(newsDetail = newsDetail)
                 } else {
-                    _state.value = NewsDetailState.Error(message = "Новость не найдена")
+                    emitErrorState()
                 }
             } catch (exception: Exception) {
-                _state.value = NewsDetailState.Error(
-                    message = exception.localizedMessage ?: "Неизвестная ошибка"
-                )
+                emitErrorState()
             }
         }
     }
 
-    fun onBackClicked() {
+    private suspend fun emitErrorState() {
+        _state.value = NewsDetailState.Error
+        _effect.emit(NewsDetailEffect.ShowErrorToast(R.string.news_detail_load_error))
+    }
+
+    fun handleOnBackClicked() {
         viewModelScope.launch {
             _effect.emit(NewsDetailEffect.NavigateBack)
         }

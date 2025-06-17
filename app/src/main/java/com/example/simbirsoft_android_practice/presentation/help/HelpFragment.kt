@@ -3,6 +3,8 @@ package com.example.simbirsoft_android_practice.presentation.help
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,7 +40,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observeUiState()
+        observeState()
+        observeEffect()
     }
 
     private fun initRecyclerView() {
@@ -54,14 +57,26 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         }
     }
 
-    private fun observeUiState() {
+    private fun observeEffect() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                helpViewModel.state.collect { helpState ->
-                    when (helpState) {
+                helpViewModel.effect.collect { effect ->
+                    when (effect) {
+                        is HelpEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                helpViewModel.state.collect { state ->
+                    when (state) {
                         is HelpState.Loading -> showLoading()
-                        is HelpState.Success -> showResult(helpState.categories)
-                        is HelpState.Error -> showError()
+                        is HelpState.Result -> showResult(state.categories)
+                        is HelpState.Error -> hideContentOnError()
                     }
                 }
             }
@@ -79,7 +94,11 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         helpAdapter.submitList(categoryList)
     }
 
-    private fun showError() {
+    private fun showToast(@StringRes messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideContentOnError() {
         binding.progressBarHelp.isVisible = false
         binding.recyclerViewHelpItem.isVisible = false
     }

@@ -59,6 +59,10 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.NewsUpdated(newsItems))
     }
 
+    fun requestStartNewsService() {
+        onEvent(MainEvent.RequestStartNewsService)
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun observeNews(newsServiceProxy: NewsServiceProxy) {
         serviceJob?.cancel()

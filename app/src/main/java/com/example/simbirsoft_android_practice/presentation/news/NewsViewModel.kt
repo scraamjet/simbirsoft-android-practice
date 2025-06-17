@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
@@ -15,8 +16,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val TAG = "NewsViewModel"
 
 class NewsViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
@@ -37,6 +36,7 @@ class NewsViewModel @Inject constructor(
         when (event) {
             is NewsEvent.LoadNews -> observeSelectedCategories()
             is NewsEvent.NewsClicked -> handleNewsClicked(newsId = event.newsId)
+            is NewsEvent.FiltersClicked -> handleFiltersClicked()
         }
     }
 
@@ -60,9 +60,14 @@ class NewsViewModel @Inject constructor(
                 NewsState.Results(newsList = filteredNews)
             }
         } catch (exception: Exception) {
-            _uiState.value = NewsState.Error(
-                message = exception.localizedMessage ?: "Unknown error"
-            )
+            _uiState.value = NewsState.Error
+            _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
+        }
+    }
+
+    private fun handleFiltersClicked() {
+        viewModelScope.launch {
+            _effect.emit(NewsEffect.NavigateToFilter)
         }
     }
 

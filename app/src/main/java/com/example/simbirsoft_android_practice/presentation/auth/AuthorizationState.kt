@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.presentation.auth
 
-data class AuthorizationUiState(
+data class AuthorizationState(
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,

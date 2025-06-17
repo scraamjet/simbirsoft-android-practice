@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class FilterViewModel @Inject constructor(
     private val categoriesFilterUseCase: CategoriesFilterUseCase,
     private val filterPreferencesUseCase: FilterPreferencesUseCase
@@ -29,7 +28,7 @@ class FilterViewModel @Inject constructor(
     val effect: SharedFlow<FilterEffect> = _effect.asSharedFlow()
 
     init {
-        loadCategories()
+        onEvent(FilterEvent.Load)
     }
 
     private fun loadCategories() {
@@ -38,33 +37,34 @@ class FilterViewModel @Inject constructor(
                 .onStart {
                     _state.value = FilterState.Loading
                 }
-                .catch { throwable ->
+                .catch {
                     _state.value = FilterState.Error
+                    _effect.emit(FilterEffect.ShowErrorToast(R.string.filter_load_error))
                 }
                 .collect { categoryList ->
-                    _state.value = FilterState.Success(categoryList)
+                    _state.value = FilterState.Result(categoryList)
                 }
         }
     }
 
     fun onEvent(event: FilterEvent) {
         when (event) {
-            is FilterEvent.OnApplyClicked -> {
-                saveSelected(event.selectedIds)
-            }
-
-            FilterEvent.OnBackClicked -> {
-                viewModelScope.launch {
-                    _effect.emit(FilterEffect.NavigateBack)
-                }
-            }
+            is FilterEvent.OnApplyClicked -> handleOnApplyClicked(event.selectedIds)
+            FilterEvent.OnBackClicked -> handleBackClicked()
+            FilterEvent.Load -> loadCategories()
         }
     }
 
-    private fun saveSelected(ids: Set<Int>) {
+    private fun handleOnApplyClicked(ids: Set<Int>) {
         viewModelScope.launch {
             filterPreferencesUseCase.saveSelectedCategoryIds(ids)
-            _effect.emit(FilterEffect.ShowToast(R.string.filter_saved_toast))
+            _effect.emit(FilterEffect.ShowSuccessToast(R.string.filter_saved_toast))
+            _effect.emit(FilterEffect.NavigateBack)
+        }
+    }
+
+    private fun handleBackClicked(){
+        viewModelScope.launch {
             _effect.emit(FilterEffect.NavigateBack)
         }
     }

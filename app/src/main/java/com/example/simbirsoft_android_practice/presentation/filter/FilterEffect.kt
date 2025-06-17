@@ -1,6 +1,9 @@
 package com.example.simbirsoft_android_practice.presentation.filter
 
+import androidx.annotation.StringRes
+
 sealed class FilterEffect {
-    object NavigateBack : FilterEffect()
-    data class ShowToast(val messageResId: Int) : FilterEffect()
+    data object NavigateBack : FilterEffect()
+    data class ShowSuccessToast(@StringRes val messageResId: Int) : FilterEffect()
+    data class ShowErrorToast(@StringRes val messageResId: Int) : FilterEffect()
 }

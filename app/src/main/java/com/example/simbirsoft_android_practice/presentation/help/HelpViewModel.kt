@@ -2,9 +2,13 @@ package com.example.simbirsoft_android_practice.presentation.help
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -19,7 +23,20 @@ class HelpViewModel @Inject constructor(
     private val _state = MutableStateFlow<HelpState>(HelpState.Loading)
     val state: StateFlow<HelpState> = _state.asStateFlow()
 
+    private val _effect = MutableSharedFlow<HelpEffect>()
+    val effect: SharedFlow<HelpEffect> = _effect.asSharedFlow()
+
     init {
+        onEvent(HelpEvent.OnScreenOpened)
+    }
+
+    fun onEvent(event: HelpEvent) {
+        when (event) {
+            HelpEvent.OnScreenOpened -> loadCategories()
+        }
+    }
+
+    private fun loadCategories() {
         viewModelScope.launch {
             categoriesHelpUseCase()
                 .onStart {
@@ -27,9 +44,10 @@ class HelpViewModel @Inject constructor(
                 }
                 .catch {
                     _state.value = HelpState.Error
+                    _effect.emit(HelpEffect.ShowErrorToast(R.string.help_load_error))
                 }
                 .collect { categoryList ->
-                    _state.value = HelpState.Success(categoryList)
+                    _state.value = HelpState.Result(categoryList)
                 }
         }
     }

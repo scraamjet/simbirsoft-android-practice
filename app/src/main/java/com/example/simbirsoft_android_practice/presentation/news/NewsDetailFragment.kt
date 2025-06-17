@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -41,17 +43,17 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         initClickListeners()
         observeState()
         observeEffect()
-        viewModel.onEvent(NewsDetailEvent.LoadNewsDetail(newsId = args.newsId))
+        viewModel.onEvent(NewsDetailEvent.Load(newsId = args.newsId))
     }
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state: NewsDetailState? ->
+                viewModel.state.collect { state: NewsDetailState ->
                     when (state) {
+                        is NewsDetailState.Idle -> Unit
                         is NewsDetailState.Result -> showResult(newsDetail = state.newsDetail)
-                        is NewsDetailState.Error -> showError(message = state.message)
-                        null -> Unit
+                        is NewsDetailState.Error -> hideContentOnError()
                     }
                 }
             }
@@ -64,14 +66,24 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 viewModel.effect.collect { effect: NewsDetailEffect ->
                     when (effect) {
                         is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
+                        is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
                     }
                 }
             }
         }
     }
 
+    private fun showToast(@StringRes messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideContentOnError() {
+        binding.frameLayoutNewsDetailContainer.isVisible = false
+    }
+
     private fun showResult(newsDetail: NewsDetail) {
         with(binding) {
+            frameLayoutNewsDetailContainer.isVisible = true
             textViewNewsDetailToolbarTitle.text = newsDetail.title
             textViewNewsDetailTitle.text = newsDetail.title
             textViewNewsDetailTime.text =
@@ -93,13 +105,9 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         }
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
-            viewModel.onBackClicked()
+            viewModel.handleOnBackClicked()
         }
     }
 }

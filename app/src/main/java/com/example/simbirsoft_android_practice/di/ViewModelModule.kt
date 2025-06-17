@@ -26,7 +26,7 @@ interface ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+    fun bindMainViewModel(viewModel: com.example.simbirsoft_android_practice.presentation.main.MainViewModel): ViewModel
 
     @Binds
     @IntoMap

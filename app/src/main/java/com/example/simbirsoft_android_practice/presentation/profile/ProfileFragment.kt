@@ -11,8 +11,10 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -78,8 +80,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         initRecyclerView()
         listenToPhotoDialog()
-        collectState()
-        collectEffect()
+        observeState()
+        observeEffect()
     }
 
     private fun initRecyclerView() {
@@ -100,27 +102,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun collectState() {
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { profileState ->
-                    when (profileState) {
-                        is ProfileState.Success -> showFriends(profileState.friends)
-                        is ProfileState.Error -> Unit
+                viewModel.state.collect { state ->
+                    when (state) {
+                        is ProfileState.Idle -> Unit
+                        is ProfileState.Result -> showFriends(state.friends)
+                        is ProfileState.Error -> hideContentOnError()
                     }
                 }
             }
         }
     }
 
-    private fun collectEffect() {
+    private fun observeEffect() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect { profileEffect ->
-                    when (profileEffect) {
-                        is ProfileEffect.HandlePhotoAction -> handlePhotoAction(profileEffect.action)
-                        is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(profileEffect.uri)
-                        is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(profileEffect.bitmap)
+                viewModel.effect.collect { effect ->
+                    when (effect) {
+                        is ProfileEffect.PhotoAction -> handlePhotoAction(effect.action)
+                        is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(effect.uri)
+                        is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(effect.bitmap)
+                        is ProfileEffect.ShowErrorToast -> showToast(effect.messageResId)
                     }
                 }
             }
@@ -129,6 +133,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun showFriends(friends: List<Friend>) {
         friendAdapter.submitList(friends)
+    }
+
+    private fun hideContentOnError() {
+        friendAdapter.submitList(emptyList())
+    }
+
+    private fun showToast(@StringRes messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
     private fun handlePhotoAction(action: PhotoAction) {

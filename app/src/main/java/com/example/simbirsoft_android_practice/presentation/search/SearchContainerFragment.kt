@@ -3,24 +3,21 @@ package com.example.simbirsoft_android_practice.presentation.search
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
-import com.example.simbirsoft_android_practice.core.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
@@ -32,7 +29,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
-    private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
@@ -61,7 +58,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
             object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    refreshCurrentFragment()
+                    searchContainerViewModel.onEvent(SearchContainerEvent.OnPageChanged(position = position))
                 }
             },
         )
@@ -79,38 +76,15 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchContainerViewModel.onEvent(SearchContainerEvent.OnQueryChanged(newText.orEmpty()))
+                    searchContainerViewModel.onEvent(SearchContainerEvent.OnQueryChanged(query = newText.orEmpty()))
                     return true
                 }
             }
         )
     }
 
-    private fun refreshCurrentFragment() {
-        when (val fragment = getCurrentFragment()) {
-            is OrganizationListFragment -> fragment.refreshData()
-            is EventListFragment -> {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        searchContainerViewModel.debouncedQuery.collect { query ->
-                            fragment.refreshData(query)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    private fun getCurrentFragment(): Fragment? {
-        return binding.viewPagerSearch.findFragmentAtPosition(
-            childFragmentManager,
-            binding.viewPagerSearch.currentItem,
-        )
-    }
-
     private fun observeKeyboardVisibility() {
-        val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
+        val rootView = binding.root
         globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
             val rect = Rect()
             rootView.getWindowVisibleDisplayFrame(rect)
@@ -122,6 +96,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

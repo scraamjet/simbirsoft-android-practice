@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -41,7 +42,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        observeUiState()
+        observeState()
         observeEffects()
     }
 
@@ -71,14 +72,14 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         }
     }
 
-    private fun observeUiState() {
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.state.collect { filterState ->
-                    when (filterState) {
+                filterViewModel.state.collect { state ->
+                    when (state) {
                         is FilterState.Loading -> showLoading()
-                        is FilterState.Success -> showResult(filterState.categories)
-                        is FilterState.Error -> showError()
+                        is FilterState.Result -> showResult(state.categories)
+                        is FilterState.Error -> hideContentOnError()
                     }
                 }
             }
@@ -88,14 +89,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun observeEffects() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.effect.collect { filterEffect ->
-                    when (filterEffect) {
+                filterViewModel.effect.collect { effect ->
+                    when (effect) {
                         is FilterEffect.NavigateBack -> findNavController().navigateUp()
-                        is FilterEffect.ShowToast -> Toast.makeText(
-                            requireContext(),
-                            getString(filterEffect.messageResId),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        is FilterEffect.ShowSuccessToast -> showToast(effect.messageResId)
+                        is FilterEffect.ShowErrorToast -> showToast(effect.messageResId)
                     }
                 }
             }
@@ -115,7 +113,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         filterAdapter.submitList(categoryList)
     }
 
-    private fun showError() {
+    private fun showToast(@StringRes messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hideContentOnError() {
         binding.progressBarFilter.isVisible = false
         binding.imageViewFilterApplySettings.isVisible = false
         binding.recyclerViewFilterItem.isVisible = false

@@ -20,6 +20,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.presentation.main.MainEvent
+import com.example.simbirsoft_android_practice.core.util.textChangesFlow
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
@@ -36,7 +37,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory  }
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,8 +50,9 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        observeListeners()
         observeState()
-        observeEffects()
+        observeEffect()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -76,7 +78,9 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             }
             return@setOnTouchListener false
         }
+    }
 
+    private fun observeListeners() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -99,7 +103,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             }
         }
     }
-
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -130,20 +133,22 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
     }
 
-    private fun observeEffects() {
+    private fun observeEffect() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authorizationViewModel.effect.collectLatest { effect ->
                     when (effect) {
+                        is AuthorizationEffect.NavigateToHelp -> {
+                            findNavController().navigate(R.id.action_authorization_to_help)
+                        }
+                        is AuthorizationEffect.StartNewsService -> {
+                            mainViewModel.requestStartNewsService()
+                        }
                         is AuthorizationEffect.FinishActivity -> {
                             requireActivity().finish()
                         }
-
-                        is AuthorizationEffect.NavigateToHelp -> {
-                            findNavController().navigate(R.id.action_authorization_to_help)
-                            mainViewModel.onEvent(MainEvent.RequestStartNewsService)
-                        }
                     }
+
                 }
 
             }

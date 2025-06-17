@@ -1,7 +1,6 @@
 package com.example.simbirsoft_android_practice.presentation.search
 
-sealed class SearchContainerState {
-    data object Idle : SearchContainerState()
-    data object BlankQuery : SearchContainerState()
-    data class QueryUpdated(val query: String) : SearchContainerState()
+sealed interface SearchContainerState {
+    data object Idle : SearchContainerState
+    data class QueryAndPage(val query: String, val tab: SearchTab) : SearchContainerState
 }

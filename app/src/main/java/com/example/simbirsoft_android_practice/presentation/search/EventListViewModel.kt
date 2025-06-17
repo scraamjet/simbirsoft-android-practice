@@ -30,7 +30,9 @@ class EventListViewModel @Inject constructor(
     }
 
     fun onEvent(event: EventListEvent) {
-        _eventFlow.tryEmit(event)
+        viewModelScope.launch {
+            _eventFlow.emit(event)
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -40,17 +42,16 @@ class EventListViewModel @Inject constructor(
                 .filterIsInstance<EventListEvent.SearchQueryChanged>()
                 .flatMapLatest { event ->
                     flow {
-                        emit(EventListState.Loading)
                         eventsUseCase(event.query)
                             .map { events -> Pair(events, event.query) }
-                            .catch { throwable ->
-                                emit(EventListState.Error(throwable.message ?: "Unknown error"))
+                            .catch {
+                                emit(EventListState.Error)
                             }
-                            .collect { (events, queryString) ->
+                            .collect { (events, query) ->
                                 val eventState = when {
-                                    queryString.isBlank() -> EventListState.BlankQuery
+                                    query.isBlank() -> EventListState.Idle
                                     events.isEmpty() -> EventListState.Empty
-                                    else -> EventListState.Success(events)
+                                    else -> EventListState.Result(events)
                                 }
                                 emit(eventState)
                             }
