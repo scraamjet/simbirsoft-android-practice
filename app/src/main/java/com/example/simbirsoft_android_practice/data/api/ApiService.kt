@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.api
+package com.example.simbirsoft_android_practice.data.api
 
 import com.example.simbirsoft_android_practice.domain.model.Category
 import com.example.simbirsoft_android_practice.domain.model.Event

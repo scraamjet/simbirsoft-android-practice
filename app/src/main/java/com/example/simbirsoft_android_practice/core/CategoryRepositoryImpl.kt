@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
-import com.example.simbirsoft_android_practice.api.ApiService
+import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
 import com.example.simbirsoft_android_practice.domain.model.Category
@@ -21,10 +21,10 @@ private const val CATEGORIES_JSON_FILE = "categories.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class CategoryRepositoryImpl @Inject constructor(
-        private val extractor: JsonAssetExtractor,
-        private val categoryDao: CategoryDao,
-        private val gson: Gson,
-        private val apiService: ApiService,
+    private val extractor: JsonAssetExtractor,
+    private val categoryDao: CategoryDao,
+    private val gson: Gson,
+    private val apiService: ApiService,
     ) : CategoryRepository {
         private var isDataLoaded = false
 

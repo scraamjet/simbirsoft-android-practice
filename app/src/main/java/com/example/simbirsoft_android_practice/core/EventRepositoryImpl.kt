@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
-import com.example.simbirsoft_android_practice.api.ApiService
+import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.database.EventDao
 import com.example.simbirsoft_android_practice.database.EventEntityMapper
 import com.example.simbirsoft_android_practice.domain.model.Event
@@ -21,10 +21,10 @@ private const val EVENTS_JSON_FILE = "events.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
 class EventRepositoryImpl @Inject constructor(
-        private val extractor: JsonAssetExtractor,
-        private val eventDao: EventDao,
-        private val gson: Gson,
-        private val apiService: ApiService,
+    private val extractor: JsonAssetExtractor,
+    private val eventDao: EventDao,
+    private val gson: Gson,
+    private val apiService: ApiService,
     ) : EventRepository {
         private var isDataLoaded = false
 

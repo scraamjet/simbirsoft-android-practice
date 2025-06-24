@@ -1,11 +1,11 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.domain.repository.CategoryRepository
 import com.example.simbirsoft_android_practice.core.CategoryRepositoryImpl
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.EventDao
 import com.google.gson.Gson

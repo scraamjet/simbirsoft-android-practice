@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.api
+package com.example.simbirsoft_android_practice.data.api
 
 import com.example.simbirsoft_android_practice.BuildConfig
 import okhttp3.OkHttpClient

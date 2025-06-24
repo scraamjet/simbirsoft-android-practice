@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.api.ApiService
+import com.example.simbirsoft_android_practice.data.api.ApiService
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
