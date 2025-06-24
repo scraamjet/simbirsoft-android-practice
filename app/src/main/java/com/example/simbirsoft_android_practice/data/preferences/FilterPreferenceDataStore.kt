@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.filter
+package com.example.simbirsoft_android_practice.data.preferences
 
 import android.content.Context
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

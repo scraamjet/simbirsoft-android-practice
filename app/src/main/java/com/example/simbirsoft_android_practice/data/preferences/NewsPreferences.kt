@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.simbirsoft_android_practice.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
