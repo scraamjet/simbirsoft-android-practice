@@ -1,7 +1,9 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.simbirsoft_android_practice.MultiViewModelFactory
+import com.example.simbirsoft_android_practice.ViewModelKey
 import com.example.simbirsoft_android_practice.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.help.HelpViewModel

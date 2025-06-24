@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl

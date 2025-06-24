@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
 import androidx.room.Room

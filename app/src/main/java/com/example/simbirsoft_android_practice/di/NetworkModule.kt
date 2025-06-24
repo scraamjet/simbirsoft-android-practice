@@ -1,5 +1,6 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.di
 
+import com.example.simbirsoft_android_practice.BuildConfig
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import dagger.Module
 import dagger.Provides
