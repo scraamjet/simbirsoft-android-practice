@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.filter
+package com.example.simbirsoft_android_practice.presentation.filter
 
 import android.content.Context
 import android.os.Bundle

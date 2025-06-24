@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.di
 import android.content.Context
 import com.example.simbirsoft_android_practice.App
 import com.example.simbirsoft_android_practice.auth.AuthorizationFragment
-import com.example.simbirsoft_android_practice.filter.FilterFragment
+import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment
 import com.example.simbirsoft_android_practice.help.HelpFragment
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.news.NewsDetailFragment

@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
-import com.example.simbirsoft_android_practice.filter.FilterPreferenceDataStore
+import com.example.simbirsoft_android_practice.presentation.filter.FilterPreferenceDataStore
 import com.example.simbirsoft_android_practice.news.NewsPreferences
 import dagger.Module
 import dagger.Provides

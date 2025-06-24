@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.filter
+package com.example.simbirsoft_android_practice.presentation.filter
 
 import com.example.simbirsoft_android_practice.domain.model.Category
 import com.example.simbirsoft_android_practice.domain.model.FilterCategory
