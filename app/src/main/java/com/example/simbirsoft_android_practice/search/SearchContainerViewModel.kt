@@ -17,8 +17,8 @@ private const val SEARCH_STATE_TIMEOUT_MILLISECONDS = 5000L
 
 class SearchContainerViewModel @Inject constructor() : ViewModel() {
 
-    private val _state = MutableStateFlow<SearchUiState>(SearchUiState.Idle)
-    val state: StateFlow<SearchUiState> = _state.asStateFlow()
+    private val _state = MutableStateFlow<SearchContainerState>(SearchContainerState.Idle)
+    val state: StateFlow<SearchContainerState> = _state.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
@@ -42,8 +42,8 @@ class SearchContainerViewModel @Inject constructor() : ViewModel() {
     private fun handleQueryChanged(query: String) {
         _searchQuery.value = query
         _state.value = when {
-            query.isBlank() -> SearchUiState.BlankQuery
-            else -> SearchUiState.QueryUpdated(query)
+            query.isBlank() -> SearchContainerState.BlankQuery
+            else -> SearchContainerState.QueryUpdated(query)
         }
     }
 }
