@@ -30,7 +30,7 @@
             android:name=".presentation.main.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".splash.SplashScreen"
+            android:name=".presentation.splash.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

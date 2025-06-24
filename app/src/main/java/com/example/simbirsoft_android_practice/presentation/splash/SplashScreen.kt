@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.splash
+package com.example.simbirsoft_android_practice.presentation.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
