@@ -1,0 +1,18 @@
+package com.example.simbirsoft_android_practice
+
+import com.example.simbirsoft_android_practice.filter.FilterPreferenceDataStore
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class FilterPreferencesUseCaseImpl @Inject constructor(
+    private val dataStore: FilterPreferenceDataStore
+) : FilterPreferencesUseCase {
+
+    override fun getSelectedCategoryIds(): Flow<Set<Int>> {
+        return dataStore.selectedCategories
+    }
+
+    override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
+        dataStore.saveSelectedCategories(ids)
+    }
+}

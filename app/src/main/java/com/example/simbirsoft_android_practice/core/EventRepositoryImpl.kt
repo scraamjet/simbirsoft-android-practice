@@ -19,9 +19,7 @@ private const val TAG_EVENT_REPOSITORY = "EventRepository"
 private const val EVENTS_JSON_FILE = "events.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class EventRepository
-    @Inject
-    constructor(
+class EventRepositoryImpl @Inject constructor(
         private val extractor: JsonAssetExtractor,
         private val eventDao: EventDao,
         private val gson: Gson,
@@ -29,7 +27,7 @@ class EventRepository
     ) {
         private var isDataLoaded = false
 
-        fun getEvents(categoryId: Int?): Flow<List<Event>> {
+    fun getEvents(categoryId: Int?): Flow<List<Event>> {
             return if (isDataLoaded) {
                 getEventsFromDatabase()
             } else {

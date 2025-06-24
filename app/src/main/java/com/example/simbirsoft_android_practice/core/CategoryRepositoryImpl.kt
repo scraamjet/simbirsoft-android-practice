@@ -19,9 +19,7 @@ private const val TAG_CATEGORY_REPOSITORY = "CategoryRepository"
 private const val CATEGORIES_JSON_FILE = "categories.json"
 private const val TIMEOUT_IN_MILLIS = 5_000L
 
-class CategoryRepository
-    @Inject
-    constructor(
+class CategoryRepositoryImpl @Inject constructor(
         private val extractor: JsonAssetExtractor,
         private val categoryDao: CategoryDao,
         private val gson: Gson,
@@ -29,7 +27,7 @@ class CategoryRepository
     ) {
         private var isDataLoaded = false
 
-        fun getCategories(): Flow<List<Category>> {
+    fun getCategories(): Flow<List<Category>> {
             return if (isDataLoaded) {
                 getCategoriesFromDatabase()
             } else {

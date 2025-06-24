@@ -1,0 +1,21 @@
+package com.example.simbirsoft_android_practice
+
+import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
+import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.news.NewsMapper
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class NewsUseCaseImpl @Inject constructor(
+    private val eventRepository: EventRepositoryImpl
+) : NewsUseCase {
+    override suspend fun execute(selectedCategories: Set<Int>): List<NewsItem> {
+        return eventRepository.getEvents(null)
+            .map { events ->
+                events.filter { event ->
+                    event.categoryIds.any { categoryId -> categoryId in selectedCategories }
+                }.map(NewsMapper::eventToNewsItem)
+            }.first()
+    }
+}

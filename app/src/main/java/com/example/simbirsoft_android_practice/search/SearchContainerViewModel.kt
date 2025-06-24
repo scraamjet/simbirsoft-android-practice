@@ -15,7 +15,6 @@ import javax.inject.Inject
 private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val SEARCH_STATE_TIMEOUT_MILLISECONDS = 5000L
 
-
 class SearchContainerViewModel @Inject constructor() : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
