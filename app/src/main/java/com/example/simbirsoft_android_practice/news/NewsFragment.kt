@@ -26,29 +26,30 @@ import javax.inject.Inject
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
+
     private val binding by viewBinding(FragmentNewsBinding::bind)
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
-    private val newsViewModel by viewModels<NewsViewModel> { viewModelFactory }
+    private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
+    private val newsViewModel: NewsViewModel by viewModels { viewModelFactory }
 
-    private val newsAdapter by lazy { NewsAdapter(::onNewsItemSelected) }
+    private val newsAdapter by lazy {
+        NewsAdapter { newsItemId -> onNewsItemClicked(newsId = newsItemId) }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        observeNews()
+        observeUiState()
+        observeEffects()
     }
 
     private fun initRecyclerView() {
@@ -64,17 +65,27 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         }
     }
 
-    private fun observeNews() {
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    newsViewModel.uiState.collect { state ->
-                        when (state) {
-                            is NewsUiState.Loading -> showLoading()
-                            is NewsUiState.Results -> showResults(state.news)
-                            is NewsUiState.NoResults -> showNoResults()
-                            is NewsUiState.Error -> showError()
-                        }
+                newsViewModel.uiState.collect { state: NewsUiState ->
+                    when (state) {
+                        is NewsUiState.Loading -> showLoading()
+                        is NewsUiState.Results -> showResults(newsList = state.newsList)
+                        is NewsUiState.NoResults -> showNoResults()
+                        is NewsUiState.Error -> showError()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                newsViewModel.effect.collect { effect: NewsEffect ->
+                    when (effect) {
+                        is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
                     }
                 }
             }
@@ -95,7 +106,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         newsAdapter.submitList(newsList)
         updateScrollFlags(isListEmpty = false)
 
-        mainViewModel.updateBadge(newsList)
+        mainViewModel.updateBadgeCount(newsItems = newsList)
     }
 
     private fun showNoResults() {
@@ -104,7 +115,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadge(emptyList())
+        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
     private fun showError() {
@@ -113,25 +124,29 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadge(emptyList())
+        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
-    private fun onNewsItemSelected(newsId: Int) {
-        mainViewModel.updateReadNews(newsId)
-        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId)
+    private fun onNewsItemClicked(newsId: Int) {
+        mainViewModel.updateReadNews(newsId = newsId)
+        newsViewModel.onEvent(NewsEvent.NewsClicked(newsId = newsId))
+    }
+
+    private fun navigateToNewsDetail(newsId: Int) {
+        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId = newsId)
         findNavController().navigate(action)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
         (binding.toolbarNews.layoutParams as AppBarLayout.LayoutParams).apply {
-            scrollFlags =
-                if (isListEmpty) {
-                    SCROLL_FLAG_NONE
-                } else {
-                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
+            scrollFlags = if (isListEmpty) {
+                SCROLL_FLAG_NONE
+            } else {
+                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
                         AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
                         AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
-                }
+            }
         }
     }
 }
+

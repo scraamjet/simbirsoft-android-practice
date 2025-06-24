@@ -14,6 +14,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
+import com.example.simbirsoft_android_practice.model.HelpCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,27 +28,23 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val helpViewModel by viewModels<HelpViewModel> { viewModelFactory }
-
-    private val adapter by lazy { HelpAdapter() }
+    private val helpAdapter by lazy { HelpAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observeCategories()
+        observeUiState()
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewHelpItem.apply {
             layoutManager = GridLayoutManager(requireContext(), RECYCLER_VIEW_SPAN_COUNT)
-            adapter = this@HelpFragment.adapter
+            adapter = helpAdapter
             addItemDecoration(
                 GridSpacingItemDecoration(
                     RECYCLER_VIEW_SPAN_COUNT,
@@ -57,21 +54,33 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         }
     }
 
-    private fun observeCategories() {
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    helpViewModel.loading.collect { isLoading ->
-                        binding.progressBarHelp.isVisible = isLoading
-                        binding.recyclerViewHelpItem.isVisible = !isLoading
-                    }
-                }
-                launch {
-                    helpViewModel.categories.collect { categories ->
-                        adapter.submitList(categories)
+                helpViewModel.state.collect { helpState ->
+                    when (helpState) {
+                        is HelpState.Loading -> showLoading()
+                        is HelpState.Success -> showResult(helpState.categories)
+                        is HelpState.Error -> showError()
                     }
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.progressBarHelp.isVisible = true
+        binding.recyclerViewHelpItem.isVisible = false
+    }
+
+    private fun showResult(categoryList: List<HelpCategory>) {
+        binding.progressBarHelp.isVisible = false
+        binding.recyclerViewHelpItem.isVisible = true
+        helpAdapter.submitList(categoryList)
+    }
+
+    private fun showError() {
+        binding.progressBarHelp.isVisible = false
+        binding.recyclerViewHelpItem.isVisible = false
     }
 }

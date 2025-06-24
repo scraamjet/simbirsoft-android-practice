@@ -26,27 +26,32 @@ import com.example.simbirsoft_android_practice.ProfileViewModel
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
+import com.example.simbirsoft_android_practice.model.Friend
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
+
     private val binding by viewBinding(FragmentProfileBinding::bind)
     private val friendAdapter by lazy { FriendAdapter() }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let { cameraBitmap -> viewModel.setCameraImage(cameraBitmap) }
+            if (bitmap != null) {
+                viewModel.onEvent(ProfileEvent.SetCameraImage(bitmap))
+            }
         }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { imageUri -> viewModel.setGalleryImage(imageUri) }
+            if (uri != null) {
+                viewModel.onEvent(ProfileEvent.SetGalleryImage(uri))
+            }
         }
 
     private val cameraPermissionLauncher =
@@ -63,11 +68,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.onEvent(ProfileEvent.Load)
 
         binding.appBarImageProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_edit_photo_dialog)
@@ -75,7 +79,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         initRecyclerView()
         listenToPhotoDialog()
-        collectViewModel()
+        collectState()
+        collectEffect()
     }
 
     private fun initRecyclerView() {
@@ -88,44 +93,49 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun listenToPhotoDialog() {
         parentFragmentManager.setFragmentResultListener(
             EditPhotoDialogKeys.REQUEST_KEY,
-            viewLifecycleOwner,
-        ) { _, bundle ->
-            val actionName = bundle.getString(EditPhotoDialogKeys.ACTION_KEY)
-            val action = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
-            viewModel.onPhotoActionSelected(action)
+            viewLifecycleOwner
+        ) { _, resultBundle ->
+            val actionName = resultBundle.getString(EditPhotoDialogKeys.ACTION_KEY)
+            val photoAction = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
+            viewModel.onEvent(ProfileEvent.PhotoActionSelected(photoAction))
         }
     }
 
-    private fun collectViewModel() {
+    private fun collectState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.friends.collect { friends -> friendAdapter.submitList(friends) }
-                }
-
-                launch {
-                    viewModel.photoAction.collect { action -> handlePhotoAction(action) }
-                }
-
-                launch {
-                    viewModel.galleryImageUri.collect { uri -> updateAppBarImageFromGallery(uri) }
-                }
-
-                launch {
-                    viewModel.cameraImageBitmap.collect { bitmap ->
-                        updateAppBarImageFromCamera(
-                            bitmap,
-                        )
+                viewModel.state.collect { profileState ->
+                    when (profileState) {
+                        is ProfileState.Success -> showFriends(profileState.friends)
+                        is ProfileState.Error -> Unit
                     }
                 }
             }
         }
     }
 
+    private fun collectEffect() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect { profileEffect ->
+                    when (profileEffect) {
+                        is ProfileEffect.HandlePhotoAction -> handlePhotoAction(profileEffect.action)
+                        is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(profileEffect.uri)
+                        is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(profileEffect.bitmap)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showFriends(friends: List<Friend>) {
+        friendAdapter.submitList(friends)
+    }
+
     private fun handlePhotoAction(action: PhotoAction) {
         when (action) {
             PhotoAction.TAKE_PHOTO -> handleTakePhoto()
-            PhotoAction.CHOOSE_PHOTO -> handleChoosePhoto()
+            PhotoAction.CHOOSE_PHOTO -> galleryLauncher.launch("image/*")
             PhotoAction.DELETE_PHOTO -> clearAppBarImage()
         }
     }
@@ -138,8 +148,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun handleChoosePhoto() {
-        galleryLauncher.launch("image/*")
+    private fun hasCameraPermission(): Boolean {
+        val permissionStatus = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        )
+        return permissionStatus == PackageManager.PERMISSION_GRANTED
     }
 
     private fun showSettingsDialog() {
@@ -155,29 +169,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         startActivity(
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                 data = Uri.fromParts("package", requireContext().packageName, null)
-            },
+            }
         )
-    }
-
-    private fun hasCameraPermission(): Boolean {
-        val permissionStatus =
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA,
-            )
-        return permissionStatus == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun updateAppBarImageFromCamera(bitmap: Bitmap) {
-        binding.appBarImageProfile.apply {
-            setImageBitmap(bitmap)
-            scaleType = ImageView.ScaleType.CENTER_CROP
-        }
     }
 
     private fun updateAppBarImageFromGallery(uri: Uri) {
         binding.appBarImageProfile.apply {
             setImageURI(uri)
+            scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+    }
+
+    private fun updateAppBarImageFromCamera(bitmap: Bitmap) {
+        binding.appBarImageProfile.apply {
+            setImageBitmap(bitmap)
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     }
@@ -189,3 +194,4 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 }
+

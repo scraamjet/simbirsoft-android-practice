@@ -11,7 +11,7 @@ import javax.inject.Inject
 class EventUseCaseImpl @Inject constructor(
     private val repository: EventRepository
 ) : EventsUseCase {
-    override fun invoke(query: String): Flow<List<SearchEvent>> {
+    override suspend fun invoke(query: String): Flow<List<SearchEvent>> {
         return repository.getEvents(null)
             .map { events ->
                 events.map(SearchMapper::toSearchEvent)

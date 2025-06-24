@@ -28,4 +28,7 @@ interface UseCaseModule {
 
     @Binds
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
+
+    @Binds
+    fun bindProfileUseCase(impl:ProfileUseCaseImpl):ProfileUseCase
 }

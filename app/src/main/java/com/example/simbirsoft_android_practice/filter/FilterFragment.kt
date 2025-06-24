@@ -18,6 +18,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
+import com.example.simbirsoft_android_practice.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +30,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val filterViewModel by viewModels<FilterViewModel> { viewModelFactory }
-
     private val filterAdapter by lazy { FilterAdapter() }
 
     override fun onAttach(context: Context) {
@@ -37,15 +37,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
-        observeCategories()
-        observeLoading()
+        observeUiState()
+        observeEffects()
     }
 
     private fun initRecyclerView() {
@@ -61,44 +58,68 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         }
     }
 
-    private fun observeCategories() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.categories.collect { categories ->
-                    filterAdapter.submitList(categories)
-                }
-            }
-        }
-    }
-
-    private fun observeLoading() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.loading.collect { isLoading ->
-                    binding.progressBarFilter.isVisible = isLoading
-                    binding.imageViewFilterApplySettings.isVisible = !isLoading
-                    binding.recyclerViewFilterItem.isVisible = !isLoading
-                }
-            }
-        }
-    }
-
     private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {
-            findNavController().navigateUp()
+            filterViewModel.onEvent(FilterEvent.OnBackClicked)
         }
         binding.imageViewFilterApplySettings.setOnClickListener {
-            saveFilterSettings()
+            val selectedCategories = filterAdapter.currentList
+                .filter { category -> category.isEnabled }
+                .map { category -> category.id }
+                .toSet()
+            filterViewModel.onEvent(FilterEvent.OnApplyClicked(selectedCategories))
         }
     }
 
-    private fun saveFilterSettings() {
-        val selectedCategories =
-            filterAdapter.currentList.filter { category -> category.isEnabled }
-                .map { category -> category.id }.toSet()
-        filterViewModel.saveSelected(selectedCategories)
-        Toast.makeText(requireContext(), getString(R.string.filter_saved_toast), Toast.LENGTH_SHORT)
-            .show()
-        findNavController().navigateUp()
+    private fun observeUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                filterViewModel.state.collect { filterState ->
+                    when (filterState) {
+                        is FilterState.Loading -> showLoading()
+                        is FilterState.Success -> showResult(filterState.categories)
+                        is FilterState.Error -> showError()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                filterViewModel.effect.collect { filterEffect ->
+                    when (filterEffect) {
+                        is FilterEffect.NavigateBack -> findNavController().navigateUp()
+                        is FilterEffect.ShowToast -> Toast.makeText(
+                            requireContext(),
+                            getString(filterEffect.messageResId),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showLoading() {
+        binding.progressBarFilter.isVisible = true
+        binding.imageViewFilterApplySettings.isVisible = false
+        binding.recyclerViewFilterItem.isVisible = false
+    }
+
+    private fun showResult(categoryList: List<FilterCategory>) {
+        binding.progressBarFilter.isVisible = false
+        binding.imageViewFilterApplySettings.isVisible = true
+        binding.recyclerViewFilterItem.isVisible = true
+        filterAdapter.submitList(categoryList)
+    }
+
+    private fun showError() {
+        binding.progressBarFilter.isVisible = false
+        binding.imageViewFilterApplySettings.isVisible = false
+        binding.recyclerViewFilterItem.isVisible = false
     }
 }
+
+

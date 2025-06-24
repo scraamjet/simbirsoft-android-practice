@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.NewsUseCase
-import com.example.simbirsoft_android_practice.filter.FilterPreferenceDataStore
+import com.example.simbirsoft_android_practice.model.NewsItem
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -17,14 +20,24 @@ private const val TAG = "NewsViewModel"
 
 class NewsViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val getNewsUseCase: NewsUseCase
+    private val newsUseCase: NewsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsUiState>(NewsUiState.Loading)
     val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
 
+    private val _effect = MutableSharedFlow<NewsEffect>()
+    val effect: SharedFlow<NewsEffect> = _effect.asSharedFlow()
+
     init {
-        observeSelectedCategories()
+        onEvent(NewsEvent.LoadNews)
+    }
+
+    fun onEvent(event: NewsEvent) {
+        when (event) {
+            is NewsEvent.LoadNews -> observeSelectedCategories()
+            is NewsEvent.NewsClicked -> handleNewsClicked(newsId = event.newsId)
+        }
     }
 
     private fun observeSelectedCategories() {
@@ -32,7 +45,7 @@ class NewsViewModel @Inject constructor(
             filterPreferencesUseCase.getSelectedCategoryIds()
                 .distinctUntilChanged()
                 .collectLatest { selectedCategories ->
-                    loadNews(selectedCategories)
+                    loadNews(selectedCategories = selectedCategories)
                 }
         }
     }
@@ -40,14 +53,22 @@ class NewsViewModel @Inject constructor(
     private suspend fun loadNews(selectedCategories: Set<Int>) {
         _uiState.value = NewsUiState.Loading
         try {
-            val filteredNews = getNewsUseCase.execute(selectedCategories)
+            val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
             _uiState.value = if (filteredNews.isEmpty()) {
                 NewsUiState.NoResults
             } else {
-                NewsUiState.Results(filteredNews)
+                NewsUiState.Results(newsList = filteredNews)
             }
-        } catch (e: Exception) {
-            _uiState.value = NewsUiState.Error(e.localizedMessage ?: "Unknown error")
+        } catch (exception: Exception) {
+            _uiState.value = NewsUiState.Error(
+                message = exception.localizedMessage ?: "Unknown error"
+            )
+        }
+    }
+
+    private fun handleNewsClicked(newsId: Int) {
+        viewModelScope.launch {
+            _effect.emit(NewsEffect.NavigateToNewsDetail(newsId = newsId))
         }
     }
 }

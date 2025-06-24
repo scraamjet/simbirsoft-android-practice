@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+
     private val binding by viewBinding(ActivityMainBinding::bind)
 
     @Inject
@@ -35,35 +36,32 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private var isServiceConnected = false
 
     private val navController: NavController by lazy {
-        val navHostFragment =
-            supportFragmentManager
-                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.navController
     }
 
     private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
 
-    private val connection =
-        NewsServiceConnection(
-            onServiceConnected = { service ->
-                newsService = service
-                isServiceConnected = true
-                newsServiceProxy.setService(service)
-                mainViewModel.observeNews(newsServiceProxy)
-            },
-            onServiceDisconnected = {
-                isServiceConnected = false
-                newsServiceProxy.clearService()
-            },
-        )
+    private val connection = NewsServiceConnection(
+        onServiceConnected = { connectedService ->
+            newsService = connectedService
+            isServiceConnected = true
+            newsServiceProxy.setService(connectedService)
+            mainViewModel.observeNews(newsServiceProxy)
+        },
+        onServiceDisconnected = {
+            isServiceConnected = false
+            newsServiceProxy.clearService()
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         setupNavigation()
-        observeBottomNavigationVisibility()
-        observeBadgeCount()
+        observeViewModelState()
     }
 
     private fun setupNavigation() {
@@ -72,32 +70,29 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.authorizationFragment,
-                R.id.newsDetailFragment,
-                -> mainViewModel.setBottomNavigationVisible(visible = false)
+                R.id.newsDetailFragment -> {
+                    mainViewModel.setBottomNavigationVisible(visible = false)
+                }
 
-                else -> mainViewModel.setBottomNavigationVisible(visible = true)
-            }
-        }
-    }
-
-    private fun observeBottomNavigationVisibility() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.bottomNavigationVisible.collect { visible ->
-                    if (visible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
+                else -> {
+                    mainViewModel.setBottomNavigationVisible(visible = true)
                 }
             }
         }
     }
 
-    private fun observeBadgeCount() {
+    private fun observeViewModelState() {
         lifecycleScope.launch {
-            mainViewModel.badgeFlow.collect { count ->
-                updateUnreadNewsBadge(count)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.state.collect { mainState ->
+                    if (mainState.isBottomNavigationVisible) {
+                        showBottomNavigation()
+                    } else {
+                        hideBottomNavigation()
+                    }
+
+                    updateUnreadNewsBadge(count = mainState.badgeCount)
+                }
             }
         }
     }
@@ -135,3 +130,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }
+
+

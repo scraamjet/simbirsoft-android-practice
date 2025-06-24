@@ -1,12 +1,14 @@
 package com.example.simbirsoft_android_practice.news
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.model.NewsDetail
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,17 +19,39 @@ class NewsDetailViewModel @Inject constructor(
     private val newsDetailUseCase: NewsDetailUseCase
 ) : ViewModel() {
 
-    private val _newsDetail = MutableStateFlow<NewsDetail?>(null)
-    val newsDetail: StateFlow<NewsDetail?> = _newsDetail.asStateFlow()
+    private val _state = MutableStateFlow<NewsDetailState?>(null)
+    val state: StateFlow<NewsDetailState?> = _state.asStateFlow()
 
-    fun loadNewsDetail(newsId: Int) {
+    private val _effect = MutableSharedFlow<NewsDetailEffect>()
+    val effect: SharedFlow<NewsDetailEffect> = _effect.asSharedFlow()
+
+    fun onEvent(event: NewsDetailEvent) {
+        when (event) {
+            is NewsDetailEvent.LoadNewsDetail -> loadNewsDetail(newsId = event.newsId)
+        }
+    }
+
+    private fun loadNewsDetail(newsId: Int) {
         viewModelScope.launch {
             try {
-                val detail = newsDetailUseCase.execute(newsId)
-                _newsDetail.value = detail
-            } catch (e: Exception) {
-                Log.e(TAG, "News detail loading error: ${e.message}", e)
+                val newsDetail: NewsDetail? = newsDetailUseCase.execute(newsId = newsId)
+                if (newsDetail != null) {
+                    _state.value = NewsDetailState.Result(newsDetail = newsDetail)
+                } else {
+                    _state.value = NewsDetailState.Error(message = "Новость не найдена")
+                }
+            } catch (exception: Exception) {
+                _state.value = NewsDetailState.Error(
+                    message = exception.localizedMessage ?: "Неизвестная ошибка"
+                )
             }
         }
     }
+
+    fun onBackClicked() {
+        viewModelScope.launch {
+            _effect.emit(NewsDetailEffect.NavigateBack)
+        }
+    }
 }
+

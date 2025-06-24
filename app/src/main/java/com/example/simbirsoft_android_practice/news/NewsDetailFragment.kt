@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.news
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -35,50 +36,70 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClickListeners()
-        observeNewsDetail()
-        viewModel.loadNewsDetail(args.newsId)
+        observeState()
+        observeEffect()
+        viewModel.onEvent(NewsDetailEvent.LoadNewsDetail(newsId = args.newsId))
     }
 
-    private fun observeNewsDetail() {
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.newsDetail.collect { news ->
-                        news?.let { newsItem -> bindNewsDetails(newsItem) }
+                viewModel.state.collect { state: NewsDetailState? ->
+                    when (state) {
+                        is NewsDetailState.Result -> showResult(newsDetail = state.newsDetail)
+                        is NewsDetailState.Error -> showError(message = state.message)
+                        null -> Unit
                     }
                 }
             }
         }
     }
 
-    private fun bindNewsDetails(news: NewsDetail) {
+    private fun observeEffect() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect { effect: NewsDetailEffect ->
+                    when (effect) {
+                        is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showResult(newsDetail: NewsDetail) {
         with(binding) {
-            textViewNewsDetailToolbarTitle.text = news.title
-            textViewNewsDetailTitle.text = news.title
+            textViewNewsDetailToolbarTitle.text = newsDetail.title
+            textViewNewsDetailTitle.text = newsDetail.title
             textViewNewsDetailTime.text =
-                DateUtils.formatEventDates(requireContext(), news.startDateTime, news.endDateTime)
-            textViewNewsDetailOwner.text = news.owner
-            textViewNewsDetailAddress.text = news.ownerAddress
-            textViewNewsDetailContacts.text = news.ownerContacts
-            textViewNewsDetailDescription.text = news.fullDescription
+                DateUtils.formatEventDates(
+                    requireContext(),
+                    newsDetail.startDateTime,
+                    newsDetail.endDateTime
+                )
+            textViewNewsDetailOwner.text = newsDetail.owner
+            textViewNewsDetailAddress.text = newsDetail.ownerAddress
+            textViewNewsDetailContacts.text = newsDetail.ownerContacts
+            textViewNewsDetailDescription.text = newsDetail.fullDescription
 
             listOf(
                 imageViewNewsDetailMainImage,
                 imageViewNewsDetailPrimaryImage,
                 imageViewNewsDetailSecondaryImage,
-            ).zip(news.picturesUrl) { imageView, url -> imageView.load(url) }
+            ).zip(newsDetail.picturesUrl) { imageView, url -> imageView.load(url) }
         }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.onBackClicked()
         }
     }
 }

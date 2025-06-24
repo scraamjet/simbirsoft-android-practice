@@ -28,6 +28,7 @@ import javax.inject.Inject
 private const val DRAWABLE_END_INDEX = 2
 
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
+
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
 
     @Inject
@@ -44,87 +45,99 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
-        initClickListeners()
-        observeInputFields()
-        observePasswordVisibility()
+        initListeners()
+        observeState()
+        observeEffects()
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initClickListeners() {
+    private fun initListeners() {
         binding.imageViewFilterBack.setOnClickListener {
-            requireActivity().finish()
+            viewModel.onEvent(AuthorizationEvent.BackClicked)
         }
 
         binding.buttonAuthorization.setOnClickListener {
-            findNavController().navigate(R.id.action_authorization_to_help)
-            (activity as? MainActivity)?.startAndBindNewsService()
+            viewModel.onEvent(AuthorizationEvent.SubmitClicked)
         }
 
-        binding.editTextAuthorizationPassword.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val drawable =
-                    binding.editTextAuthorizationPassword.compoundDrawables[DRAWABLE_END_INDEX]
-                val rightDrawableX =
-                    binding.editTextAuthorizationPassword.right - drawable.bounds.width()
-                if (event.rawX >= rightDrawableX) {
-                    viewModel.togglePasswordVisibility()
+        binding.editTextAuthorizationPassword.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.editTextAuthorizationPassword.compoundDrawables[DRAWABLE_END_INDEX]
+                val drawableX = binding.editTextAuthorizationPassword.right - drawableEnd.bounds.width()
+                if (motionEvent.rawX >= drawableX) {
+                    viewModel.onEvent(AuthorizationEvent.TogglePasswordVisibility)
                     return@setOnTouchListener true
                 }
             }
             return@setOnTouchListener false
         }
-    }
 
-    private fun observeInputFields() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     binding.editTextAuthorizationEmail.textChangesFlow()
-                        .collectLatest { text ->
-                            viewModel.onEmailChanged(text.toString())
+                        .collectLatest { editable ->
+                            viewModel.onEvent(AuthorizationEvent.EmailChanged(editable.toString()))
                         }
                 }
 
                 launch {
                     binding.editTextAuthorizationPassword.textChangesFlow()
-                        .collectLatest { text ->
-                            viewModel.onPasswordChanged(text.toString())
+                        .collectLatest { editable ->
+                            viewModel.onEvent(AuthorizationEvent.PasswordChanged(editable.toString()))
                         }
-                }
-
-                launch {
-                    viewModel.isFormValid.collectLatest { isFormValid ->
-                        binding.buttonAuthorization.isEnabled = isFormValid
-                    }
                 }
             }
         }
     }
 
-    private fun observePasswordVisibility() {
+
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isPasswordVisible.collectLatest { isVisible ->
-                    val passwordField = binding.editTextAuthorizationPassword
-                    passwordField.transformationMethod =
-                        if (isVisible) {
+                viewModel.state.collectLatest { state ->
+                    binding.buttonAuthorization.isEnabled = state.isFormValid
+
+                    binding.editTextAuthorizationPassword.transformationMethod =
+                        if (state.isPasswordVisible) {
                             HideReturnsTransformationMethod.getInstance()
                         } else {
                             PasswordTransformationMethod.getInstance()
                         }
 
-                    passwordField.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            if (isVisible) R.drawable.ic_hide_password else R.drawable.ic_open_password,
-                        ),
-                        null,
+                    val iconResId = if (state.isPasswordVisible) {
+                        R.drawable.ic_hide_password
+                    } else {
+                        R.drawable.ic_open_password
+                    }
+
+                    binding.editTextAuthorizationPassword.setCompoundDrawablesWithIntrinsicBounds(
+                        null, null,
+                        ContextCompat.getDrawable(requireContext(), iconResId),
+                        null
                     )
                 }
             }
         }
     }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collectLatest { effect ->
+                    when (effect) {
+                        is AuthorizationEffect.FinishActivity -> {
+                            requireActivity().finish()
+                        }
+
+                        is AuthorizationEffect.NavigateToHelp -> {
+                            findNavController().navigate(R.id.action_authorization_to_help)
+                            (requireActivity() as? MainActivity)?.startAndBindNewsService()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+

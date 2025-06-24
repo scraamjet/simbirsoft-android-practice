@@ -4,5 +4,5 @@ import com.example.simbirsoft_android_practice.model.SearchEvent
 import kotlinx.coroutines.flow.Flow
 
 interface EventsUseCase {
-    operator fun invoke(query: String): Flow<List<SearchEvent>>
+    suspend operator fun invoke(query: String): Flow<List<SearchEvent>>
 }
