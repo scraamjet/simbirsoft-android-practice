@@ -3,7 +3,6 @@ package com.example.simbirsoft_android_practice.presentation.search
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
@@ -13,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
@@ -23,7 +22,6 @@ import javax.inject.Inject
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
-
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
 
     @Inject
@@ -79,24 +77,24 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
                     searchContainerViewModel.onEvent(SearchContainerEvent.OnQueryChanged(query = newText.orEmpty()))
                     return true
                 }
-            }
+            },
         )
     }
 
     private fun observeKeyboardVisibility() {
         val rootView = binding.root
-        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-            val rect = Rect()
-            rootView.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = rootView.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
-            val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+        globalLayoutListener =
+            ViewTreeObserver.OnGlobalLayoutListener {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = rootView.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+                val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-            mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
-        }
+                mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
+            }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

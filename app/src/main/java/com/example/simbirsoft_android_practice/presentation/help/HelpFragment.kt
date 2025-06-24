@@ -14,8 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.HelpCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
@@ -37,7 +37,10 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeState()
@@ -94,7 +97,9 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         helpAdapter.submitList(categoryList)
     }
 
-    private fun showToast(@StringRes messageResId: Int) {
+    private fun showToast(
+        @StringRes messageResId: Int,
+    ) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 

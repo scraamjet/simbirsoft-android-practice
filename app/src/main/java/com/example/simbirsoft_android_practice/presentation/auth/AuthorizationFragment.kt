@@ -17,12 +17,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
-import com.example.simbirsoft_android_practice.presentation.main.MainEvent
-import com.example.simbirsoft_android_practice.core.util.textChangesFlow
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
+import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
+import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,7 +29,6 @@ import javax.inject.Inject
 private const val DRAWABLE_END_INDEX = 2
 
 class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
-
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
 
     @Inject
@@ -95,8 +92,8 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                         .collectLatest { editable ->
                             authorizationViewModel.onEvent(
                                 AuthorizationEvent.PasswordChanged(
-                                    editable.toString()
-                                )
+                                    editable.toString(),
+                                ),
                             )
                         }
                 }
@@ -117,16 +114,18 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                             PasswordTransformationMethod.getInstance()
                         }
 
-                    val iconResId = if (state.isPasswordVisible) {
-                        R.drawable.ic_hide_password
-                    } else {
-                        R.drawable.ic_open_password
-                    }
+                    val iconResId =
+                        if (state.isPasswordVisible) {
+                            R.drawable.ic_hide_password
+                        } else {
+                            R.drawable.ic_open_password
+                        }
 
                     binding.editTextAuthorizationPassword.setCompoundDrawablesWithIntrinsicBounds(
-                        null, null,
+                        null,
+                        null,
                         ContextCompat.getDrawable(requireContext(), iconResId),
-                        null
+                        null,
                     )
                 }
             }
@@ -148,11 +147,8 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                             requireActivity().finish()
                         }
                     }
-
                 }
-
             }
         }
     }
 }
-

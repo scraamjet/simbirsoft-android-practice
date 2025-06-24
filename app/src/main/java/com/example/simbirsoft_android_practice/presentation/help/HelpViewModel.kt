@@ -23,32 +23,32 @@ class HelpViewModel @Inject constructor(
     private val _state = MutableStateFlow<HelpState>(HelpState.Loading)
     val state: StateFlow<HelpState> = _state.asStateFlow()
 
-    private val _effect = MutableSharedFlow<HelpEffect>()
-    val effect: SharedFlow<HelpEffect> = _effect.asSharedFlow()
+        private val _effect = MutableSharedFlow<HelpEffect>()
+        val effect: SharedFlow<HelpEffect> = _effect.asSharedFlow()
 
-    init {
-        onEvent(HelpEvent.OnScreenOpened)
-    }
+        init {
+            onEvent(HelpEvent.OnScreenOpened)
+        }
 
-    fun onEvent(event: HelpEvent) {
-        when (event) {
-            HelpEvent.OnScreenOpened -> loadCategories()
+        fun onEvent(event: HelpEvent) {
+            when (event) {
+                HelpEvent.OnScreenOpened -> loadCategories()
+            }
+        }
+
+        private fun loadCategories() {
+            viewModelScope.launch {
+                categoriesHelpUseCase()
+                    .onStart {
+                        _state.value = HelpState.Loading
+                    }
+                    .catch {
+                        _state.value = HelpState.Error
+                        _effect.emit(HelpEffect.ShowErrorToast(R.string.help_load_error))
+                    }
+                    .collect { categoryList ->
+                        _state.value = HelpState.Result(categoryList)
+                    }
+            }
         }
     }
-
-    private fun loadCategories() {
-        viewModelScope.launch {
-            categoriesHelpUseCase()
-                .onStart {
-                    _state.value = HelpState.Loading
-                }
-                .catch {
-                    _state.value = HelpState.Error
-                    _effect.emit(HelpEffect.ShowErrorToast(R.string.help_load_error))
-                }
-                .collect { categoryList ->
-                    _state.value = HelpState.Result(categoryList)
-                }
-        }
-    }
-}

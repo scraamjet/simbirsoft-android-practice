@@ -16,10 +16,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
@@ -28,7 +28,6 @@ import javax.inject.Inject
 private const val SCROLL_FLAG_NONE = 0
 
 class NewsFragment : Fragment(R.layout.fragment_news) {
-
     private val binding by viewBinding(FragmentNewsBinding::bind)
 
     @Inject
@@ -46,7 +45,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -124,7 +126,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
-    private fun showToast(@StringRes messageResId: Int) {
+    private fun showToast(
+        @StringRes messageResId: Int,
+    ) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
@@ -149,14 +153,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
         (binding.toolbarNews.layoutParams as AppBarLayout.LayoutParams).apply {
-            scrollFlags = if (isListEmpty) {
-                SCROLL_FLAG_NONE
-            } else {
-                AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
+            scrollFlags =
+                if (isListEmpty) {
+                    SCROLL_FLAG_NONE
+                } else {
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
                         AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
                         AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
-            }
+                }
         }
     }
 }
-

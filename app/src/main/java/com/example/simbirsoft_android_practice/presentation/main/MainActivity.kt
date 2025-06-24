@@ -14,8 +14,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
     private val binding by viewBinding(ActivityMainBinding::bind)
 
     @Inject
@@ -43,18 +42,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
 
-    private val connection = NewsServiceConnection(
-        onServiceConnected = { connectedService ->
-            newsService = connectedService
-            isServiceConnected = true
-            newsServiceProxy.setService(connectedService)
-            mainViewModel.observeNews(newsServiceProxy)
-        },
-        onServiceDisconnected = {
-            isServiceConnected = false
-            newsServiceProxy.clearService()
-        }
-    )
+    private val connection =
+        NewsServiceConnection(
+            onServiceConnected = { connectedService ->
+                newsService = connectedService
+                isServiceConnected = true
+                newsServiceProxy.setService(connectedService)
+                mainViewModel.observeNews(newsServiceProxy)
+            },
+            onServiceDisconnected = {
+                isServiceConnected = false
+                newsServiceProxy.clearService()
+            },
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.authorizationFragment,
-                R.id.newsDetailFragment -> {
+                R.id.newsDetailFragment,
+                -> {
                     mainViewModel.setBottomNavigationVisible(visible = false)
                 }
 
@@ -143,5 +144,3 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }
-
-

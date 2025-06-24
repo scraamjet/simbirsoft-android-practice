@@ -29,7 +29,7 @@ class CategoryRepositoryImpl @Inject constructor(
     ) : CategoryRepository {
         private var isDataLoaded = false
 
-    override fun getCategories(): Flow<List<Category>> {
+        override fun getCategories(): Flow<List<Category>> {
             return if (isDataLoaded) {
                 getCategoriesFromDatabase()
             } else {

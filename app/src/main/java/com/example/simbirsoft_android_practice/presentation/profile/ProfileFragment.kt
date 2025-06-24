@@ -25,15 +25,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.Friend
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-
     private val binding by viewBinding(FragmentProfileBinding::bind)
     private val friendAdapter by lazy { FriendAdapter() }
 
@@ -69,7 +68,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.onEvent(ProfileEvent.Load)
@@ -94,7 +96,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun listenToPhotoDialog() {
         parentFragmentManager.setFragmentResultListener(
             EditPhotoDialogKeys.REQUEST_KEY,
-            viewLifecycleOwner
+            viewLifecycleOwner,
         ) { _, resultBundle ->
             val actionName = resultBundle.getString(EditPhotoDialogKeys.ACTION_KEY)
             val photoAction = PhotoAction.valueOf(actionName ?: return@setFragmentResultListener)
@@ -139,7 +141,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         friendAdapter.submitList(emptyList())
     }
 
-    private fun showToast(@StringRes messageResId: Int) {
+    private fun showToast(
+        @StringRes messageResId: Int,
+    ) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
@@ -160,10 +164,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun hasCameraPermission(): Boolean {
-        val permissionStatus = ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.CAMERA
-        )
+        val permissionStatus =
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA,
+            )
         return permissionStatus == PackageManager.PERMISSION_GRANTED
     }
 
@@ -180,7 +185,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         startActivity(
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                 data = Uri.fromParts("package", requireContext().packageName, null)
-            }
+            },
         )
     }
 
@@ -205,4 +210,3 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 }
-

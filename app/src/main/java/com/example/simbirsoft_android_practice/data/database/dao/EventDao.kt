@@ -6,8 +6,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.simbirsoft_android_practice.data.database.entity.EventCategoryCrossRef
-import com.example.simbirsoft_android_practice.data.database.entity.EventWithCategories
 import com.example.simbirsoft_android_practice.data.database.entity.EventEntity
+import com.example.simbirsoft_android_practice.data.database.entity.EventWithCategories
 import kotlinx.coroutines.flow.Flow
 
 @Dao

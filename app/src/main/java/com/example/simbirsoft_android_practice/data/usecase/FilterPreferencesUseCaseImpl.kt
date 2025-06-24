@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.data.preferences.FilterPreferenceDataStore
+import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ class FilterPreferencesUseCaseImpl @Inject constructor(
         return dataStore.selectedCategories
     }
 
-    override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
-        dataStore.saveSelectedCategories(ids)
+        override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
+            dataStore.saveSelectedCategories(ids)
+        }
     }
-}

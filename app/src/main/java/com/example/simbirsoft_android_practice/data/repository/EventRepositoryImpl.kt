@@ -29,7 +29,7 @@ class EventRepositoryImpl @Inject constructor(
     ) : EventRepository {
         private var isDataLoaded = false
 
-    override fun getEvents(categoryId: Int?): Flow<List<Event>> {
+        override fun getEvents(categoryId: Int?): Flow<List<Event>> {
             return if (isDataLoaded) {
                 getEventsFromDatabase()
             } else {

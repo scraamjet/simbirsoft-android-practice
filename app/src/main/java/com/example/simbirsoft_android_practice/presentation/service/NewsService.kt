@@ -6,8 +6,8 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -47,10 +47,9 @@ class NewsService : Service() {
                 Log.e(
                     TAG_NEWS_SERVICE,
                     "News flow exception: ${exception.localizedMessage}",
-                    exception
+                    exception,
                 )
                 emit(emptyList())
             }
     }
 }
-

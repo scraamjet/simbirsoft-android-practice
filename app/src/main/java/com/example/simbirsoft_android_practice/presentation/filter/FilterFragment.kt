@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
@@ -38,7 +38,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initClickListeners()
@@ -64,10 +67,11 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             filterViewModel.onEvent(FilterEvent.OnBackClicked)
         }
         binding.imageViewFilterApplySettings.setOnClickListener {
-            val selectedCategories = filterAdapter.currentList
-                .filter { category -> category.isEnabled }
-                .map { category -> category.id }
-                .toSet()
+            val selectedCategories =
+                filterAdapter.currentList
+                    .filter { category -> category.isEnabled }
+                    .map { category -> category.id }
+                    .toSet()
             filterViewModel.onEvent(FilterEvent.OnApplyClicked(selectedCategories))
         }
     }
@@ -113,7 +117,9 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         filterAdapter.submitList(categoryList)
     }
 
-    private fun showToast(@StringRes messageResId: Int) {
+    private fun showToast(
+        @StringRes messageResId: Int,
+    ) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
@@ -123,5 +129,3 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         binding.recyclerViewFilterItem.isVisible = false
     }
 }
-
-

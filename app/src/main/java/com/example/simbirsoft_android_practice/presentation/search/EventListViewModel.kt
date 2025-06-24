@@ -22,44 +22,45 @@ class EventListViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<EventListEvent>(extraBufferCapacity = 1)
 
-    private val _state = MutableStateFlow<EventListState>(EventListState.Loading)
-    val state: StateFlow<EventListState> = _state.asStateFlow()
+        private val _state = MutableStateFlow<EventListState>(EventListState.Loading)
+        val state: StateFlow<EventListState> = _state.asStateFlow()
 
-    init {
-        observeEvents()
-    }
-
-    fun onEvent(event: EventListEvent) {
-        viewModelScope.launch {
-            _eventFlow.emit(event)
+        init {
+            observeEvents()
         }
-    }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeEvents() {
-        viewModelScope.launch {
-            _eventFlow
-                .filterIsInstance<EventListEvent.SearchQueryChanged>()
-                .flatMapLatest { event ->
-                    flow {
-                        eventsUseCase(event.query)
-                            .map { events -> Pair(events, event.query) }
-                            .catch {
-                                emit(EventListState.Error)
-                            }
-                            .collect { (events, query) ->
-                                val eventState = when {
-                                    query.isBlank() -> EventListState.Idle
-                                    events.isEmpty() -> EventListState.Empty
-                                    else -> EventListState.Result(events)
+        fun onEvent(event: EventListEvent) {
+            viewModelScope.launch {
+                _eventFlow.emit(event)
+            }
+        }
+
+        @OptIn(ExperimentalCoroutinesApi::class)
+        private fun observeEvents() {
+            viewModelScope.launch {
+                _eventFlow
+                    .filterIsInstance<EventListEvent.SearchQueryChanged>()
+                    .flatMapLatest { event ->
+                        flow {
+                            eventsUseCase(event.query)
+                                .map { events -> Pair(events, event.query) }
+                                .catch {
+                                    emit(EventListState.Error)
                                 }
-                                emit(eventState)
-                            }
+                                .collect { (events, query) ->
+                                    val eventState =
+                                        when {
+                                            query.isBlank() -> EventListState.Idle
+                                            events.isEmpty() -> EventListState.Empty
+                                            else -> EventListState.Result(events)
+                                        }
+                                    emit(eventState)
+                                }
+                        }
                     }
-                }
-                .collect { eventState ->
-                    _state.value = eventState
-                }
+                    .collect { eventState ->
+                        _state.value = eventState
+                    }
+            }
         }
     }
-}

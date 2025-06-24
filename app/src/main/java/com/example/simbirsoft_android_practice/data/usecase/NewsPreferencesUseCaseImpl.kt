@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
-import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
 import com.example.simbirsoft_android_practice.data.preferences.NewsPreferences
+import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
 import javax.inject.Inject
 
 class NewsPreferencesUseCaseImpl @Inject constructor(
@@ -9,7 +9,7 @@ class NewsPreferencesUseCaseImpl @Inject constructor(
 ) : NewsPreferencesUseCase {
     override fun getReadNewsIds(): Set<Int> = newsPreferences.getReadNewsIds()
 
-    override fun markNewsAsRead(newsId: Int) {
-        newsPreferences.markNewsAsReadAndSelected(newsId)
+        override fun markNewsAsRead(newsId: Int) {
+            newsPreferences.markNewsAsReadAndSelected(newsId)
+        }
     }
-}

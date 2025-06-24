@@ -14,15 +14,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
-
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
@@ -37,7 +36,10 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeUiState()
@@ -124,11 +126,12 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                events.size,
-                events.size,
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    events.size,
+                    events.size,
+                )
         }
     }
 
@@ -147,4 +150,3 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         fun newInstance() = EventListFragment()
     }
 }
-

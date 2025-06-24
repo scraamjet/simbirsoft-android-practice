@@ -14,8 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
@@ -27,7 +27,9 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val organizationListViewModel by viewModels<OrganizationListViewModel> { viewModelFactory }
-    private val searchContainerViewModel: SearchContainerViewModel by viewModels(ownerProducer = { requireParentFragment() }) { viewModelFactory }
+    private val searchContainerViewModel: SearchContainerViewModel by viewModels(ownerProducer = {
+        requireParentFragment()
+    }) { viewModelFactory }
 
     private val adapter: EventAdapter by lazy { EventAdapter() }
 
@@ -36,7 +38,10 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeUiState()
@@ -61,7 +66,6 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private fun observeContainerState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 searchContainerViewModel.state.collect { state: SearchContainerState ->
                     if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.ORGANIZATIONS) {
                         organizationListViewModel.onEvent(OrganizationEvent.Load)
@@ -92,11 +96,12 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text = resources.getQuantityString(
-                R.plurals.search_results_count,
-                organizations.size,
-                organizations.size,
-            )
+            textViewEventCount.text =
+                resources.getQuantityString(
+                    R.plurals.search_results_count,
+                    organizations.size,
+                    organizations.size,
+                )
         }
     }
 
@@ -104,4 +109,3 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         fun newInstance() = OrganizationListFragment()
     }
 }
-

@@ -16,10 +16,10 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
-import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.simbirsoft_android_practice.core.utils.DateUtils
+import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
+import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +38,10 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initClickListeners()
         observeState()
@@ -73,7 +76,9 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         }
     }
 
-    private fun showToast(@StringRes messageResId: Int) {
+    private fun showToast(
+        @StringRes messageResId: Int,
+    ) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
@@ -90,7 +95,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 DateUtils.formatEventDates(
                     requireContext(),
                     newsDetail.startDateTime,
-                    newsDetail.endDateTime
+                    newsDetail.endDateTime,
                 )
             textViewNewsDetailOwner.text = newsDetail.owner
             textViewNewsDetailAddress.text = newsDetail.ownerAddress
