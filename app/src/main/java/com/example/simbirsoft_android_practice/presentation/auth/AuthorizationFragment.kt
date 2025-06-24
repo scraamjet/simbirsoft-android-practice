@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.auth
+package com.example.simbirsoft_android_practice.presentation.auth
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -89,7 +89,11 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                 launch {
                     binding.editTextAuthorizationPassword.textChangesFlow()
                         .collectLatest { editable ->
-                            authorizationViewModel.onEvent(AuthorizationEvent.PasswordChanged(editable.toString()))
+                            authorizationViewModel.onEvent(
+                                AuthorizationEvent.PasswordChanged(
+                                    editable.toString()
+                                )
+                            )
                         }
                 }
             }

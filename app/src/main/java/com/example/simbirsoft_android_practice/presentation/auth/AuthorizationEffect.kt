@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.auth
+package com.example.simbirsoft_android_practice.presentation.auth
 
 sealed class AuthorizationEffect {
     data object NavigateToHelp : AuthorizationEffect()

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.ViewModelKey
-import com.example.simbirsoft_android_practice.auth.AuthorizationViewModel
+import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
