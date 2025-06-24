@@ -19,8 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
-import com.example.simbirsoft_android_practice.main.MainEvent
-import com.example.simbirsoft_android_practice.main.MainViewModel
+import com.example.simbirsoft_android_practice.presentation.main.MainEvent
+import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.main
+package com.example.simbirsoft_android_practice.presentation.main
 
 import android.content.Context
 import android.content.Intent

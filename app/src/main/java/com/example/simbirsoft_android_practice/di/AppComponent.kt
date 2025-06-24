@@ -5,7 +5,7 @@ import com.example.simbirsoft_android_practice.App
 import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment
 import com.example.simbirsoft_android_practice.presentation.help.HelpFragment
-import com.example.simbirsoft_android_practice.main.MainActivity
+import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.presentation.news.NewsFragment
 import com.example.simbirsoft_android_practice.presentation.news.NewsService

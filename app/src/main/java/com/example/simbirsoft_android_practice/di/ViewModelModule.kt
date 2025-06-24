@@ -7,7 +7,7 @@ import com.example.simbirsoft_android_practice.ViewModelKey
 import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
-import com.example.simbirsoft_android_practice.main.MainViewModel
+import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
 import com.example.simbirsoft_android_practice.presentation.profile.ProfileViewModel
