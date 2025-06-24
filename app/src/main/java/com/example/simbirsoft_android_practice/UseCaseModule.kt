@@ -1,6 +1,5 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import dagger.Binds
 import dagger.Module
 
@@ -13,7 +12,7 @@ interface UseCaseModule {
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
-    fun bindCategoriesHelpUseCase(impl: GetHelpCategoriesUseCaseImpl): CategoriesHelpUseCase
+    fun bindCategoriesHelpUseCase(impl: CategoriesHelpUseCaseImpl): CategoriesHelpUseCase
 
     @Binds
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
