@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.search
 
 import androidx.lifecycle.ViewModel
-import com.example.simbirsoft_android_practice.OrganizationListUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

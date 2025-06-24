@@ -2,8 +2,8 @@ package com.example.simbirsoft_android_practice.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.FilterPreferencesUseCase
-import com.example.simbirsoft_android_practice.NewsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.model.NewsItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

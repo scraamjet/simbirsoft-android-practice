@@ -2,8 +2,7 @@ package com.example.simbirsoft_android_practice.help
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.CategoriesHelpUseCase
-import com.example.simbirsoft_android_practice.model.HelpCategory
+import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

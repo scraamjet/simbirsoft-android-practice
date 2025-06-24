@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.EventsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

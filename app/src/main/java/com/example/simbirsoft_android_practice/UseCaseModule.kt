@@ -1,5 +1,14 @@
 package com.example.simbirsoft_android_practice
 
+import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -30,5 +39,5 @@ interface UseCaseModule {
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
 
     @Binds
-    fun bindProfileUseCase(impl:ProfileUseCaseImpl):ProfileUseCase
+    fun bindProfileUseCase(impl:ProfileUseCaseImpl): ProfileUseCase
 }

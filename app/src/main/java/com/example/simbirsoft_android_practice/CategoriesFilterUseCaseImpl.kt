@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice
 
 
 import com.example.simbirsoft_android_practice.core.CategoryRepository
-import com.example.simbirsoft_android_practice.core.CategoryRepositoryImpl
+import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import com.example.simbirsoft_android_practice.model.FilterCategory
 import kotlinx.coroutines.flow.Flow
