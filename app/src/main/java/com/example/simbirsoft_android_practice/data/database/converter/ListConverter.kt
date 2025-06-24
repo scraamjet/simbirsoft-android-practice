@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.data.database
+package com.example.simbirsoft_android_practice.data.database.converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

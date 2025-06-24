@@ -2,8 +2,8 @@ package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
 import com.example.simbirsoft_android_practice.data.api.ApiService
-import com.example.simbirsoft_android_practice.data.database.EventDao
-import com.example.simbirsoft_android_practice.data.database.EventEntityMapper
+import com.example.simbirsoft_android_practice.data.database.dao.EventDao
+import com.example.simbirsoft_android_practice.data.database.mapper.EventEntityMapper
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.google.gson.Gson

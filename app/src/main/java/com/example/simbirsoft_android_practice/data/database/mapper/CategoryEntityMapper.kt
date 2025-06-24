@@ -1,5 +1,6 @@
-package com.example.simbirsoft_android_practice.data.database
+package com.example.simbirsoft_android_practice.data.database.mapper
 
+import com.example.simbirsoft_android_practice.data.database.entity.CategoryEntity
 import com.example.simbirsoft_android_practice.domain.model.Category
 
 object CategoryEntityMapper {

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.data.database
+package com.example.simbirsoft_android_practice.data.database.entity
 
 import androidx.room.Embedded
 import androidx.room.Junction
