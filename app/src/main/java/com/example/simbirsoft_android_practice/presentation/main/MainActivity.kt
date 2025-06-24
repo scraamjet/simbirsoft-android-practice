@@ -16,9 +16,9 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
-import com.example.simbirsoft_android_practice.presentation.news.NewsService
-import com.example.simbirsoft_android_practice.presentation.news.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.news.NewsServiceProxy
+import com.example.simbirsoft_android_practice.presentation.service.NewsService
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject

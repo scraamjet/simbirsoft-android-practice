@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.simbirsoft_android_practice.presentation.service
 
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import kotlinx.coroutines.flow.Flow

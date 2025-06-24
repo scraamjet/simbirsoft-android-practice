@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
-import com.example.simbirsoft_android_practice.presentation.news.NewsServiceProxy
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow

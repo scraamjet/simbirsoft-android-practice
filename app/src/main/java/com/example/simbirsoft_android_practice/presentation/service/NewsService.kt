@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.simbirsoft_android_practice.presentation.service
 
 import android.app.Service
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

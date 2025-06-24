@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.simbirsoft_android_practice.presentation.service
 
 import android.content.ComponentName
 import android.content.ServiceConnection

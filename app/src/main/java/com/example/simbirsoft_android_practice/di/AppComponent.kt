@@ -8,7 +8,7 @@ import com.example.simbirsoft_android_practice.presentation.help.HelpFragment
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.presentation.news.NewsFragment
-import com.example.simbirsoft_android_practice.presentation.news.NewsService
+import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import com.example.simbirsoft_android_practice.presentation.profile.ProfileFragment
 import com.example.simbirsoft_android_practice.presentation.search.EventListFragment
 import com.example.simbirsoft_android_practice.presentation.search.OrganizationListFragment
