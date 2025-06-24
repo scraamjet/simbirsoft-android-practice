@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.help
+package com.example.simbirsoft_android_practice.presentation.help
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

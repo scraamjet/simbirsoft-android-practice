@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.help
+package com.example.simbirsoft_android_practice.presentation.help
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

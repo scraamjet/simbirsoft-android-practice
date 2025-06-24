@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/helpFragment"
-        android:name="com.example.simbirsoft_android_practice.help.HelpFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.help.HelpFragment"
         android:label="Помощь" />
 
     <dialog

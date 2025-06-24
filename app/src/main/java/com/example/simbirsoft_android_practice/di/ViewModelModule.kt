@@ -6,7 +6,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.ViewModelKey
 import com.example.simbirsoft_android_practice.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
-import com.example.simbirsoft_android_practice.help.HelpViewModel
+import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.news.NewsViewModel
