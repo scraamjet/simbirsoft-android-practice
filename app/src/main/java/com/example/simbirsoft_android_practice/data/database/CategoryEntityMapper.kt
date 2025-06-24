@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.database
+package com.example.simbirsoft_android_practice.data.database
 
 import com.example.simbirsoft_android_practice.domain.model.Category
 

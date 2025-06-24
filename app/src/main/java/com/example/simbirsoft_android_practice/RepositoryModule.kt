@@ -6,8 +6,8 @@ import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
-import com.example.simbirsoft_android_practice.database.CategoryDao
-import com.example.simbirsoft_android_practice.database.EventDao
+import com.example.simbirsoft_android_practice.data.database.CategoryDao
+import com.example.simbirsoft_android_practice.data.database.EventDao
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides

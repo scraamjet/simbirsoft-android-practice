@@ -2,9 +2,9 @@ package com.example.simbirsoft_android_practice
 
 import android.content.Context
 import androidx.room.Room
-import com.example.simbirsoft_android_practice.database.AppDatabase
-import com.example.simbirsoft_android_practice.database.CategoryDao
-import com.example.simbirsoft_android_practice.database.EventDao
+import com.example.simbirsoft_android_practice.data.database.AppDatabase
+import com.example.simbirsoft_android_practice.data.database.CategoryDao
+import com.example.simbirsoft_android_practice.data.database.EventDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

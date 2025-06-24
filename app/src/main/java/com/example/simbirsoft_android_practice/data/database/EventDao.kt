@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.database
+package com.example.simbirsoft_android_practice.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert

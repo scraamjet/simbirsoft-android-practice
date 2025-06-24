@@ -2,8 +2,8 @@ package com.example.simbirsoft_android_practice.core
 
 import android.util.Log
 import com.example.simbirsoft_android_practice.data.api.ApiService
-import com.example.simbirsoft_android_practice.database.CategoryDao
-import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
+import com.example.simbirsoft_android_practice.data.database.CategoryDao
+import com.example.simbirsoft_android_practice.data.database.CategoryEntityMapper
 import com.example.simbirsoft_android_practice.domain.model.Category
 import com.example.simbirsoft_android_practice.domain.repository.CategoryRepository
 import com.google.gson.Gson
