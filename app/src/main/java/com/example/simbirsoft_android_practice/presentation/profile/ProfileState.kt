@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.profile
+package com.example.simbirsoft_android_practice.presentation.profile
 
 import com.example.simbirsoft_android_practice.domain.model.Friend
 

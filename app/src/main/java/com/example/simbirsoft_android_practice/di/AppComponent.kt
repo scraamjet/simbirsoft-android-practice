@@ -9,7 +9,7 @@ import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.news.NewsFragment
 import com.example.simbirsoft_android_practice.news.NewsService
-import com.example.simbirsoft_android_practice.profile.ProfileFragment
+import com.example.simbirsoft_android_practice.presentation.profile.ProfileFragment
 import com.example.simbirsoft_android_practice.search.EventListFragment
 import com.example.simbirsoft_android_practice.search.OrganizationListFragment
 import com.example.simbirsoft_android_practice.search.SearchContainerFragment

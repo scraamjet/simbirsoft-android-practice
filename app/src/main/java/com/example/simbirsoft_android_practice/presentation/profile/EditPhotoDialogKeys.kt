@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.profile
+package com.example.simbirsoft_android_practice.presentation.profile
 
 object EditPhotoDialogKeys {
     const val REQUEST_KEY = "photo_action_request"

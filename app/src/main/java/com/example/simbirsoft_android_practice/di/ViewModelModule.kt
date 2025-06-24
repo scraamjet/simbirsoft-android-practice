@@ -10,7 +10,7 @@ import com.example.simbirsoft_android_practice.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.news.NewsViewModel
-import com.example.simbirsoft_android_practice.profile.ProfileViewModel
+import com.example.simbirsoft_android_practice.presentation.profile.ProfileViewModel
 import com.example.simbirsoft_android_practice.search.EventListViewModel
 import com.example.simbirsoft_android_practice.search.OrganizationListViewModel
 import com.example.simbirsoft_android_practice.search.SearchContainerViewModel

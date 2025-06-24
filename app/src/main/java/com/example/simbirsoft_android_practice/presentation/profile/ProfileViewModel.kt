@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.profile
+package com.example.simbirsoft_android_practice.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

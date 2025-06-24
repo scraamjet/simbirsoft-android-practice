@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.profile
+package com.example.simbirsoft_android_practice.presentation.profile
 
 import android.graphics.Bitmap
 import android.net.Uri

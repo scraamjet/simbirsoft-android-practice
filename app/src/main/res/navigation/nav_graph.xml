@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.simbirsoft_android_practice.profile.ProfileFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.profile.ProfileFragment"
         android:label="Профиль">
         <action
             android:id="@+id/action_profile_to_edit_photo_dialog"
@@ -63,6 +63,6 @@
 
     <dialog
         android:id="@+id/editPhotoDialogFragment"
-        android:name="com.example.simbirsoft_android_practice.profile.EditPhotoDialogFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.profile.EditPhotoDialogFragment"
         android:label="Диалог" />
 </navigation>
