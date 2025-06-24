@@ -23,8 +23,8 @@ class NewsViewModel @Inject constructor(
     private val newsUseCase: NewsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<NewsUiState>(NewsUiState.Loading)
-    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading)
+    val uiState: StateFlow<NewsState> = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<NewsEffect>()
     val effect: SharedFlow<NewsEffect> = _effect.asSharedFlow()
@@ -51,16 +51,16 @@ class NewsViewModel @Inject constructor(
     }
 
     private suspend fun loadNews(selectedCategories: Set<Int>) {
-        _uiState.value = NewsUiState.Loading
+        _uiState.value = NewsState.Loading
         try {
             val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
             _uiState.value = if (filteredNews.isEmpty()) {
-                NewsUiState.NoResults
+                NewsState.NoResults
             } else {
-                NewsUiState.Results(newsList = filteredNews)
+                NewsState.Results(newsList = filteredNews)
             }
         } catch (exception: Exception) {
-            _uiState.value = NewsUiState.Error(
+            _uiState.value = NewsState.Error(
                 message = exception.localizedMessage ?: "Unknown error"
             )
         }

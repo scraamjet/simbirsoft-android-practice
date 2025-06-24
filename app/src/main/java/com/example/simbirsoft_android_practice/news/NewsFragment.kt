@@ -68,12 +68,12 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsViewModel.uiState.collect { state: NewsUiState ->
+                newsViewModel.uiState.collect { state: NewsState ->
                     when (state) {
-                        is NewsUiState.Loading -> showLoading()
-                        is NewsUiState.Results -> showResults(newsList = state.newsList)
-                        is NewsUiState.NoResults -> showNoResults()
-                        is NewsUiState.Error -> showError()
+                        is NewsState.Loading -> showLoading()
+                        is NewsState.Results -> showResults(newsList = state.newsList)
+                        is NewsState.NoResults -> showNoResults()
+                        is NewsState.Error -> showError()
                     }
                 }
             }
