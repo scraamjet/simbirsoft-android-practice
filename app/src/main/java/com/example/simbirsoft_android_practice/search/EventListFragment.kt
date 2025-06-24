@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
+
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
@@ -42,6 +43,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        observeState()
     }
 
     private fun initRecyclerView() {
@@ -62,21 +64,23 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    fun refreshData(debouncedFlow: Flow<String>) {
-        viewModel.observeSearchQuery(debouncedFlow)
+    fun refreshData(query: String) {
+        viewModel.onEvent(EventListEvent.SearchQueryChanged(query))
+    }
 
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
+                viewModel.state.collect { state ->
                     when (state) {
-                        is SearchUiState.Loading -> showLoading()
-                        is SearchUiState.BlankQuery -> showSearchStub()
-                        is SearchUiState.Empty -> showNoResults()
-                        is SearchUiState.Success -> {
+                        is EventListState.Loading -> showLoading()
+                        is EventListState.BlankQuery -> showSearchStub()
+                        is EventListState.Empty -> showNoResults()
+                        is EventListState.Success -> {
                             showResults(state.results)
                             adapter.submitList(state.results)
                         }
-                        is SearchUiState.Error -> showSearchStub()
+                        is EventListState.Error -> showSearchStub()
                     }
                 }
             }
@@ -113,12 +117,11 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
             textViewNoResults.isVisible = false
             textViewKeyWords.isVisible = true
             textViewEventCount.isVisible = true
-            textViewEventCount.text =
-                resources.getQuantityString(
-                    R.plurals.search_results_count,
-                    events.size,
-                    events.size,
-                )
+            textViewEventCount.text = resources.getQuantityString(
+                R.plurals.search_results_count,
+                events.size,
+                events.size,
+            )
         }
     }
 
@@ -137,3 +140,4 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         fun newInstance() = EventListFragment()
     }
 }
+

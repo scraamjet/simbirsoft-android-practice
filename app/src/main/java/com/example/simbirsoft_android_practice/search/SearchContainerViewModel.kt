@@ -17,21 +17,33 @@ private const val SEARCH_STATE_TIMEOUT_MILLISECONDS = 5000L
 
 class SearchContainerViewModel @Inject constructor() : ViewModel() {
 
+    private val _state = MutableStateFlow<SearchUiState>(SearchUiState.Idle)
+    val state: StateFlow<SearchUiState> = _state.asStateFlow()
+
     private val _searchQuery = MutableStateFlow("")
     private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-        @OptIn(FlowPreview::class)
-        val debouncedQuery: StateFlow<String> =
-            searchQuery
-                .debounce(DEBOUNCE_DELAY_MILLISECONDS)
-                .distinctUntilChanged()
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(stopTimeoutMillis = SEARCH_STATE_TIMEOUT_MILLISECONDS),
-                    initialValue = "",
-                )
+    @OptIn(FlowPreview::class)
+    val debouncedQuery: StateFlow<String> = searchQuery
+        .debounce(DEBOUNCE_DELAY_MILLISECONDS)
+        .distinctUntilChanged()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(SEARCH_STATE_TIMEOUT_MILLISECONDS),
+            initialValue = "",
+        )
 
-        fun updateSearchQuery(query: String) {
-            _searchQuery.value = query
+    fun onEvent(event: SearchContainerEvent) {
+        when (event) {
+            is SearchContainerEvent.OnQueryChanged -> handleQueryChanged(event.query)
         }
     }
+
+    private fun handleQueryChanged(query: String) {
+        _searchQuery.value = query
+        _state.value = when {
+            query.isBlank() -> SearchUiState.BlankQuery
+            else -> SearchUiState.QueryUpdated(query)
+        }
+    }
+}

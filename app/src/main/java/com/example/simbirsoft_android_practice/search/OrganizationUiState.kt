@@ -1,0 +1,8 @@
+package com.example.simbirsoft_android_practice.search
+
+import com.example.simbirsoft_android_practice.model.SearchEvent
+
+sealed interface OrganizationUiState {
+    data object Loading : OrganizationUiState
+    data class Success(val organizations: List<SearchEvent>) : OrganizationUiState
+}

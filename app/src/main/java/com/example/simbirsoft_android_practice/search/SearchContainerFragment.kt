@@ -9,7 +9,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
@@ -19,17 +22,19 @@ import com.example.simbirsoft_android_practice.utils.ZoomOutPageTransformer
 import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
 
 class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
+
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
 
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
@@ -55,8 +60,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
         binding.viewPagerSearch.setPageTransformer(ZoomOutPageTransformer())
 
         binding.viewPagerSearch.registerOnPageChangeCallback(
-            object :
-                ViewPager2.OnPageChangeCallback() {
+            object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     refreshCurrentFragment()
@@ -74,24 +78,31 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private fun initSearchView() {
         binding.searchViewSearch.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
+                override fun onQueryTextSubmit(query: String?): Boolean = false
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchContainerViewModel.updateSearchQuery(newText.orEmpty())
+                    searchContainerViewModel.onEvent(SearchContainerEvent.OnQueryChanged(newText.orEmpty()))
                     return true
                 }
-            },
+            }
         )
     }
 
     private fun refreshCurrentFragment() {
         when (val fragment = getCurrentFragment()) {
-            is EventListFragment -> fragment.refreshData(searchContainerViewModel.debouncedQuery)
             is OrganizationListFragment -> fragment.refreshData()
+            is EventListFragment -> {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        searchContainerViewModel.debouncedQuery.collect { query ->
+                            fragment.refreshData(query)
+                        }
+                    }
+                }
+            }
         }
     }
+
 
     private fun getCurrentFragment(): Fragment? {
         return binding.viewPagerSearch.findFragmentAtPosition(
@@ -102,16 +113,15 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     private fun observeKeyboardVisibility() {
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
-        globalLayoutListener =
-            ViewTreeObserver.OnGlobalLayoutListener {
-                val rect = Rect()
-                rootView.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = rootView.rootView.height
-                val keypadHeight = screenHeight - rect.bottom
-                val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
+        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+            val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-                mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
-            }
+            mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
+        }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
 
