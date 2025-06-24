@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.example.simbirsoft_android_practice.news.NewsFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.news.NewsFragment"
         android:label="Новости">
         <action
             android:id="@+id/action_news_to_news_detail"
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="com.example.simbirsoft_android_practice.news.NewsDetailFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment"
         android:label="Детали" >
         <argument
             android:name="newsId"

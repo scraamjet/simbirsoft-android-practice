@@ -8,8 +8,8 @@ import com.example.simbirsoft_android_practice.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
 import com.example.simbirsoft_android_practice.main.MainViewModel
-import com.example.simbirsoft_android_practice.news.NewsDetailViewModel
-import com.example.simbirsoft_android_practice.news.NewsViewModel
+import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
+import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
 import com.example.simbirsoft_android_practice.presentation.profile.ProfileViewModel
 import com.example.simbirsoft_android_practice.presentation.search.EventListViewModel
 import com.example.simbirsoft_android_practice.presentation.search.OrganizationListViewModel

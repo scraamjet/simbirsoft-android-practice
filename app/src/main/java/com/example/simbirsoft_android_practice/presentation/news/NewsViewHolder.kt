@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.news
+package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
