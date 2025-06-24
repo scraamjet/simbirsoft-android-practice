@@ -6,6 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.appComponent
+import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import com.example.simbirsoft_android_practice.model.Event
 import com.example.simbirsoft_android_practice.model.NewsItem
@@ -22,7 +23,7 @@ class NewsService : Service() {
     private val binder = LocalBinder()
 
     @Inject
-    lateinit var eventRepository: EventRepositoryImpl
+    lateinit var eventRepository: EventRepository
 
     override fun onCreate() {
         super.onCreate()

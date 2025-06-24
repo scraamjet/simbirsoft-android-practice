@@ -24,10 +24,10 @@ class CategoryRepositoryImpl @Inject constructor(
         private val categoryDao: CategoryDao,
         private val gson: Gson,
         private val apiService: ApiService,
-    ) {
+    ) : CategoryRepository{
         private var isDataLoaded = false
 
-    fun getCategories(): Flow<List<Category>> {
+    override fun getCategories(): Flow<List<Category>> {
             return if (isDataLoaded) {
                 getCategoriesFromDatabase()
             } else {

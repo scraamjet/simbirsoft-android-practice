@@ -1,7 +1,9 @@
 package com.example.simbirsoft_android_practice
 
 import com.example.simbirsoft_android_practice.api.ApiService
+import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.core.CategoryRepositoryImpl
+import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.database.CategoryDao
@@ -20,7 +22,7 @@ class RepositoryModule {
         eventDao: EventDao,
         gson: Gson,
         apiService: ApiService,
-    ): EventRepositoryImpl = EventRepositoryImpl(extractor, eventDao, gson, apiService)
+    ): EventRepository = EventRepositoryImpl(extractor, eventDao, gson, apiService)
 
     @Provides
     @Singleton
@@ -29,5 +31,5 @@ class RepositoryModule {
         categoryDao: CategoryDao,
         gson: Gson,
         apiService: ApiService,
-    ): CategoryRepositoryImpl = CategoryRepositoryImpl(extractor, categoryDao, gson, apiService)
+    ): CategoryRepository = CategoryRepositoryImpl(extractor, categoryDao, gson, apiService)
 }

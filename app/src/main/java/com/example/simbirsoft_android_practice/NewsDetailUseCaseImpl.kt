@@ -1,5 +1,6 @@
 package com.example.simbirsoft_android_practice
 
+import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.core.EventRepositoryImpl
 import com.example.simbirsoft_android_practice.model.NewsDetail
 import com.example.simbirsoft_android_practice.news.NewsMapper
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class NewsDetailUseCaseImpl @Inject constructor(
-    private val eventRepository: EventRepositoryImpl
+    private val eventRepository: EventRepository
 ) : NewsDetailUseCase {
     override suspend fun execute(newsId: Int): NewsDetail? {
         return eventRepository.getEvents(null)

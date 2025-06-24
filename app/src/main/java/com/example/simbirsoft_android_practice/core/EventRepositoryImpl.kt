@@ -24,10 +24,10 @@ class EventRepositoryImpl @Inject constructor(
         private val eventDao: EventDao,
         private val gson: Gson,
         private val apiService: ApiService,
-    ) {
+    ) :EventRepository{
         private var isDataLoaded = false
 
-    fun getEvents(categoryId: Int?): Flow<List<Event>> {
+    override fun getEvents(categoryId: Int?): Flow<List<Event>> {
             return if (isDataLoaded) {
                 getEventsFromDatabase()
             } else {
