@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice
 import com.example.simbirsoft_android_practice.core.CategoryRepository
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
-import com.example.simbirsoft_android_practice.model.HelpCategory
+import com.example.simbirsoft_android_practice.domain.model.HelpCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

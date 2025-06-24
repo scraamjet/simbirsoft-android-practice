@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice
 
 import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
-import com.example.simbirsoft_android_practice.model.Friend
+import com.example.simbirsoft_android_practice.domain.model.Friend
 import javax.inject.Inject
 
 class ProfileUseCaseImpl @Inject constructor() : ProfileUseCase {

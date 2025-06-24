@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.database
 
-import com.example.simbirsoft_android_practice.model.Category
+import com.example.simbirsoft_android_practice.domain.model.Category
 
 object CategoryEntityMapper {
     private fun fromCategory(category: Category): CategoryEntity {

@@ -17,7 +17,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.main.MainViewModel
-import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch

@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice.filter
 
-import com.example.simbirsoft_android_practice.model.Category
-import com.example.simbirsoft_android_practice.model.FilterCategory
-import com.example.simbirsoft_android_practice.model.HelpCategory
+import com.example.simbirsoft_android_practice.domain.model.Category
+import com.example.simbirsoft_android_practice.domain.model.FilterCategory
+import com.example.simbirsoft_android_practice.domain.model.HelpCategory
 
 object CategoryMapper {
     fun toFilterCategory(

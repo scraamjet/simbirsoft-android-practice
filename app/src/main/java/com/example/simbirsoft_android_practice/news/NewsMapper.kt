@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice.news
 
-import com.example.simbirsoft_android_practice.model.Event
-import com.example.simbirsoft_android_practice.model.NewsDetail
-import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.model.Event
+import com.example.simbirsoft_android_practice.domain.model.NewsDetail
+import com.example.simbirsoft_android_practice.domain.model.NewsItem
 
 object NewsMapper {
     fun eventToNewsItem(event: Event): NewsItem =

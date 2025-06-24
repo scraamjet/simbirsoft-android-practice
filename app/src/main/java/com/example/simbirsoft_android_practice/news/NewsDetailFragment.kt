@@ -16,7 +16,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
-import com.example.simbirsoft_android_practice.model.NewsDetail
+import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.simbirsoft_android_practice.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch

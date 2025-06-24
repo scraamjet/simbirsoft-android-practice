@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice
 
 import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
-import com.example.simbirsoft_android_practice.model.NewsDetail
+import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.simbirsoft_android_practice.news.NewsMapper
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map

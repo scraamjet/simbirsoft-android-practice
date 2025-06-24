@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.filter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding
-import com.example.simbirsoft_android_practice.model.FilterCategory
+import com.example.simbirsoft_android_practice.domain.model.FilterCategory
 
 class FilterViewHolder(val binding: ItemFilterBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(category: FilterCategory) {

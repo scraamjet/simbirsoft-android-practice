@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemFilterBinding
-import com.example.simbirsoft_android_practice.model.FilterCategory
+import com.example.simbirsoft_android_practice.domain.model.FilterCategory
 
 class FilterAdapter : ListAdapter<FilterCategory, FilterViewHolder>(FilterDiffCallback) {
     override fun onCreateViewHolder(

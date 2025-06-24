@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.database
 
-import com.example.simbirsoft_android_practice.model.Event
+import com.example.simbirsoft_android_practice.domain.model.Event
 
 object EventEntityMapper {
     private fun toEvent(eventWithCategories: EventWithCategories): Event {

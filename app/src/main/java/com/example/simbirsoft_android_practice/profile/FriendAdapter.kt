@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemFriendBinding
-import com.example.simbirsoft_android_practice.model.Friend
+import com.example.simbirsoft_android_practice.domain.model.Friend
 
 class FriendAdapter : ListAdapter<Friend, FriendViewHolder>(FriendDiffCallback) {
     override fun onCreateViewHolder(

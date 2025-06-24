@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
-import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow

@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
-import com.example.simbirsoft_android_practice.model.Category
+import com.example.simbirsoft_android_practice.domain.model.Category
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.database.EventDao
 import com.example.simbirsoft_android_practice.database.EventEntityMapper
-import com.example.simbirsoft_android_practice.model.Event
+import com.example.simbirsoft_android_practice.domain.model.Event
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

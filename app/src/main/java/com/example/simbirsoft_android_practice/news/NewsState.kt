@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.news
 
-import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.model.NewsItem
 
 sealed class NewsState {
     data object Loading : NewsState()

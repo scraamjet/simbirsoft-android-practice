@@ -7,7 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.core.EventRepository
-import com.example.simbirsoft_android_practice.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

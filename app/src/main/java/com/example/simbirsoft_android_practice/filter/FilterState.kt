@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.filter
 
-import com.example.simbirsoft_android_practice.model.FilterCategory
+import com.example.simbirsoft_android_practice.domain.model.FilterCategory
 
 sealed class FilterState {
     object Loading : FilterState()
