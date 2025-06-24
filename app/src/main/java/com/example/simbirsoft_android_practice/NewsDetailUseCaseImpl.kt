@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.core.EventRepository
+import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.simbirsoft_android_practice.news.NewsMapper

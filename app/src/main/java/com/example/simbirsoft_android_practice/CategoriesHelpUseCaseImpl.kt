@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice
 
-import com.example.simbirsoft_android_practice.core.CategoryRepository
+import com.example.simbirsoft_android_practice.domain.repository.CategoryRepository
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.filter.CategoryMapper
 import com.example.simbirsoft_android_practice.domain.model.HelpCategory

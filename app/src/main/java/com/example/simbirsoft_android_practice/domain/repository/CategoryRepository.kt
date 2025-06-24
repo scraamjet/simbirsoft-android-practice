@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.core
+package com.example.simbirsoft_android_practice.domain.repository
 
 import com.example.simbirsoft_android_practice.domain.model.Category
 import kotlinx.coroutines.flow.Flow

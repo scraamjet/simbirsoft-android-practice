@@ -5,6 +5,7 @@ import com.example.simbirsoft_android_practice.api.ApiService
 import com.example.simbirsoft_android_practice.database.CategoryDao
 import com.example.simbirsoft_android_practice.database.CategoryEntityMapper
 import com.example.simbirsoft_android_practice.domain.model.Category
+import com.example.simbirsoft_android_practice.domain.repository.CategoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
@@ -24,7 +25,7 @@ class CategoryRepositoryImpl @Inject constructor(
         private val categoryDao: CategoryDao,
         private val gson: Gson,
         private val apiService: ApiService,
-    ) : CategoryRepository{
+    ) : CategoryRepository {
         private var isDataLoaded = false
 
     override fun getCategories(): Flow<List<Category>> {
