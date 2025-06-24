@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2

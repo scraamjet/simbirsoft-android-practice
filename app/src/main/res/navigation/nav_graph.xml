@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/searchContainerFragment"
-        android:name="com.example.simbirsoft_android_practice.search.SearchContainerFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment"
         android:label="Поиск">
     </fragment>
 

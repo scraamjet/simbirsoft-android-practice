@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBinding

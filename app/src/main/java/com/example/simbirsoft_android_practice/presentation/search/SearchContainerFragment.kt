@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import android.content.Context
 import android.graphics.Rect

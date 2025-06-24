@@ -10,9 +10,9 @@ import com.example.simbirsoft_android_practice.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.news.NewsFragment
 import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.presentation.profile.ProfileFragment
-import com.example.simbirsoft_android_practice.search.EventListFragment
-import com.example.simbirsoft_android_practice.search.OrganizationListFragment
-import com.example.simbirsoft_android_practice.search.SearchContainerFragment
+import com.example.simbirsoft_android_practice.presentation.search.EventListFragment
+import com.example.simbirsoft_android_practice.presentation.search.OrganizationListFragment
+import com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment
 import dagger.Component
 import javax.inject.Singleton
 

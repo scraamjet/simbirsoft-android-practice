@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import androidx.annotation.StringRes
 import com.example.simbirsoft_android_practice.R

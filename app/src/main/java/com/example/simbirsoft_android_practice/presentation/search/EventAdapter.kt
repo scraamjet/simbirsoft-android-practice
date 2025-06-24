@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

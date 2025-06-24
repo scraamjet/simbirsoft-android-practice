@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 sealed class SearchContainerState {
     data object Idle : SearchContainerState()

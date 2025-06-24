@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.search
+package com.example.simbirsoft_android_practice.presentation.search
 
 import android.content.Context
 import android.os.Bundle
@@ -21,12 +21,13 @@ import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
+class EventListFragment : Fragment(R.layout.fragment_search_list) {
+
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<OrganizationListViewModel> { viewModelFactory }
+    private val viewModel by viewModels<EventListViewModel> { viewModelFactory }
 
     private val adapter = EventAdapter()
 
@@ -35,46 +36,81 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         context.appComponent.inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observeUiState()
+        observeState()
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@OrganizationListFragment.adapter
-            ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)?.let { drawable ->
-                addItemDecoration(
-                    DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                        setDrawable(drawable)
-                    },
-                )
-            }
+            adapter = this@EventListFragment.adapter
+            ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)
+                ?.let { drawable ->
+                    addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            DividerItemDecoration.VERTICAL,
+                        ).apply {
+                            setDrawable(drawable)
+                        },
+                    )
+                }
         }
     }
 
-    fun refreshData() {
-        viewModel.onEvent(OrganizationUiEvent.LoadOrganizations)
+    fun refreshData(query: String) {
+        viewModel.onEvent(EventListEvent.SearchQueryChanged(query))
     }
 
-    private fun observeUiState() {
+    private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
+                viewModel.state.collect { state ->
                     when (state) {
-                        is OrganizationUiState.Loading -> showLoading()
-                        is OrganizationUiState.Success -> showResults(state.organizations)
+                        is EventListState.Loading -> showLoading()
+                        is EventListState.BlankQuery -> showSearchStub()
+                        is EventListState.Empty -> showNoResults()
+                        is EventListState.Success -> {
+                            showResults(state.results)
+                            adapter.submitList(state.results)
+                        }
+                        is EventListState.Error -> showSearchStub()
                     }
                 }
             }
         }
     }
 
-    private fun showResults(organizations: List<SearchEvent>) {
-        adapter.submitList(organizations)
+    private fun showSearchStub() {
         binding.apply {
+            progressBarSearch.isVisible = false
+            recyclerViewEventItem.isVisible = false
+            scrollViewSearchNoQuery.isVisible = true
+            textViewKeyWords.isVisible = false
+            textViewEventCount.isVisible = false
+            textViewNoResults.isVisible = false
+        }
+    }
+
+    private fun showNoResults() {
+        binding.apply {
+            progressBarSearch.isVisible = false
+            recyclerViewEventItem.isVisible = false
+            scrollViewSearchNoQuery.isVisible = false
+            textViewKeyWords.isVisible = false
+            textViewEventCount.isVisible = false
+            textViewNoResults.isVisible = true
+        }
+    }
+
+    private fun showResults(events: List<SearchEvent>) {
+        binding.apply {
+            progressBarSearch.isVisible = false
             scrollViewSearchNoQuery.isVisible = false
             recyclerViewEventItem.isVisible = true
             textViewNoResults.isVisible = false
@@ -82,8 +118,8 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
             textViewEventCount.isVisible = true
             textViewEventCount.text = resources.getQuantityString(
                 R.plurals.search_results_count,
-                organizations.size,
-                organizations.size,
+                events.size,
+                events.size,
             )
         }
     }
@@ -100,6 +136,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     companion object {
-        fun newInstance() = OrganizationListFragment()
+        fun newInstance() = EventListFragment()
     }
 }
+
