@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice
 
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
-import com.example.simbirsoft_android_practice.model.SearchEvent
+import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 import com.example.simbirsoft_android_practice.utils.generateRandomString
 import javax.inject.Inject
 import kotlin.random.Random

@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
-import com.example.simbirsoft_android_practice.model.SearchEvent
+import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

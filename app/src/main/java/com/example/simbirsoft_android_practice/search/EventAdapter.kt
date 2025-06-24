@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemSearchResultBinding
-import com.example.simbirsoft_android_practice.model.SearchEvent
+import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 
 class EventAdapter : ListAdapter<SearchEvent, EventViewHolder>(SearchEventDiffCallback) {
     override fun onCreateViewHolder(

@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.search
 
-import com.example.simbirsoft_android_practice.model.SearchEvent
+import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 
 sealed class EventListState {
     data object Loading : EventListState()

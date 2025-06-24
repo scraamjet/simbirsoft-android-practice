@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.domain.usecase
 
-import com.example.simbirsoft_android_practice.model.SearchEvent
+import com.example.simbirsoft_android_practice.domain.model.SearchEvent
 import kotlinx.coroutines.flow.Flow
 
 interface EventsUseCase {
