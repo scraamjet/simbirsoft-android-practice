@@ -41,7 +41,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        observeData()
+        observeCategories()
     }
 
     private fun initRecyclerView() {
@@ -57,7 +57,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         }
     }
 
-    private fun observeData() {
+    private fun observeCategories() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {

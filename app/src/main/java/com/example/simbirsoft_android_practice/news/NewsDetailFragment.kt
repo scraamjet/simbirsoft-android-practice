@@ -41,16 +41,16 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initClickListeners()
-        observeNews()
+        observeNewsDetail()
         viewModel.loadNewsDetail(args.newsId)
     }
 
-    private fun observeNews() {
+    private fun observeNewsDetail() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.newsDetail.collect { news ->
-                        news?.let { bindNewsDetails(it) }
+                        news?.let { newsItem -> bindNewsDetails(newsItem) }
                     }
                 }
             }

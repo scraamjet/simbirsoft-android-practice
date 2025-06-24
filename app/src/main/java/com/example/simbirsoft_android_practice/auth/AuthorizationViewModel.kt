@@ -12,9 +12,7 @@ import javax.inject.Inject
 
 private const val MIN_INPUT_LENGTH = 6
 
-class AuthorizationViewModel
-    @Inject
-    constructor() : ViewModel() {
+class AuthorizationViewModel @Inject constructor() : ViewModel() {
         private val _email = MutableStateFlow("")
 
         private val _password = MutableStateFlow("")
