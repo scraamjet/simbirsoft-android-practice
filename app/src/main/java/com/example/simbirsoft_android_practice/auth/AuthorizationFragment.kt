@@ -21,7 +21,7 @@ import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.main.MainEvent
 import com.example.simbirsoft_android_practice.main.MainViewModel
-import com.example.simbirsoft_android_practice.utils.textChangesFlow
+import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

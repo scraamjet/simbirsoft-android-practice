@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.utils
+package com.example.simbirsoft_android_practice.core.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

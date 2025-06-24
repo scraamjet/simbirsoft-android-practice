@@ -17,7 +17,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
-import com.example.simbirsoft_android_practice.utils.DateUtils
+import com.example.simbirsoft_android_practice.core.utils.DateUtils
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject

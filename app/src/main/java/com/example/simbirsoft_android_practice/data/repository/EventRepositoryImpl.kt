@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.repository
 
 import android.util.Log
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.data.database.dao.EventDao
 import com.example.simbirsoft_android_practice.data.database.mapper.EventEntityMapper

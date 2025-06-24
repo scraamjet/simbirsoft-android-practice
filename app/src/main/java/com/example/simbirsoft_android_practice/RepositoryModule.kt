@@ -4,7 +4,7 @@ import com.example.simbirsoft_android_practice.domain.repository.CategoryReposit
 import com.example.simbirsoft_android_practice.data.repository.CategoryRepositoryImpl
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.data.repository.EventRepositoryImpl
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.data.database.dao.CategoryDao
 import com.example.simbirsoft_android_practice.data.database.dao.EventDao

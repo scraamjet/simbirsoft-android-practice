@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice
 
 import android.content.Context
-import com.example.simbirsoft_android_practice.core.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

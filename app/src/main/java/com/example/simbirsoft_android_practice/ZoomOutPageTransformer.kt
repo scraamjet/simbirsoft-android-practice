@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.utils
+package com.example.simbirsoft_android_practice
 
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
