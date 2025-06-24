@@ -17,7 +17,6 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
 import com.example.simbirsoft_android_practice.main.MainViewModel
-import com.example.simbirsoft_android_practice.ZoomOutPageTransformer
 import com.example.simbirsoft_android_practice.core.utils.findFragmentAtPosition
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
