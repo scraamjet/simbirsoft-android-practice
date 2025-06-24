@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import com.example.simbirsoft_android_practice.domain.model.SearchEvent

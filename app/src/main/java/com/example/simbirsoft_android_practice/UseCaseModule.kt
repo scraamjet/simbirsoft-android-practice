@@ -1,5 +1,14 @@
 package com.example.simbirsoft_android_practice
 
+import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.ProfileUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
@@ -39,5 +48,5 @@ interface UseCaseModule {
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
 
     @Binds
-    fun bindProfileUseCase(impl:ProfileUseCaseImpl): ProfileUseCase
+    fun bindProfileUseCase(impl: ProfileUseCaseImpl): ProfileUseCase
 }
