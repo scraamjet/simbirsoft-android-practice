@@ -4,12 +4,17 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.CategoryRepository
+import com.example.simbirsoft_android_practice.model.Category
 import com.example.simbirsoft_android_practice.model.FilterCategory
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,45 +25,39 @@ class FilterViewModel @Inject constructor(
     private val filterPreference: FilterPreference
 ) : ViewModel() {
 
-    private val _categories = MutableStateFlow<List<FilterCategory>>(emptyList())
-    val categories: StateFlow<List<FilterCategory>> = _categories.asStateFlow()
+    private val _loading = MutableStateFlow(true)
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-        private val _loading = MutableStateFlow(false)
-        val loading: StateFlow<Boolean> = _loading.asStateFlow()
-
-        init {
-            loadCategoriesWithSelection()
-        }
-
-        private fun loadCategoriesWithSelection() {
-            viewModelScope.launch {
-                _loading.value = true
-                combine(
-                    categoryRepository.getCategories(),
-                    filterPreference.selectedCategories,
-                ) { categories, selectedIds ->
-                    categories.map { category ->
-                        CategoryMapper.toFilterCategory(category, selectedIds)
-                    }
-                }
-                    .catch { exception ->
-                        _categories.value = emptyList()
-                        Log.e(
-                            TAG,
-                            "Filter categories loading exception: ${exception.localizedMessage}",
-                            exception,
-                        )
-                    }
-                    .collect { result ->
-                        _categories.value = result
-                        _loading.value = false
-                    }
+    val categories: StateFlow<List<FilterCategory>> =
+        combine(
+            categoryRepository.getCategories(),
+            filterPreference.selectedCategories
+        ) { categoryList: List<Category>, selectedIds: Set<Int> ->
+            categoryList.map { category: Category ->
+                CategoryMapper.toFilterCategory(
+                    category = category,
+                    selectedIds = selectedIds
+                )
             }
         }
-
-        fun saveSelected(ids: Set<Int>) {
-            viewModelScope.launch {
-                filterPreference.saveSelectedCategories(ids)
+            .onStart { _loading.value = true }
+            .catch { exception: Throwable ->
+                Log.e(
+                    TAG,
+                    "Filter categories loading exception: ${exception.localizedMessage}",
+                    exception
+                )
             }
+            .onEach { _ -> _loading.value = false }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Eagerly,
+                initialValue = emptyList()
+            )
+
+    fun saveSelected(ids: Set<Int>) {
+        viewModelScope.launch {
+            filterPreference.saveSelectedCategories(ids)
         }
     }
+}
