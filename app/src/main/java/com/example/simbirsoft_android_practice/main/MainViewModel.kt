@@ -41,30 +41,38 @@ class MainViewModel @Inject constructor(
 
     fun observeNews(newsFlow: Flow<List<Event>>) {
         serviceJob?.cancel()
-        serviceJob =
-            viewModelScope.launch {
-                selectedCategories
-                    .distinctUntilChanged()
-                    .collectLatest { selected ->
-                        newsFlow
-                            .catch { exception ->
-                                Log.e(
-                                    TAG,
-                                    "News Service loading exception: ${exception.message}",
-                                    exception,
-                                )
-                            }
-                            .collect { events ->
-                                val filtered =
-                                    events
-                                        .filter { event -> event.categoryIds.any { id -> id in selected } }
-                                        .map(NewsMapper::eventToNewsItem)
+        serviceJob = viewModelScope.launch {
+            selectedCategories
+                .distinctUntilChanged()
+                .collectLatest { selectedCategoriesSet ->
+                    handleNewsFlow(newsFlow = newsFlow, selectedCategories = selectedCategoriesSet)
+                }
+        }
+    }
 
-                                updateBadge(filtered)
-                            }
+    private suspend fun handleNewsFlow(
+        newsFlow: Flow<List<Event>>,
+        selectedCategories: Set<Int>
+    ) {
+        newsFlow
+            .catch { exception ->
+                Log.e(
+                    TAG,
+                    "News Service loading exception: ${exception.message}",
+                    exception,
+                )
+            }
+            .collect { eventList ->
+                val filteredNewsItems: List<NewsItem> = eventList
+                    .filter { event ->
+                        event.categoryIds.any { categoryId -> categoryId in selectedCategories }
                     }
+                    .map { event -> NewsMapper.eventToNewsItem(event) }
+
+                updateBadge(newsItems = filteredNewsItems)
             }
     }
+
 
     fun updateReadNews(newsId: Int) {
         _readNewsIds.update { current ->
