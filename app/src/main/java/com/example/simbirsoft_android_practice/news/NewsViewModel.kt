@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.core.EventRepository
-import com.example.simbirsoft_android_practice.filter.FilterPreferenceDataStore
+import com.example.simbirsoft_android_practice.filter.FilterPreference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +20,7 @@ private const val TAG = "NewsViewModel"
 
 class NewsViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val filterPreferenceDataStore: FilterPreferenceDataStore
+    private val filterPreference: FilterPreference
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsUiState>(NewsUiState.Loading)
@@ -32,7 +32,7 @@ class NewsViewModel @Inject constructor(
 
         private fun observeSelectedCategories() {
             viewModelScope.launch {
-                filterPreferenceDataStore.selectedCategories
+                filterPreference.selectedCategories
                     .distinctUntilChanged()
                     .collectLatest { selectedCategories ->
                         loadNews(selectedCategories)
