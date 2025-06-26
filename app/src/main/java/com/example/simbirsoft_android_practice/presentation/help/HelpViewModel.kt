@@ -27,12 +27,12 @@ class HelpViewModel @Inject constructor(
         val effect: SharedFlow<HelpEffect> = _effect.asSharedFlow()
 
         init {
-            onEvent(HelpEvent.OnScreenOpened)
+            onEvent(HelpEvent.Load)
         }
 
         fun onEvent(event: HelpEvent) {
             when (event) {
-                HelpEvent.OnScreenOpened -> loadCategories()
+                HelpEvent.Load -> loadCategories()
             }
         }
 
