@@ -27,7 +27,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<OrganizationListViewModel> { viewModelFactory }
 
-    private val adapter = EventAdapter()
+    private val adapter: EventAdapter by lazy { EventAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,13 +47,14 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@OrganizationListFragment.adapter
-            ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)?.let { drawable ->
-                addItemDecoration(
-                    DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
-                        setDrawable(drawable)
-                    },
-                )
-            }
+            ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)
+                ?.let { drawable ->
+                    addItemDecoration(
+                        DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                            setDrawable(drawable)
+                        },
+                    )
+                }
         }
     }
 

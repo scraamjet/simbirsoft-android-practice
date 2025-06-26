@@ -32,7 +32,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         ownerProducer = { requireParentFragment() }
     ) { viewModelFactory }
 
-    private val adapter = EventAdapter()
+    private val adapter: EventAdapter by lazy { EventAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,6 +94,7 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
                             showResults(state.results)
                             adapter.submitList(state.results)
                         }
+
                         is SearchUiState.Error -> showSearchStub()
                     }
                 }
