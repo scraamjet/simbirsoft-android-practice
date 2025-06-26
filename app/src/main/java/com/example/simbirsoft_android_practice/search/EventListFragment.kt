@@ -28,6 +28,9 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<EventListViewModel> { viewModelFactory }
+    private val searchContainerViewModel: SearchContainerViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    ) { viewModelFactory }
 
     private val adapter = EventAdapter()
 
@@ -42,6 +45,8 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        observeSearchQuery()
+        observeUiState()
     }
 
     private fun initRecyclerView() {
@@ -62,9 +67,22 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         }
     }
 
-    fun refreshData(debouncedFlow: Flow<String>) {
-        viewModel.observeSearchQuery(debouncedFlow)
+    fun refreshData() {
+        val currentQuery = searchContainerViewModel.debouncedQuery.value
+        viewModel.onSearchQueryChanged(currentQuery)
+    }
 
+    private fun observeSearchQuery() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchContainerViewModel.debouncedQuery.collect { query ->
+                    viewModel.onSearchQueryChanged(query)
+                }
+            }
+        }
+    }
+
+    private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->

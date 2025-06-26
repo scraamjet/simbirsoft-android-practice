@@ -88,7 +88,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
 
     private fun refreshCurrentFragment() {
         when (val fragment = getCurrentFragment()) {
-            is EventListFragment -> fragment.refreshData(searchContainerViewModel.debouncedQuery)
+            is EventListFragment -> fragment.refreshData()
             is OrganizationListFragment -> fragment.refreshData()
         }
     }
