@@ -73,7 +73,6 @@ class MainViewModel @Inject constructor(
             }
     }
 
-
     fun updateReadNews(newsId: Int) {
         _readNewsIds.update { current ->
             if (newsId !in current) {

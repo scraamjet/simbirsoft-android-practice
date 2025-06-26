@@ -25,24 +25,24 @@ class NewsDetailViewModel @Inject constructor(
     private val _newsDetail = MutableStateFlow<NewsDetail?>(null)
     val newsDetail: StateFlow<NewsDetail?> = _newsDetail.asStateFlow()
 
-        fun loadNewsDetail(newsId: Int) {
-            viewModelScope.launch {
-                eventRepository.getEvents(null)
-                    .flowOn(Dispatchers.IO)
-                    .map { list ->
-                        list.find { event -> event.id == newsId }?.let(NewsMapper::eventToNewsDetail)
-                    }
-                    .filterNotNull()
-                    .catch { exception ->
-                        Log.e(
-                            TAG,
-                            "News detail loading exception: ${exception.localizedMessage}",
-                            exception,
-                        )
-                    }
-                    .collect { newsDetail ->
-                        _newsDetail.value = newsDetail
-                    }
-            }
+    fun loadNewsDetail(newsId: Int) {
+        viewModelScope.launch {
+            eventRepository.getEvents(null)
+                .flowOn(Dispatchers.IO)
+                .map { list ->
+                    list.find { event -> event.id == newsId }?.let(NewsMapper::eventToNewsDetail)
+                }
+                .filterNotNull()
+                .catch { exception ->
+                    Log.e(
+                        TAG,
+                        "News detail loading exception: ${exception.localizedMessage}",
+                        exception,
+                    )
+                }
+                .collect { newsDetail ->
+                    _newsDetail.value = newsDetail
+                }
         }
     }
+}
