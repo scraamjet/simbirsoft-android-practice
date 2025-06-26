@@ -22,7 +22,7 @@ private const val TAG = "FilterViewModel"
 
 class FilterViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
-    private val filterPreference: FilterPreference
+    private val filterPreferences: FilterPreferences
 ) : ViewModel() {
 
     private val _loading = MutableStateFlow(true)
@@ -31,7 +31,7 @@ class FilterViewModel @Inject constructor(
     val categories: StateFlow<List<FilterCategory>> =
         combine(
             categoryRepository.getCategories(),
-            filterPreference.selectedCategories
+            filterPreferences.selectedCategories
         ) { categoryList: List<Category>, selectedIds: Set<Int> ->
             categoryList.map { category: Category ->
                 CategoryMapper.toFilterCategory(
@@ -57,7 +57,7 @@ class FilterViewModel @Inject constructor(
 
     fun saveSelected(ids: Set<Int>) {
         viewModelScope.launch {
-            filterPreference.saveSelectedCategories(ids)
+            filterPreferences.saveSelectedCategories(ids)
         }
     }
 }

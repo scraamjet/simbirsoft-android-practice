@@ -16,7 +16,7 @@ private val Context.filterDataStore: DataStore<Preferences> by preferencesDataSt
     name = PREFS_NAME
 )
 
-class FilterPreference @Inject constructor(
+class FilterPreferences @Inject constructor(
     context: Context
 ) {
 
