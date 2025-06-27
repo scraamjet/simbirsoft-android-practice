@@ -21,38 +21,38 @@ class NewsDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow<NewsDetailState>(NewsDetailState.Idle)
     val state: StateFlow<NewsDetailState> = _state.asStateFlow()
 
-        private val _effect = MutableSharedFlow<NewsDetailEffect>()
-        val effect: SharedFlow<NewsDetailEffect> = _effect.asSharedFlow()
+    private val _effect = MutableSharedFlow<NewsDetailEffect>()
+    val effect: SharedFlow<NewsDetailEffect> = _effect.asSharedFlow()
 
-        fun onEvent(event: NewsDetailEvent) {
-            when (event) {
-                is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
-            }
+    fun onEvent(event: NewsDetailEvent) {
+        when (event) {
+            is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
         }
+    }
 
-        private fun loadNewsDetail(newsId: Int) {
-            viewModelScope.launch {
-                try {
-                    val newsDetail: NewsDetail? = newsDetailUseCase.execute(newsId = newsId)
-                    if (newsDetail != null) {
-                        _state.value = NewsDetailState.Result(newsDetail = newsDetail)
-                    } else {
-                        emitErrorState()
-                    }
-                } catch (exception: Exception) {
+    private fun loadNewsDetail(newsId: Int) {
+        viewModelScope.launch {
+            try {
+                val newsDetail: NewsDetail? = newsDetailUseCase.execute(newsId = newsId)
+                if (newsDetail != null) {
+                    _state.value = NewsDetailState.Result(newsDetail = newsDetail)
+                } else {
                     emitErrorState()
                 }
-            }
-        }
-
-        private suspend fun emitErrorState() {
-            _state.value = NewsDetailState.Error
-            _effect.emit(NewsDetailEffect.ShowErrorToast(R.string.news_detail_load_error))
-        }
-
-        fun handleOnBackClicked() {
-            viewModelScope.launch {
-                _effect.emit(NewsDetailEffect.NavigateBack)
+            } catch (exception: Exception) {
+                emitErrorState()
             }
         }
     }
+
+    private suspend fun emitErrorState() {
+        _state.value = NewsDetailState.Error
+        _effect.emit(NewsDetailEffect.ShowErrorToast(R.string.news_detail_load_error))
+    }
+
+    fun handleOnBackClicked() {
+        viewModelScope.launch {
+            _effect.emit(NewsDetailEffect.NavigateBack)
+        }
+    }
+}

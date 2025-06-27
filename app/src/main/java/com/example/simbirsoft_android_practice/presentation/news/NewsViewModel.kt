@@ -25,56 +25,56 @@ class NewsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading)
     val uiState: StateFlow<NewsState> = _uiState.asStateFlow()
 
-        private val _effect = MutableSharedFlow<NewsEffect>()
-        val effect: SharedFlow<NewsEffect> = _effect.asSharedFlow()
+    private val _effect = MutableSharedFlow<NewsEffect>()
+    val effect: SharedFlow<NewsEffect> = _effect.asSharedFlow()
 
-        init {
-            onEvent(NewsEvent.LoadNews)
-        }
+    init {
+        onEvent(NewsEvent.LoadNews)
+    }
 
-        fun onEvent(event: NewsEvent) {
-            when (event) {
-                is NewsEvent.LoadNews -> observeSelectedCategories()
-                is NewsEvent.NewsClicked -> handleNewsClicked(newsId = event.newsId)
-                is NewsEvent.FiltersClicked -> handleFiltersClicked()
-            }
-        }
-
-        private fun observeSelectedCategories() {
-            viewModelScope.launch {
-                filterPreferencesUseCase.getSelectedCategoryIds()
-                    .distinctUntilChanged()
-                    .collectLatest { selectedCategories ->
-                        loadNews(selectedCategories = selectedCategories)
-                    }
-            }
-        }
-
-        private suspend fun loadNews(selectedCategories: Set<Int>) {
-            _uiState.value = NewsState.Loading
-            try {
-                val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
-                _uiState.value =
-                    if (filteredNews.isEmpty()) {
-                        NewsState.NoResults
-                    } else {
-                        NewsState.Results(newsList = filteredNews)
-                    }
-            } catch (exception: Exception) {
-                _uiState.value = NewsState.Error
-                _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
-            }
-        }
-
-        private fun handleFiltersClicked() {
-            viewModelScope.launch {
-                _effect.emit(NewsEffect.NavigateToFilter)
-            }
-        }
-
-        private fun handleNewsClicked(newsId: Int) {
-            viewModelScope.launch {
-                _effect.emit(NewsEffect.NavigateToNewsDetail(newsId = newsId))
-            }
+    fun onEvent(event: NewsEvent) {
+        when (event) {
+            is NewsEvent.LoadNews -> observeSelectedCategories()
+            is NewsEvent.NewsClicked -> handleNewsClicked(newsId = event.newsId)
+            is NewsEvent.FiltersClicked -> handleFiltersClicked()
         }
     }
+
+    private fun observeSelectedCategories() {
+        viewModelScope.launch {
+            filterPreferencesUseCase.getSelectedCategoryIds()
+                .distinctUntilChanged()
+                .collectLatest { selectedCategories ->
+                    loadNews(selectedCategories = selectedCategories)
+                }
+        }
+    }
+
+    private suspend fun loadNews(selectedCategories: Set<Int>) {
+        _uiState.value = NewsState.Loading
+        try {
+            val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
+            _uiState.value =
+                if (filteredNews.isEmpty()) {
+                    NewsState.NoResults
+                } else {
+                    NewsState.Results(newsList = filteredNews)
+                }
+        } catch (exception: Exception) {
+            _uiState.value = NewsState.Error
+            _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
+        }
+    }
+
+    private fun handleFiltersClicked() {
+        viewModelScope.launch {
+            _effect.emit(NewsEffect.NavigateToFilter)
+        }
+    }
+
+    private fun handleNewsClicked(newsId: Int) {
+        viewModelScope.launch {
+            _effect.emit(NewsEffect.NavigateToNewsDetail(newsId = newsId))
+        }
+    }
+}

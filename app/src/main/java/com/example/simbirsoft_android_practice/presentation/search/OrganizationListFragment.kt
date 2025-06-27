@@ -27,9 +27,7 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val organizationListViewModel by viewModels<OrganizationListViewModel> { viewModelFactory }
-    private val searchContainerViewModel: SearchContainerViewModel by viewModels(ownerProducer = {
-        requireParentFragment()
-    }) { viewModelFactory }
+    private val searchContainerViewModel: SearchContainerViewModel by viewModels(ownerProducer = { requireParentFragment() }) { viewModelFactory }
 
     private val adapter: EventAdapter by lazy { EventAdapter() }
 

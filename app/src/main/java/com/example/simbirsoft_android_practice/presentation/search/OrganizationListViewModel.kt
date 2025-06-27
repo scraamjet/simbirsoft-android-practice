@@ -15,14 +15,14 @@ class OrganizationListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<OrganizationListState>(OrganizationListState.Idle)
     val uiState: StateFlow<OrganizationListState> = _uiState.asStateFlow()
 
-        fun onEvent(event: OrganizationEvent) {
-            when (event) {
-                is OrganizationEvent.Load -> loadOrganizations()
-            }
-        }
-
-        private fun loadOrganizations() {
-            val organizations: List<SearchEvent> = organizationListUseCase.invoke()
-            _uiState.value = OrganizationListState.Success(organizations)
+    fun onEvent(event: OrganizationEvent) {
+        when (event) {
+            is OrganizationEvent.Load -> loadOrganizations()
         }
     }
+
+    private fun loadOrganizations() {
+        val organizations: List<SearchEvent> = organizationListUseCase.invoke()
+        _uiState.value = OrganizationListState.Success(organizations)
+    }
+}
