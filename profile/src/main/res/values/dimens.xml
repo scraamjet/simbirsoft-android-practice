@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- fragment_profile -->
+    <dimen name="profile_collapsing_toolbar_height">276dp</dimen>
+    <dimen name="profile_app_bar_elevation">0dp</dimen>
+    <dimen name="profile_app_bar_image_height">220dp</dimen>
+    <dimen name="profile_toolbar_margin_start">15dp</dimen>
+    <dimen name="profile_name_margin_top">20dp</dimen>
+    <dimen name="profile_birthday_hint_margin_top">16dp</dimen>
+    <dimen name="profile_field_of_activity_margin_top">10dp</dimen>
+    <dimen name="profile_push_notifications_margin_top">28dp</dimen>
+    <dimen name="profile_switch_margin_end">26dp</dimen>
+    <dimen name="profile_switch_margin_bottom">15dp</dimen>
+    <dimen name="profile_line_margin_top">18dp</dimen>
+    <dimen name="profile_line_height">1dp</dimen>
+    <dimen name="profile_friends_margin_top">20dp</dimen>
+    <dimen name="profile_friend_margin_start">20dp</dimen>
+    <dimen name="profile_line_2_margin_top">10dp</dimen>
+    <dimen name="profile_logout_margin_top">20dp</dimen>
+    <dimen name="profile_logout_margin_bottom">92dp</dimen>
+    <dimen name="profile_guideline_margin_start">20dp</dimen>
+    <dimen name="bottom_nav_height">54dp</dimen>
+
+    <dimen name="margin_top_recycler_view_friend_list">16dp</dimen>
+    <dimen name="margin_bottom_profile_item_friend">10dp</dimen>
+    <dimen name="size_profile_image_friend">48dp</dimen>
+
+    <!-- edit_photo_dialog -->
+    <dimen name="edit_photo_dialog_height">234dp</dimen>
+    <dimen name="edit_photo_dialog_width">310dp</dimen>
+    <dimen name="edit_photo_dialog_option_margin_start">29dp</dimen>
+    <dimen name="edit_photo_dialog_choose_photo_margin_top">31dp</dimen>
+    <dimen name="edit_photo_dialog_take_photo_margin_top">43dp</dimen>
+    <dimen name="edit_photo_dialog_delete_photo_margin_top">43dp</dimen>
+</resources>
+
