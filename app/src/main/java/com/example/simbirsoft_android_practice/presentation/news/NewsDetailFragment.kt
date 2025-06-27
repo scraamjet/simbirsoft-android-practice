@@ -14,7 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.example.simbirsoft_android_practice.MultiViewModelFactory
+import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.utils.DateUtils
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding

@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "simbirsoft-android-practice"
 include(":app")
 include(":profile")
+include(":core")

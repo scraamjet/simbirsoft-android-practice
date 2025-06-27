@@ -8,7 +8,6 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImp
 import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.ProfileUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
@@ -17,7 +16,6 @@ import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
 import dagger.Binds
 import dagger.Module
 
@@ -46,7 +44,4 @@ interface UseCaseModule {
 
     @Binds
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
-
-    @Binds
-    fun bindProfileUseCase(impl: ProfileUseCaseImpl): ProfileUseCase
 }

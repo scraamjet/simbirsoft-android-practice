@@ -1,14 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
-    namespace = "com.example.profile"
+    namespace = "com.example.core"
     compileSdk = 35
 
     defaultConfig {
@@ -16,10 +14,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildFeatures {
-        viewBinding = true
     }
 
     buildTypes {
@@ -41,18 +35,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.viewbinding.property.delegate)
-    implementation(libs.viewbinding.property.delegate.reflection)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.dagger)
-    implementation(libs.coil)
-    ksp(libs.dagger.compiler)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
