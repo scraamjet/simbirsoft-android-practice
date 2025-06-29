@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.profile.presentation.profile
 
 import android.Manifest
 import android.app.AlertDialog
@@ -25,7 +25,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.navigation.AppRouter
+import com.example.profile.presentation.dialog.EditPhotoDialogKeys
+import com.example.profile.presentation.model.Friend
+import com.example.profile.presentation.adapter.FriendAdapter
+import com.example.profile.domain.model.PhotoAction
+import com.example.profile.R
 import com.example.profile.databinding.FragmentProfileBinding
+import com.example.profile.di.ProfileComponentProvider
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject

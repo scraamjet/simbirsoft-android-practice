@@ -1,5 +1,6 @@
-package com.example.profile
+package com.example.profile.domain.usecase
 
+import com.example.profile.presentation.model.Friend
 import javax.inject.Inject
 
 class ProfileUseCaseImpl @Inject constructor() : ProfileUseCase {

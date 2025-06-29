@@ -1,10 +1,11 @@
-package com.example.profile
+package com.example.profile.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.profile.databinding.ItemFriendBinding
+import com.example.profile.presentation.model.Friend
 
 class FriendAdapter : ListAdapter<Friend, FriendViewHolder>(FriendDiffCallback) {
     override fun onCreateViewHolder(

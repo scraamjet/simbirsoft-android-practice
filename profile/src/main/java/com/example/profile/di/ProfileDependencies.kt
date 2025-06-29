@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.profile.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.core.navigation.AppRouter

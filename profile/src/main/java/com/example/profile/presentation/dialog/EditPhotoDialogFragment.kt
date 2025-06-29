@@ -1,10 +1,11 @@
-package com.example.profile
+package com.example.profile.presentation.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import com.example.profile.domain.model.PhotoAction
 import com.example.profile.databinding.EditPhotoDialogBinding
 
 class EditPhotoDialogFragment : DialogFragment() {

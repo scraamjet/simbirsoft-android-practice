@@ -1,4 +1,6 @@
-package com.example.profile
+package com.example.profile.presentation.profile
+
+import com.example.profile.presentation.model.Friend
 
 sealed class ProfileState {
     data object Idle : ProfileState()

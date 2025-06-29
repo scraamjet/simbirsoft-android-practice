@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.profile.domain.model
 
 enum class PhotoAction {
     TAKE_PHOTO,

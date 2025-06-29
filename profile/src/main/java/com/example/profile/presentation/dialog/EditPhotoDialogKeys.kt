@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.profile.presentation.dialog
 
 object EditPhotoDialogKeys {
     const val REQUEST_KEY = "photo_action_request"

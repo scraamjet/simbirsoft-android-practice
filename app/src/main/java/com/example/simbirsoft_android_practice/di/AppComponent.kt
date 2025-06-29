@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
-import com.example.profile.ProfileComponent
-import com.example.profile.ProfileDependencies
+import com.example.profile.di.ProfileComponent
+import com.example.profile.di.ProfileDependencies
 import com.example.simbirsoft_android_practice.App
 import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment

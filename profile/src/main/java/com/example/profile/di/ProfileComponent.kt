@@ -1,7 +1,8 @@
-package com.example.profile
+package com.example.profile.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import com.example.profile.presentation.profile.ProfileFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 

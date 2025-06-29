@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.profile.presentation.model
 
 data class Friend(
     val id: Int,

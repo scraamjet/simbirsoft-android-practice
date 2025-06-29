@@ -1,7 +1,8 @@
-package com.example.profile
+package com.example.profile.presentation.profile
 
 import android.graphics.Bitmap
 import android.net.Uri
+import com.example.profile.domain.model.PhotoAction
 
 sealed class ProfileEvent {
     data object Load : ProfileEvent()
