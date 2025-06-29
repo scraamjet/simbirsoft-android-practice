@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":profile"))
     implementation(project(":auth"))
+    implementation(project(":help"))
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)
