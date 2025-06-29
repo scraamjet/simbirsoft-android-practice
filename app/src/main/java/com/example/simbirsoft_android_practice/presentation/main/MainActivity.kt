@@ -20,7 +20,7 @@ import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxyImpl
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,19 +42,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
+    private val newsServiceProxyImpl: NewsServiceProxyImpl by lazy { NewsServiceProxyImpl() }
 
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { connectedService ->
                 newsService = connectedService
                 isServiceConnected = true
-                newsServiceProxy.setService(connectedService)
-                mainViewModel.observeNews(newsServiceProxy)
+                newsServiceProxyImpl.setService(connectedService)
+                mainViewModel.observeNews(newsServiceProxyImpl)
             },
             onServiceDisconnected = {
                 isServiceConnected = false
-                newsServiceProxy.clearService()
+                newsServiceProxyImpl.clearService()
             },
         )
 
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-            newsServiceProxy.clearService()
+            newsServiceProxyImpl.clearService()
         }
     }
 
