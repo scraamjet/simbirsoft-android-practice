@@ -20,7 +20,7 @@ class App : Application(), ProfileComponentProvider {
         appComponent.inject(this)
     }
 
-    override fun getProfileComponent(): ProfileComponent {
+    override fun provideProfileComponent(): ProfileComponent {
         return appComponent.profileComponentFactory().create(this)
     }
 }

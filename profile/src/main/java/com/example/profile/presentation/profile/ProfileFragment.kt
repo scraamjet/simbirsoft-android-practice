@@ -72,8 +72,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val component = (context.applicationContext as ProfileComponentProvider).getProfileComponent()
-        viewModelFactory = component.viewModelFactory()
+        val component = (context.applicationContext as ProfileComponentProvider)
+            .provideProfileComponent()
         component.injectProfileFragment(this)
     }
 
