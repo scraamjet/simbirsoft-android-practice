@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.example.simbirsoft_android_practice.databinding.EditPhotoDialogBinding
+import com.example.profile.databinding.EditPhotoDialogBinding
 
 class EditPhotoDialogFragment : DialogFragment() {
     private var _binding: EditPhotoDialogBinding? = null

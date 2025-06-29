@@ -29,10 +29,10 @@ import javax.inject.Singleton
         ViewModelModule::class,
         UseCaseModule::class,
         AppModule::class,
+        NavigationModule::class
     ],
 )
-interface AppComponent: ProfileDependencies {
-
+interface AppComponent : ProfileComponent, ProfileDependencies {
     fun profileComponentFactory(): ProfileComponent.Factory
     fun inject(app: App)
     fun inject(service: NewsService)
