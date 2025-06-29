@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="help_rv_margin_top">20dp</dimen>
+    <dimen name="help_tv_margin_top">19dp</dimen>
+    <dimen name="item_help_icon_width">120dp</dimen>
+    <dimen name="item_help_icon_height">80dp</dimen>
+    <dimen name="item_help_title_margin_top">12dp</dimen>
+    <dimen name="item_help_padding">12dp</dimen>
+    <dimen name="item_help_corner_radius">0dp</dimen>
+</resources>
