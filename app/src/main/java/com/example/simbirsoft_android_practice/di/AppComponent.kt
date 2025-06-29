@@ -1,10 +1,12 @@
 package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
+import com.example.auth.AuthComponent
+import com.example.auth.AuthDependencies
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileDependencies
 import com.example.simbirsoft_android_practice.App
-import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationFragment
+import com.example.auth.AuthorizationFragment
 import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment
 import com.example.simbirsoft_android_practice.presentation.help.HelpFragment
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
@@ -32,7 +34,8 @@ import javax.inject.Singleton
         NavigationModule::class
     ],
 )
-interface AppComponent : ProfileDependencies {
+interface AppComponent : ProfileDependencies, AuthDependencies {
+    fun authComponentFactory(): AuthComponent.Factory
     fun profileComponentFactory(): ProfileComponent.Factory
     fun inject(app: App)
     fun inject(service: NewsService)

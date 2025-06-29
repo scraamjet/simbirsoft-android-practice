@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.main
+package com.example.core
 
 sealed interface MainEffect {
     data object StartAndBindNewsService : MainEffect

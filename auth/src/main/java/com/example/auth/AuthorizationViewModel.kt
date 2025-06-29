@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.auth
+package com.example.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,6 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.main
-
-import com.example.simbirsoft_android_practice.domain.model.NewsItem
+package com.example.core
 
 sealed interface MainEvent {
     data class NewsUpdated(val newsItems: List<NewsItem>) : MainEvent

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.core.utils
+package com.example.auth
 
 import android.text.Editable
 import android.text.TextWatcher

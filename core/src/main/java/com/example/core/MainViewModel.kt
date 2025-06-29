@@ -1,11 +1,7 @@
-package com.example.simbirsoft_android_practice.presentation.main
+package com.example.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.domain.model.NewsItem
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -64,14 +60,14 @@ class MainViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeNews(newsServiceProxy: NewsServiceProxy) {
+    fun observeNews(newsServiceGateway: NewsServiceGateway) {
         serviceJob?.cancel()
         serviceJob =
             viewModelScope.launch {
                 filterPreferencesUseCase.getSelectedCategoryIds()
                     .distinctUntilChanged()
                     .flatMapLatest { selectedCategoryIds ->
-                        newsServiceProxy.getFilteredNews(selectedCategoryIds)
+                        newsServiceGateway.getFilteredNews(selectedCategoryIds)
                     }
                     .collect { filteredNewsItems ->
                         onEvent(MainEvent.NewsUpdated(filteredNewsItems))

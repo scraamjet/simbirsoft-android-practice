@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.core.FilterPreferencesUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

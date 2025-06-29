@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.auth
+package com.example.auth
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,11 +16,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
-import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
+import com.example.auth.databinding.FragmentAuthorizationBinding
+import com.example.core.MainViewModel
+import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -36,9 +34,15 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
     private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
+    @Inject
+    lateinit var appRouter: AppRouter
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        context.appComponent.inject(this)
+        val component = (context.applicationContext as AuthComponentProvider)
+            .provideAuthComponent()
+        component.injectAuthFragment(this)
     }
 
     override fun onViewCreated(
@@ -138,11 +142,13 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                 authorizationViewModel.effect.collectLatest { effect ->
                     when (effect) {
                         is AuthorizationEffect.NavigateToHelp -> {
-                            findNavController().navigate(R.id.action_authorization_to_help)
+                            appRouter.navigateToHelp(findNavController())
                         }
+
                         is AuthorizationEffect.StartNewsService -> {
                             mainViewModel.requestStartNewsService()
                         }
+
                         is AuthorizationEffect.FinishActivity -> {
                             requireActivity().finish()
                         }

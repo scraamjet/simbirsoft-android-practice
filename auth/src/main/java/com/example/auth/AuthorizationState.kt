@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.auth
+package com.example.auth
 
 data class AuthorizationState(
     val email: String = "",

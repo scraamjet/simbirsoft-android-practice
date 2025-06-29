@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.di.ViewModelKey
-import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
+import com.example.core.MainViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
 import com.example.simbirsoft_android_practice.presentation.search.EventListViewModel
@@ -25,7 +24,7 @@ interface ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(MainViewModel::class)
-    fun bindMainViewModel(viewModel: com.example.simbirsoft_android_practice.presentation.main.MainViewModel): ViewModel
+    fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -61,9 +60,4 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(EventListViewModel::class)
     fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(AuthorizationViewModel::class)
-    fun bindAuthorizationViewModel(viewModel: AuthorizationViewModel): ViewModel
 }

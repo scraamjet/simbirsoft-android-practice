@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.auth
+package com.example.auth
 
 sealed class AuthorizationEvent {
     data class EmailChanged(val text: String) : AuthorizationEvent()

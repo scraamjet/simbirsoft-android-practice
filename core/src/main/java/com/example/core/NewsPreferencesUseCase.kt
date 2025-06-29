@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain.usecase
+package com.example.core
 
 interface NewsPreferencesUseCase {
     fun getReadNewsIds(): Set<Int>
