@@ -1,4 +1,4 @@
-package com.example.help
+package com.example.help.presentation
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.model.HelpCategory
+import com.example.help.presentation.adapter.HelpAdapter
+import com.example.help.R
 import com.example.help.databinding.FragmentHelpBinding
+import com.example.help.di.HelpComponentProvider
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject

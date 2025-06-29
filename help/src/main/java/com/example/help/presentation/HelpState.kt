@@ -1,4 +1,4 @@
-package com.example.help
+package com.example.help.presentation
 
 import com.example.core.model.HelpCategory
 

@@ -1,7 +1,9 @@
-package com.example.help
+package com.example.help.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.help.domain.CategoriesHelpUseCase
+import com.example.help.R
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

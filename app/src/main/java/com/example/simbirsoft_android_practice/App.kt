@@ -3,8 +3,8 @@ package com.example.simbirsoft_android_practice
 import android.app.Application
 import com.example.auth.di.AuthComponent
 import com.example.auth.di.AuthComponentProvider
-import com.example.help.HelpComponent
-import com.example.help.HelpComponentProvider
+import com.example.help.di.HelpComponent
+import com.example.help.di.HelpComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent

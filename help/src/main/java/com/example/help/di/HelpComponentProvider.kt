@@ -1,4 +1,4 @@
-package com.example.help
+package com.example.help.di
 
 fun interface HelpComponentProvider {
     fun provideHelpComponent(): HelpComponent

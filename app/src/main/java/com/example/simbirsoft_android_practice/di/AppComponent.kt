@@ -7,10 +7,10 @@ import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileDependencies
 import com.example.simbirsoft_android_practice.App
 import com.example.auth.presentation.AuthorizationFragment
-import com.example.help.HelpComponent
-import com.example.help.HelpDependencies
+import com.example.help.di.HelpComponent
+import com.example.help.di.HelpDependencies
 import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment
-import com.example.help.HelpFragment
+import com.example.help.presentation.HelpFragment
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment
 import com.example.simbirsoft_android_practice.presentation.news.NewsFragment

@@ -1,4 +1,4 @@
-package com.example.help
+package com.example.help.presentation.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load

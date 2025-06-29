@@ -1,4 +1,4 @@
-package com.example.help
+package com.example.help.domain
 
 import com.example.core.model.HelpCategory
 import kotlinx.coroutines.flow.Flow
