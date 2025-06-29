@@ -32,7 +32,7 @@ import javax.inject.Singleton
         NavigationModule::class
     ],
 )
-interface AppComponent : ProfileComponent, ProfileDependencies {
+interface AppComponent : ProfileDependencies {
     fun profileComponentFactory(): ProfileComponent.Factory
     fun inject(app: App)
     fun inject(service: NewsService)
