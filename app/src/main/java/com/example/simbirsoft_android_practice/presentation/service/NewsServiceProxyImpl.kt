@@ -5,7 +5,7 @@ import com.example.core.service.NewsServiceGateway
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class NewsServiceProxy: NewsServiceGateway {
+class NewsServiceProxyImpl: NewsServiceGateway {
     private var newsService: NewsService? = null
 
     fun setService(service: NewsService) {
