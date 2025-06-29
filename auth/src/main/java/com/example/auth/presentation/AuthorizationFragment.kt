@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,7 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.auth.R
 import com.example.auth.databinding.FragmentAuthorizationBinding
+import com.example.auth.di.AuthComponentProvider
+import com.example.auth.utils.textChangesFlow
 import com.example.core.main.MainViewModel
 import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding

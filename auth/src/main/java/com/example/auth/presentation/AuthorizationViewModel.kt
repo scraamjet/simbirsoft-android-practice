@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

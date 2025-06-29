@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.presentation
 
 sealed class AuthorizationEvent {
     data class EmailChanged(val text: String) : AuthorizationEvent()

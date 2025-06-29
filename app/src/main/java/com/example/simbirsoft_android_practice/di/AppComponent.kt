@@ -1,12 +1,12 @@
 package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
-import com.example.auth.AuthComponent
-import com.example.auth.AuthDependencies
+import com.example.auth.di.AuthComponent
+import com.example.auth.di.AuthDependencies
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileDependencies
 import com.example.simbirsoft_android_practice.App
-import com.example.auth.AuthorizationFragment
+import com.example.auth.presentation.AuthorizationFragment
 import com.example.simbirsoft_android_practice.presentation.filter.FilterFragment
 import com.example.simbirsoft_android_practice.presentation.help.HelpFragment
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity

@@ -1,4 +1,4 @@
-package com.example.auth
+package com.example.auth.presentation
 
 data class AuthorizationState(
     val email: String = "",

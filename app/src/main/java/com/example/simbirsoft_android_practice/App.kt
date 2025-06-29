@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice
 
 import android.app.Application
-import com.example.auth.AuthComponent
-import com.example.auth.AuthComponentProvider
+import com.example.auth.di.AuthComponent
+import com.example.auth.di.AuthComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent

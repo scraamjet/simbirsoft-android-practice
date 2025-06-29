@@ -1,7 +1,8 @@
-package com.example.auth
+package com.example.auth.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import com.example.auth.presentation.AuthorizationFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 
