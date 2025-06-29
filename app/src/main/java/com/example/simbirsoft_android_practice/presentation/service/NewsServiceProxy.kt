@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.presentation.service
 
-import com.example.core.NewsItem
-import com.example.core.NewsServiceGateway
+import com.example.core.model.NewsItem
+import com.example.core.service.NewsServiceGateway
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

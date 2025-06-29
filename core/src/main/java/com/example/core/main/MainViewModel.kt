@@ -1,7 +1,11 @@
-package com.example.core
+package com.example.core.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.model.NewsItem
+import com.example.core.service.NewsServiceGateway
+import com.example.core.usecase.FilterPreferencesUseCase
+import com.example.core.usecase.NewsPreferencesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow

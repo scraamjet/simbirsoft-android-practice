@@ -1,4 +1,4 @@
-package com.example.core
+package com.example.core.main
 
 data class MainState(
     val isBottomNavigationVisible: Boolean = true,

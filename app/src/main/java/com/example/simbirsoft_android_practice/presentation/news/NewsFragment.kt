@@ -18,8 +18,8 @@ import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.core.NewsItem
-import com.example.core.MainViewModel
+import com.example.core.model.NewsItem
+import com.example.core.main.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch

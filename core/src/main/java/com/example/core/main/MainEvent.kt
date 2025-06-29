@@ -1,4 +1,6 @@
-package com.example.core
+package com.example.core.main
+
+import com.example.core.model.NewsItem
 
 sealed interface MainEvent {
     data class NewsUpdated(val newsItems: List<NewsItem>) : MainEvent

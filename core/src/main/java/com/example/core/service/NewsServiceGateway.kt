@@ -1,5 +1,6 @@
-package com.example.core
+package com.example.core.service
 
+import com.example.core.model.NewsItem
 import kotlinx.coroutines.flow.Flow
 
 interface NewsServiceGateway {

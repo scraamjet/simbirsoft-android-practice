@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.auth.databinding.FragmentAuthorizationBinding
-import com.example.core.MainViewModel
+import com.example.core.main.MainViewModel
 import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest

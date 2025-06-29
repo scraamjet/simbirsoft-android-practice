@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.simbirsoft_android_practice.data.preferences.NewsPreferences
-import com.example.core.NewsPreferencesUseCase
+import com.example.core.usecase.NewsPreferencesUseCase
 import javax.inject.Inject
 
 class NewsPreferencesUseCaseImpl @Inject constructor(
