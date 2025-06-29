@@ -1,11 +1,11 @@
 package com.example.simbirsoft_android_practice.presentation.service
 
 import com.example.core.model.NewsItem
-import com.example.core.service.NewsServiceGateway
+import com.example.core.service.NewsServiceProxy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class NewsServiceProxy: NewsServiceGateway {
+class NewsServiceProxyImpl: NewsServiceProxy {
     private var newsService: NewsService? = null
 
     fun setService(service: NewsService) {
