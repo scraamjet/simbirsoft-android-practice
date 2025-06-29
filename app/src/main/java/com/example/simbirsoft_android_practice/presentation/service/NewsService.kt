@@ -7,7 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.core.model.NewsItem
-import com.example.simbirsoft_android_practice.domain.repository.EventRepository
+import com.example.core.EventRepository
 import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

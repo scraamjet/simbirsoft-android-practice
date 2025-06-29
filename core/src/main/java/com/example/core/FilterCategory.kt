@@ -1,11 +1,11 @@
-package com.example.simbirsoft_android_practice.domain.model
+package com.example.core
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class HelpCategory(
+data class FilterCategory(
     val id: Int,
     val title: String,
-    val iconUrl: String,
+    var isEnabled: Boolean = true,
 ) : Parcelable

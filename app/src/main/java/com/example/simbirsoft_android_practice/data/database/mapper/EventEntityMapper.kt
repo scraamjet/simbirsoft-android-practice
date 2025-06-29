@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.data.database.mapper
 import com.example.simbirsoft_android_practice.data.database.entity.EventCategoryCrossRef
 import com.example.simbirsoft_android_practice.data.database.entity.EventEntity
 import com.example.simbirsoft_android_practice.data.database.entity.EventWithCategories
-import com.example.simbirsoft_android_practice.domain.model.Event
+import com.example.core.Event
 
 object EventEntityMapper {
     private fun toEvent(eventWithCategories: EventWithCategories): Event {

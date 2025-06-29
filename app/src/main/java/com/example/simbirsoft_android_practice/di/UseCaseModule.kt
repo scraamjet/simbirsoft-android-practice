@@ -1,7 +1,6 @@
 package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
@@ -9,7 +8,6 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCa
 import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
@@ -26,9 +24,6 @@ interface UseCaseModule {
 
     @Binds
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
-
-    @Binds
-    fun bindCategoriesHelpUseCase(impl: CategoriesHelpUseCaseImpl): CategoriesHelpUseCase
 
     @Binds
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase

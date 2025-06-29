@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.domain.usecase
 
-import com.example.simbirsoft_android_practice.domain.model.FilterCategory
+import com.example.core.FilterCategory
 import kotlinx.coroutines.flow.Flow
 
 interface CategoriesFilterUseCase {

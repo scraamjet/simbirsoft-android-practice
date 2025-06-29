@@ -1,9 +1,9 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
-import com.example.simbirsoft_android_practice.domain.model.HelpCategory
+import com.example.core.HelpCategory
+import com.example.help.databinding.ItemHelpBinding
 
 class HelpViewHolder(private val binding: ItemHelpBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: HelpCategory) {

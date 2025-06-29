@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help
 
 import androidx.annotation.StringRes
 

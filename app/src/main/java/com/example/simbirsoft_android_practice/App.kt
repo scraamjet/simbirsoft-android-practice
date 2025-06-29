@@ -3,13 +3,15 @@ package com.example.simbirsoft_android_practice
 import android.app.Application
 import com.example.auth.di.AuthComponent
 import com.example.auth.di.AuthComponentProvider
+import com.example.help.HelpComponent
+import com.example.help.HelpComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
 
-class App : Application(), ProfileComponentProvider, AuthComponentProvider {
+class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -28,6 +30,10 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider {
 
     override fun provideAuthComponent(): AuthComponent {
         return appComponent.authComponentFactory().create(this)
+    }
+
+    override fun provideHelpComponent(): HelpComponent {
+        return appComponent.helpComponentFactory().create(this)
     }
 }
 

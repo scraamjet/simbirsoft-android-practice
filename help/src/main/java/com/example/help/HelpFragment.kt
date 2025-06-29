@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help
 
 import android.content.Context
 import android.os.Bundle
@@ -13,10 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core.di.MultiViewModelFactory
-import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.domain.model.HelpCategory
+import com.example.core.HelpCategory
+import com.example.help.databinding.FragmentHelpBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,13 +26,15 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
-
     private val helpViewModel by viewModels<HelpViewModel> { viewModelFactory }
+
     private val helpAdapter by lazy { HelpAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        context.appComponent.inject(this)
+        val component = (context.applicationContext as HelpComponentProvider)
+            .provideHelpComponent()
+        component.injectHelpFragment(this)
     }
 
     override fun onViewCreated(

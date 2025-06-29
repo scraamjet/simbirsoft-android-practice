@@ -7,4 +7,5 @@
     <dimen name="item_help_title_margin_top">12dp</dimen>
     <dimen name="item_help_padding">12dp</dimen>
     <dimen name="item_help_corner_radius">0dp</dimen>
+    <dimen name="help_category_item_spacing">8dp</dimen>
 </resources>
