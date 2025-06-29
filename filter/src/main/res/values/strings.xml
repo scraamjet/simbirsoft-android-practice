@@ -2,4 +2,7 @@
 <resources>
     <string name="filter_change_apply">Изменения приняты</string>
     <string name="filter_load_error">Не удалось загрузить фильтры</string>
+    <string name="title_filter">Фильтр</string>
+    <string name="category_help">Категории помощи:</string>
+    <string name="filter_saved_toast">Фильтры успешно сохранены</string>
 </resources>

@@ -1,8 +1,7 @@
-package com.example.simbirsoft_android_practice.data.usecase
+package com.example.filter.usecase
 
 import com.example.core.model.FilterCategory
 import com.example.core.repository.CategoryRepository
-import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.core.mapper.CategoryMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

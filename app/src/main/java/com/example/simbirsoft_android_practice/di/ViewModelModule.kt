@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.di.ViewModelKey
-import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.core.main.MainViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
@@ -29,11 +28,6 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsViewModel::class)
     fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(FilterViewModel::class)
-    fun bindFilterViewModel(viewModel: FilterViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.filter
+package com.example.filter.presentation
 
 import android.content.Context
 import android.os.Bundle
@@ -16,10 +16,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.di.MultiViewModelFactory
-import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
-import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.core.model.FilterCategory
+import com.example.filter.presentation.adapter.FilterAdapter
+import com.example.filter.R
+import com.example.filter.databinding.FragmentFilterBinding
+import com.example.filter.di.FilterComponentProvider
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +36,9 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        context.appComponent.inject(this)
+        val component = (context.applicationContext as FilterComponentProvider)
+            .provideFilterComponent()
+        component.injectFilterFragment(this)
     }
 
     override fun onViewCreated(
