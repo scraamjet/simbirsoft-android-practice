@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.presentation.news
 
-import com.example.core.Event
+import com.example.core.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.core.model.NewsItem
 

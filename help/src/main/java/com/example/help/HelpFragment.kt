@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core.di.MultiViewModelFactory
-import com.example.core.HelpCategory
+import com.example.core.model.HelpCategory
 import com.example.help.databinding.FragmentHelpBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch

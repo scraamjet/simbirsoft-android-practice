@@ -1,6 +1,6 @@
 package com.example.help
 
-import com.example.core.HelpCategory
+import com.example.core.model.HelpCategory
 
 sealed class HelpState {
     data object Loading : HelpState()

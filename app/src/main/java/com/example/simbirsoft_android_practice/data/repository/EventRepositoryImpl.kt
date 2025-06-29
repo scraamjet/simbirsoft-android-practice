@@ -5,8 +5,8 @@ import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.data.database.dao.EventDao
 import com.example.simbirsoft_android_practice.data.database.mapper.EventEntityMapper
-import com.example.core.Event
-import com.example.core.EventRepository
+import com.example.core.model.Event
+import com.example.core.repository.EventRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

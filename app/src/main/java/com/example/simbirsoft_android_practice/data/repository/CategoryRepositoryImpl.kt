@@ -5,8 +5,8 @@ import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.data.database.dao.CategoryDao
 import com.example.simbirsoft_android_practice.data.database.mapper.CategoryEntityMapper
-import com.example.core.Category
-import com.example.core.CategoryRepository
+import com.example.core.model.Category
+import com.example.core.repository.CategoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay

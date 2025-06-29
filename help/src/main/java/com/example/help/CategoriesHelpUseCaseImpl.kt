@@ -1,8 +1,8 @@
 package com.example.help
 
-import com.example.core.HelpCategory
-import com.example.core.CategoryRepository
-import com.example.core.CategoryMapper
+import com.example.core.model.HelpCategory
+import com.example.core.repository.CategoryRepository
+import com.example.core.mapper.CategoryMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

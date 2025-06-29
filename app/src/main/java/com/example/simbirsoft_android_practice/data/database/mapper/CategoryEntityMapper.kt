@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.database.mapper
 
 import com.example.simbirsoft_android_practice.data.database.entity.CategoryEntity
-import com.example.core.Category
+import com.example.core.model.Category
 
 object CategoryEntityMapper {
     private fun fromCategory(category: Category): CategoryEntity {

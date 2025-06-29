@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.simbirsoft_android_practice.domain.model.SearchEvent
-import com.example.core.EventRepository
+import com.example.core.repository.EventRepository
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.simbirsoft_android_practice.presentation.search.SearchMapper
 import kotlinx.coroutines.flow.Flow

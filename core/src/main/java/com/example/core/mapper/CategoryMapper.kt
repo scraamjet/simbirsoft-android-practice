@@ -1,4 +1,8 @@
-package com.example.core
+package com.example.core.mapper
+
+import com.example.core.model.Category
+import com.example.core.model.FilterCategory
+import com.example.core.model.HelpCategory
 
 
 object CategoryMapper {
