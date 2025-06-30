@@ -1,4 +1,4 @@
-package com.example.core.main
+package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,7 @@ import com.example.core.model.NewsItem
 import com.example.core.service.NewsServiceProxy
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
+import com.example.core.usecase.StartNewsServiceUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val newsPreferencesUseCase: NewsPreferencesUseCase
+    private val newsPreferencesUseCase: NewsPreferencesUseCase,
+    private val startNewsServiceUseCase: StartNewsServiceUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -35,6 +37,15 @@ class MainViewModel @Inject constructor(
 
     init {
         onEvent(MainEvent.InitReadNews)
+        observeStartNewsRequests()
+    }
+
+    private fun observeStartNewsRequests() {
+        viewModelScope.launch {
+            startNewsServiceUseCase.observeRequests().collect {
+                _effect.emit(MainEffect.StartAndBindNewsService)
+            }
+        }
     }
 
     fun onEvent(event: MainEvent) {
@@ -57,10 +68,6 @@ class MainViewModel @Inject constructor(
 
     fun updateBadgeCount(newsItems: List<NewsItem>) {
         onEvent(MainEvent.NewsUpdated(newsItems))
-    }
-
-    fun requestStartNewsService() {
-        onEvent(MainEvent.RequestStartNewsService)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

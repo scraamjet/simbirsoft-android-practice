@@ -14,10 +14,13 @@ import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
+import com.example.core.usecase.StartNewsServiceUseCase
+import com.example.simbirsoft_android_practice.StartNewsServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 interface UseCaseModule {
@@ -44,4 +47,8 @@ interface UseCaseModule {
 
     @Binds
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
+
+    @Binds
+    @Singleton
+    fun bindStartNewsServiceUseCase(impl: StartNewsServiceUseCaseImpl): StartNewsServiceUseCase
 }

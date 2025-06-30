@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +19,6 @@ import com.example.auth.R
 import com.example.auth.databinding.FragmentAuthorizationBinding
 import com.example.auth.di.AuthComponentProvider
 import com.example.auth.utils.textChangesFlow
-import com.example.core.main.MainViewModel
 import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +33,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
     @Inject
     lateinit var appRouter: AppRouter
@@ -146,10 +143,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                     when (effect) {
                         is AuthorizationEffect.NavigateToHelp -> {
                             appRouter.navigateToHelp(findNavController())
-                        }
-
-                        is AuthorizationEffect.StartNewsService -> {
-                            mainViewModel.requestStartNewsService()
                         }
 
                         is AuthorizationEffect.FinishActivity -> {
