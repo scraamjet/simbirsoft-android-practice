@@ -20,6 +20,7 @@ import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUs
 import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 interface UseCaseModule {
@@ -36,6 +37,7 @@ interface UseCaseModule {
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
 
     @Binds
+    @Singleton
     fun bindFilterPreferencesUseCase(impl: FilterPreferencesUseCaseImpl): FilterPreferencesUseCase
 
     @Binds
