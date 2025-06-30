@@ -4,7 +4,7 @@ import com.example.core.model.NewsItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class NewsServiceProxyImpl {
+class NewsServiceProxy {
     private var newsService: NewsService? = null
 
     fun setService(service: NewsService) {
