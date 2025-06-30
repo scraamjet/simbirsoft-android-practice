@@ -3,10 +3,10 @@ package com.example.simbirsoft_android_practice.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.model.NewsItem
-import com.example.core.service.NewsServiceProxy
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxyImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -71,7 +71,7 @@ class MainViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeNews(newsServiceProxy: NewsServiceProxy) {
+    fun observeNews(newsServiceProxy: NewsServiceProxyImpl) {
         serviceJob?.cancel()
         serviceJob =
             viewModelScope.launch {

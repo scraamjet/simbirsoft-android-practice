@@ -1,11 +1,10 @@
 package com.example.simbirsoft_android_practice.presentation.service
 
 import com.example.core.model.NewsItem
-import com.example.core.service.NewsServiceProxy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-class NewsServiceProxyImpl: NewsServiceProxy {
+class NewsServiceProxyImpl {
     private var newsService: NewsService? = null
 
     fun setService(service: NewsService) {
@@ -16,7 +15,7 @@ class NewsServiceProxyImpl: NewsServiceProxy {
         this.newsService = null
     }
 
-    override fun getFilteredNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
+    fun getFilteredNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
         return newsService?.loadAndFilterNews(selectedCategoryIds)
             ?: flowOf(emptyList())
     }
