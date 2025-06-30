@@ -37,6 +37,7 @@ interface UseCaseModule {
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
 
     @Binds
+    @Singleton
     fun bindFilterPreferencesUseCase(impl: FilterPreferencesUseCaseImpl): FilterPreferencesUseCase
 
     @Binds
