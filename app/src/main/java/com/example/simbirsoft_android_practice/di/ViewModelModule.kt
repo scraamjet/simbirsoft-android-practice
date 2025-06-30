@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.di.ViewModelKey
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
-import com.example.core.main.MainViewModel
+import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
 import com.example.simbirsoft_android_practice.presentation.search.EventListViewModel

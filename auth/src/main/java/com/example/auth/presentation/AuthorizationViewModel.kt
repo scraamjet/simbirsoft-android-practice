@@ -2,6 +2,7 @@ package com.example.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.usecase.StartNewsServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,7 +15,9 @@ import javax.inject.Inject
 
 private const val MIN_INPUT_LENGTH = 6
 
-class AuthorizationViewModel @Inject constructor() : ViewModel() {
+class AuthorizationViewModel @Inject constructor(
+    private val startNewsServiceUseCase: StartNewsServiceUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthorizationState())
     val state: StateFlow<AuthorizationState> = _state.asStateFlow()
@@ -55,7 +58,7 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     private fun handleSubmit() {
         viewModelScope.launch {
             _effect.emit(AuthorizationEffect.NavigateToHelp)
-            _effect.emit(AuthorizationEffect.StartNewsService)
+            startNewsServiceUseCase.requestStart()
         }
     }
 
