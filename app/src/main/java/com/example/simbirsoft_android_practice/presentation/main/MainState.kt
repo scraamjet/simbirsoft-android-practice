@@ -1,4 +1,4 @@
-package com.example.core.main
+package com.example.simbirsoft_android_practice.presentation.main
 
 data class MainState(
     val isBottomNavigationVisible: Boolean = true,

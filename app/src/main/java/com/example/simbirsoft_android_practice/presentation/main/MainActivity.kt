@@ -12,15 +12,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.core.main.MainEffect
-import com.example.core.main.MainViewModel
 import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxyImpl
+import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,19 +40,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val newsServiceProxyImpl: NewsServiceProxyImpl by lazy { NewsServiceProxyImpl() }
+    private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
 
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { connectedService ->
                 newsService = connectedService
                 isServiceConnected = true
-                newsServiceProxyImpl.setService(connectedService)
-                mainViewModel.observeNews(newsServiceProxyImpl)
+                newsServiceProxy.setService(connectedService)
+                mainViewModel.observeNews(newsServiceProxy)
             },
             onServiceDisconnected = {
                 isServiceConnected = false
-                newsServiceProxyImpl.clearService()
+                newsServiceProxy.clearService()
             },
         )
 
@@ -123,7 +121,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-            newsServiceProxyImpl.clearService()
+            newsServiceProxy.clearService()
         }
     }
 
