@@ -37,9 +37,10 @@ class MainViewModel @Inject constructor(
     private var serviceJob: Job? = null
 
     init {
-        onEvent(MainEvent.InitReadNews)
+        newsBadgeCountUseCase.initializeBadgeObservers(viewModelScope)
         observeStartNewsRequests()
         observeBadgeCount()
+        onEvent(MainEvent.InitReadNews)
     }
 
     private fun observeBadgeCount() {
