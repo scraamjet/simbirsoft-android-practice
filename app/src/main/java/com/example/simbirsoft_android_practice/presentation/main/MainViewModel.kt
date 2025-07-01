@@ -24,7 +24,6 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val newsPreferencesUseCase: NewsPreferencesUseCase,
     private val startNewsServiceUseCase: StartNewsServiceUseCase,
     private val newsBadgeCountUseCase: NewsBadgeCountUseCase
 ) : ViewModel() {
@@ -45,9 +44,9 @@ class MainViewModel @Inject constructor(
 
     private fun observeBadgeCount() {
         viewModelScope.launch {
-            newsBadgeCountUseCase.observeBadgeCount().collect { unreadCount ->
+            newsBadgeCountUseCase.observeBadgeCount().collect { count: Int ->
                 _state.update { previousState ->
-                    previousState.copy(badgeCount = unreadCount)
+                    previousState.copy(badgeCount = count)
                 }
             }
         }
@@ -66,7 +65,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.InitReadNews -> handleInitReadNews()
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
-            is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
+            is MainEvent.NewsUpdated -> handleNewsUpdated(event.newsItems)
             is MainEvent.RequestStartNewsService -> handleRequestStartNewsService()
         }
     }
@@ -75,26 +74,13 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.BottomNavVisibilityChanged(visible))
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeNews(newsServiceProxy: NewsServiceProxy) {
-        serviceJob?.cancel()
-        serviceJob =
-            viewModelScope.launch {
-                filterPreferencesUseCase.getSelectedCategoryIds()
-                    .distinctUntilChanged()
-                    .flatMapLatest { selectedCategoryIds ->
-                        newsServiceProxy.getFilteredNews(selectedCategoryIds)
-                    }
-                    .collect { filteredNewsItems ->
-                        onEvent(MainEvent.NewsUpdated(filteredNewsItems))
-                    }
-            }
-    }
-
     private fun handleInitReadNews() {
-        val readNewsIdsFromPrefs = newsPreferencesUseCase.getReadNewsIds()
-        _state.update { previousState ->
-            previousState.copy(readNewsIds = readNewsIdsFromPrefs)
+        viewModelScope.launch {
+            newsBadgeCountUseCase.observeReadNewsIds().collect { readIds: Set<Int> ->
+                _state.update { previousState ->
+                    previousState.copy(readNewsIds = readIds)
+                }
+            }
         }
     }
 
@@ -104,26 +90,38 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun handleNewsRead(newsId: Int) {
+        viewModelScope.launch {
+            newsBadgeCountUseCase.markNewsAsRead(newsId = newsId)
+        }
+    }
+
+    private fun handleNewsUpdated(newsItems: List<NewsItem>) {
+        viewModelScope.launch {
+            newsBadgeCountUseCase.updateNews(newsItems = newsItems)
+        }
+    }
+
     private fun handleRequestStartNewsService() {
         viewModelScope.launch {
             _effect.emit(MainEffect.StartAndBindNewsService)
         }
     }
 
-    private fun handleNewsRead(newsId: Int) {
-        val currentReadNewsIds = _state.value.readNewsIds
-        if (newsId !in currentReadNewsIds) {
-            newsPreferencesUseCase.markNewsAsRead(newsId)
-            _state.update { previousState ->
-                previousState.copy(readNewsIds = currentReadNewsIds + newsId)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun observeNews(newsServiceProxy: NewsServiceProxy) {
+        serviceJob?.cancel()
+        serviceJob =
+            viewModelScope.launch {
+                filterPreferencesUseCase.getSelectedCategoryIds()
+                    .distinctUntilChanged()
+                    .flatMapLatest { selectedCategoryIds: Set<Int> ->
+                        newsServiceProxy.getFilteredNews(selectedCategoryIds)
+                    }
+                    .collect { filteredNewsItems: List<NewsItem> ->
+                        onEvent(MainEvent.NewsUpdated(filteredNewsItems))
+                    }
             }
-        }
-    }
-
-    private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
-        viewModelScope.launch {
-            newsBadgeCountUseCase.updateNews(newsItems = newsItems)
-        }
     }
 }
 
