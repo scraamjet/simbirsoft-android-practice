@@ -1,10 +1,9 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.news
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.simbirsoft_android_practice.core.utils.DateUtils
-import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
 import com.example.core.model.NewsItem
+import com.example.news.databinding.ItemNewsBinding
 
 class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(newsItem: NewsItem) {

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.news
 
 import android.content.Context
 import android.os.Bundle
@@ -12,14 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.core.di.MultiViewModelFactory
-import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.core.utils.DateUtils
-import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.domain.model.NewsDetail
+import com.example.news.databinding.FragmentNewsDetailBinding
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,12 +25,17 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val args: NewsDetailFragmentArgs by navArgs()
+    private val newsId: Int by lazy {
+        requireArguments().getInt("newsId")
+    }
+
     private val viewModel by viewModels<NewsDetailViewModel> { viewModelFactory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        context.appComponent.inject(this)
+        val component = (context.applicationContext as NewsComponentProvider)
+            .provideNewsComponent()
+        component.injectNewsDetailFragment(this)
     }
 
     override fun onViewCreated(
@@ -46,7 +46,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         initClickListeners()
         observeState()
         observeEffect()
-        viewModel.onEvent(NewsDetailEvent.Load(newsId = args.newsId))
+        viewModel.onEvent(NewsDetailEvent.Load(newsId = newsId))
     }
 
     private fun observeState() {

@@ -13,9 +13,11 @@ import com.example.help.di.HelpComponent
 import com.example.help.di.HelpDependencies
 import com.example.filter.presentation.FilterFragment
 import com.example.help.presentation.HelpFragment
+import com.example.news.NewsComponent
+import com.example.news.NewsDependencies
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
-import com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment
-import com.example.simbirsoft_android_practice.presentation.news.NewsFragment
+import com.example.news.NewsDetailFragment
+import com.example.news.NewsFragment
 import com.example.simbirsoft_android_practice.presentation.search.EventListFragment
 import com.example.simbirsoft_android_practice.presentation.search.OrganizationListFragment
 import com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment
@@ -39,11 +41,12 @@ import javax.inject.Singleton
     ],
 )
 interface AppComponent : ProfileDependencies, AuthDependencies, HelpDependencies,
-    FilterDependencies {
+    FilterDependencies, NewsDependencies {
     fun authComponentFactory(): AuthComponent.Factory
     fun profileComponentFactory(): ProfileComponent.Factory
     fun helpComponentFactory(): HelpComponent.Factory
     fun filterComponentFactory(): FilterComponent.Factory
+    fun newsComponentFactory(): NewsComponent.Factory
     fun inject(app: App)
     fun inject(service: NewsService)
     fun inject(activity: MainActivity)

@@ -1,11 +1,10 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.R
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
+import com.example.core.usecase.NewsBadgeCountUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +18,8 @@ import javax.inject.Inject
 
 class NewsViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val newsUseCase: NewsUseCase
+    private val newsUseCase: NewsUseCase,
+    private val newsBadgeCountUseCase: NewsBadgeCountUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading)
@@ -54,6 +54,9 @@ class NewsViewModel @Inject constructor(
         _uiState.value = NewsState.Loading
         try {
             val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
+
+            newsBadgeCountUseCase.updateNews(newsItems = filteredNews)
+
             _uiState.value =
                 if (filteredNews.isEmpty()) {
                     NewsState.NoResults

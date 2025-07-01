@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.news
 
 import androidx.annotation.StringRes
 

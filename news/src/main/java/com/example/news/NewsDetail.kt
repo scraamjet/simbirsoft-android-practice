@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain.model
+package com.example.news
 
 data class NewsDetail(
     val title: String,

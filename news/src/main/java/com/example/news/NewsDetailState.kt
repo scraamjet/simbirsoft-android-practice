@@ -1,6 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
-
-import com.example.simbirsoft_android_practice.domain.model.NewsDetail
+package com.example.news
 
 sealed class NewsDetailState {
     data object Idle : NewsDetailState()

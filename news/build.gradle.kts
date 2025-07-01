@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.viewbinding.property.delegate)
     implementation(libs.viewbinding.property.delegate.reflection)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

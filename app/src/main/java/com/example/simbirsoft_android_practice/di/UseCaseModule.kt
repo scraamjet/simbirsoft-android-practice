@@ -2,17 +2,15 @@ package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
+import com.example.core.usecase.NewsBadgeCountUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.StartNewsServiceUseCaseImpl
-import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
+import com.example.simbirsoft_android_practice.NewsBadgeCountUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
 import dagger.Module
@@ -20,11 +18,6 @@ import javax.inject.Singleton
 
 @Module
 interface UseCaseModule {
-    @Binds
-    fun bindNewsUseCase(impl: NewsUseCaseImpl): NewsUseCase
-
-    @Binds
-    fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
     @Singleton
@@ -42,4 +35,9 @@ interface UseCaseModule {
     @Binds
     @Singleton
     fun bindStartNewsServiceUseCase(impl: StartNewsServiceUseCaseImpl): StartNewsServiceUseCase
+
+    @Binds
+    @Singleton
+    fun bindNewsBadgeCountUseCase(impl: NewsBadgeCountUseCaseImpl): NewsBadgeCountUseCase
+
 }

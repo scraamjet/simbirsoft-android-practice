@@ -1,9 +1,7 @@
-package com.example.simbirsoft_android_practice.data.usecase
+package com.example.news
 
 import com.example.core.model.NewsItem
 import com.example.core.repository.EventRepository
-import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
-import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

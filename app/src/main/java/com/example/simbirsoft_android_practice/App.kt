@@ -7,6 +7,8 @@ import com.example.filter.di.FilterComponent
 import com.example.filter.di.FilterComponentProvider
 import com.example.help.di.HelpComponent
 import com.example.help.di.HelpComponentProvider
+import com.example.news.NewsComponent
+import com.example.news.NewsComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
@@ -14,7 +16,7 @@ import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
 
 class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider,
-    FilterComponentProvider {
+    FilterComponentProvider, NewsComponentProvider {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -41,6 +43,10 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider, Help
 
     override fun provideFilterComponent(): FilterComponent {
         return appComponent.filterComponentFactory().create(this)
+    }
+
+    override fun provideNewsComponent(): NewsComponent {
+        return appComponent.newsComponentFactory().create(this)
     }
 }
 

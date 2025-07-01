@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.news
+package com.example.news
 
 sealed class NewsEvent {
     data object LoadNews : NewsEvent()

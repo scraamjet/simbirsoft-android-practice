@@ -1,7 +1,6 @@
-package com.example.simbirsoft_android_practice.core.utils
+package com.example.news
 
 import android.content.Context
-import com.example.simbirsoft_android_practice.R
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -12,6 +11,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+
 
 object DateUtils {
     private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM", Locale("ru"))

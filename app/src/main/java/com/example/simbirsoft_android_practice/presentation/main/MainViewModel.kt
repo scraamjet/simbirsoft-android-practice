@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
+import com.example.core.usecase.NewsBadgeCountUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
@@ -24,7 +25,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val newsPreferencesUseCase: NewsPreferencesUseCase,
-    private val startNewsServiceUseCase: StartNewsServiceUseCase
+    private val startNewsServiceUseCase: StartNewsServiceUseCase,
+    private val newsBadgeCountUseCase: NewsBadgeCountUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -38,6 +40,17 @@ class MainViewModel @Inject constructor(
     init {
         onEvent(MainEvent.InitReadNews)
         observeStartNewsRequests()
+        observeBadgeCount()
+    }
+
+    private fun observeBadgeCount() {
+        viewModelScope.launch {
+            newsBadgeCountUseCase.observeBadgeCount().collect { unreadCount ->
+                _state.update { previousState ->
+                    previousState.copy(badgeCount = unreadCount)
+                }
+            }
+        }
     }
 
     private fun observeStartNewsRequests() {
@@ -60,14 +73,6 @@ class MainViewModel @Inject constructor(
 
     fun setBottomNavigationVisible(visible: Boolean) {
         onEvent(MainEvent.BottomNavVisibilityChanged(visible))
-    }
-
-    fun updateReadNews(newsId: Int) {
-        onEvent(MainEvent.NewsRead(newsId))
-    }
-
-    fun updateBadgeCount(newsItems: List<NewsItem>) {
-        onEvent(MainEvent.NewsUpdated(newsItems))
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -110,24 +115,15 @@ class MainViewModel @Inject constructor(
         if (newsId !in currentReadNewsIds) {
             newsPreferencesUseCase.markNewsAsRead(newsId)
             _state.update { previousState ->
-                val updatedReadIds = previousState.readNewsIds + newsId
-                val updatedBadgeCount = previousState.badgeCount - 1
-                previousState.copy(
-                    readNewsIds = updatedReadIds,
-                    badgeCount = updatedBadgeCount.coerceAtLeast(0),
-                )
+                previousState.copy(readNewsIds = currentReadNewsIds + newsId)
             }
         }
     }
 
     private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
-        val readNewsIds = _state.value.readNewsIds
-        val unreadCount =
-            newsItems.count { newsItem ->
-                newsItem.id !in readNewsIds
-            }
-        _state.update { previousState ->
-            previousState.copy(badgeCount = unreadCount)
+        viewModelScope.launch {
+            newsBadgeCountUseCase.updateNews(newsItems = newsItems)
         }
     }
 }
+

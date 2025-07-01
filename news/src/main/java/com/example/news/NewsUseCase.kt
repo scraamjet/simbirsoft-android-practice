@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain.usecase
+package com.example.news
 
 import com.example.core.model.NewsItem
 
