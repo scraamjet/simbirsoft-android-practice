@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":help"))
     implementation(project(":filter"))
     implementation(project(":news"))
+    implementation(project(":search"))
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)
