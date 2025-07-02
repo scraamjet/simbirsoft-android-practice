@@ -1,8 +1,9 @@
-package com.example.news
+package com.example.news.presentation.news.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.core.model.NewsItem
+import com.example.news.utils.DateUtils
 import com.example.news.databinding.ItemNewsBinding
 
 class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root) {

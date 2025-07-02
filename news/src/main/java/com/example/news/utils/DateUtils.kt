@@ -1,6 +1,7 @@
-package com.example.news
+package com.example.news.utils
 
 import android.content.Context
+import com.example.news.R
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate

@@ -7,8 +7,8 @@ import com.example.filter.di.FilterComponent
 import com.example.filter.di.FilterComponentProvider
 import com.example.help.di.HelpComponent
 import com.example.help.di.HelpComponentProvider
-import com.example.news.NewsComponent
-import com.example.news.NewsComponentProvider
+import com.example.news.di.NewsComponent
+import com.example.news.di.NewsComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent

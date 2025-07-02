@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.presentation.news
 
 import android.content.Context
 import android.os.Bundle
@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.model.NewsItem
 import com.example.core.navigation.AppRouter
+import com.example.news.R
 import com.example.news.databinding.FragmentNewsBinding
+import com.example.news.di.NewsComponentProvider
+import com.example.news.presentation.news.adapter.NewsAdapter
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch

@@ -1,7 +1,10 @@
-package com.example.news
+package com.example.news.presentation.newsdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.news.R
+import com.example.core.model.NewsDetail
+import com.example.news.domain.usecase.NewsDetailUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

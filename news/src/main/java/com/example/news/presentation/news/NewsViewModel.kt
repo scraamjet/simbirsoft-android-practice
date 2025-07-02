@@ -1,10 +1,12 @@
-package com.example.news
+package com.example.news.presentation.news
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.interactor.NewsBadgeCountInteractor
+import com.example.news.R
+import com.example.news.domain.usecase.NewsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

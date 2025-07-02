@@ -1,7 +1,8 @@
-package com.example.news
+package com.example.news.domain.usecase
 
 import com.example.core.model.NewsItem
 import com.example.core.repository.EventRepository
+import com.example.core.mapper.NewsMapper
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

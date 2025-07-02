@@ -1,7 +1,9 @@
-package com.example.news
+package com.example.news.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import com.example.news.presentation.newsdetail.NewsDetailFragment
+import com.example.news.presentation.news.NewsFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 

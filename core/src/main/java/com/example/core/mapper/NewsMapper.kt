@@ -1,7 +1,8 @@
-package com.example.news
+package com.example.core.mapper
 
 import com.example.core.model.Event
 import com.example.core.model.NewsItem
+import com.example.core.model.NewsDetail
 
 object NewsMapper {
     fun eventToNewsItem(event: Event): NewsItem =

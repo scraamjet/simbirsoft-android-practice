@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.core.model
 
 data class NewsDetail(
     val title: String,

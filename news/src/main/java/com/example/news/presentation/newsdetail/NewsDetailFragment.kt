@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.presentation.newsdetail
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.core.di.MultiViewModelFactory
+import com.example.news.utils.DateUtils
+import com.example.news.R
 import com.example.news.databinding.FragmentNewsDetailBinding
+import com.example.news.di.NewsComponentProvider
+import com.example.core.model.NewsDetail
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,6 @@
-package com.example.news
+package com.example.news.presentation.newsdetail
+
+import com.example.core.model.NewsDetail
 
 sealed class NewsDetailState {
     data object Idle : NewsDetailState()

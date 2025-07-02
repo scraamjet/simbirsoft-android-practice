@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.core.model.NewsItem
 import com.example.core.repository.EventRepository
-import com.example.news.NewsMapper
+import com.example.core.mapper.NewsMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.presentation.news
 
 import com.example.core.model.NewsItem
 
