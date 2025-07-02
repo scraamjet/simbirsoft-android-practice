@@ -13,7 +13,6 @@ class AppRouterImpl @Inject constructor() : AppRouter {
         navController.navigate(R.id.action_news_to_news_detail, bundle)
     }
 
-
     override fun navigateToFilter(navController: NavController) {
         navController.navigate(R.id.action_news_to_filter)
     }
