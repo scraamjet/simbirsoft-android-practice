@@ -36,8 +36,4 @@ interface UseCaseModule {
     @Singleton
     fun bindStartNewsServiceUseCase(impl: StartNewsServiceUseCaseImpl): StartNewsServiceUseCase
 
-    @Binds
-    @Singleton
-    fun bindNewsBadgeCountUseCase(impl: NewsBadgeCountInteractorImpl): NewsBadgeCountInteractor
-
 }
