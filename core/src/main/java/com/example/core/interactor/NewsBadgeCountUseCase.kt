@@ -1,8 +1,7 @@
-package com.example.core.usecase
+package com.example.core.interactor
 
 import com.example.core.model.NewsItem
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface NewsBadgeCountUseCase {

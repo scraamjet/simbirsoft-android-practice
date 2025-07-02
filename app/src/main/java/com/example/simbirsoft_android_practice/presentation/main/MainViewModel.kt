@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.usecase.NewsBadgeCountUseCase
-import com.example.core.usecase.NewsPreferencesUseCase
+import com.example.core.interactor.NewsBadgeCountUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import kotlinx.coroutines.ExperimentalCoroutinesApi

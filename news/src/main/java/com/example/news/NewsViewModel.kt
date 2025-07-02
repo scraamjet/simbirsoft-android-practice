@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.usecase.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

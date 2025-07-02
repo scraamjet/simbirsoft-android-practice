@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice
 
 import com.example.core.model.NewsItem
-import com.example.core.usecase.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountUseCase
 import com.example.simbirsoft_android_practice.data.preferences.NewsPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

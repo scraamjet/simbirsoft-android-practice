@@ -6,7 +6,7 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCa
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.usecase.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.StartNewsServiceUseCaseImpl
