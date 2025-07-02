@@ -4,9 +4,19 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class AppRouterImpl @Inject constructor() : AppRouter {
+
+    private val _bottomNavVisibilityFlow: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    override val bottomNavVisibilityFlow: StateFlow<Boolean> = _bottomNavVisibilityFlow.asStateFlow()
+
+    override fun setBottomNavigationVisible(visible: Boolean) {
+        _bottomNavVisibilityFlow.value = visible
+    }
 
     override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
         val bundle = bundleOf("newsId" to newsId)

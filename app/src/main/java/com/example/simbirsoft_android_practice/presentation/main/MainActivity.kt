@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.core.di.MultiViewModelFactory
+import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private var newsService: NewsService? = null
     private var isServiceConnected = false
@@ -62,6 +66,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         setupNavigation()
         observeState()
+        observeBottomNavVisibility()
         observeEffect()
     }
 
@@ -72,13 +77,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
-                -> {
-                    mainViewModel.setBottomNavigationVisible(visible = false)
-                }
+                    -> appRouter.setBottomNavigationVisible(false)
 
-                else -> {
-                    mainViewModel.setBottomNavigationVisible(visible = true)
-                }
+                else -> appRouter.setBottomNavigationVisible(true)
             }
         }
     }
@@ -86,14 +87,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.state.collect { state ->
-                    if (state.isBottomNavigationVisible) {
+                mainViewModel.state.collect { state: MainState ->
+                    updateUnreadNewsBadge(count = state.badgeCount)
+                }
+            }
+        }
+    }
+
+    private fun observeBottomNavVisibility() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appRouter.bottomNavVisibilityFlow.collect { isVisible: Boolean ->
+                    if (isVisible) {
                         showBottomNavigation()
                     } else {
                         hideBottomNavigation()
                     }
-
-                    updateUnreadNewsBadge(count = state.badgeCount)
                 }
             }
         }

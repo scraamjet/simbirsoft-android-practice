@@ -18,9 +18,11 @@ import com.example.news.di.NewsDependencies
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.news.presentation.newsdetail.NewsDetailFragment
 import com.example.news.presentation.news.NewsFragment
-import com.example.simbirsoft_android_practice.presentation.search.EventListFragment
-import com.example.simbirsoft_android_practice.presentation.search.OrganizationListFragment
-import com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment
+import com.example.search.EventListFragment
+import com.example.search.OrganizationListFragment
+import com.example.search.SearchComponent
+import com.example.search.SearchContainerFragment
+import com.example.search.SearchDependencies
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import dagger.Component
 import javax.inject.Singleton
@@ -42,12 +44,13 @@ import javax.inject.Singleton
     ],
 )
 interface AppComponent : ProfileDependencies, AuthDependencies, HelpDependencies,
-    FilterDependencies, NewsDependencies {
+    FilterDependencies, NewsDependencies, SearchDependencies {
     fun authComponentFactory(): AuthComponent.Factory
     fun profileComponentFactory(): ProfileComponent.Factory
     fun helpComponentFactory(): HelpComponent.Factory
     fun filterComponentFactory(): FilterComponent.Factory
     fun newsComponentFactory(): NewsComponent.Factory
+    fun searchComponentFactory(): SearchComponent.Factory
     fun inject(app: App)
     fun inject(service: NewsService)
     fun inject(activity: MainActivity)

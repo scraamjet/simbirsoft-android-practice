@@ -63,15 +63,10 @@ class MainViewModel @Inject constructor(
     fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.InitReadNews -> handleInitReadNews()
-            is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsUpdated(event.newsItems)
             is MainEvent.RequestStartNewsService -> handleRequestStartNewsService()
         }
-    }
-
-    fun setBottomNavigationVisible(visible: Boolean) {
-        onEvent(MainEvent.BottomNavVisibilityChanged(visible))
     }
 
     private fun handleInitReadNews() {
@@ -81,12 +76,6 @@ class MainViewModel @Inject constructor(
                     previousState.copy(readNewsIds = readIds)
                 }
             }
-        }
-    }
-
-    private fun handleBottomNavVisibilityChange(visible: Boolean) {
-        _state.update { previousState ->
-            previousState.copy(isBottomNavigationVisible = visible)
         }
     }
 

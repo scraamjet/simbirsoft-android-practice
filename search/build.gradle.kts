@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.viewbinding.property.delegate)
     implementation(libs.viewbinding.property.delegate.reflection)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
     testImplementation(libs.junit)
