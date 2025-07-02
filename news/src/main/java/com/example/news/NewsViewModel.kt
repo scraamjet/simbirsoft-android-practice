@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.interactor.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountInteractor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val newsUseCase: NewsUseCase,
-    private val newsBadgeCountUseCase: NewsBadgeCountUseCase
+    private val newsBadgeCountInteractor: NewsBadgeCountInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading)
@@ -58,7 +58,7 @@ class NewsViewModel @Inject constructor(
             val filteredNews = newsUseCase.execute(selectedCategories)
             Log.d("NewsViewModel", "Loaded news: ${filteredNews.size}")
 
-            newsBadgeCountUseCase.updateNews(newsItems = filteredNews)
+            newsBadgeCountInteractor.updateNews(newsItems = filteredNews)
             Log.d("NewsViewModel", "Badge count updated, count: ${filteredNews.size}")
 
             _uiState.value = if (filteredNews.isEmpty()) {
@@ -82,7 +82,7 @@ class NewsViewModel @Inject constructor(
 
     private fun handleNewsClicked(newsId: Int) {
         viewModelScope.launch {
-            newsBadgeCountUseCase.markNewsAsRead(newsId)
+            newsBadgeCountInteractor.markNewsAsRead(newsId)
             _effect.emit(NewsEffect.NavigateToNewsDetail(newsId = newsId))
         }
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.interactor.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val startNewsServiceUseCase: StartNewsServiceUseCase,
-    private val newsBadgeCountUseCase: NewsBadgeCountUseCase
+    private val newsBadgeCountInteractor: NewsBadgeCountInteractor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
     private var serviceJob: Job? = null
 
     init {
-        newsBadgeCountUseCase.initializeBadgeObservers(viewModelScope)
+        newsBadgeCountInteractor.initializeBadgeObservers(viewModelScope)
         observeStartNewsRequests()
         observeBadgeCount()
         onEvent(MainEvent.InitReadNews)
@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
 
     private fun observeBadgeCount() {
         viewModelScope.launch {
-            newsBadgeCountUseCase.observeBadgeCount().collect { count: Int ->
+            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
                 _state.update { previousState ->
                     previousState.copy(badgeCount = count)
                 }
@@ -76,7 +76,7 @@ class MainViewModel @Inject constructor(
 
     private fun handleInitReadNews() {
         viewModelScope.launch {
-            newsBadgeCountUseCase.observeReadNewsIds().collect { readIds: Set<Int> ->
+            newsBadgeCountInteractor.observeReadNewsIds().collect { readIds: Set<Int> ->
                 _state.update { previousState ->
                     previousState.copy(readNewsIds = readIds)
                 }
@@ -92,13 +92,13 @@ class MainViewModel @Inject constructor(
 
     private fun handleNewsRead(newsId: Int) {
         viewModelScope.launch {
-            newsBadgeCountUseCase.markNewsAsRead(newsId = newsId)
+            newsBadgeCountInteractor.markNewsAsRead(newsId = newsId)
         }
     }
 
     private fun handleNewsUpdated(newsItems: List<NewsItem>) {
         viewModelScope.launch {
-            newsBadgeCountUseCase.updateNews(newsItems = newsItems)
+            newsBadgeCountInteractor.updateNews(newsItems = newsItems)
         }
     }
 

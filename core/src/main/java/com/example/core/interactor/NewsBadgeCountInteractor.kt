@@ -4,7 +4,7 @@ import com.example.core.model.NewsItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-interface NewsBadgeCountUseCase {
+interface NewsBadgeCountInteractor {
     fun initializeBadgeObservers(scope: CoroutineScope)
     fun observeBadgeCount(): StateFlow<Int>
     fun observeReadNewsIds(): StateFlow<Set<Int>>

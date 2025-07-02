@@ -6,11 +6,11 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCa
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.interactor.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.usecase.NewsPreferencesUseCase
 import com.example.core.usecase.StartNewsServiceUseCase
 import com.example.simbirsoft_android_practice.StartNewsServiceUseCaseImpl
-import com.example.simbirsoft_android_practice.NewsBadgeCountUseCaseImpl
+import com.example.simbirsoft_android_practice.NewsBadgeCountInteractorImpl
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
 import dagger.Module
@@ -38,6 +38,6 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindNewsBadgeCountUseCase(impl: NewsBadgeCountUseCaseImpl): NewsBadgeCountUseCase
+    fun bindNewsBadgeCountUseCase(impl: NewsBadgeCountInteractorImpl): NewsBadgeCountInteractor
 
 }

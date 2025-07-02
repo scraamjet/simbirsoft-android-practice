@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice
 
 import com.example.core.model.NewsItem
-import com.example.core.interactor.NewsBadgeCountUseCase
+import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.simbirsoft_android_practice.data.preferences.NewsPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsBadgeCountUseCaseImpl @Inject constructor(
+class NewsBadgeCountInteractorImpl @Inject constructor(
     private val newsPreferences: NewsPreferences
-) : NewsBadgeCountUseCase {
+) : NewsBadgeCountInteractor {
 
     private val newsItemsFlow = MutableStateFlow<List<NewsItem>>(emptyList())
     private val readNewsIds = MutableStateFlow<Set<Int>>(emptySet())
