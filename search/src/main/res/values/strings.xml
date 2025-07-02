@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="init_help_search_text">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
+    <string name="exemple">Например,</string>
+    <string name="example_items"><u>мастер-класс, помощь</u></string>
+
+    <string name="search_hint_input_name_organization">Введите название организации</string>
+    <string name="search_event_title">По мероприятиям</string>
+    <string name="search_nko_title">По НКО</string>
+    <string name="search_list_keywords_label">Ключевые слова: мастер-класс, помощь</string>
+    <string name="search_list_search_results_label">Результаты поиска: 109 мероприятий</string>
+    <string name="tab_title_events">По мероприятиям</string>
+    <string name="tab_title_organizations">По НКО</string>
+
+    <string name="search_by_events_text_hint">Напишите в строке поиска название\nмероприятия или ключевые слова.</string>
+    <string name="search_by_events_example_text">Например,</string>
+    <string name="search_by_events_example_keywords"><u>мастер-класс, помощь</u></string>
+
+    <string name="search_no_results">По вашему запросу ничего не найдено</string>
+</resources>

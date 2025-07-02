@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="search_results_count">
+        <item quantity="one">Результат поиска: %d мероприятие</item>
+        <item quantity="few">Результаты поиска: %d мероприятия</item>
+        <item quantity="many">Результаты поиска: %d мероприятий</item>
+        <item quantity="other">Результаты поиска: %d мероприятий</item>
+    </plurals>
+</resources>
