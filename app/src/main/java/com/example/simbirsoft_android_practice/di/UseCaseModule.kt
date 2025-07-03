@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
@@ -11,7 +11,7 @@ import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseC
 import com.example.simbirsoft_android_practice.data.usecase.ProfileUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
@@ -54,7 +54,7 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
+    fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
 
     @Binds
     @Singleton
