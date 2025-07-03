@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
@@ -10,7 +10,7 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
@@ -23,15 +23,19 @@ import javax.inject.Singleton
 @Module
 interface UseCaseModule {
     @Binds
+    @Singleton
     fun bindNewsUseCase(impl: NewsUseCaseImpl): NewsUseCase
 
     @Binds
+    @Singleton
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesHelpUseCase(impl: CategoriesHelpUseCaseImpl): CategoriesHelpUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
 
     @Binds
@@ -39,11 +43,14 @@ interface UseCaseModule {
     fun bindFilterPreferencesUseCase(impl: FilterPreferencesUseCaseImpl): FilterPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindNewsPreferencesUseCase(impl: NewsPreferencesUseCaseImpl): NewsPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
-    fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
+    @Singleton
+    fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
 }
