@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.core.utils
+package com.example.simbirsoft_android_practice.utils
 
 import android.content.Context
 import javax.inject.Inject

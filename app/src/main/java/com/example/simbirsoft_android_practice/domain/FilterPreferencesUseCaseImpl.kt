@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.data.usecase
+package com.example.simbirsoft_android_practice.domain
 
 import com.example.simbirsoft_android_practice.data.preferences.FilterPreferences
 import com.example.core.usecase.FilterPreferencesUseCase
@@ -13,7 +13,7 @@ class FilterPreferencesUseCaseImpl @Inject constructor(
         return filterPreferences.selectedCategories
     }
 
-        override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
-            filterPreferences.saveSelectedCategories(ids)
-        }
+    override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
+        filterPreferences.saveSelectedCategories(ids)
     }
+}

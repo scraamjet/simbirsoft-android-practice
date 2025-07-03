@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.domain
 
 import com.example.core.usecase.StartNewsServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
