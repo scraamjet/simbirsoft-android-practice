@@ -25,15 +25,19 @@ import javax.inject.Singleton
 @Module
 interface UseCaseModule {
     @Binds
+    @Singleton
     fun bindNewsUseCase(impl: NewsUseCaseImpl): NewsUseCase
 
     @Binds
+    @Singleton
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesHelpUseCase(impl: CategoriesHelpUseCaseImpl): CategoriesHelpUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
 
     @Binds
@@ -41,14 +45,18 @@ interface UseCaseModule {
     fun bindFilterPreferencesUseCase(impl: FilterPreferencesUseCaseImpl): FilterPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindNewsPreferencesUseCase(impl: NewsPreferencesUseCaseImpl): NewsPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
+    @Singleton
     fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
 
     @Binds
+    @Singleton
     fun bindProfileUseCase(impl: ProfileUseCaseImpl): ProfileUseCase
 }
