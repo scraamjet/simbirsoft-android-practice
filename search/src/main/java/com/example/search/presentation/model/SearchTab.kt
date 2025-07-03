@@ -1,6 +1,7 @@
-package com.example.search
+package com.example.search.presentation.model
 
 import androidx.annotation.StringRes
+import com.example.search.R
 
 enum class SearchTab(
     @StringRes val titleResId: Int,

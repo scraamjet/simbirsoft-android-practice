@@ -11,8 +11,8 @@ import com.example.news.di.NewsComponent
 import com.example.news.di.NewsComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
-import com.example.search.SearchComponent
-import com.example.search.SearchComponentProvider
+import com.example.search.di.SearchComponent
+import com.example.search.di.SearchComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent

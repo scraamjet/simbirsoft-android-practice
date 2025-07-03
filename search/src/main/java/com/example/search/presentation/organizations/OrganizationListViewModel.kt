@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.organizations
 
 import androidx.lifecycle.ViewModel
 import com.example.core.model.SearchEvent

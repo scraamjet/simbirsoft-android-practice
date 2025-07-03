@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.transformer
 
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2

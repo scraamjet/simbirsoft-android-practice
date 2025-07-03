@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.utils
 
 import java.util.UUID
 

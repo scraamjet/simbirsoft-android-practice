@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.search
 
 import android.content.Context
 import android.graphics.Rect
@@ -11,7 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.core.navigation.AppRouter
+import com.example.search.R
+import com.example.search.presentation.transformer.ZoomOutPageTransformer
 import com.example.search.databinding.FragmentSearchContainerBinding
+import com.example.search.di.SearchComponentProvider
+import com.example.search.presentation.model.SearchTab
+import com.example.search.presentation.adapter.SearchViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject

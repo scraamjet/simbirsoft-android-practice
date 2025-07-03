@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.model.SearchEvent

@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

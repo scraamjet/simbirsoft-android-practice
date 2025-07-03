@@ -1,6 +1,7 @@
-package com.example.search
+package com.example.search.presentation.organizations
 
 import com.example.core.model.SearchEvent
+import com.example.search.utils.generateRandomString
 import javax.inject.Inject
 import kotlin.random.Random
 

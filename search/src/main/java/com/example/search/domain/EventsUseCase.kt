@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.domain
 
 import com.example.core.model.SearchEvent
 import kotlinx.coroutines.flow.Flow

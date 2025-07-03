@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.search
 
 sealed interface SearchContainerEvent {
     data class OnQueryChanged(val query: String) : SearchContainerEvent

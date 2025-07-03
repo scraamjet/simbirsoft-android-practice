@@ -1,7 +1,10 @@
-package com.example.search
+package com.example.search.di
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import com.example.search.presentation.events.EventListFragment
+import com.example.search.presentation.organizations.OrganizationListFragment
+import com.example.search.presentation.search.SearchContainerFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 

@@ -1,7 +1,14 @@
-package com.example.search
+package com.example.search.di
 
 import androidx.lifecycle.ViewModel
 import com.example.core.di.ViewModelKey
+import com.example.search.domain.EventUseCaseImpl
+import com.example.search.domain.EventsUseCase
+import com.example.search.presentation.events.EventListViewModel
+import com.example.search.presentation.organizations.OrganizationListUseCase
+import com.example.search.presentation.organizations.OrganizationListUseCaseImpl
+import com.example.search.presentation.organizations.OrganizationListViewModel
+import com.example.search.presentation.search.SearchContainerViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -10,7 +17,7 @@ import dagger.multibindings.IntoMap
 interface SearchModule {
 
     @Binds
-    fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl):OrganizationListUseCase
+    fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
     fun bindEventsUseCase(impl: EventUseCaseImpl): EventsUseCase

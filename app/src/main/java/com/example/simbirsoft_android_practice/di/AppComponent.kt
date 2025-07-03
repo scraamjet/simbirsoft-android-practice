@@ -18,11 +18,11 @@ import com.example.news.di.NewsDependencies
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.news.presentation.newsdetail.NewsDetailFragment
 import com.example.news.presentation.news.NewsFragment
-import com.example.search.EventListFragment
-import com.example.search.OrganizationListFragment
-import com.example.search.SearchComponent
-import com.example.search.SearchContainerFragment
-import com.example.search.SearchDependencies
+import com.example.search.presentation.events.EventListFragment
+import com.example.search.presentation.organizations.OrganizationListFragment
+import com.example.search.di.SearchComponent
+import com.example.search.presentation.search.SearchContainerFragment
+import com.example.search.di.SearchDependencies
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import dagger.Component
 import javax.inject.Singleton

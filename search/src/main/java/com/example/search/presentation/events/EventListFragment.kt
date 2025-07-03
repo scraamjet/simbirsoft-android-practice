@@ -1,4 +1,4 @@
-package com.example.search
+package com.example.search.presentation.events
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.model.SearchEvent
+import com.example.search.R
 import com.example.search.databinding.FragmentSearchListBinding
+import com.example.search.di.SearchComponentProvider
+import com.example.search.presentation.search.SearchContainerState
+import com.example.search.presentation.search.SearchContainerViewModel
+import com.example.search.presentation.model.SearchTab
+import com.example.search.presentation.adapter.EventAdapter
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
