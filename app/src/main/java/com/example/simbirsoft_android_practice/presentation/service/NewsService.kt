@@ -6,6 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
@@ -35,21 +36,13 @@ class NewsService : Service() {
         fun getService(): NewsService = this@NewsService
     }
 
-    fun loadAndFilterNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
+    fun loadNews(): Flow<List<Event>> {
         return eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
-            .map { events ->
-                events
-                    .filter { event -> event.categoryIds.any { id -> id in selectedCategoryIds } }
-                    .map(NewsMapper::eventToNewsItem)
-            }
-            .catch { exception ->
-                Log.e(
-                    TAG_NEWS_SERVICE,
-                    "News flow exception: ${exception.localizedMessage}",
-                    exception,
-                )
+            .catch { exception: Throwable ->
+                Log.e(TAG_NEWS_SERVICE, "News flow exception: ${exception.message}", exception)
                 emit(emptyList())
             }
     }
 }
+

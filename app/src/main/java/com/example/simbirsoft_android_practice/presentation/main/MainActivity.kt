@@ -18,7 +18,6 @@ import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.presentation.service.NewsService
 import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,21 +39,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
-
     private val connection =
         NewsServiceConnection(
             onServiceConnected = { connectedService ->
                 newsService = connectedService
                 isServiceConnected = true
-                newsServiceProxy.setService(connectedService)
-                mainViewModel.observeNews(newsServiceProxy)
+                observeNewsFromService()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
-                newsServiceProxy.clearService()
-            },
+            }
         )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -65,6 +61,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         observeEffect()
     }
 
+    private fun observeNewsFromService() {
+        lifecycleScope.launch {
+            newsService?.loadNews()
+                ?.collect { events ->
+                    mainViewModel.updateNewsFromService(events)
+                }
+        }
+    }
+
     private fun setupNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
-                -> {
+                    -> {
                     mainViewModel.setBottomNavigationVisible(visible = false)
                 }
 
@@ -121,7 +126,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-            newsServiceProxy.clearService()
         }
     }
 

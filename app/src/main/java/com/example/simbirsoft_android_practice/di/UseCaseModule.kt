@@ -1,5 +1,7 @@
 package com.example.simbirsoft_android_practice.di
 
+import com.example.simbirsoft_android_practice.NewsServiceUseCase
+import com.example.simbirsoft_android_practice.NewsServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
@@ -59,4 +61,8 @@ interface UseCaseModule {
     @Binds
     @Singleton
     fun bindProfileUseCase(impl: ProfileUseCaseImpl): ProfileUseCase
+
+    @Binds
+    @Singleton
+    fun bindNewsServiceUseCase(impl: NewsServiceUseCaseImpl): NewsServiceUseCase
 }
