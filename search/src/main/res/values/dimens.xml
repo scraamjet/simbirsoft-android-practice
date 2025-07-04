@@ -25,9 +25,9 @@
     <dimen name="search_view_pager_height">0dp</dimen>
     <dimen name="search_tab_indicator_height">2dp</dimen>
 
-    <dimen name="icon_margin_top">40dp</dimen>
-    <dimen name="text_margin_top">10dp</dimen>
-    <dimen name="text_margin_start">4dp</dimen>
+    <dimen name="search_icon_margin_top">40dp</dimen>
+    <dimen name="search_text_margin_top">10dp</dimen>
+    <dimen name="search_text_margin_start">4dp</dimen>
 
     <dimen name="margin_bottom_linear_layout_no_query_scroll">80dp</dimen>
 </resources>

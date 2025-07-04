@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/icon_margin_top"
+                    android:layout_marginTop="@dimen/search_icon_margin_top"
                     android:gravity="center"
                     android:text="@string/search_by_events_text_hint" />
 
@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/text_margin_top"
+                    android:layout_marginTop="@dimen/search_text_margin_top"
                     android:layout_marginBottom="@dimen/margin_bottom_linear_layout_no_query_scroll"
                     android:orientation="horizontal">
 
@@ -60,7 +60,7 @@
                         style="@style/BodyTextLinkGreen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/text_margin_start"
+                        android:layout_marginStart="@dimen/search_text_margin_start"
                         android:text="@string/search_by_events_example_keywords"
                         android:textColor="@color/green" />
                 </LinearLayout>
