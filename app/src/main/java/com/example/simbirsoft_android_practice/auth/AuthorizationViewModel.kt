@@ -20,12 +20,10 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     private val _isPasswordVisible = MutableStateFlow(false)
     val isPasswordVisible: StateFlow<Boolean> = _isPasswordVisible.asStateFlow()
 
-    private val _isFormValid =
+    val isFormValid =
         combine(_email, _password) { email, password ->
             email.length >= MIN_INPUT_LENGTH && password.length >= MIN_INPUT_LENGTH
         }.stateIn(viewModelScope, SharingStarted.Lazily, false)
-
-    val isFormValid: StateFlow<Boolean> = _isFormValid
 
     fun onEmailChanged(text: String) {
         _email.value = text

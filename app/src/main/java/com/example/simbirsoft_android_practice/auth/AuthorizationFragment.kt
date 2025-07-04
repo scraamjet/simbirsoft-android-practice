@@ -81,20 +81,20 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     binding.editTextAuthorizationEmail.textChangesFlow()
-                        .collectLatest { text ->
+                        .collectLatest { text: CharSequence ->
                             viewModel.onEmailChanged(text.toString())
                         }
                 }
 
                 launch {
                     binding.editTextAuthorizationPassword.textChangesFlow()
-                        .collectLatest { text ->
+                        .collectLatest { text: CharSequence ->
                             viewModel.onPasswordChanged(text.toString())
                         }
                 }
 
                 launch {
-                    viewModel.isFormValid.collectLatest { isFormValid ->
+                    viewModel.isFormValid.collectLatest { isFormValid: Boolean ->
                         binding.buttonAuthorization.isEnabled = isFormValid
                     }
                 }
