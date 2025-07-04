@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val TAG = "MainViewModel"
-
 class MainViewModel @Inject constructor(
     private val filterPreferences: FilterPreferences,
     private val newsServiceUseCase: NewsServiceUseCase,
@@ -33,13 +31,13 @@ class MainViewModel @Inject constructor(
     val badgeFlow: StateFlow<Int> = _badgeFlow.asStateFlow()
 
     init {
-        observeNewsAndFilters()
+        observeNews()
     }
 
-    private fun observeNewsAndFilters() {
+    private fun observeNews() {
         viewModelScope.launch {
             combine(
-                newsServiceUseCase.observeNewsFlow(),
+                newsServiceUseCase.events,
                 filterPreferences.selectedCategories
             ) { eventList: List<Event>, selectedCategories: Set<Int> ->
                 eventList
@@ -77,6 +75,7 @@ class MainViewModel @Inject constructor(
         _bottomNavVisible.value = visible
     }
 }
+
 
 
 

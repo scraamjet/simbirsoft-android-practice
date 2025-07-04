@@ -1,13 +1,13 @@
 package com.example.simbirsoft_android_practice
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class UseCaseModule {
+interface UseCaseModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideNewsServiceUseCase(): NewsServiceUseCase = NewsServiceUseCase()
+    fun bindNewsServiceUseCase(impl: NewsServiceUseCaseImpl): NewsServiceUseCase
 }
