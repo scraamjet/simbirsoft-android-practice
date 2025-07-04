@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,8 +77,8 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 filterViewModel.loading.collect { isLoading ->
                     binding.progressBarFilter.isVisible = isLoading
-                    binding.imageViewFilterApplySettings.isVisible = !isLoading
-                    binding.recyclerViewFilterItem.isVisible = !isLoading
+                    binding.imageViewFilterApplySettings.isGone = isLoading
+                    binding.recyclerViewFilterItem.isGone = isLoading
                 }
             }
         }

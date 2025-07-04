@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.help
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -63,7 +64,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
                 launch {
                     helpViewModel.loading.collect { isLoading ->
                         binding.progressBarHelp.isVisible = isLoading
-                        binding.recyclerViewHelpItem.isVisible = !isLoading
+                        binding.recyclerViewHelpItem.isGone = isLoading
                     }
                 }
                 launch {
