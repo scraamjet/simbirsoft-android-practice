@@ -24,7 +24,6 @@ class SearchContainerViewModel @Inject constructor() : ViewModel() {
     val debouncedQuery: StateFlow<String> =
         searchQuery
             .debounce(DEBOUNCE_DELAY_MILLISECONDS)
-            .distinctUntilChanged()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(stopTimeoutMillis = SEARCH_STATE_TIMEOUT_MILLISECONDS),
