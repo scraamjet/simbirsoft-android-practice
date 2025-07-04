@@ -8,13 +8,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,18 +58,16 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun observeCategories() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    helpViewModel.loading.collect { isLoading ->
-                        binding.progressBarHelp.isVisible = isLoading
-                        binding.recyclerViewHelpItem.isGone = isLoading
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                helpViewModel.loading.collect { isLoading ->
+                    binding.progressBarHelp.isVisible = isLoading
+                    binding.recyclerViewHelpItem.isGone = isLoading
                 }
-                launch {
-                    helpViewModel.categories.collect { categories ->
-                        adapter.submitList(categories)
-                    }
+            }
+            launch {
+                helpViewModel.categories.collect { categories ->
+                    adapter.submitList(categories)
                 }
             }
         }

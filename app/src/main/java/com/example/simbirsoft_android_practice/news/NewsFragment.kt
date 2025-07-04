@@ -8,19 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.model.NewsItem
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val SCROLL_FLAG_NONE = 0
@@ -65,17 +63,13 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun observeNews() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    newsViewModel.uiState.collect { state ->
-                        when (state) {
-                            is NewsUiState.Loading -> showLoading()
-                            is NewsUiState.Results -> showResults(state.news)
-                            is NewsUiState.NoResults -> showNoResults()
-                            is NewsUiState.Error -> showError()
-                        }
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            newsViewModel.uiState.collect { state ->
+                when (state) {
+                    is NewsUiState.Loading -> showLoading()
+                    is NewsUiState.Results -> showResults(state.news)
+                    is NewsUiState.NoResults -> showNoResults()
+                    is NewsUiState.Error -> showError()
                 }
             }
         }

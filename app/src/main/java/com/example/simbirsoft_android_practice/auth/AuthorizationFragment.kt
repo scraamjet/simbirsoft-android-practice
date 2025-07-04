@@ -12,12 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.main.MainActivity
 import com.example.simbirsoft_android_practice.utils.textChangesFlow
 import dev.androidbroadcast.vbpd.viewBinding
@@ -78,39 +77,35 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     }
 
     private fun observeInputFields() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    binding.editTextAuthorizationEmail.textChangesFlow()
-                        .collectLatest { text: CharSequence ->
-                            viewModel.onEmailChanged(text.toString())
-                        }
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                binding.editTextAuthorizationEmail.textChangesFlow()
+                    .collectLatest { text: CharSequence ->
+                        viewModel.onEmailChanged(text.toString())
+                    }
+            }
 
-                launch {
-                    binding.editTextAuthorizationPassword.textChangesFlow()
-                        .collectLatest { text: CharSequence ->
-                            viewModel.onPasswordChanged(text.toString())
-                        }
-                }
+            launch {
+                binding.editTextAuthorizationPassword.textChangesFlow()
+                    .collectLatest { text: CharSequence ->
+                        viewModel.onPasswordChanged(text.toString())
+                    }
             }
         }
     }
+
 
     private fun observeFormValidation() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isFormValid.collectLatest { isFormValid: Boolean ->
-                    binding.buttonAuthorization.isEnabled = isFormValid
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.isFormValid.collectLatest { isFormValid: Boolean ->
+                binding.buttonAuthorization.isEnabled = isFormValid
             }
         }
     }
 
-
     private fun observePasswordVisibility() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.isPasswordVisible.collectLatest { isVisible: Boolean ->
                 viewModel.isPasswordVisible.collectLatest { isVisible ->
                     val passwordField = binding.editTextAuthorizationPassword
                     passwordField.transformationMethod =
@@ -125,7 +120,11 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                         null,
                         ContextCompat.getDrawable(
                             requireContext(),
-                            if (isVisible) R.drawable.ic_hide_password else R.drawable.ic_open_password,
+                            if (isVisible) {
+                                R.drawable.ic_hide_password
+                            } else {
+                                R.drawable.ic_open_password
+                            }
                         ),
                         null,
                     )

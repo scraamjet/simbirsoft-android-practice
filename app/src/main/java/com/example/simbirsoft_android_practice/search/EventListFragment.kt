@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,30 +73,25 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private fun observeSearchQuery() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchContainerViewModel.debouncedQuery.collect { query ->
-                    viewModel.onSearchQueryChanged(query)
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            searchContainerViewModel.debouncedQuery.collect { query ->
+                viewModel.onSearchQueryChanged(query)
             }
         }
     }
 
     private fun observeUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is SearchUiState.Loading -> showLoading()
-                        is SearchUiState.BlankQuery -> showSearchStub()
-                        is SearchUiState.Empty -> showNoResults()
-                        is SearchUiState.Success -> {
-                            showResults(state.results)
-                            adapter.submitList(state.results)
-                        }
-
-                        is SearchUiState.Error -> showSearchStub()
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    is SearchUiState.Loading -> showLoading()
+                    is SearchUiState.BlankQuery -> showSearchStub()
+                    is SearchUiState.Empty -> showNoResults()
+                    is SearchUiState.Success -> {
+                        showResults(state.results)
+                        adapter.submitList(state.results)
                     }
+                    is SearchUiState.Error -> showSearchStub()
                 }
             }
         }

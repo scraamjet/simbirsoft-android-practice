@@ -10,8 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +17,8 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
@@ -63,23 +61,19 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun observeCategories() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.categories.collect { categories ->
-                    filterAdapter.submitList(categories)
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            filterViewModel.categories.collect { categories ->
+                filterAdapter.submitList(categories)
             }
         }
     }
 
     private fun observeLoading() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.loading.collect { isLoading ->
-                    binding.progressBarFilter.isVisible = isLoading
-                    binding.imageViewFilterApplySettings.isGone = isLoading
-                    binding.recyclerViewFilterItem.isGone = isLoading
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            filterViewModel.loading.collect { isLoading ->
+                binding.progressBarFilter.isVisible = isLoading
+                binding.imageViewFilterApplySettings.isGone = isLoading
+                binding.recyclerViewFilterItem.isGone = isLoading
             }
         }
     }

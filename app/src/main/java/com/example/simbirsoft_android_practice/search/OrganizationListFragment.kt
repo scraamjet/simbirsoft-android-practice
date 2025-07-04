@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,12 +60,10 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private fun observeOrganizations() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.organizations.collect { events ->
-                    adapter.submitList(events)
-                    showResults(events.size)
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.organizations.collect { events ->
+                adapter.submitList(events)
+                showResults(events.size)
             }
         }
     }

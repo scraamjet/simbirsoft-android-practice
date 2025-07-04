@@ -3,13 +3,11 @@ package com.example.simbirsoft_android_practice.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -17,11 +15,11 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.model.Event
 import com.example.simbirsoft_android_practice.news.NewsService
 import com.example.simbirsoft_android_practice.news.NewsServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -88,25 +86,21 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun observeBottomNavigationVisibility() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.bottomNavigationVisible.collect { visible ->
-                    if (visible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.bottomNavigationVisible.collect { visible ->
+                if (visible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
                 }
             }
         }
     }
 
     private fun observeBadgeCount() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.badgeFlow.collect { count ->
-                    updateUnreadNewsBadge(count)
-                }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.badgeFlow.collect { count: Int ->
+                updateUnreadNewsBadge(count)
             }
         }
     }

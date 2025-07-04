@@ -18,14 +18,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.ProfileViewModel
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -97,26 +96,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun collectViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.friends.collect { friends -> friendAdapter.submitList(friends) }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                viewModel.friends.collect { friends ->
+                    friendAdapter.submitList(friends)
                 }
+            }
 
-                launch {
-                    viewModel.photoAction.collect { action -> handlePhotoAction(action) }
+            launch {
+                viewModel.photoAction.collect { action ->
+                    handlePhotoAction(action)
                 }
+            }
 
-                launch {
-                    viewModel.galleryImageUri.collect { uri -> updateAppBarImageFromGallery(uri) }
+            launch {
+                viewModel.galleryImageUri.collect { uri ->
+                    updateAppBarImageFromGallery(uri)
                 }
+            }
 
-                launch {
-                    viewModel.cameraImageBitmap.collect { bitmap ->
-                        updateAppBarImageFromCamera(
-                            bitmap,
-                        )
-                    }
+            launch {
+                viewModel.cameraImageBitmap.collect { bitmap ->
+                    updateAppBarImageFromCamera(bitmap)
                 }
             }
         }
