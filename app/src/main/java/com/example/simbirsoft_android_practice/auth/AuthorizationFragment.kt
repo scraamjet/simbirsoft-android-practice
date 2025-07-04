@@ -47,6 +47,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         initClickListeners()
         observeInputFields()
+        observeFormValidation()
         observePasswordVisibility()
     }
 
@@ -92,15 +93,20 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                             viewModel.onPasswordChanged(text.toString())
                         }
                 }
+            }
+        }
+    }
 
-                launch {
-                    viewModel.isFormValid.collectLatest { isFormValid: Boolean ->
-                        binding.buttonAuthorization.isEnabled = isFormValid
-                    }
+    private fun observeFormValidation() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isFormValid.collectLatest { isFormValid: Boolean ->
+                    binding.buttonAuthorization.isEnabled = isFormValid
                 }
             }
         }
     }
+
 
     private fun observePasswordVisibility() {
         viewLifecycleOwner.lifecycleScope.launch {
