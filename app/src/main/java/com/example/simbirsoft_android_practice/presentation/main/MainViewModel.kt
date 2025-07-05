@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
-            is MainEvent.RequestStartNewsService -> handleRequestStartNewsService()
+            is MainEvent.RequestStartEventService -> handleRequestStartEventService()
         }
     }
 
@@ -60,10 +60,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun requestStartNewsService() {
-        onEvent(MainEvent.RequestStartNewsService)
+        onEvent(MainEvent.RequestStartEventService)
     }
 
-    fun updateNewsFromService(eventList: List<Event>) {
+    fun updateEventsFromService(eventList: List<Event>) {
         eventServiceUseCase.updateEvents(eventList)
     }
 
@@ -93,9 +93,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun handleRequestStartNewsService() {
+    private fun handleRequestStartEventService() {
         viewModelScope.launch {
-            _effect.emit(MainEffect.StartAndBindNewsService)
+            _effect.emit(MainEffect.StartAndBindEventService)
         }
     }
 

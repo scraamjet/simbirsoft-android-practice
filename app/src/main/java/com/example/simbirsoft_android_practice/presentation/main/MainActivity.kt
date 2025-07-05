@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             onServiceConnected = { connectedService ->
                 eventService = connectedService
                 isServiceConnected = true
-                observeNewsFromService()
+                observeEventsFromService()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
@@ -61,12 +61,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         observeEffect()
     }
 
-    private fun observeNewsFromService() {
+    private fun observeEventsFromService() {
         lifecycleScope.launch {
-            eventService?.loadEvents()
-                ?.collect { events ->
-                    mainViewModel.updateNewsFromService(events)
-                }
+            eventService?.loadEvents()?.collect { events ->
+                mainViewModel.updateEventsFromService(events)
+            }
         }
     }
 
@@ -109,14 +108,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.effect.collect { effect ->
                     when (effect) {
-                        is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
+                        is MainEffect.StartAndBindEventService -> startAndBindEventService()
                     }
                 }
             }
         }
     }
 
-    private fun startAndBindNewsService() {
+    private fun startAndBindEventService() {
         val intent = Intent(this, EventService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
