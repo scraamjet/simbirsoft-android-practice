@@ -16,9 +16,8 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.launchInLifecycle
-import com.example.simbirsoft_android_practice.model.Event
-import com.example.simbirsoft_android_practice.news.NewsService
-import com.example.simbirsoft_android_practice.news.NewsServiceConnection
+import com.example.simbirsoft_android_practice.news.EventService
+import com.example.simbirsoft_android_practice.news.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
 
-    private var newsService: NewsService? = null
+    private var eventService: EventService? = null
     private var isServiceConnected = false
 
     private val navController: NavController by lazy {
@@ -41,11 +40,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private val connection =
-        NewsServiceConnection(
+        EventServiceConnection(
             onServiceConnected = { service ->
-                newsService = service
+                eventService = service
                 isServiceConnected = true
-                observeNewsFromService()
+                observeEventsFromService()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
@@ -61,12 +60,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         observeBadgeCount()
     }
 
-    private fun observeNewsFromService() {
-        newsService?.let { service ->
+    private fun observeEventsFromService() {
+        eventService?.let { service ->
             lifecycleScope.launch {
-                service.loadNews()
-                    .collect { eventList: List<Event> ->
-                        mainViewModel.updateNewsFromService(eventList)
+                service.loadEvents()
+                    .collect { eventList ->
+                        mainViewModel.updateEventsFromService(eventList)
                     }
             }
         }
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     fun startAndBindNewsService() {
-        val intent = Intent(this, NewsService::class.java)
+        val intent = Intent(this, EventService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 

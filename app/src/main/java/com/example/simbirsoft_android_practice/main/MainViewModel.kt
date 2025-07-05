@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.NewsServiceUseCase
+import com.example.simbirsoft_android_practice.EventServiceUseCase
 import com.example.simbirsoft_android_practice.filter.FilterPreferences
 import com.example.simbirsoft_android_practice.model.Event
 import com.example.simbirsoft_android_practice.model.NewsItem
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val filterPreferences: FilterPreferences,
-    private val newsServiceUseCase: NewsServiceUseCase,
+    private val eventServiceUseCase: EventServiceUseCase,
     private val newsPreferences: NewsPreferences,
 ) : ViewModel() {
 
@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
     private fun observeNews() {
         viewModelScope.launch {
             combine(
-                newsServiceUseCase.events,
+                eventServiceUseCase.events,
                 filterPreferences.selectedCategories
             ) { eventList: List<Event>, selectedCategories: Set<Int> ->
                 eventList
@@ -67,8 +67,8 @@ class MainViewModel @Inject constructor(
         _badgeFlow.value = unreadCount
     }
 
-    fun updateNewsFromService(eventList: List<Event>) {
-        newsServiceUseCase.updateNews(eventList)
+    fun updateEventsFromService(eventList: List<Event>) {
+        eventServiceUseCase.updateEvents(eventList)
     }
 
     fun setBottomNavigationVisible(visible: Boolean) {
