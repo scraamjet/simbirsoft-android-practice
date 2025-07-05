@@ -78,22 +78,19 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun observeInputFields() {
         launchInLifecycle(Lifecycle.State.STARTED) {
-            launch {
-                binding.editTextAuthorizationEmail.textChangesFlow()
-                    .collectLatest { text: CharSequence ->
-                        viewModel.onEmailChanged(text.toString())
-                    }
-            }
+            binding.editTextAuthorizationEmail.textChangesFlow()
+                .collectLatest { text ->
+                    viewModel.onEmailChanged(text.toString())
+                }
+        }
 
-            launch {
-                binding.editTextAuthorizationPassword.textChangesFlow()
-                    .collectLatest { text: CharSequence ->
-                        viewModel.onPasswordChanged(text.toString())
-                    }
-            }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            binding.editTextAuthorizationPassword.textChangesFlow()
+                .collectLatest { text ->
+                    viewModel.onPasswordChanged(text.toString())
+                }
         }
     }
-
 
     private fun observeFormValidation() {
         launchInLifecycle(Lifecycle.State.STARTED) {
@@ -105,30 +102,28 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
     private fun observePasswordVisibility() {
         launchInLifecycle(Lifecycle.State.STARTED) {
-            viewModel.isPasswordVisible.collectLatest { isVisible: Boolean ->
-                viewModel.isPasswordVisible.collectLatest { isVisible ->
-                    val passwordField = binding.editTextAuthorizationPassword
-                    passwordField.transformationMethod =
-                        if (isVisible) {
-                            HideReturnsTransformationMethod.getInstance()
-                        } else {
-                            PasswordTransformationMethod.getInstance()
-                        }
+            viewModel.isPasswordVisible.collectLatest { isVisible ->
+                val passwordField = binding.editTextAuthorizationPassword
+                passwordField.transformationMethod =
+                    if (isVisible) {
+                        HideReturnsTransformationMethod.getInstance()
+                    } else {
+                        PasswordTransformationMethod.getInstance()
+                    }
 
-                    passwordField.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            if (isVisible) {
-                                R.drawable.ic_hide_password
-                            } else {
-                                R.drawable.ic_open_password
-                            }
-                        ),
-                        null,
-                    )
-                }
+                passwordField.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        if (isVisible) {
+                            R.drawable.ic_hide_password
+                        } else {
+                            R.drawable.ic_open_password
+                        }
+                    ),
+                    null,
+                )
             }
         }
     }
