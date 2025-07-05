@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.NewsUpdated(newsItems))
     }
 
-    fun requestStartNewsService() {
+    fun requestStartEventService() {
         onEvent(MainEvent.RequestStartEventService)
     }
 

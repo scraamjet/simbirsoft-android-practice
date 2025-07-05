@@ -55,7 +55,7 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     private fun handleSubmit() {
         viewModelScope.launch {
             _effect.emit(AuthorizationEffect.NavigateToHelp)
-            _effect.emit(AuthorizationEffect.StartNewsService)
+            _effect.emit(AuthorizationEffect.StartEventService)
         }
     }
 
