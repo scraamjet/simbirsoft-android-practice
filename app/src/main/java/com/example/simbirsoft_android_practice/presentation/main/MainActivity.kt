@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,6 +15,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.service.EventService
 import com.example.simbirsoft_android_practice.presentation.service.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
@@ -88,28 +88,24 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun observeState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.state.collect { state ->
-                    if (state.isBottomNavigationVisible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
-
-                    updateUnreadNewsBadge(count = state.badgeCount)
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.state.collect { state ->
+                if (state.isBottomNavigationVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
                 }
+
+                updateUnreadNewsBadge(count = state.badgeCount)
             }
         }
     }
 
     private fun observeEffect() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.effect.collect { effect ->
-                    when (effect) {
-                        is MainEffect.StartAndBindEventService -> startAndBindEventService()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.effect.collect { effect ->
+                when (effect) {
+                    is MainEffect.StartAndBindEventService -> startAndBindEventService()
                 }
             }
         }

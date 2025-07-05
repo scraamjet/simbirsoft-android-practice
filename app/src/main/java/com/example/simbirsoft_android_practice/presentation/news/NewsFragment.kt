@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
@@ -19,10 +17,10 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val SCROLL_FLAG_NONE = 0
@@ -70,31 +68,25 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsViewModel.uiState.collect { state: NewsState ->
-                    when (state) {
-                        is NewsState.Loading -> showLoading()
-                        is NewsState.Results -> showResults(newsList = state.newsList)
-                        is NewsState.NoResults -> showNoResults()
-                        is NewsState.Error -> hideContentOnError()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            newsViewModel.uiState.collect { state ->
+                when (state) {
+                    is NewsState.Loading -> showLoading()
+                    is NewsState.Results -> showResults(newsList = state.newsList)
+                    is NewsState.NoResults -> showNoResults()
+                    is NewsState.Error -> hideContentOnError()
                 }
             }
         }
     }
 
     private fun observeEffects() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsViewModel.effect.collect { effect: NewsEffect ->
-                    when (effect) {
-                        is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
-                        is NewsEffect.NavigateToFilter -> {
-                            findNavController().navigate(R.id.action_news_to_filter)
-                        }
-                        is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            newsViewModel.effect.collect { effect ->
+                when (effect) {
+                    is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
+                    is NewsEffect.NavigateToFilter -> findNavController().navigate(R.id.action_news_to_filter)
+                    is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
         }

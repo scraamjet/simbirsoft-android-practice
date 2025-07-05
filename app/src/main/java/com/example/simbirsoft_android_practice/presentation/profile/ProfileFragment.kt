@@ -20,16 +20,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.Friend
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -105,29 +103,25 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    when (state) {
-                        is ProfileState.Idle -> Unit
-                        is ProfileState.Result -> showFriends(state.friends)
-                        is ProfileState.Error -> hideContentOnError()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is ProfileState.Idle -> Unit
+                    is ProfileState.Result -> showFriends(state.friends)
+                    is ProfileState.Error -> hideContentOnError()
                 }
             }
         }
     }
 
     private fun observeEffect() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect { effect ->
-                    when (effect) {
-                        is ProfileEffect.PhotoAction -> handlePhotoAction(effect.action)
-                        is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(effect.uri)
-                        is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(effect.bitmap)
-                        is ProfileEffect.ShowErrorToast -> showToast(effect.messageResId)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    is ProfileEffect.PhotoAction -> handlePhotoAction(effect.action)
+                    is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(effect.uri)
+                    is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(effect.bitmap)
+                    is ProfileEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
         }

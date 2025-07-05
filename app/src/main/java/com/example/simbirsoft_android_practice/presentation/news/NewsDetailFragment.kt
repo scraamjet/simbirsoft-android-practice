@@ -9,8 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -20,8 +18,8 @@ import com.example.simbirsoft_android_practice.core.utils.DateUtils
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsDetailBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
@@ -50,27 +48,23 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state: NewsDetailState ->
-                    when (state) {
-                        is NewsDetailState.Idle -> Unit
-                        is NewsDetailState.Result -> showResult(newsDetail = state.newsDetail)
-                        is NewsDetailState.Error -> hideContentOnError()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.state.collect { state ->
+                when (state) {
+                    is NewsDetailState.Idle -> Unit
+                    is NewsDetailState.Result -> showResult(newsDetail = state.newsDetail)
+                    is NewsDetailState.Error -> hideContentOnError()
                 }
             }
         }
     }
 
     private fun observeEffect() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect { effect: NewsDetailEffect ->
-                    when (effect) {
-                        is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
-                        is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
+                    is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
         }
