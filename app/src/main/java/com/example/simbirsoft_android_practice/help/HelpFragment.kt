@@ -42,6 +42,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeCategories()
+        observeLoading()
     }
 
     private fun initRecyclerView() {
@@ -59,16 +60,17 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
 
     private fun observeCategories() {
         launchInLifecycle(Lifecycle.State.STARTED) {
-            launch {
-                helpViewModel.loading.collect { isLoading ->
-                    binding.progressBarHelp.isVisible = isLoading
-                    binding.recyclerViewHelpItem.isGone = isLoading
-                }
+            helpViewModel.categories.collect { categories ->
+                adapter.submitList(categories)
             }
-            launch {
-                helpViewModel.categories.collect { categories ->
-                    adapter.submitList(categories)
-                }
+        }
+    }
+
+    private fun observeLoading() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            helpViewModel.loading.collect { isLoading ->
+                binding.progressBarHelp.isVisible = isLoading
+                binding.recyclerViewHelpItem.isGone = isLoading
             }
         }
     }
