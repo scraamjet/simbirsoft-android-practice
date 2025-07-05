@@ -10,37 +10,16 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class NewsServiceUseCaseImpl @Inject constructor() : NewsServiceUseCase {
+    private val _events: MutableStateFlow<List<Event>> = MutableStateFlow(emptyList())
+    override val events: StateFlow<List<Event>> = _events.asStateFlow()
 
-    private val rawEvents: MutableStateFlow<List<Event>> = MutableStateFlow(emptyList())
-    private val selectedCategoryIdsFlow: MutableStateFlow<Set<Int>> = MutableStateFlow(emptySet())
-
-    private val _filteredNewsItems: StateFlow<List<NewsItem>> = combine(
-        rawEvents,
-        selectedCategoryIdsFlow
-    ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
-        events
-            .filter { event: Event ->
-                event.categoryIds.any { categoryId: Int -> categoryId in selectedCategoryIds }
-            }
-            .map { event: Event -> NewsMapper.eventToNewsItem(event) }
-    }.stateIn(
-        scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
-        started = SharingStarted.Eagerly,
-        initialValue = emptyList()
-    )
-
-    override val filteredNewsItems: StateFlow<List<NewsItem>> = _filteredNewsItems
-
-    override fun updateRawNews(events: List<Event>) {
-        rawEvents.value = events
-    }
-
-    override suspend fun applyCategoryFilter(selectedCategoryIds: Set<Int>) {
-        selectedCategoryIdsFlow.emit(selectedCategoryIds)
+    override fun updateNews(events: List<Event>) {
+        _events.value = events
     }
 }
 

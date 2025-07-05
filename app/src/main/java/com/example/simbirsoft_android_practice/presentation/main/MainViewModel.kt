@@ -2,18 +2,19 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.NewsProcessor
 import com.example.simbirsoft_android_practice.NewsServiceUseCase
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val newsPreferencesUseCase: NewsPreferencesUseCase,
-    private val newsServiceUseCase: NewsServiceUseCase
+    private val newsServiceUseCase: NewsServiceUseCase,
+    private val newsProcessor: NewsProcessor
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -57,25 +59,23 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.NewsUpdated(newsItems))
     }
 
-    fun updateNewsFromService(events: List<Event>) {
-        newsServiceUseCase.updateRawNews(events)
-    }
-
     fun requestStartNewsService() {
         onEvent(MainEvent.RequestStartNewsService)
     }
 
+    fun updateNewsFromService(eventList: List<Event>) {
+        newsServiceUseCase.updateNews(eventList)
+    }
+
     private fun observeNews() {
         viewModelScope.launch {
-            filterPreferencesUseCase.getSelectedCategoryIds()
-                .collect { selectedIds: Set<Int> ->
-                    newsServiceUseCase.applyCategoryFilter(selectedIds)
-                }
-        }
-
-        viewModelScope.launch {
-            newsServiceUseCase.filteredNewsItems.collect { filteredNews: List<NewsItem> ->
-                onEvent(MainEvent.NewsUpdated(filteredNews))
+            combine(
+                newsServiceUseCase.events,
+                filterPreferencesUseCase.getSelectedCategoryIds()
+            ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
+                newsProcessor.filterAndMapEvents(events, selectedCategoryIds)
+            }.collect { filteredNewsItems ->
+                onEvent(MainEvent.NewsUpdated(filteredNewsItems))
             }
         }
     }
@@ -116,10 +116,11 @@ class MainViewModel @Inject constructor(
 
     private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
         val readNewsIds = _state.value.readNewsIds
-        val unreadCount = newsItems.count { newsItem: NewsItem -> newsItem.id !in readNewsIds }
+        val unreadCount = newsItems.count { newsItem -> newsItem.id !in readNewsIds }
         _state.update { previousState ->
             previousState.copy(badgeCount = unreadCount)
         }
     }
 }
+
 

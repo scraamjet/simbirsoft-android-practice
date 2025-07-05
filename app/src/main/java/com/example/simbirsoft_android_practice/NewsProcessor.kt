@@ -2,10 +2,10 @@ package com.example.simbirsoft_android_practice
 
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
-import kotlinx.coroutines.flow.StateFlow
 
-interface NewsServiceUseCase {
-    val events: StateFlow<List<Event>>
-    fun updateNews(events: List<Event>)
+interface NewsProcessor {
+    fun filterAndMapEvents(
+        eventList: List<Event>,
+        selectedCategoryIds: Set<Int>
+    ): List<NewsItem>
 }
-

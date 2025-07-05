@@ -7,14 +7,11 @@ import android.os.IBinder
 import android.util.Log
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.Event
-import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.repository.EventRepository
-import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 private const val TAG_NEWS_SERVICE = "NewsService"
