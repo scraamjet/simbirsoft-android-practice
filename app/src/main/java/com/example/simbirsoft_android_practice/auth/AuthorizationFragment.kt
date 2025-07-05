@@ -58,7 +58,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
 
         binding.buttonAuthorization.setOnClickListener {
             findNavController().navigate(R.id.action_authorization_to_help)
-            (activity as? MainActivity)?.startAndBindNewsService()
+            (activity as? MainActivity)?.startAndBindEventService()
         }
 
         binding.editTextAuthorizationPassword.setOnTouchListener { _, event ->

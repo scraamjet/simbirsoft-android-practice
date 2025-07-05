@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    fun startAndBindNewsService() {
+    fun startAndBindEventService() {
         val intent = Intent(this, EventService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
