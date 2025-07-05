@@ -14,15 +14,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class NewsServiceUseCaseImpl @Inject constructor() : NewsServiceUseCase {
+class EventServiceUseCaseImpl @Inject constructor() : EventServiceUseCase {
+
     private val _events: MutableStateFlow<List<Event>> = MutableStateFlow(emptyList())
     override val events: StateFlow<List<Event>> = _events.asStateFlow()
 
-    override fun updateNews(events: List<Event>) {
+    override fun updateEvents(events: List<Event>) {
         _events.value = events
+
     }
 }
-
 
 
 

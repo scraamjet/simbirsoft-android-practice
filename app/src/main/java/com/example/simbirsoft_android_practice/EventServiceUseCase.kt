@@ -4,8 +4,8 @@ import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import kotlinx.coroutines.flow.StateFlow
 
-interface NewsServiceUseCase {
+interface EventServiceUseCase {
     val events: StateFlow<List<Event>>
-    fun updateNews(events: List<Event>)
+    fun updateEvents(events: List<Event>)
 }
 

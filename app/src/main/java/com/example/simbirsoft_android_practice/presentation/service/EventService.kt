@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-private const val TAG_NEWS_SERVICE = "NewsService"
+private const val TAG_EVENT_SERVICE = "EventService"
 
-class NewsService : Service() {
+class EventService : Service() {
     private val binder = LocalBinder()
 
     @Inject
@@ -30,14 +30,14 @@ class NewsService : Service() {
     override fun onBind(intent: Intent): IBinder = binder
 
     inner class LocalBinder : Binder() {
-        fun getService(): NewsService = this@NewsService
+        fun getService(): EventService = this@EventService
     }
 
-    fun loadNews(): Flow<List<Event>> {
+    fun loadEvents(): Flow<List<Event>> {
         return eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
             .catch { exception: Throwable ->
-                Log.e(TAG_NEWS_SERVICE, "News flow exception: ${exception.message}", exception)
+                Log.e(TAG_EVENT_SERVICE, "News flow exception: ${exception.message}", exception)
                 emit(emptyList())
             }
     }
