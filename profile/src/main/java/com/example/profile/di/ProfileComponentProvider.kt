@@ -1,5 +1,5 @@
 package com.example.profile.di
 
-fun interface ProfileComponentProvider {
+interface ProfileComponentProvider {
     fun provideProfileComponent(): ProfileComponent
 }

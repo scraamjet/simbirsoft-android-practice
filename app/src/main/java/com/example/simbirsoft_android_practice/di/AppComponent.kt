@@ -15,7 +15,7 @@ import com.example.simbirsoft_android_practice.presentation.news.NewsFragment
 import com.example.simbirsoft_android_practice.presentation.search.EventListFragment
 import com.example.simbirsoft_android_practice.presentation.search.OrganizationListFragment
 import com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment
-import com.example.simbirsoft_android_practice.presentation.service.NewsService
+import com.example.simbirsoft_android_practice.presentation.service.EventService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -38,7 +38,7 @@ interface AppComponent : ProfileDependencies, AuthDependencies {
     fun authComponentFactory(): AuthComponent.Factory
     fun profileComponentFactory(): ProfileComponent.Factory
     fun inject(app: App)
-    fun inject(service: NewsService)
+    fun inject(service: EventService)
     fun inject(activity: MainActivity)
     fun inject(fragment: HelpFragment)
     fun inject(fragment: NewsFragment)

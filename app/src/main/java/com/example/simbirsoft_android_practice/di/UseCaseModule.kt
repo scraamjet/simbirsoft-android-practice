@@ -1,8 +1,11 @@
 package com.example.simbirsoft_android_practice.di
 
+import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
+import com.example.simbirsoft_android_practice.data.usecase.EventServiceUseCaseImpl
+import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
+import com.example.simbirsoft_android_practice.data.usecase.ProcessNewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.EventUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsPreferencesUseCaseImpl
@@ -10,12 +13,13 @@ import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.EventsUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.core.usecase.NewsPreferencesUseCase
-import com.example.core.usecase.StartNewsServiceUseCase
-import com.example.simbirsoft_android_practice.StartNewsServiceUseCaseImpl
+import com.example.core.usecase.StartEventServiceUseCase
+import com.example.simbirsoft_android_practice.StartEventServiceUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
+import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
@@ -25,15 +29,19 @@ import javax.inject.Singleton
 @Module
 interface UseCaseModule {
     @Binds
+    @Singleton
     fun bindNewsUseCase(impl: NewsUseCaseImpl): NewsUseCase
 
     @Binds
+    @Singleton
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesHelpUseCase(impl: CategoriesHelpUseCaseImpl): CategoriesHelpUseCase
 
     @Binds
+    @Singleton
     fun bindCategoriesFilterUseCase(impl: CategoriesFilterUseCaseImpl): CategoriesFilterUseCase
 
     @Binds
@@ -41,15 +49,26 @@ interface UseCaseModule {
     fun bindFilterPreferencesUseCase(impl: FilterPreferencesUseCaseImpl): FilterPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindNewsPreferencesUseCase(impl: NewsPreferencesUseCaseImpl): NewsPreferencesUseCase
 
     @Binds
+    @Singleton
     fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
-    fun bindEventListUseCase(impl: EventUseCaseImpl): EventsUseCase
+    @Singleton
+    fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
 
     @Binds
     @Singleton
-    fun bindStartNewsServiceUseCase(impl: StartNewsServiceUseCaseImpl): StartNewsServiceUseCase
+    fun bindEventServiceUseCase(impl: EventServiceUseCaseImpl): EventServiceUseCase
+
+    @Binds
+    @Singleton
+    fun bindProcessNewsUseCase(newsProcessorImpl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
+
+    @Binds
+    @Singleton
+    fun bindStartNewsServiceUseCase(impl: StartEventServiceUseCaseImpl): StartEventServiceUseCase
 }
