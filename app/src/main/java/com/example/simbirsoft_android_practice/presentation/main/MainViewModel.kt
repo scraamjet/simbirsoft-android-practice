@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.EventServiceUseCase
-import com.example.simbirsoft_android_practice.NewsProcessor
+import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val newsPreferencesUseCase: NewsPreferencesUseCase,
     private val eventServiceUseCase: EventServiceUseCase,
-    private val newsProcessor: NewsProcessor
+    private val processNewsUseCase: ProcessNewsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -73,7 +73,7 @@ class MainViewModel @Inject constructor(
                 eventServiceUseCase.events,
                 filterPreferencesUseCase.getSelectedCategoryIds()
             ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
-                newsProcessor.filterAndMapEvents(events, selectedCategoryIds)
+                processNewsUseCase.filterAndMapEvents(events, selectedCategoryIds)
             }.collect { filteredNewsItems ->
                 onEvent(MainEvent.NewsUpdated(filteredNewsItems))
             }

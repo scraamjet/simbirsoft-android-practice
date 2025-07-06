@@ -1,11 +1,12 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import jakarta.inject.Inject
 
-class NewsProcessorImpl @Inject constructor() : NewsProcessor {
+class ProcessNewsUseCaseImpl @Inject constructor() : ProcessNewsUseCase {
 
     override fun filterAndMapEvents(
         eventList: List<Event>,

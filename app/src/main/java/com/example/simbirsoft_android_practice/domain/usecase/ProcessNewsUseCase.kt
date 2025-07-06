@@ -1,9 +1,9 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.domain.usecase
 
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 
-interface NewsProcessor {
+interface ProcessNewsUseCase {
     fun filterAndMapEvents(
         eventList: List<Event>,
         selectedCategoryIds: Set<Int>

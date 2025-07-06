@@ -27,7 +27,6 @@ import javax.inject.Singleton
         DataStoreModule::class,
         ViewModelModule::class,
         UseCaseModule::class,
-        ProcessorModule::class,
         AppModule::class,
     ],
 )
