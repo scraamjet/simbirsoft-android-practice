@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.di
 
-import com.example.simbirsoft_android_practice.EventServiceUseCase
-import com.example.simbirsoft_android_practice.EventServiceUseCaseImpl
+import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
+import com.example.simbirsoft_android_practice.data.usecase.EventServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.data.usecase.ProcessNewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl

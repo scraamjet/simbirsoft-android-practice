@@ -15,7 +15,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.HelpCategory
-import com.example.simbirsoft_android_practice.launchInLifecycle
+import com.example.simbirsoft_android_practice.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 

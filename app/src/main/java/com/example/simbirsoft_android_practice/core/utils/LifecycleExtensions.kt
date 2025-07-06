@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.core.utils
 
 import androidx.activity.ComponentActivity
 import androidx.fragment.app.Fragment

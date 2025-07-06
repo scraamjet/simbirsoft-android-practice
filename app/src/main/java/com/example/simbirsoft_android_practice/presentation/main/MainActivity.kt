@@ -15,7 +15,7 @@ import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.launchInLifecycle
+import com.example.simbirsoft_android_practice.core.utils.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.service.EventService
 import com.example.simbirsoft_android_practice.presentation.service.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding

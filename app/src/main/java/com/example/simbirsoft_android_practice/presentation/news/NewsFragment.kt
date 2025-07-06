@@ -17,7 +17,7 @@ import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
-import com.example.simbirsoft_android_practice.launchInLifecycle
+import com.example.simbirsoft_android_practice.core.utils.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
