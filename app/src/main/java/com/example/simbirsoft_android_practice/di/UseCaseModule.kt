@@ -1,5 +1,9 @@
 package com.example.simbirsoft_android_practice.di
 
+import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
+import com.example.simbirsoft_android_practice.data.usecase.EventServiceUseCaseImpl
+import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
+import com.example.simbirsoft_android_practice.data.usecase.ProcessNewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
@@ -53,4 +57,12 @@ interface UseCaseModule {
     @Binds
     @Singleton
     fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
+
+    @Binds
+    @Singleton
+    fun bindEventServiceUseCase(impl: EventServiceUseCaseImpl): EventServiceUseCase
+
+    @Binds
+    @Singleton
+    fun bindProcessNewsUseCase(newsProcessorImpl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
 }

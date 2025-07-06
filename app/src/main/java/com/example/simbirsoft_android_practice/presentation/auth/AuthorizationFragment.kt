@@ -13,17 +13,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.core.utils.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val DRAWABLE_END_INDEX = 2
@@ -46,14 +44,14 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
-        observeListeners()
+        initClickListeners()
+        observeInputFields()
         observeState()
         observeEffect()
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initListeners() {
+    private fun initClickListeners() {
         binding.imageViewFilterBack.setOnClickListener {
             authorizationViewModel.onEvent(AuthorizationEvent.BackClicked)
         }
@@ -77,75 +75,69 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
         }
     }
 
-    private fun observeListeners() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    binding.editTextAuthorizationEmail.textChangesFlow()
-                        .collectLatest { editable ->
-                            authorizationViewModel.onEvent(AuthorizationEvent.EmailChanged(editable.toString()))
-                        }
+    private fun observeInputFields() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            binding.editTextAuthorizationEmail.textChangesFlow()
+                .collectLatest { editable ->
+                    authorizationViewModel.onEvent(
+                        AuthorizationEvent.EmailChanged(editable.toString())
+                    )
                 }
+        }
 
-                launch {
-                    binding.editTextAuthorizationPassword.textChangesFlow()
-                        .collectLatest { editable ->
-                            authorizationViewModel.onEvent(
-                                AuthorizationEvent.PasswordChanged(
-                                    editable.toString(),
-                                ),
-                            )
-                        }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            binding.editTextAuthorizationPassword.textChangesFlow()
+                .collectLatest { editable ->
+                    authorizationViewModel.onEvent(
+                        AuthorizationEvent.PasswordChanged(editable.toString())
+                    )
                 }
-            }
         }
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authorizationViewModel.state.collectLatest { state ->
-                    binding.buttonAuthorization.isEnabled = state.isFormValid
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            authorizationViewModel.state.collectLatest { state ->
+                binding.buttonAuthorization.isEnabled = state.isFormValid
 
-                    binding.editTextAuthorizationPassword.transformationMethod =
-                        if (state.isPasswordVisible) {
-                            HideReturnsTransformationMethod.getInstance()
-                        } else {
-                            PasswordTransformationMethod.getInstance()
-                        }
+                binding.editTextAuthorizationPassword.transformationMethod =
+                    if (state.isPasswordVisible) {
+                        HideReturnsTransformationMethod.getInstance()
+                    } else {
+                        PasswordTransformationMethod.getInstance()
+                    }
 
-                    val iconResId =
-                        if (state.isPasswordVisible) {
-                            R.drawable.ic_hide_password
-                        } else {
-                            R.drawable.ic_open_password
-                        }
+                val iconResId =
+                    if (state.isPasswordVisible) {
+                        R.drawable.ic_hide_password
+                    } else {
+                        R.drawable.ic_open_password
+                    }
 
-                    binding.editTextAuthorizationPassword.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        ContextCompat.getDrawable(requireContext(), iconResId),
-                        null,
-                    )
-                }
+                binding.editTextAuthorizationPassword.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ContextCompat.getDrawable(requireContext(), iconResId),
+                    null,
+                )
             }
         }
     }
 
     private fun observeEffect() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authorizationViewModel.effect.collectLatest { effect ->
-                    when (effect) {
-                        is AuthorizationEffect.NavigateToHelp -> {
-                            findNavController().navigate(R.id.action_authorization_to_help)
-                        }
-                        is AuthorizationEffect.StartNewsService -> {
-                            mainViewModel.requestStartNewsService()
-                        }
-                        is AuthorizationEffect.FinishActivity -> {
-                            requireActivity().finish()
-                        }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            authorizationViewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is AuthorizationEffect.NavigateToHelp -> {
+                        findNavController().navigate(R.id.action_authorization_to_help)
+                    }
+
+                    is AuthorizationEffect.StartEventService -> {
+                        mainViewModel.requestStartEventService()
+                    }
+
+                    is AuthorizationEffect.FinishActivity -> {
+                        requireActivity().finish()
                     }
                 }
             }

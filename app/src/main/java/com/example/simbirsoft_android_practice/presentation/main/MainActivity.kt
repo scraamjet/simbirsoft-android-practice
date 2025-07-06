@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,9 +15,9 @@ import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.presentation.service.NewsService
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
+import com.example.core.utils.launchInLifecycle
+import com.example.simbirsoft_android_practice.presentation.service.EventService
+import com.example.simbirsoft_android_practice.presentation.service.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
 
-    private var newsService: NewsService? = null
+    private var eventService: EventService? = null
     private var isServiceConnected = false
 
     private val navController: NavController by lazy {
@@ -40,21 +39,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
-
     private val connection =
-        NewsServiceConnection(
+        EventServiceConnection(
             onServiceConnected = { connectedService ->
-                newsService = connectedService
+                eventService = connectedService
                 isServiceConnected = true
-                newsServiceProxy.setService(connectedService)
-                mainViewModel.observeNews(newsServiceProxy)
+                observeEventsFromService()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
-                newsServiceProxy.clearService()
-            },
+            }
         )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -65,6 +61,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         observeEffect()
     }
 
+    private fun observeEventsFromService() {
+        lifecycleScope.launch {
+            eventService?.loadEvents()?.collect { events ->
+                mainViewModel.updateEventsFromService(events)
+            }
+        }
+    }
+
     private fun setupNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
@@ -72,7 +76,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
-                -> {
+                    -> {
                     mainViewModel.setBottomNavigationVisible(visible = false)
                 }
 
@@ -84,35 +88,31 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun observeState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.state.collect { state ->
-                    if (state.isBottomNavigationVisible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
-
-                    updateUnreadNewsBadge(count = state.badgeCount)
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.state.collect { state ->
+                if (state.isBottomNavigationVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
                 }
+
+                updateUnreadNewsBadge(count = state.badgeCount)
             }
         }
     }
 
     private fun observeEffect() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.effect.collect { effect ->
-                    when (effect) {
-                        is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.effect.collect { effect ->
+                when (effect) {
+                    is MainEffect.StartAndBindEventService -> startAndBindEventService()
                 }
             }
         }
     }
 
-    private fun startAndBindNewsService() {
-        val intent = Intent(this, NewsService::class.java)
+    private fun startAndBindEventService() {
+        val intent = Intent(this, EventService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
@@ -121,7 +121,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-            newsServiceProxy.clearService()
         }
     }
 
