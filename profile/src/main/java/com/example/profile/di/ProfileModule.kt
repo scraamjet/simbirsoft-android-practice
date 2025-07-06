@@ -8,7 +8,6 @@ import com.example.profile.presentation.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import javax.inject.Singleton
 
 @Module
 interface ProfileModule {

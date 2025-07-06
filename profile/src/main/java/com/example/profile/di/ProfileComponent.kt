@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.profile.presentation.profile.ProfileFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
-import javax.inject.Singleton
 
 @Subcomponent(modules = [ProfileModule::class])
 interface ProfileComponent {
