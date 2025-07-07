@@ -2,7 +2,7 @@ package com.example.search.presentation.events
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.search.domain.EventsUseCase
+import com.example.search.domain.EventListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventListViewModel @Inject constructor(
-    private val eventsUseCase: EventsUseCase
+    private val eventListUseCase: EventListUseCase
 ) : ViewModel() {
 
     private val _eventFlow = MutableSharedFlow<EventListEvent>(extraBufferCapacity = 1)
@@ -42,7 +42,7 @@ class EventListViewModel @Inject constructor(
                 .filterIsInstance<EventListEvent.SearchQueryChanged>()
                 .flatMapLatest { event ->
                     flow {
-                        eventsUseCase(event.query)
+                        eventListUseCase(event.query)
                             .map { events -> Pair(events, event.query) }
                             .catch {
                                 emit(EventListState.Error)

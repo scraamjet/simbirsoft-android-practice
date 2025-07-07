@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class EventUseCaseImpl @Inject constructor(
+class EventListUseCaseImpl @Inject constructor(
     private val repository: EventRepository
-) : EventsUseCase {
+) : EventListUseCase {
     override suspend fun invoke(query: String): Flow<List<SearchEvent>> {
         return repository.getEvents(null)
             .map { events ->

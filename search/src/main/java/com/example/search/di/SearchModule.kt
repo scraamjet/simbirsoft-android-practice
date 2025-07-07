@@ -2,8 +2,8 @@ package com.example.search.di
 
 import androidx.lifecycle.ViewModel
 import com.example.core.di.ViewModelKey
-import com.example.search.domain.EventUseCaseImpl
-import com.example.search.domain.EventsUseCase
+import com.example.search.domain.EventListUseCaseImpl
+import com.example.search.domain.EventListUseCase
 import com.example.search.presentation.events.EventListViewModel
 import com.example.search.presentation.organizations.OrganizationListUseCase
 import com.example.search.presentation.organizations.OrganizationListUseCaseImpl
@@ -20,7 +20,7 @@ interface SearchModule {
     fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
-    fun bindEventsUseCase(impl: EventUseCaseImpl): EventsUseCase
+    fun bindEventListUseCase(impRenl: EventListUseCaseImpl): EventListUseCase
 
     @Binds
     @IntoMap
