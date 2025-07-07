@@ -1,7 +1,6 @@
 package com.example.filter.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import com.example.filter.presentation.FilterFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -15,6 +14,4 @@ interface FilterComponent {
     }
 
     fun injectFilterFragment(fragment: FilterFragment)
-
-    fun viewModelFactory(): ViewModelProvider.Factory
 }
