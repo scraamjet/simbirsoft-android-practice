@@ -1,7 +1,6 @@
-package com.example.simbirsoft_android_practice.data.usecase
+package com.example.simbirsoft_android_practice.domain.usecase
 
 import com.example.core.model.Event
-import com.example.search.domain.EventServiceUseCase
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

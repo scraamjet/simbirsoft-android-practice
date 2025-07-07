@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain
+package com.example.simbirsoft_android_practice.domain.usecase
 
 import com.example.simbirsoft_android_practice.data.preferences.FilterPreferences
 import com.example.core.usecase.FilterPreferencesUseCase

@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain
+package com.example.simbirsoft_android_practice.domain.interactor
 
 import com.example.core.model.NewsItem
 import com.example.core.interactor.NewsBadgeCountInteractor

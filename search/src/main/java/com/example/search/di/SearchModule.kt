@@ -20,7 +20,7 @@ interface SearchModule {
     fun bindOrganizationListUseCase(impl: OrganizationListUseCaseImpl): OrganizationListUseCase
 
     @Binds
-    fun bindEventListUseCase(impRenl: EventListUseCaseImpl): EventListUseCase
+    fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
 
     @Binds
     @IntoMap

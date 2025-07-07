@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain
+package com.example.simbirsoft_android_practice.domain.usecase
 
 import com.example.core.model.Event
 import com.example.core.model.NewsItem
