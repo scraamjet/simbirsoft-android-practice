@@ -9,10 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.utils.launchInLifecycle
 import com.example.core.model.SearchEvent
 import com.example.search.R
 import com.example.search.databinding.FragmentSearchListBinding
@@ -22,7 +21,6 @@ import com.example.search.presentation.search.SearchContainerViewModel
 import com.example.search.presentation.model.SearchTab
 import com.example.search.presentation.adapter.EventAdapter
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
@@ -42,7 +40,6 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
         component.injectEventListFragment(this)
     }
 
-
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -54,12 +51,10 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private fun observeContainerState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchContainerViewModel.state.collect { state: SearchContainerState ->
-                    if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.EVENTS) {
-                        eventListViewModel.onEvent(EventListEvent.SearchQueryChanged(query = state.query))
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            searchContainerViewModel.state.collect { state ->
+                if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.EVENTS) {
+                    eventListViewModel.onEvent(EventListEvent.SearchQueryChanged(query = state.query))
                 }
             }
         }
@@ -84,20 +79,17 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private fun observeUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                eventListViewModel.state.collect { state ->
-                    when (state) {
-                        is EventListState.Loading -> showLoading()
-                        is EventListState.Idle -> showSearchStub()
-                        is EventListState.Empty -> showNoResults()
-                        is EventListState.Result -> {
-                            showResults(state.results)
-                            adapter.submitList(state.results)
-                        }
-
-                        is EventListState.Error -> showSearchStub()
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            eventListViewModel.state.collect { state ->
+                when (state) {
+                    is EventListState.Loading -> showLoading()
+                    is EventListState.Idle -> showSearchStub()
+                    is EventListState.Empty -> showNoResults()
+                    is EventListState.Result -> {
+                        showResults(state.results)
+                        adapter.submitList(state.results)
                     }
+                    is EventListState.Error -> showSearchStub()
                 }
             }
         }

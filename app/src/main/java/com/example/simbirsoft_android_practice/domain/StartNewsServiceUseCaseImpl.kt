@@ -1,12 +1,12 @@
 package com.example.simbirsoft_android_practice.domain
 
-import com.example.core.usecase.StartNewsServiceUseCase
+import com.example.core.usecase.StartEventServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
-class StartNewsServiceUseCaseImpl @Inject constructor() : StartNewsServiceUseCase {
+class StartEventServiceUseCaseImpl @Inject constructor() : StartEventServiceUseCase {
     private val _requests = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     override suspend fun requestStart() {
         _requests.emit(Unit)

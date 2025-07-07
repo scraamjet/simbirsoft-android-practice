@@ -15,7 +15,7 @@ import com.example.news.di.NewsDependencies
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.search.di.SearchComponent
 import com.example.search.di.SearchDependencies
-import com.example.simbirsoft_android_practice.presentation.service.NewsService
+import com.example.simbirsoft_android_practice.presentation.service.EventService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -44,7 +44,7 @@ interface AppComponent : ProfileDependencies, AuthDependencies, HelpDependencies
     fun newsComponentFactory(): NewsComponent.Factory
     fun searchComponentFactory(): SearchComponent.Factory
     fun inject(app: App)
-    fun inject(service: NewsService)
+    fun inject(service: EventService)
     fun inject(activity: MainActivity)
 }
 

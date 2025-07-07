@@ -4,16 +4,16 @@ import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
 
-class NewsServiceConnection(
-    private val onServiceConnected: (NewsService) -> Unit,
+class EventServiceConnection(
+    private val onServiceConnected: (EventService) -> Unit,
     private val onServiceDisconnected: () -> Unit,
 ) : ServiceConnection {
     override fun onServiceConnected(
         className: ComponentName,
         service: IBinder,
     ) {
-        val newsService = (service as NewsService.LocalBinder).getService()
-        onServiceConnected(newsService)
+        val eventService = (service as EventService.LocalBinder).getService()
+        onServiceConnected(eventService)
     }
 
     override fun onServiceDisconnected(name: ComponentName) {

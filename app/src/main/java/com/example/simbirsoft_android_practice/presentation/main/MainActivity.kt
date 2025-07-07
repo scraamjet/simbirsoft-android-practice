@@ -17,9 +17,9 @@ import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.presentation.service.NewsService
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceConnection
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
+import com.example.core.utils.launchInLifecycle
+import com.example.simbirsoft_android_practice.presentation.service.EventService
+import com.example.simbirsoft_android_practice.presentation.service.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
 
+    private var eventService: EventService? = null
+    private var isServiceConnected = false
+
     @Inject
     lateinit var appRouter: AppRouter
-
-    private var newsService: NewsService? = null
-    private var isServiceConnected = false
 
     private val navController: NavController by lazy {
         val navHostFragment = supportFragmentManager
@@ -44,20 +44,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navHostFragment.navController
     }
 
-    private val newsServiceProxy: NewsServiceProxy by lazy { NewsServiceProxy() }
-
     private val connection =
-        NewsServiceConnection(
+        EventServiceConnection(
             onServiceConnected = { connectedService ->
-                newsService = connectedService
+                eventService = connectedService
                 isServiceConnected = true
-                newsServiceProxy.setService(connectedService)
-                mainViewModel.observeNews(newsServiceProxy)
+                observeEventsFromService()
             },
             onServiceDisconnected = {
                 isServiceConnected = false
-                newsServiceProxy.clearService()
-            },
+            }
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +64,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         observeState()
         observeBottomNavVisibility()
         observeEffect()
+    }
+
+    private fun observeEventsFromService() {
+        lifecycleScope.launch {
+            eventService?.loadEvents()?.collect { events ->
+                mainViewModel.updateEventsFromService(events)
+            }
+        }
     }
 
     private fun setupNavigation() {
@@ -85,11 +89,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun observeState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.state.collect { state: MainState ->
-                    updateUnreadNewsBadge(count = state.badgeCount)
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.state.collect { state ->
+                if (state.isBottomNavigationVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
                 }
+
+                updateUnreadNewsBadge(count = state.badgeCount)
             }
         }
     }
@@ -109,19 +117,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun observeEffect() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.effect.collect { effect ->
-                    when (effect) {
-                        is MainEffect.StartAndBindNewsService -> startAndBindNewsService()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            mainViewModel.effect.collect { effect ->
+                when (effect) {
+                    is MainEffect.StartAndBindEventService -> startAndBindEventService()
                 }
             }
         }
     }
 
-    private fun startAndBindNewsService() {
-        val intent = Intent(this, NewsService::class.java)
+    private fun startAndBindEventService() {
+        val intent = Intent(this, EventService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
@@ -130,7 +136,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (isServiceConnected) {
             unbindService(connection)
             isServiceConnected = false
-            newsServiceProxy.clearService()
         }
     }
 

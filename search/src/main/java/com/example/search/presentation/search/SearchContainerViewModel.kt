@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,7 +32,6 @@ class SearchContainerViewModel @Inject constructor() : ViewModel() {
     val debouncedQuery: StateFlow<String> =
         searchQuery
             .debounce(DEBOUNCE_DELAY_MILLISECONDS)
-            .distinctUntilChanged()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(SEARCH_STATE_TIMEOUT_MILLISECONDS),
