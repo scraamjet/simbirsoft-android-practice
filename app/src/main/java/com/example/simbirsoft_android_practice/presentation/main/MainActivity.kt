@@ -91,26 +91,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeState() {
         launchInLifecycle(Lifecycle.State.STARTED) {
             mainViewModel.state.collect { state ->
-                if (state.isBottomNavigationVisible) {
-                    showBottomNavigation()
-                } else {
-                    hideBottomNavigation()
-                }
-
                 updateUnreadNewsBadge(count = state.badgeCount)
             }
         }
     }
 
     private fun observeBottomNavVisibility() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appRouter.bottomNavVisibilityFlow.collect { isVisible: Boolean ->
-                    if (isVisible) {
-                        showBottomNavigation()
-                    } else {
-                        hideBottomNavigation()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            appRouter.bottomNavVisibilityFlow.collect { isVisible: Boolean ->
+                if (isVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
                 }
             }
         }
