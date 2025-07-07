@@ -54,7 +54,6 @@ class MainViewModel @Inject constructor(
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
-            is MainEvent.RequestStartEventService -> handleRequestStartEventService()
         }
     }
 
@@ -68,10 +67,6 @@ class MainViewModel @Inject constructor(
 
     fun updateBadgeCount(newsItems: List<NewsItem>) {
         onEvent(MainEvent.NewsUpdated(newsItems))
-    }
-
-    fun requestStartEventService() {
-        onEvent(MainEvent.RequestStartEventService)
     }
 
     fun updateEventsFromService(eventList: List<Event>) {
@@ -101,12 +96,6 @@ class MainViewModel @Inject constructor(
     private fun handleBottomNavVisibilityChange(visible: Boolean) {
         _state.update { previousState ->
             previousState.copy(isBottomNavigationVisible = visible)
-        }
-    }
-
-    private fun handleRequestStartEventService() {
-        viewModelScope.launch {
-            _effect.emit(MainEffect.StartAndBindEventService)
         }
     }
 

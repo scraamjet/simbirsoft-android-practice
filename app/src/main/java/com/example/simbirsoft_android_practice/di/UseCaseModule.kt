@@ -70,5 +70,5 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindStartNewsServiceUseCase(impl: StartEventServiceUseCaseImpl): StartEventServiceUseCase
+    fun bindStartEventServiceUseCase(impl: StartEventServiceUseCaseImpl): StartEventServiceUseCase
 }
