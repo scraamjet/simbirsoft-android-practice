@@ -5,20 +5,18 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.core.model.NewsItem
+import com.example.core.model.Event
 import com.example.core.repository.EventRepository
-import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
+import com.example.simbirsoft_android_practice.di.appComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val TAG_NEWS_SERVICE = "NewsService"
+private const val TAG_EVENT_SERVICE = "EventService"
 
-class NewsService : Service() {
+class EventService : Service() {
     private val binder = LocalBinder()
 
     @Inject
@@ -32,23 +30,14 @@ class NewsService : Service() {
     override fun onBind(intent: Intent): IBinder = binder
 
     inner class LocalBinder : Binder() {
-        fun getService(): NewsService = this@NewsService
+        fun getService(): EventService = this@EventService
     }
 
-    fun loadAndFilterNews(selectedCategoryIds: Set<Int>): Flow<List<NewsItem>> {
+    fun loadEvents(): Flow<List<Event>> {
         return eventRepository.getEvents(null)
             .flowOn(Dispatchers.IO)
-            .map { events ->
-                events
-                    .filter { event -> event.categoryIds.any { id -> id in selectedCategoryIds } }
-                    .map(NewsMapper::eventToNewsItem)
-            }
-            .catch { exception ->
-                Log.e(
-                    TAG_NEWS_SERVICE,
-                    "News flow exception: ${exception.localizedMessage}",
-                    exception,
-                )
+            .catch { exception: Throwable ->
+                Log.e(TAG_EVENT_SERVICE, "News flow exception: ${exception.message}", exception)
                 emit(emptyList())
             }
     }
