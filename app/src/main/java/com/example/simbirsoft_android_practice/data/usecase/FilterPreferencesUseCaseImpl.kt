@@ -13,7 +13,7 @@ class FilterPreferencesUseCaseImpl @Inject constructor(
         return filterPreferences.selectedCategories
     }
 
-        override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
-            filterPreferences.saveSelectedCategories(ids)
-        }
+    override suspend fun saveSelectedCategoryIds(ids: Set<Int>) {
+        filterPreferences.saveSelectedCategories(ids)
     }
+}

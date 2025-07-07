@@ -10,8 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,9 +17,9 @@ import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import com.example.simbirsoft_android_practice.di.appComponent
+import com.example.core.utils.launchInLifecycle
 import com.example.core.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FilterFragment : Fragment(R.layout.fragment_filter) {
@@ -77,28 +75,24 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.state.collect { state ->
-                    when (state) {
-                        is FilterState.Loading -> showLoading()
-                        is FilterState.Result -> showResult(state.categories)
-                        is FilterState.Error -> hideContentOnError()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            filterViewModel.state.collect { state ->
+                when (state) {
+                    is FilterState.Loading -> showLoading()
+                    is FilterState.Result -> showResult(state.categories)
+                    is FilterState.Error -> hideContentOnError()
                 }
             }
         }
     }
 
     private fun observeEffects() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                filterViewModel.effect.collect { effect ->
-                    when (effect) {
-                        is FilterEffect.NavigateBack -> findNavController().navigateUp()
-                        is FilterEffect.ShowSuccessToast -> showToast(effect.messageResId)
-                        is FilterEffect.ShowErrorToast -> showToast(effect.messageResId)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            filterViewModel.effect.collect { effect ->
+                when (effect) {
+                    is FilterEffect.NavigateBack -> findNavController().navigateUp()
+                    is FilterEffect.ShowSuccessToast -> showToast(effect.messageResId)
+                    is FilterEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
         }
