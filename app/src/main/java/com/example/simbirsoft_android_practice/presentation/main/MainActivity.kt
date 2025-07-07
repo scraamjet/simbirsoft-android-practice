@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -98,7 +97,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun observeBottomNavVisibility() {
         launchInLifecycle(Lifecycle.State.STARTED) {
-            appRouter.bottomNavVisibilityFlow.collect { isVisible: Boolean ->
+            appRouter.bottomNavVisibility.collect { isVisible: Boolean ->
                 if (isVisible) {
                     showBottomNavigation()
                 } else {
