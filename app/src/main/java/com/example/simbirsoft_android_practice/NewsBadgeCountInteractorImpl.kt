@@ -30,7 +30,6 @@ class NewsBadgeCountInteractorImpl @Inject constructor(
             combine(newsItemsFlow, readNewsIds) { newsItems: List<NewsItem>, readIds: Set<Int> ->
                 newsItems.count { newsItem: NewsItem -> newsItem.id !in readIds }
             }
-                .distinctUntilChanged()
                 .collect { unreadNewsCount: Int ->
                     badgeCount.value = unreadNewsCount
                 }
