@@ -9,17 +9,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.model.HelpCategory
+import com.example.core.utils.launchInLifecycle
 import com.example.help.presentation.adapter.HelpAdapter
 import com.example.help.R
 import com.example.help.databinding.FragmentHelpBinding
 import com.example.help.di.HelpComponentProvider
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val RECYCLER_VIEW_SPAN_COUNT = 2
@@ -64,26 +62,22 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun observeEffect() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                helpViewModel.effect.collect { effect ->
-                    when (effect) {
-                        is HelpEffect.ShowErrorToast -> showToast(effect.messageResId)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            helpViewModel.effect.collect { effect ->
+                when (effect) {
+                    is HelpEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
         }
     }
 
     private fun observeState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                helpViewModel.state.collect { state ->
-                    when (state) {
-                        is HelpState.Loading -> showLoading()
-                        is HelpState.Result -> showResult(state.categories)
-                        is HelpState.Error -> hideContentOnError()
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            helpViewModel.state.collect { state ->
+                when (state) {
+                    is HelpState.Loading -> showLoading()
+                    is HelpState.Result -> showResult(state.categories)
+                    is HelpState.Error -> hideContentOnError()
                 }
             }
         }

@@ -4,10 +4,12 @@ import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.navigation.AppRouterImpl
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 interface NavigationModule {
 
     @Binds
+    @Singleton
     fun bindAppRouter(impl: AppRouterImpl): AppRouter
 }

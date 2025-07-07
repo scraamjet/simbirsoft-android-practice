@@ -2,29 +2,30 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.model.Event
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.interactor.NewsBadgeCountInteractor
-import com.example.core.usecase.StartNewsServiceUseCase
-import com.example.simbirsoft_android_practice.presentation.service.NewsServiceProxy
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import com.example.core.usecase.StartEventServiceUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val startNewsServiceUseCase: StartNewsServiceUseCase,
-    private val newsBadgeCountInteractor: NewsBadgeCountInteractor
+    private val newsBadgeCountInteractor: NewsBadgeCountInteractor,
+    private val startEventServiceUseCase: StartEventServiceUseCase,
+    private val eventServiceUseCase: EventServiceUseCase,
+    private val processNewsUseCase: ProcessNewsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -33,11 +34,10 @@ class MainViewModel @Inject constructor(
     private val _effect = MutableSharedFlow<MainEffect>()
     val effect: SharedFlow<MainEffect> = _effect.asSharedFlow()
 
-    private var serviceJob: Job? = null
-
     init {
         newsBadgeCountInteractor.initializeBadgeObservers(viewModelScope)
-        observeStartNewsRequests()
+        observeStartEventRequests()
+        observeNews()
         observeBadgeCount()
         onEvent(MainEvent.InitReadNews)
     }
@@ -52,10 +52,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun observeStartNewsRequests() {
+    private fun observeStartEventRequests() {
         viewModelScope.launch {
-            startNewsServiceUseCase.observeRequests().collect {
-                _effect.emit(MainEffect.StartAndBindNewsService)
+            startEventServiceUseCase.observeRequests().collect {
+                _effect.emit(MainEffect.StartAndBindEventService)
             }
         }
     }
@@ -65,8 +65,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.InitReadNews -> handleInitReadNews()
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
-            is MainEvent.NewsUpdated -> handleNewsUpdated(event.newsItems)
-            is MainEvent.RequestStartNewsService -> handleRequestStartNewsService()
+            is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
         }
     }
 
@@ -96,32 +95,29 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun handleNewsUpdated(newsItems: List<NewsItem>) {
-        viewModelScope.launch {
-            newsBadgeCountInteractor.updateNews(newsItems = newsItems)
-        }
+    fun updateEventsFromService(eventList: List<Event>) {
+        eventServiceUseCase.updateEvents(eventList)
     }
 
-    private fun handleRequestStartNewsService() {
+    private fun observeNews() {
         viewModelScope.launch {
-            _effect.emit(MainEffect.StartAndBindNewsService)
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun observeNews(newsServiceProxy: NewsServiceProxy) {
-        serviceJob?.cancel()
-        serviceJob =
-            viewModelScope.launch {
+            combine(
+                eventServiceUseCase.events,
                 filterPreferencesUseCase.getSelectedCategoryIds()
-                    .distinctUntilChanged()
-                    .flatMapLatest { selectedCategoryIds: Set<Int> ->
-                        newsServiceProxy.getFilteredNews(selectedCategoryIds)
-                    }
-                    .collect { filteredNewsItems: List<NewsItem> ->
-                        onEvent(MainEvent.NewsUpdated(filteredNewsItems))
-                    }
+            ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
+                processNewsUseCase.filterAndMapEvents(events, selectedCategoryIds)
+            }.collect { filteredNewsItems ->
+                onEvent(MainEvent.NewsUpdated(filteredNewsItems))
             }
+        }
+    }
+
+    private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
+        val readNewsIds = _state.value.readNewsIds
+        val unreadCount = newsItems.count { newsItem -> newsItem.id !in readNewsIds }
+        _state.update { previousState ->
+            previousState.copy(badgeCount = unreadCount)
+        }
     }
 }
 

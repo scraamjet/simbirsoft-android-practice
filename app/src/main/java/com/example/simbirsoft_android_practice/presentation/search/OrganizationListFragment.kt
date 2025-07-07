@@ -9,16 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.SearchEvent
+import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
@@ -62,25 +60,21 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     }
 
     private fun observeContainerState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchContainerViewModel.state.collect { state: SearchContainerState ->
-                    if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.ORGANIZATIONS) {
-                        organizationListViewModel.onEvent(OrganizationEvent.Load)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            searchContainerViewModel.state.collect { state ->
+                if (state is SearchContainerState.QueryAndPage && state.tab == SearchTab.ORGANIZATIONS) {
+                    organizationListViewModel.onEvent(OrganizationEvent.Load)
                 }
             }
         }
     }
 
     private fun observeUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                organizationListViewModel.uiState.collect { state ->
-                    when (state) {
-                        is OrganizationListState.Idle -> Unit
-                        is OrganizationListState.Success -> showResults(state.organizations)
-                    }
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            organizationListViewModel.uiState.collect { state ->
+                when (state) {
+                    is OrganizationListState.Idle -> Unit
+                    is OrganizationListState.Success -> showResults(state.organizations)
                 }
             }
         }
