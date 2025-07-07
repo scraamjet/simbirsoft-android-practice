@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.google.devtools.ksp)
-    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
