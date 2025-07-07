@@ -5,6 +5,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class EventServiceUseCaseImpl @Inject constructor() : EventServiceUseCase {
 
@@ -12,8 +13,7 @@ class EventServiceUseCaseImpl @Inject constructor() : EventServiceUseCase {
     override val events: StateFlow<List<Event>> = _events.asStateFlow()
 
     override fun updateEvents(events: List<Event>) {
-        _events.value = events
-
+        _events.update { events }
     }
 }
 
