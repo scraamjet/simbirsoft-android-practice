@@ -21,6 +21,8 @@ import com.example.core.model.NewsDetail
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 
+private const val NEWS_ID_KEY = "newsId"
+
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
 
@@ -28,7 +30,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val newsId: Int by lazy {
-        requireArguments().getInt("newsId")
+        requireArguments().getInt(NEWS_ID_KEY)
     }
 
     private val viewModel by viewModels<NewsDetailViewModel> { viewModelFactory }

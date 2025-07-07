@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+private const val NEWS_ID_KEY = "newsId"
+
 class AppRouterImpl @Inject constructor() : AppRouter {
 
     private val _bottomNavVisibilityFlow: MutableStateFlow<Boolean> = MutableStateFlow(true)
@@ -19,7 +21,7 @@ class AppRouterImpl @Inject constructor() : AppRouter {
     }
 
     override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
-        val bundle = bundleOf("newsId" to newsId)
+        val bundle = bundleOf(NEWS_ID_KEY to newsId)
         navController.navigate(R.id.action_news_to_news_detail, bundle)
     }
 
