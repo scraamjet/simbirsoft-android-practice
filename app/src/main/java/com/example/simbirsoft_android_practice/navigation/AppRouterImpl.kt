@@ -6,10 +6,12 @@ import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import javax.inject.Inject
 
+private const val NEWS_ID_KEY = "newsId"
+
 class AppRouterImpl @Inject constructor() : AppRouter {
 
     override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
-        val bundle = bundleOf("newsId" to newsId)
+        val bundle = bundleOf(NEWS_ID_KEY to newsId)
         navController.navigate(R.id.action_news_to_news_detail, bundle)
     }
 
