@@ -24,7 +24,7 @@
             app:defaultQueryHint="@string/search_hint_input_name_organization"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:searchIcon="@drawable/icon_zoom"
+            app:searchIcon="@drawable/search_black"
             app:voiceIcon="@drawable/mic" />
     </androidx.cardview.widget.CardView>
 
