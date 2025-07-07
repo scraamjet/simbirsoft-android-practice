@@ -5,8 +5,8 @@ import com.example.core.di.ViewModelKey
 import com.example.search.domain.EventListUseCaseImpl
 import com.example.search.domain.EventListUseCase
 import com.example.search.presentation.events.EventListViewModel
-import com.example.search.presentation.organizations.OrganizationListUseCase
-import com.example.search.presentation.organizations.OrganizationListUseCaseImpl
+import com.example.search.domain.OrganizationListUseCase
+import com.example.search.domain.OrganizationListUseCaseImpl
 import com.example.search.presentation.organizations.OrganizationListViewModel
 import com.example.search.presentation.search.SearchContainerViewModel
 import dagger.Binds

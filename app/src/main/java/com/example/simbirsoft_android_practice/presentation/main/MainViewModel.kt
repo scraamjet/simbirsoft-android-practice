@@ -8,7 +8,7 @@ import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.usecase.StartEventServiceUseCase
 import com.example.search.domain.EventServiceUseCase
-import com.example.search.domain.ProcessNewsUseCase
+import com.example.simbirsoft_android_practice.domain.ProcessNewsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.di
 
 import com.example.simbirsoft_android_practice.domain.FilterPreferencesUseCaseImpl
-import com.example.search.domain.ProcessNewsUseCase
+import com.example.simbirsoft_android_practice.domain.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.data.usecase.ProcessNewsUseCaseImpl
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.usecase.StartEventServiceUseCase

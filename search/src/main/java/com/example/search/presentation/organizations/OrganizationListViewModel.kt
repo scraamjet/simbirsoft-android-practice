@@ -2,6 +2,7 @@ package com.example.search.presentation.organizations
 
 import androidx.lifecycle.ViewModel
 import com.example.core.model.SearchEvent
+import com.example.search.domain.OrganizationListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

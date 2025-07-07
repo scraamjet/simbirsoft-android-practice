@@ -1,4 +1,4 @@
-package com.example.search.presentation.organizations
+package com.example.search.domain
 
 import com.example.core.model.SearchEvent
 
