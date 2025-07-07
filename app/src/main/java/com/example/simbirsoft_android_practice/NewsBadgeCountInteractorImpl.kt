@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,7 +14,7 @@ class NewsBadgeCountInteractorImpl @Inject constructor(
     private val newsPreferences: NewsPreferences
 ) : NewsBadgeCountInteractor {
 
-    private val newsItemsFlow = MutableStateFlow<List<NewsItem>>(emptyList())
+    private val newsItems = MutableStateFlow<List<NewsItem>>(emptyList())
     private val readNewsIds = MutableStateFlow<Set<Int>>(emptySet())
     private val badgeCount = MutableStateFlow(0)
 
@@ -27,7 +26,7 @@ class NewsBadgeCountInteractorImpl @Inject constructor(
         }
 
         scope.launch {
-            combine(newsItemsFlow, readNewsIds) { newsItems: List<NewsItem>, readIds: Set<Int> ->
+            combine(newsItems, readNewsIds) { newsItems: List<NewsItem>, readIds: Set<Int> ->
                 newsItems.count { newsItem: NewsItem -> newsItem.id !in readIds }
             }
                 .collect { unreadNewsCount: Int ->
@@ -41,7 +40,7 @@ class NewsBadgeCountInteractorImpl @Inject constructor(
     override fun observeReadNewsIds(): StateFlow<Set<Int>> = readNewsIds
 
     override suspend fun updateNews(newsItems: List<NewsItem>) {
-        newsItemsFlow.value = newsItems
+        this.newsItems.value = newsItems
     }
 
     override suspend fun markNewsAsRead(newsId: Int) {
