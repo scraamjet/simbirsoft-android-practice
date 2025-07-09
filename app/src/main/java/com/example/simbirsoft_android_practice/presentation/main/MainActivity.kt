@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.simbirsoft_android_practice.AppRouter
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private var eventService: EventService? = null
     private var isServiceConnected = false
@@ -56,6 +60,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         setupNavigation()
+        observeBottomNavVisibility()
         observeState()
         observeEffect()
     }
@@ -76,12 +81,25 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
                     -> {
-                    mainViewModel.setBottomNavigationVisible(visible = false)
+                    appRouter.setBottomNavigationVisible(visible = false)
                 }
 
                 else -> {
-                    mainViewModel.setBottomNavigationVisible(visible = true)
+                    appRouter.setBottomNavigationVisible(visible = true)
                 }
+            }
+        }
+    }
+
+    private fun observeBottomNavVisibility() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            appRouter.bottomNavVisibility.collect { isVisible ->
+                if (isVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
+                }
+
             }
         }
     }
@@ -89,12 +107,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeState() {
         launchInLifecycle(Lifecycle.State.STARTED) {
             mainViewModel.state.collect { state ->
-                if (state.isBottomNavigationVisible) {
-                    showBottomNavigation()
-                } else {
-                    hideBottomNavigation()
-                }
-
                 updateUnreadNewsBadge(count = state.badgeCount)
             }
         }

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.AppRouter
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
@@ -33,6 +34,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
     private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
     private val newsViewModel: NewsViewModel by viewModels { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private val newsAdapter by lazy {
         NewsAdapter { newsItemId -> onNewsItemClicked(newsId = newsItemId) }
@@ -85,7 +89,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             newsViewModel.effect.collect { effect ->
                 when (effect) {
                     is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
-                    is NewsEffect.NavigateToFilter -> findNavController().navigate(R.id.action_news_to_filter)
+                    is NewsEffect.NavigateToFilter -> appRouter.navigateToFilter(findNavController())
                     is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
                 }
             }
@@ -139,8 +143,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     }
 
     private fun navigateToNewsDetail(newsId: Int) {
-        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId = newsId)
-        findNavController().navigate(action)
+        appRouter.navigateToNewsDetail(findNavController(), newsId)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {

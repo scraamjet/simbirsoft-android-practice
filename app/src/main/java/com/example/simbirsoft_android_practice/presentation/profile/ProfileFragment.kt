@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simbirsoft_android_practice.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
 import com.example.simbirsoft_android_practice.di.appComponent
@@ -37,6 +38,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -75,7 +79,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel.onEvent(ProfileEvent.Load)
 
         binding.appBarImageProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_profile_to_edit_photo_dialog)
+            appRouter.navigateToEditPhotoDialog(findNavController())
         }
 
         initRecyclerView()

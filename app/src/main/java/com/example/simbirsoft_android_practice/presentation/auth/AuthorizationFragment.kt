@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.simbirsoft_android_practice.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
@@ -33,6 +34,9 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
     private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -129,7 +133,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             authorizationViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is AuthorizationEffect.NavigateToHelp -> {
-                        findNavController().navigate(R.id.action_authorization_to_help)
+                        appRouter.navigateToHelp(findNavController())
                     }
 
                     is AuthorizationEffect.StartEventService -> {

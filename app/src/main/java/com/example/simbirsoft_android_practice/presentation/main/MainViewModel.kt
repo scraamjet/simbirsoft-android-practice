@@ -41,15 +41,10 @@ class MainViewModel @Inject constructor(
         when (event) {
             is MainEvent.EventsFromServiceUpdated -> handleEventsFromServiceUpdated(event.eventList)
             is MainEvent.InitReadNews -> handleInitReadNews()
-            is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
             is MainEvent.RequestStartEventService -> handleRequestStartEventService()
         }
-    }
-
-    fun setBottomNavigationVisible(visible: Boolean) {
-        onEvent(MainEvent.BottomNavVisibilityChanged(visible))
     }
 
     fun updateReadNews(newsId: Int) {
@@ -85,12 +80,6 @@ class MainViewModel @Inject constructor(
         val readNewsIdsFromPrefs = newsPreferencesUseCase.getReadNewsIds()
         _state.update { previousState ->
             previousState.copy(readNewsIds = readNewsIdsFromPrefs)
-        }
-    }
-
-    private fun handleBottomNavVisibilityChange(visible: Boolean) {
-        _state.update { previousState ->
-            previousState.copy(isBottomNavigationVisible = visible)
         }
     }
 
