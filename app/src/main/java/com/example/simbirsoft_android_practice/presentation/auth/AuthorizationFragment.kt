@@ -136,10 +136,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
                         appRouter.navigateToHelp(findNavController())
                     }
 
-                    is AuthorizationEffect.StartEventService -> {
-                        mainViewModel.requestStartEventService()
-                    }
-
                     is AuthorizationEffect.FinishActivity -> {
                         requireActivity().finish()
                     }

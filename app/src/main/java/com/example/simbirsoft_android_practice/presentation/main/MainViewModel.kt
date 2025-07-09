@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.domain.model.Event
@@ -23,7 +24,8 @@ class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
     private val newsPreferencesUseCase: NewsPreferencesUseCase,
     private val eventServiceUseCase: EventServiceUseCase,
-    private val processNewsUseCase: ProcessNewsUseCase
+    private val processNewsUseCase: ProcessNewsUseCase,
+    private val startEventServiceUseCase: StartEventServiceUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -34,6 +36,7 @@ class MainViewModel @Inject constructor(
 
     init {
         onEvent(MainEvent.InitReadNews)
+        observeStartEventRequests()
         observeNews()
     }
 
@@ -43,7 +46,6 @@ class MainViewModel @Inject constructor(
             is MainEvent.InitReadNews -> handleInitReadNews()
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
-            is MainEvent.RequestStartEventService -> handleRequestStartEventService()
         }
     }
 
@@ -53,10 +55,6 @@ class MainViewModel @Inject constructor(
 
     fun updateBadgeCount(newsItems: List<NewsItem>) {
         onEvent(MainEvent.NewsUpdated(newsItems))
-    }
-
-    fun requestStartEventService() {
-        onEvent(MainEvent.RequestStartEventService)
     }
 
     private fun observeNews() {
@@ -72,6 +70,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun observeStartEventRequests() {
+        viewModelScope.launch {
+            startEventServiceUseCase.observeRequests().collect {
+                _effect.emit(MainEffect.StartAndBindEventService)
+            }
+        }
+    }
+
     private fun handleEventsFromServiceUpdated(events: List<Event>) {
         eventServiceUseCase.updateEvents(events)
     }
@@ -80,12 +86,6 @@ class MainViewModel @Inject constructor(
         val readNewsIdsFromPrefs = newsPreferencesUseCase.getReadNewsIds()
         _state.update { previousState ->
             previousState.copy(readNewsIds = readNewsIdsFromPrefs)
-        }
-    }
-
-    private fun handleRequestStartEventService() {
-        viewModelScope.launch {
-            _effect.emit(MainEffect.StartAndBindEventService)
         }
     }
 
