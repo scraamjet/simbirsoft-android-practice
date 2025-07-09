@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeEventsFromService() {
         lifecycleScope.launch {
             eventService?.loadEvents()?.collect { events ->
-                mainViewModel.updateEventsFromService(events)
+                mainViewModel.onEvent(MainEvent.EventsFromServiceUpdated(events))
             }
         }
     }

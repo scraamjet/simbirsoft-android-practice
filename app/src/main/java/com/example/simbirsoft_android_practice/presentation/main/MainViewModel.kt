@@ -39,6 +39,7 @@ class MainViewModel @Inject constructor(
 
     fun onEvent(event: MainEvent) {
         when (event) {
+            is MainEvent.EventsFromServiceUpdated -> handleEventsFromServiceUpdated(event.eventList)
             is MainEvent.InitReadNews -> handleInitReadNews()
             is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
@@ -63,10 +64,6 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.RequestStartEventService)
     }
 
-    fun updateEventsFromService(eventList: List<Event>) {
-        eventServiceUseCase.updateEvents(eventList)
-    }
-
     private fun observeNews() {
         viewModelScope.launch {
             combine(
@@ -78,6 +75,10 @@ class MainViewModel @Inject constructor(
                 onEvent(MainEvent.NewsUpdated(filteredNewsItems))
             }
         }
+    }
+
+    private fun handleEventsFromServiceUpdated(events: List<Event>) {
+        eventServiceUseCase.updateEvents(events)
     }
 
     private fun handleInitReadNews() {
