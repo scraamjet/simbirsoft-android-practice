@@ -13,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.core.navigation.AppRouter
 import com.example.core.utils.launchInLifecycle
-import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
