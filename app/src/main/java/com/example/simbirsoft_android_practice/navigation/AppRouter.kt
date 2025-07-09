@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.navigation
 
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.StateFlow

@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.di
 
-import com.example.simbirsoft_android_practice.NewsBadgeCountInteractor
-import com.example.simbirsoft_android_practice.NewsBadgeCountInteractorImpl
+import com.example.simbirsoft_android_practice.domain.interactor.NewsBadgeCountInteractor
+import com.example.simbirsoft_android_practice.data.interactor.NewsBadgeCountInteractorImpl
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton

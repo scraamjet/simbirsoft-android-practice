@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.NewsBadgeCountInteractor
+import com.example.simbirsoft_android_practice.domain.interactor.NewsBadgeCountInteractor
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase

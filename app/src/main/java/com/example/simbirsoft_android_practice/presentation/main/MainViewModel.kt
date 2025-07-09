@@ -2,8 +2,8 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.NewsBadgeCountInteractor
-import com.example.simbirsoft_android_practice.StartEventServiceUseCase
+import com.example.simbirsoft_android_practice.domain.interactor.NewsBadgeCountInteractor
+import com.example.simbirsoft_android_practice.domain.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.domain.model.Event

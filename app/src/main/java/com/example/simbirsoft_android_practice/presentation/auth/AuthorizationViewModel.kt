@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.StartEventServiceUseCase
+import com.example.simbirsoft_android_practice.domain.usecase.StartEventServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

@@ -22,7 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.simbirsoft_android_practice.AppRouter
+import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentProfileBinding
 import com.example.simbirsoft_android_practice.di.appComponent

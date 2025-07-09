@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.simbirsoft_android_practice.AppRouter
+import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
