@@ -2,6 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.domain.usecase.StartEventServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,7 +15,9 @@ import javax.inject.Inject
 
 private const val MIN_INPUT_LENGTH = 6
 
-class AuthorizationViewModel @Inject constructor() : ViewModel() {
+class AuthorizationViewModel @Inject constructor(
+    private val startEventServiceUseCase: StartEventServiceUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthorizationState())
     val state: StateFlow<AuthorizationState> = _state.asStateFlow()
@@ -55,7 +58,7 @@ class AuthorizationViewModel @Inject constructor() : ViewModel() {
     private fun handleSubmit() {
         viewModelScope.launch {
             _effect.emit(AuthorizationEffect.NavigateToHelp)
-            _effect.emit(AuthorizationEffect.StartEventService)
+            startEventServiceUseCase.requestStart()
         }
     }
 

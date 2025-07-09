@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.model.NewsDetail
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -47,7 +46,7 @@ class NewsDetailViewModel @Inject constructor(
 
     private suspend fun emitErrorState() {
         _state.value = NewsDetailState.Error
-        _effect.emit(NewsDetailEffect.ShowErrorToast(R.string.news_detail_load_error))
+        _effect.emit(NewsDetailEffect.ShowErrorToast)
     }
 
     fun handleOnBackClicked() {

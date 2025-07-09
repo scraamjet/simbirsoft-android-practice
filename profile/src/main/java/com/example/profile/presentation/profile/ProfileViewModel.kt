@@ -2,7 +2,6 @@ package com.example.profile.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.profile.R
 import com.example.profile.domain.usecase.ProfileUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +25,7 @@ class ProfileViewModel @Inject constructor(
     fun onEvent(event: ProfileEvent) {
         when (event) {
             is ProfileEvent.Load -> loadFriends()
-            is ProfileEvent.PhotoActionSelected -> handleAction(ProfileEffect.PhotoAction(event.action))
+            is ProfileEvent.PhotoActionSelected -> handleAction(ProfileEffect.SelectedPhotoAction(event.action))
             is ProfileEvent.SetGalleryImage -> handleAction(ProfileEffect.GalleryImage(event.uri))
             is ProfileEvent.SetCameraImage -> handleAction(ProfileEffect.CameraImage(event.bitmap))
         }
@@ -39,7 +38,7 @@ class ProfileViewModel @Inject constructor(
                 _state.value = ProfileState.Result(friends)
             } catch (exception: Exception) {
                 _state.value = ProfileState.Error
-                _effect.emit(ProfileEffect.ShowErrorToast(R.string.profile_load_error))
+                _effect.emit(ProfileEffect.ShowErrorToast)
             }
         }
     }

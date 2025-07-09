@@ -1,24 +1,36 @@
 package com.example.simbirsoft_android_practice.navigation
 
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import com.example.core.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
-import com.example.simbirsoft_android_practice.presentation.news.NewsFragmentDirections
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
+private const val NEWS_ID_KEY = "newsId"
 
 class AppRouterImpl @Inject constructor() : AppRouter {
 
-    override fun navigateToEditPhotoDialog(navController: NavController) {
-        navController.navigate(R.id.action_profile_to_edit_photo_dialog)
+    private val _bottomNavVisibility: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    override val bottomNavVisibility: StateFlow<Boolean> = _bottomNavVisibility.asStateFlow()
+
+    override fun setBottomNavigationVisible(visible: Boolean) {
+        _bottomNavVisibility.update { visible }
     }
 
     override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
-        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId)
-        navController.navigate(action)
+        val bundle = bundleOf(NEWS_ID_KEY to newsId)
+        navController.navigate(R.id.action_news_to_news_detail, bundle)
     }
 
     override fun navigateToFilter(navController: NavController) {
         navController.navigate(R.id.action_news_to_filter)
+    }
+
+    override fun navigateToEditPhotoDialog(navController: NavController) {
+        navController.navigate(R.id.action_profile_to_edit_photo_dialog)
     }
 
     override fun navigateToHelp(navController: NavController) {

@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
@@ -27,7 +26,9 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
@@ -91,7 +92,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
                 val keypadHeight = screenHeight - rect.bottom
                 val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-                mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
+                appRouter.setBottomNavigationVisible(!isKeyboardVisible)
             }
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }

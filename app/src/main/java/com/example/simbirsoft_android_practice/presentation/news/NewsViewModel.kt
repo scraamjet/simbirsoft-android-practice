@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.domain.interactor.NewsBadgeCountInteractor
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
@@ -19,7 +19,8 @@ import javax.inject.Inject
 
 class NewsViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val newsUseCase: NewsUseCase
+    private val newsUseCase: NewsUseCase,
+    private val newsBadgeCountInteractor: NewsBadgeCountInteractor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NewsState>(NewsState.Loading)
@@ -54,6 +55,9 @@ class NewsViewModel @Inject constructor(
         _uiState.value = NewsState.Loading
         try {
             val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
+
+            newsBadgeCountInteractor.updateNews(newsItems = filteredNews)
+
             _uiState.value =
                 if (filteredNews.isEmpty()) {
                     NewsState.NoResults
@@ -62,7 +66,7 @@ class NewsViewModel @Inject constructor(
                 }
         } catch (exception: Exception) {
             _uiState.value = NewsState.Error
-            _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
+            _effect.emit(NewsEffect.ShowErrorToast)
         }
     }
 
@@ -74,6 +78,7 @@ class NewsViewModel @Inject constructor(
 
     private fun handleNewsClicked(newsId: Int) {
         viewModelScope.launch {
+            newsBadgeCountInteractor.markNewsAsRead(newsId)
             _effect.emit(NewsEffect.NavigateToNewsDetail(newsId = newsId))
         }
     }

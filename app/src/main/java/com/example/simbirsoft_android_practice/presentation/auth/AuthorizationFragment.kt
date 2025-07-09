@@ -9,17 +9,16 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.core.utils.launchInLifecycle
+import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.core.utils.textChangesFlow
 import com.example.simbirsoft_android_practice.databinding.FragmentAuthorizationBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.core.utils.launchInLifecycle
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
@@ -32,7 +31,9 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -129,11 +130,7 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
             authorizationViewModel.effect.collectLatest { effect ->
                 when (effect) {
                     is AuthorizationEffect.NavigateToHelp -> {
-                        findNavController().navigate(R.id.action_authorization_to_help)
-                    }
-
-                    is AuthorizationEffect.StartEventService -> {
-                        mainViewModel.requestStartEventService()
+                        appRouter.navigateToHelp(findNavController())
                     }
 
                     is AuthorizationEffect.FinishActivity -> {

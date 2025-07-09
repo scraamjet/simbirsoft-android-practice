@@ -28,6 +28,8 @@ import javax.inject.Singleton
         DataStoreModule::class,
         ViewModelModule::class,
         UseCaseModule::class,
+        NavigationModule::class,
+        InteractorModule::class,
         AppModule::class,
         NavigationModule::class
     ],

@@ -127,10 +127,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         launchInLifecycle(Lifecycle.State.STARTED) {
             viewModel.effect.collect { effect ->
                 when (effect) {
-                    is ProfileEffect.PhotoAction -> handlePhotoAction(effect.action)
+                    is ProfileEffect.SelectedPhotoAction -> handlePhotoAction(effect.action)
                     is ProfileEffect.GalleryImage -> updateAppBarImageFromGallery(effect.uri)
                     is ProfileEffect.CameraImage -> updateAppBarImageFromCamera(effect.bitmap)
-                    is ProfileEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is ProfileEffect.ShowErrorToast -> showToast(R.string.profile_load_error)
                 }
             }
         }
@@ -144,9 +144,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         friendAdapter.submitList(emptyList())
     }
 
-    private fun showToast(
-        @StringRes messageResId: Int,
-    ) {
+    private fun showToast(@StringRes messageResId: Int) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 

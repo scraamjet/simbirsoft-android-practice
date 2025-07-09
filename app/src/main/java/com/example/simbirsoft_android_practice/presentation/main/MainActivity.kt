@@ -12,10 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.core.di.MultiViewModelFactory
+import com.example.core.utils.launchInLifecycle
+import com.example.simbirsoft_android_practice.navigation.AppRouter
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.ActivityMainBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.core.utils.launchInLifecycle
 import com.example.simbirsoft_android_practice.presentation.service.EventService
 import com.example.simbirsoft_android_practice.presentation.service.EventServiceConnection
 import dev.androidbroadcast.vbpd.viewBinding
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var viewModelFactory: MultiViewModelFactory
 
     private val mainViewModel by viewModels<MainViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private var eventService: EventService? = null
     private var isServiceConnected = false
@@ -51,12 +55,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         setupNavigation()
+        observeBottomNavVisibility()
         observeState()
         observeEffect()
     }
@@ -64,7 +68,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeEventsFromService() {
         lifecycleScope.launch {
             eventService?.loadEvents()?.collect { events ->
-                mainViewModel.updateEventsFromService(events)
+                mainViewModel.onEvent(MainEvent.EventsFromServiceUpdated(events))
             }
         }
     }
@@ -77,12 +81,25 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
                     -> {
-                    mainViewModel.setBottomNavigationVisible(visible = false)
+                    appRouter.setBottomNavigationVisible(visible = false)
                 }
 
                 else -> {
-                    mainViewModel.setBottomNavigationVisible(visible = true)
+                    appRouter.setBottomNavigationVisible(visible = true)
                 }
+            }
+        }
+    }
+
+    private fun observeBottomNavVisibility() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            appRouter.bottomNavVisibility.collect { isVisible ->
+                if (isVisible) {
+                    showBottomNavigation()
+                } else {
+                    hideBottomNavigation()
+                }
+
             }
         }
     }
@@ -90,12 +107,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun observeState() {
         launchInLifecycle(Lifecycle.State.STARTED) {
             mainViewModel.state.collect { state ->
-                if (state.isBottomNavigationVisible) {
-                    showBottomNavigation()
-                } else {
-                    hideBottomNavigation()
-                }
-
                 updateUnreadNewsBadge(count = state.badgeCount)
             }
         }
