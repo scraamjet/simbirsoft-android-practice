@@ -1,33 +1,42 @@
 package com.example.simbirsoft_android_practice.filter
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 private const val PREFS_NAME = "filter_prefs"
-private const val KEY_SELECTED_CATEGORIES = "selected_categories"
 
-class FilterPreferences @Inject constructor(context: Context) {
-    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+private val Context.filterDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = PREFS_NAME
+)
 
-    fun isCategorySelected(categoryId: Int): Boolean {
-        val selectedCategoryIds = getSelectedCategories()
-        return selectedCategoryIds.contains(categoryId)
-    }
+class FilterPreferences @Inject constructor(
+    context: Context
+) {
 
-    fun getSelectedCategories(): Set<Int> {
-        val categoryIdStrings =
-            prefs.getStringSet(KEY_SELECTED_CATEGORIES, emptySet()) ?: emptySet()
+    private val dataStore = context.filterDataStore
 
-        return categoryIdStrings.mapNotNull { categoryIdString ->
-            categoryIdString.toIntOrNull()
-        }.toSet()
-    }
+    private val categoriesKey = stringSetPreferencesKey("selected_categories")
 
-    fun saveSelectedCategories(categoryIds: Set<Int>) {
-        val categoryIdStrings = categoryIds.map { categoryId -> categoryId.toString() }.toSet()
+    val selectedCategories: Flow<Set<Int>> =
+        dataStore.data.map { preferences ->
+            preferences[categoriesKey]
+                ?.mapNotNull { category -> category.toIntOrNull() }
+                ?.toSet()
+                ?: emptySet()
+        }
 
-        prefs.edit()
-            .putStringSet(KEY_SELECTED_CATEGORIES, categoryIdStrings)
-            .apply()
+    suspend fun saveSelectedCategories(categories: Set<Int>) {
+        dataStore.edit { mutablePreferences ->
+            mutablePreferences[categoriesKey] =
+                categories.map { category -> category.toString() }.toSet()
+        }
     }
 }
+

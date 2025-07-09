@@ -2,38 +2,37 @@ package com.example.simbirsoft_android_practice.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.appComponent
-import com.example.simbirsoft_android_practice.core.EventRepository
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import com.example.simbirsoft_android_practice.model.SearchEvent
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val TAG_EVENT_LIST_FRAGMENT = "EventFragment"
 
 class EventListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
 
     @Inject
-    lateinit var eventRepository: EventRepository
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<EventListViewModel> { viewModelFactory }
+    private val searchContainerViewModel: SearchContainerViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    ) { viewModelFactory }
 
-    private val eventAdapter = EventAdapter()
+    private val adapter: EventAdapter by lazy { EventAdapter() }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,63 +45,56 @@ class EventListFragment : Fragment(R.layout.fragment_search_list) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        observeSearchQuery()
+        observeUiState()
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = eventAdapter
-            val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            adapter = this@EventListFragment.adapter
             ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)
                 ?.let { drawable ->
-                    divider.setDrawable(drawable)
+                    addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            DividerItemDecoration.VERTICAL,
+                        ).apply {
+                            setDrawable(drawable)
+                        },
+                    )
                 }
-            addItemDecoration(divider)
         }
     }
 
     fun refreshData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                showLoading()
+        val currentQuery = searchContainerViewModel.debouncedQuery.value
+        viewModel.onSearchQueryChanged(currentQuery)
+    }
 
-                eventRepository.getEvents(null)
-                    .flowOn(Dispatchers.IO)
-                    .map { list -> list.map(SearchMapper::toSearchEvent) }
-                    .catch { throwable ->
-                        Log.e(
-                            TAG_EVENT_LIST_FRAGMENT,
-                            "Flow exception: ${throwable.localizedMessage}",
-                            throwable,
-                        )
-                        showSearchStub()
-                        eventAdapter.submitList(emptyList())
-                    }
-                    .collect { events ->
-                        val searchQuery =
-                            (parentFragment as? SearchQueryProvider)?.getSearchQuery().orEmpty()
-                        handleFetchedEvents(events, searchQuery)
-                    }
+    private fun observeSearchQuery() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            searchContainerViewModel.debouncedQuery.collect { query ->
+                viewModel.onSearchQueryChanged(query)
             }
         }
     }
 
-    private fun handleFetchedEvents(
-        fetchedEvents: List<SearchEvent>,
-        searchQuery: String,
-    ) {
-        val filteredEvents =
-            fetchedEvents.filter { event ->
-                event.title.contains(searchQuery, ignoreCase = true)
+    private fun observeUiState() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    is SearchUiState.Loading -> showLoading()
+                    is SearchUiState.BlankQuery -> showSearchStub()
+                    is SearchUiState.Empty -> showNoResults()
+                    is SearchUiState.Success -> {
+                        showResults(state.results)
+                        adapter.submitList(state.results)
+                    }
+                    is SearchUiState.Error -> showSearchStub()
+                }
             }
-
-        when {
-            searchQuery.isBlank() -> showSearchStub()
-            filteredEvents.isEmpty() -> showNoResults()
-            else -> showResults(filteredEvents)
         }
-
-        eventAdapter.submitList(filteredEvents)
     }
 
     private fun showSearchStub() {

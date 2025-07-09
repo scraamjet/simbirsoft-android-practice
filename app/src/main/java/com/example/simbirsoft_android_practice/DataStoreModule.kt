@@ -8,7 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class PreferencesModule {
+class DataStoreModule {
     @Provides
     @Singleton
     fun provideFilterPreferences(context: Context): FilterPreferences = FilterPreferences(context)

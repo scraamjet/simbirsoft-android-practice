@@ -1,43 +1,42 @@
 package com.example.simbirsoft_android_practice.search
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchContainerBinding
-import com.example.simbirsoft_android_practice.main.MainActivity
+import com.example.simbirsoft_android_practice.main.MainViewModel
 import com.example.simbirsoft_android_practice.utils.ZoomOutPageTransformer
 import com.example.simbirsoft_android_practice.utils.findFragmentAtPosition
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-private const val DEBOUNCE_DELAY_MILLISECONDS = 500L
 private const val KEYBOARD_VISIBILITY_THRESHOLD_PERCENT = 0.15
-private const val TAG_SEARCH_CONTAINER_FRAGMENT = "SearchContainerFragment"
 
-class SearchContainerFragment : Fragment(R.layout.fragment_search_container), SearchQueryProvider {
+class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
-    private val searchQueryFlow = MutableStateFlow("")
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
+    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
-    override fun getSearchQuery(): String = searchQueryFlow.value
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,
@@ -48,18 +47,16 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
         initTabLayout()
         initSearchView()
         observeKeyboardVisibility()
-        observeSearchFlow()
     }
 
     private fun initViewPager() {
-        val viewPager: ViewPager2 = binding.viewPagerSearch
         val adapter = SearchViewPagerAdapter(this)
-        viewPager.adapter = adapter
+        binding.viewPagerSearch.adapter = adapter
+        binding.viewPagerSearch.setPageTransformer(ZoomOutPageTransformer())
 
-        viewPager.setPageTransformer(ZoomOutPageTransformer())
-
-        viewPager.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback() {
+        binding.viewPagerSearch.registerOnPageChangeCallback(
+            object :
+                ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     refreshCurrentFragment()
@@ -69,13 +66,11 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
     }
 
     private fun initTabLayout() {
-        val tabLayout: TabLayout = binding.tabLayoutSearch
-        TabLayoutMediator(tabLayout, binding.viewPagerSearch) { tab, position ->
+        TabLayoutMediator(binding.tabLayoutSearch, binding.viewPagerSearch) { tab, position ->
             tab.text = getString(SearchTab.fromPosition(position).titleResId)
         }.attach()
     }
 
-    @SuppressLint("CheckResult")
     private fun initSearchView() {
         binding.searchViewSearch.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
@@ -84,31 +79,17 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchQueryFlow.value = newText.orEmpty()
+                    searchContainerViewModel.updateSearchQuery(newText.orEmpty())
                     return true
                 }
             },
         )
     }
 
-    @OptIn(FlowPreview::class)
-    private fun observeSearchFlow() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchQueryFlow
-                    .debounce(DEBOUNCE_DELAY_MILLISECONDS)
-                    .distinctUntilChanged()
-                    .catch { throwable ->
-                        Log.e(
-                            TAG_SEARCH_CONTAINER_FRAGMENT,
-                            "Flow exception: ${throwable.localizedMessage}",
-                            throwable,
-                        )
-                    }
-                    .collectLatest {
-                        refreshEventFragment()
-                    }
-            }
+    private fun refreshCurrentFragment() {
+        when (val fragment = getCurrentFragment()) {
+            is EventListFragment -> fragment.refreshData()
+            is OrganizationListFragment -> fragment.refreshData()
         }
     }
 
@@ -119,44 +100,18 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container), Se
         )
     }
 
-    private fun refreshCurrentFragment() {
-        when (val fragment = getCurrentFragment()) {
-            is EventListFragment -> {
-                fragment.refreshData()
-            }
-
-            is OrganizationListFragment -> fragment.refreshData()
-        }
-    }
-
-    private fun refreshEventFragment() {
-        val fragment = getCurrentFragment()
-        if (fragment is EventListFragment) {
-            fragment.refreshData()
-        }
-    }
-
     private fun observeKeyboardVisibility() {
         val rootView = requireActivity().window.decorView.findViewById<View>(android.R.id.content)
-
         globalLayoutListener =
             ViewTreeObserver.OnGlobalLayoutListener {
                 val rect = Rect()
                 rootView.getWindowVisibleDisplayFrame(rect)
-
                 val screenHeight = rootView.rootView.height
                 val keypadHeight = screenHeight - rect.bottom
+                val isKeyboardVisible = keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
 
-                val isKeyboardVisible =
-                    keypadHeight > screenHeight * KEYBOARD_VISIBILITY_THRESHOLD_PERCENT
-
-                if (isKeyboardVisible) {
-                    (activity as? MainActivity)?.hideBottomNavigation()
-                } else {
-                    (activity as? MainActivity)?.showBottomNavigation()
-                }
+                mainViewModel.setBottomNavigationVisible(!isKeyboardVisible)
             }
-
         rootView.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
     }
 

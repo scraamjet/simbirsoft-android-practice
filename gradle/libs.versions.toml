@@ -1,8 +1,9 @@
 [versions]
 agp = "8.8.0"
 coil = "2.5.0"
-dagger = "2.51.1"
-kotlin = "2.1.20"
+dagger = "2.56.2"
+datastore-preferences = "1.1.7"
+kotlin = "2.1.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -19,19 +20,21 @@ rxandroid = "3.0.2"
 rxbinding = "4.0.0"
 rxjava = "3.1.8"
 viewbinding-property-delegate = "2.0.4"
-kotlin-parcelize = "2.1.20"
+kotlin-parcelize = "2.1.21"
 okhttp-logging-interceptor = "4.12.0"
 room = "2.7.1"
-ksp = "2.1.20-2.0.1"
+ksp = "2.1.21-2.0.1"
 navigation = "2.9.0"
 safe-args = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-ktx" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

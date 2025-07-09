@@ -1,25 +1,39 @@
 package com.example.simbirsoft_android_practice.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoft_android_practice.R
+import com.example.simbirsoft_android_practice.appComponent
 import com.example.simbirsoft_android_practice.databinding.FragmentSearchListBinding
-import com.example.simbirsoft_android_practice.model.SearchEvent
-import com.example.simbirsoft_android_practice.utils.generateRandomString
+import com.example.simbirsoft_android_practice.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
-import kotlin.random.Random
-
-private const val ORGANIZATIONS_LIST_SIZE = 5
-private const val EVENT_ID_MIN = 1
-private const val EVENT_ID_MAX = 100
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     private val binding by viewBinding(FragmentSearchListBinding::bind)
-    private val eventAdapter = EventAdapter()
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<OrganizationListViewModel> { viewModelFactory }
+
+    private val adapter: EventAdapter by lazy { EventAdapter() }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(
         view: View,
@@ -27,48 +41,49 @@ class OrganizationListFragment : Fragment(R.layout.fragment_search_list) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        refreshData()
-        showResults()
+        observeOrganizations()
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewEventItem.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = eventAdapter
-            val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            adapter = this@OrganizationListFragment.adapter
             ContextCompat.getDrawable(requireContext(), R.drawable.item_search_result_divider)
                 ?.let { drawable ->
-                    divider.setDrawable(drawable)
+                    addItemDecoration(
+                        DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+                            setDrawable(drawable)
+                        },
+                    )
                 }
-            addItemDecoration(divider)
+        }
+    }
+
+    private fun observeOrganizations() {
+        launchInLifecycle(Lifecycle.State.STARTED) {
+            viewModel.organizations.collect { events ->
+                adapter.submitList(events)
+                showResults(events.size)
+            }
         }
     }
 
     fun refreshData() {
-        eventAdapter.submitList(generateEventsList())
+        viewModel.refreshOrganizationList()
     }
 
-    private fun generateEventsList(): List<SearchEvent> {
-        return List(ORGANIZATIONS_LIST_SIZE) {
-            SearchEvent(
-                Random.nextInt(EVENT_ID_MIN, EVENT_ID_MAX),
-                generateRandomString(),
-            )
-        }
-    }
-
-    private fun showResults() {
+    private fun showResults(size: Int) {
         binding.apply {
-            scrollViewSearchNoQuery.visibility = View.GONE
-            recyclerViewEventItem.visibility = View.VISIBLE
-            textViewNoResults.visibility = View.GONE
-            textViewKeyWords.visibility = View.VISIBLE
-            textViewEventCount.visibility = View.VISIBLE
+            scrollViewSearchNoQuery.isVisible = false
+            recyclerViewEventItem.isVisible = true
+            textViewNoResults.isVisible = false
+            textViewKeyWords.isVisible = true
+            textViewEventCount.isVisible = true
             textViewEventCount.text =
                 resources.getQuantityString(
                     R.plurals.search_results_count,
-                    ORGANIZATIONS_LIST_SIZE,
-                    ORGANIZATIONS_LIST_SIZE,
+                    size,
+                    size,
                 )
         }
     }
