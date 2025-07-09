@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.simbirsoft_android_practice.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
@@ -69,7 +68,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
-                    is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is NewsDetailEffect.ShowErrorToast -> showToast(R.string.news_detail_load_error)
                 }
             }
         }

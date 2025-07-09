@@ -3,7 +3,6 @@ package com.example.simbirsoft_android_practice.presentation.news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simbirsoft_android_practice.NewsBadgeCountInteractor
-import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
@@ -67,7 +66,7 @@ class NewsViewModel @Inject constructor(
                 }
         } catch (exception: Exception) {
             _uiState.value = NewsState.Error
-            _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
+            _effect.emit(NewsEffect.ShowErrorToast)
         }
     }
 
