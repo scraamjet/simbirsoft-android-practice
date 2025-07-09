@@ -32,7 +32,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
     private val newsViewModel: NewsViewModel by viewModels { viewModelFactory }
 
     @Inject
@@ -109,8 +108,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
         newsAdapter.submitList(newsList)
         updateScrollFlags(isListEmpty = false)
-
-        mainViewModel.updateBadgeCount(newsItems = newsList)
     }
 
     private fun showNoResults() {
@@ -119,7 +116,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
     private fun showToast(
@@ -134,11 +130,9 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
     private fun onNewsItemClicked(newsId: Int) {
-        mainViewModel.updateReadNews(newsId = newsId)
         newsViewModel.onEvent(NewsEvent.NewsClicked(newsId = newsId))
     }
 

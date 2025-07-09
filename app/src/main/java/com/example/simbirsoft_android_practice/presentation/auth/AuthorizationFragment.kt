@@ -33,7 +33,6 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
-    private val mainViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
     @Inject
     lateinit var appRouter: AppRouter

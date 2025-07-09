@@ -2,13 +2,13 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.simbirsoft_android_practice.NewsBadgeCountInteractor
 import com.example.simbirsoft_android_practice.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.domain.model.Event
 import com.example.simbirsoft_android_practice.domain.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.NewsPreferencesUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,10 +22,10 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val filterPreferencesUseCase: FilterPreferencesUseCase,
-    private val newsPreferencesUseCase: NewsPreferencesUseCase,
+    private val newsBadgeCountInteractor: NewsBadgeCountInteractor,
+    private val startEventServiceUseCase: StartEventServiceUseCase,
     private val eventServiceUseCase: EventServiceUseCase,
-    private val processNewsUseCase: ProcessNewsUseCase,
-    private val startEventServiceUseCase: StartEventServiceUseCase
+    private val processNewsUseCase: ProcessNewsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -35,9 +35,11 @@ class MainViewModel @Inject constructor(
     val effect: SharedFlow<MainEffect> = _effect.asSharedFlow()
 
     init {
-        onEvent(MainEvent.InitReadNews)
+        newsBadgeCountInteractor.initializeBadgeObservers(viewModelScope)
         observeStartEventRequests()
         observeNews()
+        observeBadgeCount()
+        onEvent(MainEvent.InitReadNews)
     }
 
     fun onEvent(event: MainEvent) {
@@ -47,14 +49,6 @@ class MainViewModel @Inject constructor(
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
         }
-    }
-
-    fun updateReadNews(newsId: Int) {
-        onEvent(MainEvent.NewsRead(newsId))
-    }
-
-    fun updateBadgeCount(newsItems: List<NewsItem>) {
-        onEvent(MainEvent.NewsUpdated(newsItems))
     }
 
     private fun observeNews() {
@@ -78,29 +72,33 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun observeBadgeCount() {
+        viewModelScope.launch {
+            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
+                _state.update { previousState ->
+                    previousState.copy(badgeCount = count)
+                }
+            }
+        }
+    }
+
     private fun handleEventsFromServiceUpdated(events: List<Event>) {
         eventServiceUseCase.updateEvents(events)
     }
 
     private fun handleInitReadNews() {
-        val readNewsIdsFromPrefs = newsPreferencesUseCase.getReadNewsIds()
-        _state.update { previousState ->
-            previousState.copy(readNewsIds = readNewsIdsFromPrefs)
+        viewModelScope.launch {
+            newsBadgeCountInteractor.observeReadNewsIds().collect { readIds: Set<Int> ->
+                _state.update { previousState ->
+                    previousState.copy(readNewsIds = readIds)
+                }
+            }
         }
     }
 
     private fun handleNewsRead(newsId: Int) {
-        val currentReadNewsIds = _state.value.readNewsIds
-        if (newsId !in currentReadNewsIds) {
-            newsPreferencesUseCase.markNewsAsRead(newsId)
-            _state.update { previousState ->
-                val updatedReadIds = previousState.readNewsIds + newsId
-                val updatedBadgeCount = previousState.badgeCount - 1
-                previousState.copy(
-                    readNewsIds = updatedReadIds,
-                    badgeCount = updatedBadgeCount.coerceAtLeast(0),
-                )
-            }
+        viewModelScope.launch {
+            newsBadgeCountInteractor.markNewsAsRead(newsId = newsId)
         }
     }
 
