@@ -1,11 +1,10 @@
 package com.example.news.presentation.news
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.interactor.NewsBadgeCountInteractor
-import com.example.news.R
+import com.example.core.model.NewsItem
+import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.news.domain.usecase.NewsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,28 +52,23 @@ class NewsViewModel @Inject constructor(
     }
 
     private suspend fun loadNews(selectedCategories: Set<Int>) {
-        Log.d("NewsViewModel", "Loading news for: $selectedCategories")
         _uiState.value = NewsState.Loading
-
         try {
-            val filteredNews = newsUseCase.execute(selectedCategories)
-            Log.d("NewsViewModel", "Loaded news: ${filteredNews.size}")
+            val filteredNews: List<NewsItem> = newsUseCase.execute(selectedCategories)
 
             newsBadgeCountInteractor.updateNews(newsItems = filteredNews)
-            Log.d("NewsViewModel", "Badge count updated, count: ${filteredNews.size}")
 
-            _uiState.value = if (filteredNews.isEmpty()) {
-                NewsState.NoResults
-            } else {
-                NewsState.Results(newsList = filteredNews)
-            }
+            _uiState.value =
+                if (filteredNews.isEmpty()) {
+                    NewsState.NoResults
+                } else {
+                    NewsState.Results(newsList = filteredNews)
+                }
         } catch (exception: Exception) {
-            Log.e("NewsViewModel", "Error loading news", exception)
             _uiState.value = NewsState.Error
-            _effect.emit(NewsEffect.ShowErrorToast(R.string.news_load_error))
+            _effect.emit(NewsEffect.ShowErrorToast)
         }
     }
-
 
     private fun handleFiltersClicked() {
         viewModelScope.launch {

@@ -12,9 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.di.MultiViewModelFactory
-import com.example.core.utils.launchInLifecycle
 import com.example.core.model.NewsItem
 import com.example.core.navigation.AppRouter
+import com.example.core.utils.launchInLifecycle
 import com.example.news.R
 import com.example.news.databinding.FragmentNewsBinding
 import com.example.news.di.NewsComponentProvider
@@ -90,7 +90,7 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
                 when (effect) {
                     is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
                     is NewsEffect.NavigateToFilter -> appRouter.navigateToFilter(findNavController())
-                    is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is NewsEffect.ShowErrorToast -> showToast(R.string.news_load_error)
                 }
             }
         }

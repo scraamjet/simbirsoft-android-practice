@@ -8,8 +8,8 @@ import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUse
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.usecase.StartEventServiceUseCase
-import com.example.simbirsoft_android_practice.StartEventServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
+import com.example.simbirsoft_android_practice.data.usecase.StartEventServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
@@ -37,7 +37,7 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindProcessNewsUseCase(newsProcessorImpl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
+    fun bindProcessNewsUseCase(impl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
 
     @Binds
     @Singleton

@@ -2,10 +2,10 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.model.Event
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
@@ -42,61 +42,13 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.InitReadNews)
     }
 
-    private fun observeBadgeCount() {
-        viewModelScope.launch {
-            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
-                _state.update { previousState ->
-                    previousState.copy(badgeCount = count)
-                }
-            }
-        }
-    }
-
-    private fun observeStartEventRequests() {
-        viewModelScope.launch {
-            startEventServiceUseCase.observeRequests().collect {
-                _effect.emit(MainEffect.StartAndBindEventService)
-            }
-        }
-    }
-
     fun onEvent(event: MainEvent) {
         when (event) {
+            is MainEvent.EventsFromServiceUpdated -> handleEventsFromServiceUpdated(event.eventList)
             is MainEvent.InitReadNews -> handleInitReadNews()
-            is MainEvent.BottomNavVisibilityChanged -> handleBottomNavVisibilityChange(event.visible)
             is MainEvent.NewsRead -> handleNewsRead(event.newsId)
             is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
         }
-    }
-
-    fun setBottomNavigationVisible(visible: Boolean) {
-        onEvent(MainEvent.BottomNavVisibilityChanged(visible))
-    }
-
-    private fun handleInitReadNews() {
-        viewModelScope.launch {
-            newsBadgeCountInteractor.observeReadNewsIds().collect { readIds: Set<Int> ->
-                _state.update { previousState ->
-                    previousState.copy(readNewsIds = readIds)
-                }
-            }
-        }
-    }
-
-    private fun handleBottomNavVisibilityChange(visible: Boolean) {
-        _state.update { previousState ->
-            previousState.copy(isBottomNavigationVisible = visible)
-        }
-    }
-
-    private fun handleNewsRead(newsId: Int) {
-        viewModelScope.launch {
-            newsBadgeCountInteractor.markNewsAsRead(newsId = newsId)
-        }
-    }
-
-    fun updateEventsFromService(eventList: List<Event>) {
-        eventServiceUseCase.updateEvents(eventList)
     }
 
     private fun observeNews() {
@@ -112,6 +64,44 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun observeStartEventRequests() {
+        viewModelScope.launch {
+            startEventServiceUseCase.observeRequests().collect {
+                _effect.emit(MainEffect.StartAndBindEventService)
+            }
+        }
+    }
+
+    private fun observeBadgeCount() {
+        viewModelScope.launch {
+            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
+                _state.update { previousState ->
+                    previousState.copy(badgeCount = count)
+                }
+            }
+        }
+    }
+
+    private fun handleEventsFromServiceUpdated(events: List<Event>) {
+        eventServiceUseCase.updateEvents(events)
+    }
+
+    private fun handleInitReadNews() {
+        viewModelScope.launch {
+            newsBadgeCountInteractor.observeReadNewsIds().collect { readIds: Set<Int> ->
+                _state.update { previousState ->
+                    previousState.copy(readNewsIds = readIds)
+                }
+            }
+        }
+    }
+
+    private fun handleNewsRead(newsId: Int) {
+        viewModelScope.launch {
+            newsBadgeCountInteractor.markNewsAsRead(newsId = newsId)
+        }
+    }
+
     private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
         val readNewsIds = _state.value.readNewsIds
         val unreadCount = newsItems.count { newsItem -> newsItem.id !in readNewsIds }
@@ -120,4 +110,5 @@ class MainViewModel @Inject constructor(
         }
     }
 }
+
 

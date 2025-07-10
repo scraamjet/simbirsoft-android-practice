@@ -44,3 +44,4 @@ class NewsPreferences @Inject constructor(
         }
     }
 }
+
