@@ -8,8 +8,8 @@ import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.example.core.di.MultiViewModelFactory
 import com.example.core.navigation.AppRouter
 import com.example.search.R
 import com.example.search.presentation.transformer.ZoomOutPageTransformer
@@ -27,7 +27,7 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     private val binding by viewBinding(FragmentSearchContainerBinding::bind)
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: MultiViewModelFactory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
 
     @Inject
