@@ -16,7 +16,7 @@ import com.example.core.utils.launchInLifecycle
 import com.example.auth.R
 import com.example.auth.databinding.FragmentAuthorizationBinding
 import com.example.auth.di.AuthComponentProvider
-import com.example.auth.utils.textChangesFlow
+import com.example.core.utils.textChangesFlow
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding
