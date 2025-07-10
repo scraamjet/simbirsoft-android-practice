@@ -1,8 +1,8 @@
 package com.example.simbirsoft_android_practice.domain.interactor
 
-import com.example.core.model.NewsItem
-import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.simbirsoft_android_practice.data.preferences.NewsPreferences
+import com.example.core.interactor.NewsBadgeCountInteractor
+import com.example.core.model.NewsItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,15 +40,10 @@ class NewsBadgeCountInteractorImpl @Inject constructor(
     override fun observeReadNewsIds(): StateFlow<Set<Int>> = _readNewsIds
 
     override suspend fun updateNews(newsItems: List<NewsItem>) {
-        this._newsItems.update { newsItems }
+        _newsItems.update { newsItems }
     }
 
     override suspend fun markNewsAsRead(newsId: Int) {
         newsPreferences.markNewsAsRead(newsId)
     }
 }
-
-
-
-
-

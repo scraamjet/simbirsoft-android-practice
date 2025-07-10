@@ -25,7 +25,7 @@ interface UseCaseModule {
 
     @Binds
     @Singleton
-    fun bindProcessNewsUseCase(newsProcessorImpl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
+    fun bindProcessNewsUseCase(impl: ProcessNewsUseCaseImpl): ProcessNewsUseCase
 
     @Binds
     @Singleton

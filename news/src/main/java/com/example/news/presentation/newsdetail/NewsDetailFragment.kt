@@ -70,15 +70,13 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
-                    is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is NewsDetailEffect.ShowErrorToast -> showToast(R.string.news_detail_load_error)
                 }
             }
         }
     }
 
-    private fun showToast(
-        @StringRes messageResId: Int,
-    ) {
+    private fun showToast(@StringRes messageResId: Int) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 

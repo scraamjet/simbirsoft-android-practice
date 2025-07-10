@@ -30,7 +30,8 @@ class SearchContainerFragment : Fragment(R.layout.fragment_search_container) {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val searchContainerViewModel by viewModels<SearchContainerViewModel> { viewModelFactory }
 
-    @Inject lateinit var appRouter: AppRouter
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
