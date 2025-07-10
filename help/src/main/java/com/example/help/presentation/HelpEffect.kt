@@ -1,7 +1,6 @@
 package com.example.help.presentation
 
-import androidx.annotation.StringRes
-
 sealed class HelpEffect {
-    data class ShowErrorToast(@StringRes val messageResId: Int) : HelpEffect()
+    data object ShowErrorToast : HelpEffect()
 }
+

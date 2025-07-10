@@ -38,4 +38,3 @@ class AppRouterImpl @Inject constructor() : AppRouter {
         navController.navigate(R.id.action_authorization_to_help)
     }
 }
-

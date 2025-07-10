@@ -11,5 +11,3 @@ interface NewsBadgeCountInteractor {
     suspend fun markNewsAsRead(newsId: Int)
     suspend fun updateNews(newsItems: List<NewsItem>)
 }
-
-

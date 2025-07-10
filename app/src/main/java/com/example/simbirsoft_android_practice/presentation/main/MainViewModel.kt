@@ -2,10 +2,10 @@ package com.example.simbirsoft_android_practice.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.model.Event
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
-import com.example.core.interactor.NewsBadgeCountInteractor
 import com.example.core.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
@@ -42,12 +42,24 @@ class MainViewModel @Inject constructor(
         onEvent(MainEvent.InitReadNews)
     }
 
-    private fun observeBadgeCount() {
+    fun onEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.EventsFromServiceUpdated -> handleEventsFromServiceUpdated(event.eventList)
+            is MainEvent.InitReadNews -> handleInitReadNews()
+            is MainEvent.NewsRead -> handleNewsRead(event.newsId)
+            is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
+        }
+    }
+
+    private fun observeNews() {
         viewModelScope.launch {
-            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
-                _state.update { previousState ->
-                    previousState.copy(badgeCount = count)
-                }
+            combine(
+                eventServiceUseCase.events,
+                filterPreferencesUseCase.getSelectedCategoryIds()
+            ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
+                processNewsUseCase.filterAndMapEvents(events, selectedCategoryIds)
+            }.collect { filteredNewsItems ->
+                onEvent(MainEvent.NewsUpdated(filteredNewsItems))
             }
         }
     }
@@ -60,12 +72,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: MainEvent) {
-        when (event) {
-            is MainEvent.InitReadNews -> handleInitReadNews()
-            is MainEvent.NewsRead -> handleNewsRead(event.newsId)
-            is MainEvent.NewsUpdated -> handleNewsBadgeUpdated(event.newsItems)
+    private fun observeBadgeCount() {
+        viewModelScope.launch {
+            newsBadgeCountInteractor.observeBadgeCount().collect { count: Int ->
+                _state.update { previousState ->
+                    previousState.copy(badgeCount = count)
+                }
+            }
         }
+    }
+
+    private fun handleEventsFromServiceUpdated(events: List<Event>) {
+        eventServiceUseCase.updateEvents(events)
     }
 
     private fun handleInitReadNews() {
@@ -84,23 +102,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun updateEventsFromService(eventList: List<Event>) {
-        eventServiceUseCase.updateEvents(eventList)
-    }
-
-    private fun observeNews() {
-        viewModelScope.launch {
-            combine(
-                eventServiceUseCase.events,
-                filterPreferencesUseCase.getSelectedCategoryIds()
-            ) { events: List<Event>, selectedCategoryIds: Set<Int> ->
-                processNewsUseCase.filterAndMapEvents(events, selectedCategoryIds)
-            }.collect { filteredNewsItems ->
-                onEvent(MainEvent.NewsUpdated(filteredNewsItems))
-            }
-        }
-    }
-
     private fun handleNewsBadgeUpdated(newsItems: List<NewsItem>) {
         val readNewsIds = _state.value.readNewsIds
         val unreadCount = newsItems.count { newsItem -> newsItem.id !in readNewsIds }
@@ -109,4 +110,5 @@ class MainViewModel @Inject constructor(
         }
     }
 }
+
 

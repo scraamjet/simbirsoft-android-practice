@@ -94,8 +94,8 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
             filterViewModel.effect.collect { effect ->
                 when (effect) {
                     is FilterEffect.NavigateBack -> findNavController().navigateUp()
-                    is FilterEffect.ShowSuccessToast -> showToast(effect.messageResId)
-                    is FilterEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is FilterEffect.ShowFilterSavedToast -> showToast(R.string.filter_saved_toast)
+                    is FilterEffect.ShowErrorToast -> showToast(R.string.filter_load_error)
                 }
             }
         }
@@ -114,9 +114,7 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         filterAdapter.submitList(categoryList)
     }
 
-    private fun showToast(
-        @StringRes messageResId: Int,
-    ) {
+    private fun showToast(@StringRes messageResId: Int) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
