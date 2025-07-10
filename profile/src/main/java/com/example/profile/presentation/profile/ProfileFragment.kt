@@ -19,9 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.di.MultiViewModelFactory
 import com.example.core.navigation.AppRouter
 import com.example.core.utils.launchInLifecycle
 import com.example.profile.presentation.dialog.EditPhotoDialogKeys
@@ -39,7 +39,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val friendAdapter by lazy { FriendAdapter() }
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: MultiViewModelFactory
     private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
 
     @Inject
