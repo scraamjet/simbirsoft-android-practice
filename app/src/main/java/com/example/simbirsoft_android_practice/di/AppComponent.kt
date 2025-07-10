@@ -30,8 +30,10 @@ import javax.inject.Singleton
         DataStoreModule::class,
         ViewModelModule::class,
         UseCaseModule::class,
+        NavigationModule::class,
+        InteractorModule::class,
+        NavigationModule::class,
         AppModule::class,
-        NavigationModule::class
     ],
 )
 interface AppComponent : ProfileDependencies, AuthDependencies {

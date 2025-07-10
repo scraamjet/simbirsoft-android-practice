@@ -1,27 +1,47 @@
 package com.example.simbirsoft_android_practice.data.preferences
 
 import android.content.Context
-import androidx.core.content.edit
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 private const val PREFS_NAME = "news_prefs"
-private const val KEY_READ_NEWS_IDS = "read_news_ids"
-private const val KEY_SELECTED_NEWS_ID = "selected_news_id"
+private val Context.newsDataStore: DataStore<Preferences> by preferencesDataStore(name = PREFS_NAME)
 
-class NewsPreferences @Inject constructor(context: Context) {
-    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+class NewsPreferences @Inject constructor(
+    context: Context
+) {
+    private val dataStore = context.newsDataStore
+    private val readIdsKey = stringSetPreferencesKey("read_news_ids")
+    private val selectedIdKey = stringPreferencesKey("selected_news_id")
 
-        fun markNewsAsReadAndSelected(newsId: Int) {
-            val readNewsIds = getReadNewsIds().toMutableSet()
-            readNewsIds.add(newsId)
-            prefs.edit {
-                putStringSet(KEY_READ_NEWS_IDS, readNewsIds.map { id -> id.toString() }.toSet())
-                putString(KEY_SELECTED_NEWS_ID, newsId.toString())
-            }
-        }
-
-        fun getReadNewsIds(): Set<Int> {
-            val readNewsIdStrings = prefs.getStringSet(KEY_READ_NEWS_IDS, emptySet()) ?: emptySet()
-            return readNewsIdStrings.mapNotNull { newsIdString -> newsIdString.toIntOrNull() }.toSet()
+    fun getReadNewsIds(): Flow<Set<Int>> {
+        return dataStore.data.map { preferences: Preferences ->
+            preferences[readIdsKey]
+                ?.mapNotNull { idString: String -> idString.toIntOrNull() }
+                ?.toSet()
+                ?: emptySet()
         }
     }
+
+    suspend fun markNewsAsRead(newsId: Int) {
+        dataStore.edit { preferences: MutablePreferences ->
+            val currentSet = preferences[readIdsKey]
+                ?.mapNotNull { idString: String -> idString.toIntOrNull() }
+                ?.toMutableSet()
+                ?: mutableSetOf()
+
+            currentSet.add(newsId)
+            preferences[readIdsKey] = currentSet.map { id: Int -> id.toString() }.toSet()
+            preferences[selectedIdKey] = newsId.toString()
+        }
+    }
+}
+

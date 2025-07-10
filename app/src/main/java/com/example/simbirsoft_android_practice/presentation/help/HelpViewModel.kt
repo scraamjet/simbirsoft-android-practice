@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.presentation.help
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +43,7 @@ class HelpViewModel @Inject constructor(
                 }
                 .catch {
                     _state.value = HelpState.Error
-                    _effect.emit(HelpEffect.ShowErrorToast(R.string.help_load_error))
+                    _effect.emit(HelpEffect.ShowErrorToast)
                 }
                 .collect { categoryList ->
                     _state.value = HelpState.Result(categoryList)

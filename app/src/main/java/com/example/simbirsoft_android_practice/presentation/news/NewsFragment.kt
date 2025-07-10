@@ -7,18 +7,17 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.di.MultiViewModelFactory
+import com.example.core.model.NewsItem
+import com.example.core.navigation.AppRouter
+import com.example.core.utils.launchInLifecycle
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentNewsBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.core.utils.launchInLifecycle
-import com.example.core.model.NewsItem
-import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
@@ -31,8 +30,10 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
     private val newsViewModel: NewsViewModel by viewModels { viewModelFactory }
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private val newsAdapter by lazy {
         NewsAdapter { newsItemId -> onNewsItemClicked(newsId = newsItemId) }
@@ -85,8 +86,8 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
             newsViewModel.effect.collect { effect ->
                 when (effect) {
                     is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
-                    is NewsEffect.NavigateToFilter -> findNavController().navigate(R.id.action_news_to_filter)
-                    is NewsEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is NewsEffect.NavigateToFilter -> appRouter.navigateToFilter(findNavController())
+                    is NewsEffect.ShowErrorToast -> showToast(R.string.news_load_error)
                 }
             }
         }
@@ -105,8 +106,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
 
         newsAdapter.submitList(newsList)
         updateScrollFlags(isListEmpty = false)
-
-        mainViewModel.updateBadgeCount(newsItems = newsList)
     }
 
     private fun showNoResults() {
@@ -115,7 +114,6 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
     private fun showToast(
@@ -130,17 +128,14 @@ class NewsFragment : Fragment(R.layout.fragment_news) {
         binding.textViewNoNews.isVisible = true
 
         updateScrollFlags(isListEmpty = true)
-        mainViewModel.updateBadgeCount(newsItems = emptyList())
     }
 
     private fun onNewsItemClicked(newsId: Int) {
-        mainViewModel.updateReadNews(newsId = newsId)
         newsViewModel.onEvent(NewsEvent.NewsClicked(newsId = newsId))
     }
 
     private fun navigateToNewsDetail(newsId: Int) {
-        val action = NewsFragmentDirections.actionNewsToNewsDetail(newsId = newsId)
-        findNavController().navigate(action)
+        appRouter.navigateToNewsDetail(findNavController(), newsId)
     }
 
     private fun updateScrollFlags(isListEmpty: Boolean) {
