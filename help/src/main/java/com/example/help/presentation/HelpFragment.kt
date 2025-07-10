@@ -65,7 +65,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         launchInLifecycle(Lifecycle.State.STARTED) {
             helpViewModel.effect.collect { effect ->
                 when (effect) {
-                    is HelpEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    HelpEffect.ShowErrorToast -> showToast(R.string.help_load_error)
                 }
             }
         }
@@ -94,9 +94,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
         helpAdapter.submitList(categoryList)
     }
 
-    private fun showToast(
-        @StringRes messageResId: Int,
-    ) {
+    private fun showToast(@StringRes messageResId: Int) {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 

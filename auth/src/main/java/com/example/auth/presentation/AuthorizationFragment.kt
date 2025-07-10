@@ -11,14 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.core.utils.launchInLifecycle
 import com.example.auth.R
 import com.example.auth.databinding.FragmentAuthorizationBinding
 import com.example.auth.di.AuthComponentProvider
-import com.example.auth.utils.textChangesFlow
+import com.example.core.utils.textChangesFlow
+import com.example.core.di.MultiViewModelFactory
 import com.example.core.navigation.AppRouter
-import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
@@ -29,12 +29,12 @@ class AuthorizationFragment : Fragment(R.layout.fragment_authorization) {
     private val binding by viewBinding(FragmentAuthorizationBinding::bind)
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: MultiViewModelFactory
+
     private val authorizationViewModel by viewModels<AuthorizationViewModel> { viewModelFactory }
 
     @Inject
     lateinit var appRouter: AppRouter
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

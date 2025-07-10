@@ -1,4 +1,4 @@
-package com.example.auth.utils
+package com.example.core.utils
 
 import android.text.Editable
 import android.text.TextWatcher

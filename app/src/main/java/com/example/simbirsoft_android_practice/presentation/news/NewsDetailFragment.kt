@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
@@ -22,13 +21,18 @@ import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 
+private const val NEWS_ID_KEY = "newsId"
+
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private val binding by viewBinding(FragmentNewsDetailBinding::bind)
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val args: NewsDetailFragmentArgs by navArgs()
+    private val newsId: Int by lazy {
+        requireArguments().getInt(NEWS_ID_KEY)
+    }
+
     private val viewModel by viewModels<NewsDetailViewModel> { viewModelFactory }
 
     override fun onAttach(context: Context) {
@@ -44,7 +48,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         initClickListeners()
         observeState()
         observeEffect()
-        viewModel.onEvent(NewsDetailEvent.Load(newsId = args.newsId))
+        viewModel.onEvent(NewsDetailEvent.Load(newsId = newsId))
     }
 
     private fun observeState() {
@@ -64,7 +68,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
-                    is NewsDetailEffect.ShowErrorToast -> showToast(effect.messageResId)
+                    is NewsDetailEffect.ShowErrorToast -> showToast(R.string.news_detail_load_error)
                 }
             }
         }

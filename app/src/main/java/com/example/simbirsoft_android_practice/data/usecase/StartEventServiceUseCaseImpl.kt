@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice
+package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.core.usecase.StartEventServiceUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow

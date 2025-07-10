@@ -2,7 +2,6 @@ package com.example.simbirsoft_android_practice.presentation.filter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.core.usecase.FilterPreferencesUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -39,7 +38,7 @@ class FilterViewModel @Inject constructor(
                 }
                 .catch {
                     _state.value = FilterState.Error
-                    _effect.emit(FilterEffect.ShowErrorToast(R.string.filter_load_error))
+                    _effect.emit(FilterEffect.ShowErrorToast)
                 }
                 .collect { categoryList ->
                     _state.value = FilterState.Result(categoryList)
@@ -58,7 +57,7 @@ class FilterViewModel @Inject constructor(
     private fun handleOnApplyClicked(ids: Set<Int>) {
         viewModelScope.launch {
             filterPreferencesUseCase.saveSelectedCategoryIds(ids)
-            _effect.emit(FilterEffect.ShowSuccessToast(R.string.filter_saved_toast))
+            _effect.emit(FilterEffect.ShowFilterSavedToast)
             _effect.emit(FilterEffect.NavigateBack)
         }
     }
