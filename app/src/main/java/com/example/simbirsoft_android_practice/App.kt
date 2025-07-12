@@ -11,12 +11,14 @@ import com.example.news.di.NewsComponent
 import com.example.news.di.NewsComponentProvider
 import com.example.profile.di.ProfileComponent
 import com.example.profile.di.ProfileComponentProvider
+import com.example.search.di.SearchComponent
+import com.example.search.di.SearchComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
 
 class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider,
-    FilterComponentProvider, NewsComponentProvider {
+    FilterComponentProvider, NewsComponentProvider, SearchComponentProvider {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -47,6 +49,10 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider, Help
 
     override fun provideNewsComponent(): NewsComponent {
         return appComponent.newsComponentFactory().create(this)
+    }
+
+    override fun provideSearchComponent(): SearchComponent {
+        return appComponent.searchComponentFactory().create(this)
     }
 }
 

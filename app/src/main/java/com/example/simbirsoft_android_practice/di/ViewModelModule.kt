@@ -5,9 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.di.ViewModelKey
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
-import com.example.simbirsoft_android_practice.presentation.search.EventListViewModel
-import com.example.simbirsoft_android_practice.presentation.search.OrganizationListViewModel
-import com.example.simbirsoft_android_practice.presentation.search.SearchContainerViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -21,19 +18,4 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     fun bindMainViewModel(viewModel: MainViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(SearchContainerViewModel::class)
-    fun bindSearchContainerViewModel(viewModel: SearchContainerViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(OrganizationListViewModel::class)
-    fun bindOrganizationListViewModel(viewModel: OrganizationListViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(EventListViewModel::class)
-    fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
 }

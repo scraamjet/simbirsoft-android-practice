@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey_two"
+        android:orientation="vertical">
+
+
+        <ScrollView
+            android:id="@+id/scrollViewSearchNoQuery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutSearchNoQuery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_search_list_linear_layout_no_query"
+                android:background="@color/light_grey_two"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/icon_zoom" />
+
+                <TextView
+                    style="@style/BodyTextMediumBlackDeep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/search_icon_margin_top"
+                    android:gravity="center"
+                    android:text="@string/search_by_events_text_hint" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/search_text_margin_top"
+                    android:layout_marginBottom="@dimen/margin_bottom_linear_layout_no_query_scroll"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/BodyTextBlackDeepEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/search_by_events_example_text" />
+
+                    <TextView
+                        style="@style/BodyTextLinkGreen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/search_text_margin_start"
+                        android:text="@string/search_by_events_example_keywords"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textViewNoResults"
+            style="@style/BodyTextMediumBlackDeep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top_search_list_linear_layout_no_query"
+            android:text="@string/search_no_results"
+            android:textAlignment="center"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/search_list_layout_margin_vertical"
+                android:layout_marginStart="@dimen/search_list_layout_margin_vertical"
+                android:layout_marginEnd="@dimen/search_list_layout_margin_end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewKeyWords"
+                    style="@style/BodyTextSmallBlackMuted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_list_keywords_label"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textViewEventCount"
+                    style="@style/BodyTextSmallBlackMuted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_list_search_results_label"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayoutRecyclerViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_search_result_border">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewEventItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/search_list_layout_margin_vertical"
+                android:background="@android:color/transparent"
+                android:divider="@drawable/item_search_result_divider"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>

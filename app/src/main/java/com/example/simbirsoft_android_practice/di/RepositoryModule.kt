@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.di
 
-import com.example.simbirsoft_android_practice.core.utils.JsonAssetExtractor
+import com.example.simbirsoft_android_practice.utils.JsonAssetExtractor
 import com.example.simbirsoft_android_practice.data.api.ApiService
 import com.example.simbirsoft_android_practice.data.database.dao.CategoryDao
 import com.example.simbirsoft_android_practice.data.database.dao.EventDao
