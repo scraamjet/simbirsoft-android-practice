@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":auth"))
     implementation(project(":help"))
     implementation(project(":filter"))
+    implementation(project(":news"))
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)

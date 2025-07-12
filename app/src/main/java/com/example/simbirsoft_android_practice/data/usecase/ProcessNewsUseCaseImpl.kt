@@ -1,9 +1,9 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
+import com.example.core.mapper.NewsMapper
 import com.example.core.model.Event
 import com.example.core.model.NewsItem
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
-import com.example.simbirsoft_android_practice.presentation.news.NewsMapper
 import jakarta.inject.Inject
 
 class ProcessNewsUseCaseImpl @Inject constructor() : ProcessNewsUseCase {
