@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/authorizationFragment"
-        android:name="com.example.simbirsoft_android_practice.auth.AuthorizationFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.auth.AuthorizationFragment"
         android:label="Авторизация">
         <action
             android:id="@+id/action_authorization_to_help"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.example.simbirsoft_android_practice.news.NewsFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.news.NewsFragment"
         android:label="Новости">
         <action
             android:id="@+id/action_news_to_news_detail"
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/newsDetailFragment"
-        android:name="com.example.simbirsoft_android_practice.news.NewsDetailFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.news.NewsDetailFragment"
         android:label="Детали" >
         <argument
             android:name="newsId"
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.simbirsoft_android_practice.profile.ProfileFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.profile.ProfileFragment"
         android:label="Профиль">
         <action
             android:id="@+id/action_profile_to_edit_photo_dialog"
@@ -47,22 +47,22 @@
 
     <fragment
         android:id="@+id/searchContainerFragment"
-        android:name="com.example.simbirsoft_android_practice.search.SearchContainerFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.search.SearchContainerFragment"
         android:label="Поиск">
     </fragment>
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="com.example.simbirsoft_android_practice.filter.FilterFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.filter.FilterFragment"
         android:label="Фильтры" />
 
     <fragment
         android:id="@+id/helpFragment"
-        android:name="com.example.simbirsoft_android_practice.help.HelpFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.help.HelpFragment"
         android:label="Помощь" />
 
     <dialog
         android:id="@+id/editPhotoDialogFragment"
-        android:name="com.example.simbirsoft_android_practice.profile.EditPhotoDialogFragment"
+        android:name="com.example.simbirsoft_android_practice.presentation.profile.EditPhotoDialogFragment"
         android:label="Диалог" />
 </navigation>
