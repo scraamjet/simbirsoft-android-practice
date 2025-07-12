@@ -1,8 +1,8 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
+import com.example.help.domain.CategoriesHelpUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class HelpViewModel @Inject constructor(
     private val categoriesHelpUseCase: CategoriesHelpUseCase

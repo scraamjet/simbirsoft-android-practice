@@ -1,6 +1,6 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help.presentation
 
-import com.example.simbirsoft_android_practice.domain.model.HelpCategory
+import com.example.core.model.HelpCategory
 
 sealed class HelpState {
     data object Loading : HelpState()

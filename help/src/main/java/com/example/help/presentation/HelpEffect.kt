@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help.presentation
 
 sealed class HelpEffect {
     data object ShowErrorToast : HelpEffect()

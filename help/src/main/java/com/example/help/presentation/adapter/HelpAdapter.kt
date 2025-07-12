@@ -1,11 +1,11 @@
-package com.example.simbirsoft_android_practice.presentation.help
+package com.example.help.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.simbirsoft_android_practice.databinding.ItemHelpBinding
-import com.example.simbirsoft_android_practice.domain.model.HelpCategory
+import com.example.core.model.HelpCategory
+import com.example.help.databinding.ItemHelpBinding
 
 class HelpAdapter : ListAdapter<HelpCategory, HelpViewHolder>(HelpCategoryDiffCallback) {
     override fun onCreateViewHolder(

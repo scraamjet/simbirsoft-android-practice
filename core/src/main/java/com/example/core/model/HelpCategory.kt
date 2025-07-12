@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain.model
+package com.example.core.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

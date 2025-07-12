@@ -17,8 +17,8 @@ import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.domain.model.FilterCategory
 import com.example.core.utils.launchInLifecycle
+import com.example.core.model.FilterCategory
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 

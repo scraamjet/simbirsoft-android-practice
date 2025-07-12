@@ -3,12 +3,12 @@ package com.example.simbirsoft_android_practice.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.interactor.NewsBadgeCountInteractor
+import com.example.core.model.Event
 import com.example.core.model.NewsItem
 import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.core.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
-import com.example.simbirsoft_android_practice.domain.model.Event
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

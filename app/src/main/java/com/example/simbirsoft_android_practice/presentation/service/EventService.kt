@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.example.core.model.Event
+import com.example.core.repository.EventRepository
 import com.example.simbirsoft_android_practice.di.appComponent
-import com.example.simbirsoft_android_practice.domain.model.Event
-import com.example.simbirsoft_android_practice.domain.repository.EventRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -42,4 +42,3 @@ class EventService : Service() {
             }
     }
 }
-
