@@ -2,15 +2,14 @@ package com.example.simbirsoft_android_practice.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.simbirsoft_android_practice.MultiViewModelFactory
-import com.example.simbirsoft_android_practice.ViewModelKey
+import com.example.core.di.MultiViewModelFactory
+import com.example.core.di.ViewModelKey
 import com.example.simbirsoft_android_practice.presentation.auth.AuthorizationViewModel
 import com.example.simbirsoft_android_practice.presentation.filter.FilterViewModel
 import com.example.simbirsoft_android_practice.presentation.help.HelpViewModel
 import com.example.simbirsoft_android_practice.presentation.main.MainViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsDetailViewModel
 import com.example.simbirsoft_android_practice.presentation.news.NewsViewModel
-import com.example.simbirsoft_android_practice.presentation.profile.ProfileViewModel
 import com.example.simbirsoft_android_practice.presentation.search.EventListViewModel
 import com.example.simbirsoft_android_practice.presentation.search.OrganizationListViewModel
 import com.example.simbirsoft_android_practice.presentation.search.SearchContainerViewModel
@@ -62,11 +61,6 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(EventListViewModel::class)
     fun bindEventListViewModel(viewModel: EventListViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ProfileViewModel::class)
-    fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.simbirsoft_android_practice.MultiViewModelFactory
+import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentHelpBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.HelpCategory
-import com.example.simbirsoft_android_practice.core.utils.launchInLifecycle
+import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 

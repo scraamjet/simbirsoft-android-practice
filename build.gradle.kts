@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.google.devtools.ksp) apply false
     alias(libs.plugins.navigation.safe.args) apply false
+    alias(libs.plugins.android.library) apply false
 }

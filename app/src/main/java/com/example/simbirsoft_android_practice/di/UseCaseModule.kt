@@ -13,7 +13,6 @@ import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUse
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.ProfileUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
@@ -21,7 +20,6 @@ import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesU
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.ProfileUseCase
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -55,10 +53,6 @@ interface UseCaseModule {
     @Binds
     @Singleton
     fun bindEventListUseCase(impl: EventListUseCaseImpl): EventListUseCase
-
-    @Binds
-    @Singleton
-    fun bindProfileUseCase(impl: ProfileUseCaseImpl): ProfileUseCase
 
     @Binds
     @Singleton

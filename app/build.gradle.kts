@@ -65,6 +65,8 @@ ktlint {
 }
 
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":profile"))
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)

@@ -13,12 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.simbirsoft_android_practice.MultiViewModelFactory
+import com.example.core.di.MultiViewModelFactory
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.databinding.FragmentFilterBinding
 import com.example.simbirsoft_android_practice.di.appComponent
 import com.example.simbirsoft_android_practice.domain.model.FilterCategory
-import com.example.simbirsoft_android_practice.core.utils.launchInLifecycle
+import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 
