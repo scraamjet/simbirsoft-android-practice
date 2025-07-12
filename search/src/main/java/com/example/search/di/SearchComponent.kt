@@ -1,7 +1,6 @@
 package com.example.search.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import com.example.search.presentation.events.EventListFragment
 import com.example.search.presentation.organizations.OrganizationListFragment
 import com.example.search.presentation.search.SearchContainerFragment
@@ -19,6 +18,4 @@ interface SearchComponent {
     fun injectSearchContainerFragment(fragment: SearchContainerFragment)
     fun injectEventListFragment(fragment: EventListFragment)
     fun injectOrganizationListFragment(fragment: OrganizationListFragment)
-
-    fun viewModelFactory(): ViewModelProvider.Factory
 }

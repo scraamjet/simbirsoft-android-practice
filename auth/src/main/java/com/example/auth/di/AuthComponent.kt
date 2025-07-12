@@ -1,7 +1,6 @@
 package com.example.auth.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import com.example.auth.presentation.AuthorizationFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -15,6 +14,4 @@ interface AuthComponent {
     }
 
     fun injectAuthFragment(fragment: AuthorizationFragment)
-
-    fun viewModelFactory(): ViewModelProvider.Factory
 }

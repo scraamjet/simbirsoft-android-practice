@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.navigation.safe.args)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.kotlin.parcelize)
 }
