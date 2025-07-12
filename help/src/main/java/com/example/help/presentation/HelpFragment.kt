@@ -12,11 +12,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.model.HelpCategory
+import com.example.core.utils.launchInLifecycle
 import com.example.help.presentation.adapter.HelpAdapter
 import com.example.help.R
 import com.example.help.databinding.FragmentHelpBinding
 import com.example.help.di.HelpComponentProvider
-import com.example.core.utils.launchInLifecycle
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 

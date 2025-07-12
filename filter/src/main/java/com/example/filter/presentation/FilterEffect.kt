@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.filter
+package com.example.filter.presentation
 
 sealed class FilterEffect {
     data object NavigateBack : FilterEffect()

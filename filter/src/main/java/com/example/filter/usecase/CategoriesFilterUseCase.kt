@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.domain.usecase
+package com.example.filter.usecase
 
 import com.example.core.model.FilterCategory
 import kotlinx.coroutines.flow.Flow

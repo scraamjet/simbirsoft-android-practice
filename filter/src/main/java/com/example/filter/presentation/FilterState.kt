@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.presentation.filter
+package com.example.filter.presentation
 
 import com.example.core.model.FilterCategory
 

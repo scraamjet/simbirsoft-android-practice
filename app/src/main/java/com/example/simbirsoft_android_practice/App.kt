@@ -3,6 +3,8 @@ package com.example.simbirsoft_android_practice
 import android.app.Application
 import com.example.auth.di.AuthComponent
 import com.example.auth.di.AuthComponentProvider
+import com.example.filter.di.FilterComponent
+import com.example.filter.di.FilterComponentProvider
 import com.example.help.di.HelpComponent
 import com.example.help.di.HelpComponentProvider
 import com.example.profile.di.ProfileComponent
@@ -11,7 +13,8 @@ import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
 
-class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider {
+class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider,
+    FilterComponentProvider {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -34,6 +37,10 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider, Help
 
     override fun provideHelpComponent(): HelpComponent {
         return appComponent.helpComponentFactory().create(this)
+    }
+
+    override fun provideFilterComponent(): FilterComponent {
+        return appComponent.filterComponentFactory().create(this)
     }
 }
 
