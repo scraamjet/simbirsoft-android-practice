@@ -1,7 +1,7 @@
 package com.example.simbirsoft_android_practice.data.usecase
 
 import com.example.simbirsoft_android_practice.data.preferences.FilterPreferences
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.core.usecase.FilterPreferencesUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

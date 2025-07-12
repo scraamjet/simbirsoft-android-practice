@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.simbirsoft_android_practice.databinding.ItemNewsBinding
-import com.example.simbirsoft_android_practice.domain.model.NewsItem
+import com.example.core.model.NewsItem
 
 class NewsAdapter(private val onItemClicked: (idItem: Int) -> Unit) :
     ListAdapter<NewsItem, NewsViewHolder>(NewsDiffCallback) {

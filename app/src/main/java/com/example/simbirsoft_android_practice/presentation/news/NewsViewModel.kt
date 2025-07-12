@@ -2,9 +2,9 @@ package com.example.simbirsoft_android_practice.presentation.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.simbirsoft_android_practice.domain.interactor.NewsBadgeCountInteractor
-import com.example.simbirsoft_android_practice.domain.model.NewsItem
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.core.interactor.NewsBadgeCountInteractor
+import com.example.core.model.NewsItem
+import com.example.core.usecase.FilterPreferencesUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

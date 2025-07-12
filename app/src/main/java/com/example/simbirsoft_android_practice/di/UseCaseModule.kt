@@ -1,6 +1,5 @@
 package com.example.simbirsoft_android_practice.di
 
-import com.example.simbirsoft_android_practice.domain.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.data.usecase.StartEventServiceUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.EventServiceUseCase
 import com.example.simbirsoft_android_practice.data.usecase.EventServiceUseCaseImpl
@@ -8,16 +7,17 @@ import com.example.simbirsoft_android_practice.domain.usecase.ProcessNewsUseCase
 import com.example.simbirsoft_android_practice.data.usecase.ProcessNewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesFilterUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.CategoriesHelpUseCaseImpl
-import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.FilterPreferencesUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsDetailUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.NewsUseCaseImpl
 import com.example.simbirsoft_android_practice.data.usecase.OrganizationListUseCaseImpl
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesFilterUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.CategoriesHelpUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
-import com.example.simbirsoft_android_practice.domain.usecase.FilterPreferencesUseCase
+import com.example.core.usecase.FilterPreferencesUseCase
+import com.example.core.usecase.StartEventServiceUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsDetailUseCase
+import com.example.simbirsoft_android_practice.data.usecase.EventListUseCaseImpl
+import com.example.simbirsoft_android_practice.domain.usecase.EventListUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.NewsUseCase
 import com.example.simbirsoft_android_practice.domain.usecase.OrganizationListUseCase
 import dagger.Binds
