@@ -43,6 +43,15 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.dagger)
     implementation(libs.retrofit.converter.gson)
+
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.foundation)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     ksp(libs.dagger.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
