@@ -20,7 +20,7 @@ val BodyTextRegularBlackDeep = TextStyle(
 
 val BodyTextInputGrayFullWidth = TextStyle(
     fontFamily = Roboto,
-    fontSize = 16.sp,
+    fontSize = 18.sp,
     color = Color(0x66000000)
 )
 
