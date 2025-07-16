@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -101,9 +102,9 @@ fun PasswordInputField(
                 .height(1.5.dp)
                 .background(
                     if (isFocused) {
-                        colorResource(id = color.green)
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        colorResource(id = color.grey)
+                        MaterialTheme.colorScheme.outline
                     }
                 )
         )

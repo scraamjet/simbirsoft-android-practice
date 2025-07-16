@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,9 +69,9 @@ fun EmailInputField(
                 .height(1.5.dp)
                 .background(
                     if (isFocused) {
-                        colorResource(id = color.green)
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        colorResource(id = color.grey)
+                        MaterialTheme.colorScheme.outline
                     }
                 )
         )

@@ -15,26 +15,26 @@ val OfficinaSansExtraBold = FontFamily(Font(R.font.officina_sans_extra_bold))
 val BodyTextRegularBlackDeep = TextStyle(
     fontFamily = Roboto,
     fontSize = 16.sp,
-    color = Color(0xB3000000),
+    color = BlackSolid,
 )
 
 val BodyTextInputGrayFullWidth = TextStyle(
     fontFamily = Roboto,
     fontSize = 18.sp,
-    color = Color(0x66000000)
+    color = BlackTranslucent
 )
 
 val CaptionSmallBlackSoft = TextStyle(
     fontFamily = Roboto,
     fontSize = 14.sp,
-    color = Color(0x66000000),
+    color = BlackTranslucent,
     lineHeight = 16.sp
 )
 
 val BodyTextLinkGreen = TextStyle(
     fontFamily = Roboto,
     fontSize = 14.sp,
-    color = Color(0xFF66A636),
+    color = Green,
     textDecoration = TextDecoration.Underline
 )
 
@@ -48,5 +48,5 @@ val BodyTextMediumWhiteCenter = TextStyle(
 val HeadingMediumWhite = TextStyle(
     fontFamily = OfficinaSansExtraBold,
     fontSize = 21.sp,
-    color = Color.White
+    color = White
 )

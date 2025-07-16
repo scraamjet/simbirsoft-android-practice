@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.auth.R
 import com.example.core.R.color
+import com.example.core.ui.AppTheme
 import com.example.core.ui.BodyTextLinkGreen
 import com.example.core.ui.BodyTextMediumWhiteCenter
 import com.example.core.ui.BodyTextRegularBlackDeep
@@ -34,8 +37,6 @@ fun AuthorizationScreen(
     state: AuthorizationState,
     onEvent: (AuthorizationEvent) -> Unit
 ) {
-    val buttonCornerRadius = 4.dp
-
     Scaffold(
         topBar = {
             AuthorizationTopAppBar(
@@ -116,13 +117,11 @@ fun AuthorizationScreen(
                 onClick = { onEvent(AuthorizationEvent.SubmitClicked) },
                 enabled = state.isFormValid,
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(buttonCornerRadius),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 2.dp
-                ),
+                shape = RoundedCornerShape(4.dp),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = color.green),
-                    disabledContainerColor = colorResource(id = color.grey)
+                    containerColor = colorScheme.primary,
+                    disabledContainerColor = colorScheme.outline
                 )
             ) {
                 Text(

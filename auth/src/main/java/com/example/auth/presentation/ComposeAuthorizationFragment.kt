@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.auth.di.AuthComponentProvider
 import com.example.core.di.MultiViewModelFactory
 import com.example.core.navigation.AppRouter
+import com.example.core.ui.AppTheme
 import com.example.core.utils.launchInLifecycle
 import javax.inject.Inject
 
@@ -40,10 +41,12 @@ class ComposeAuthorizationFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                AuthorizationScreen(
-                    state = viewModel.state.collectAsStateWithLifecycle().value,
-                    onEvent = viewModel::onEvent
-                )
+                AppTheme {
+                    AuthorizationScreen(
+                        state = viewModel.state.collectAsStateWithLifecycle().value,
+                        onEvent = viewModel::onEvent
+                    )
+                }
             }
         }
     }
