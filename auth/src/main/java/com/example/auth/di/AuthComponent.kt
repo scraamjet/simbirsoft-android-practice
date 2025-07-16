@@ -1,7 +1,7 @@
 package com.example.auth.di
 
 import android.content.Context
-import com.example.auth.presentation.AuthorizationFragment
+import com.example.auth.presentation.ComposeAuthorizationFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -13,5 +13,5 @@ interface AuthComponent {
         fun create(@BindsInstance context: Context): AuthComponent
     }
 
-    fun injectAuthFragment(fragment: AuthorizationFragment)
+    fun injectAuthFragment(fragment: ComposeAuthorizationFragment)
 }
