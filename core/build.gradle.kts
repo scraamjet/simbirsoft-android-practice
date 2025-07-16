@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
