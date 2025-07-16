@@ -54,7 +54,11 @@ fun PasswordInputField(
             singleLine = true,
             textStyle = BodyTextRegularBlackDeep,
             cursorBrush = SolidColor(Color.Black),
-            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (isPasswordVisible) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .onFocusChanged { focusState -> isFocused = focusState.isFocused },
