@@ -65,7 +65,7 @@ fun EmailInputField(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(1.dp)
+                .height(1.5.dp)
                 .background(
                     if (isFocused) {
                         colorResource(id = color.green)
