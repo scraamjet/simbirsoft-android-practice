@@ -154,8 +154,10 @@ fun AuthorizationScreen(
 @Preview(showBackground = true)
 @Composable
 fun AuthorizationScreenPreview() {
-    AuthorizationScreen(
-        state = AuthorizationState(),
-        onEvent = {}
-    )
+    AppTheme {
+        AuthorizationScreen(
+            state = AuthorizationState(),
+            onEvent = {}
+        )
+    }
 }
