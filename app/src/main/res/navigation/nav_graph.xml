@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/authorizationFragment"
-        android:name="com.example.auth.presentation.ComposeAuthorizationFragment"
+        android:name="com.example.auth.presentation.AuthorizationFragment"
         android:label="Авторизация">
         <action
             android:id="@+id/action_authorization_to_help"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.example.news.presentation.news.ComposeNewsFragment"
+        android:name="com.example.news.presentation.news.NewsFragment"
         android:label="Новости">
         <action
             android:id="@+id/action_news_to_news_detail"
