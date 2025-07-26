@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.datastore.preferences)
+    implementation(libs.androidx.work.runtime.ktx)
     ksp(libs.room.compiler)
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
