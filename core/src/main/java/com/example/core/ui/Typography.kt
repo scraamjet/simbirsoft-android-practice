@@ -53,7 +53,7 @@ val HeadingMediumWhite = TextStyle(
 val HeadingMediumBlueGreyCenter = TextStyle(
     fontFamily = OfficinaSansExtraBold,
     fontSize = 21.sp,
-    color = Color(0xFF607D8B), // blue_grey
+    color = BlueGrey,
     textAlign = TextAlign.Center,
     lineHeight = 32.sp
 )
