@@ -26,6 +26,7 @@ class NewsDetailViewModel @Inject constructor(
     fun onEvent(event: NewsDetailEvent) {
         when (event) {
             is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
+            is NewsDetailEvent.OnBackClicked -> handleOnBackClicked()
         }
     }
 
@@ -49,7 +50,7 @@ class NewsDetailViewModel @Inject constructor(
         _effect.emit(NewsDetailEffect.ShowErrorToast)
     }
 
-    fun handleOnBackClicked() {
+    private fun handleOnBackClicked() {
         viewModelScope.launch {
             _effect.emit(NewsDetailEffect.NavigateBack)
         }

@@ -110,7 +110,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
-            viewModel.handleOnBackClicked()
+            viewModel.onEvent(NewsDetailEvent.OnBackClicked)
         }
     }
 }
