@@ -18,7 +18,7 @@ import com.example.core.ui.AppTheme
 import com.example.core.utils.launchInLifecycle
 import javax.inject.Inject
 
-class ComposeAuthorizationFragment : Fragment() {
+class AuthorizationFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
