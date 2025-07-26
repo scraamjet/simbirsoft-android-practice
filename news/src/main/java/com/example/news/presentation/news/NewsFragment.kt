@@ -20,7 +20,7 @@ import com.example.news.R
 import com.example.news.di.NewsComponentProvider
 import javax.inject.Inject
 
-class ComposeNewsFragment : Fragment() {
+class NewsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory

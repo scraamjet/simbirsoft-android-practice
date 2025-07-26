@@ -1,7 +1,7 @@
 package com.example.news.di
 
 import android.content.Context
-import com.example.news.presentation.news.ComposeNewsFragment
+import com.example.news.presentation.news.NewsFragment
 import com.example.news.presentation.newsdetail.NewsDetailFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -14,6 +14,6 @@ interface NewsComponent {
         fun create(@BindsInstance context: Context): NewsComponent
     }
 
-    fun injectNewsFragment(fragment: ComposeNewsFragment)
+    fun injectNewsFragment(fragment: NewsFragment)
     fun injectNewsDetailFragment(fragment: NewsDetailFragment)
 }
