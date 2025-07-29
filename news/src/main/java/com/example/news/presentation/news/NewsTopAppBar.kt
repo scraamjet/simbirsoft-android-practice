@@ -20,9 +20,9 @@ import com.example.core.ui.HeadingMediumWhite
 import com.example.news.R
 
 @Composable
-fun NewsTopAppBar(onFilterClick: () -> Unit) {
+fun NewsTopAppBar(onFilterClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .background(MaterialTheme.colorScheme.primary),

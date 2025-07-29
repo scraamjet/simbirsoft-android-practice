@@ -23,7 +23,8 @@ import com.example.news.R
 @Composable
 fun NewsScreen(
     state: NewsState,
-    onEvent: (NewsEvent) -> Unit
+    onEvent: (NewsEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
@@ -34,7 +35,7 @@ fun NewsScreen(
     )
     { paddingValues ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
@@ -63,9 +64,12 @@ fun NewsScreen(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(state.newsList) { newsItem ->
-                            NewsItemView(newsItem = newsItem) { clickedNewsId: Int ->
-                                onEvent(NewsEvent.NewsClicked(newsId = clickedNewsId))
-                            }
+                            NewsItemView(
+                                newsItem = newsItem,
+                                onClick = { clickedNewsId: Int ->
+                                    onEvent(NewsEvent.NewsClicked(newsId = clickedNewsId))
+                                }
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
