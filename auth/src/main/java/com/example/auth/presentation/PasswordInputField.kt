@@ -36,7 +36,8 @@ fun PasswordInputField(
     password: String,
     isPasswordVisible: Boolean,
     onPasswordChanged: (String) -> Unit,
-    onToggleVisibility: () -> Unit
+    onToggleVisibility: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val visibilityIcon = if (isPasswordVisible) {
         R.drawable.ic_hide_password
@@ -46,7 +47,7 @@ fun PasswordInputField(
 
     var isFocused by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         BasicTextField(
             value = password,
             onValueChange = onPasswordChanged,

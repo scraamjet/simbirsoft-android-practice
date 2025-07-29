@@ -28,11 +28,12 @@ import com.example.core.ui.BodyTextRegularBlackDeep
 @Composable
 fun EmailInputField(
     email: String,
-    onEmailChanged: (String) -> Unit
+    onEmailChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         BasicTextField(
             value = email,
             onValueChange = onEmailChanged,

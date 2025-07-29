@@ -32,7 +32,8 @@ import com.example.core.ui.CaptionSmallBlackSoft
 @Composable
 fun AuthorizationScreen(
     state: AuthorizationState,
-    onEvent: (AuthorizationEvent) -> Unit
+    onEvent: (AuthorizationEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
@@ -43,7 +44,7 @@ fun AuthorizationScreen(
     ) { innerPadding ->
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(20.dp)

@@ -20,9 +20,9 @@ import com.example.core.ui.HeadingMediumWhite
 import com.example.core.R.drawable
 
 @Composable
-fun AuthorizationTopAppBar(onBackClick: () -> Unit) {
+fun AuthorizationTopAppBar(onBackClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .background(colorScheme.primary),
