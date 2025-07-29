@@ -34,10 +34,11 @@ import com.example.news.utils.DateUtils
 @Composable
 fun NewsItemView(
     newsItem: NewsItem,
-    onClick: (Int) -> Unit
+    onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 8.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.White)
