@@ -20,21 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.core.ui.BodyTextInputGrayFullWidth
 import com.example.auth.R
-import com.example.core.R.color
 import com.example.core.ui.BodyTextRegularBlackDeep
 
 @Composable
 fun EmailInputField(
     email: String,
-    onEmailChanged: (String) -> Unit
+    onEmailChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         BasicTextField(
             value = email,
             onValueChange = onEmailChanged,

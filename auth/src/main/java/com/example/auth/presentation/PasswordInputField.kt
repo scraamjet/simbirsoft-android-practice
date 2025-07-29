@@ -22,10 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.core.R.color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.auth.R
@@ -38,7 +36,8 @@ fun PasswordInputField(
     password: String,
     isPasswordVisible: Boolean,
     onPasswordChanged: (String) -> Unit,
-    onToggleVisibility: () -> Unit
+    onToggleVisibility: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val visibilityIcon = if (isPasswordVisible) {
         R.drawable.ic_hide_password
@@ -48,7 +47,7 @@ fun PasswordInputField(
 
     var isFocused by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         BasicTextField(
             value = password,
             onValueChange = onPasswordChanged,
