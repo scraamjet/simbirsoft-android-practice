@@ -8,6 +8,7 @@ import com.example.news.domain.usecase.NewsUseCaseImpl
 import com.example.news.presentation.news.NewsViewModel
 import com.example.news.domain.usecase.NewsDetailUseCase
 import com.example.news.domain.usecase.NewsDetailUseCaseImpl
+import com.example.news.presentation.HelpMoneyViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -30,4 +31,9 @@ interface NewsModule {
     @IntoMap
     @ViewModelKey(NewsDetailViewModel::class)
     fun bindNewsDetailViewModel(viewModel: NewsDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HelpMoneyViewModel::class)
+    fun bindHelpMoneyViewModel(viewModel: HelpMoneyViewModel): ViewModel
 }

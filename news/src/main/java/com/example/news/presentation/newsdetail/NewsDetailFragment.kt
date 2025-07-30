@@ -18,6 +18,7 @@ import com.example.news.R
 import com.example.news.databinding.FragmentNewsDetailBinding
 import com.example.news.di.NewsComponentProvider
 import com.example.core.model.NewsDetail
+import com.example.core.navigation.AppRouter
 import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 
@@ -28,6 +29,9 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
+
+    @Inject
+    lateinit var appRouter: AppRouter
 
     private val newsId: Int by lazy {
         requireArguments().getInt(NEWS_ID_KEY)
@@ -69,7 +73,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         launchInLifecycle(Lifecycle.State.STARTED) {
             viewModel.effect.collect { effect ->
                 when (effect) {
-                    is NewsDetailEffect.NavigateBack -> findNavController().navigateUp()
+                    is NewsDetailEffect.NavigateBack -> appRouter.navigateToNews(findNavController())
                     is NewsDetailEffect.ShowErrorToast -> showToast(R.string.news_detail_load_error)
                 }
             }
@@ -111,6 +115,14 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
     private fun initClickListeners() {
         binding.buttonBackNewsDetail.setOnClickListener {
             viewModel.onEvent(NewsDetailEvent.OnBackClicked)
+        }
+        binding.linearLayoutHelpMoney.setOnClickListener {
+            val currentState = viewModel.state.value
+            if (currentState is NewsDetailState.Result) {
+                val newsId = newsId
+                val newsTitle = currentState.newsDetail.title
+                appRouter.navigateToDonateDialog(findNavController(), newsId, newsTitle)
+            }
         }
     }
 }

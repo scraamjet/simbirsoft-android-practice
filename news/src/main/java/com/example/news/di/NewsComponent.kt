@@ -1,6 +1,7 @@
 package com.example.news.di
 
 import android.content.Context
+import com.example.news.presentation.HelpMoneyDialogFragment
 import com.example.news.presentation.news.NewsFragment
 import com.example.news.presentation.newsdetail.NewsDetailFragment
 import dagger.BindsInstance
@@ -16,4 +17,5 @@ interface NewsComponent {
 
     fun injectNewsFragment(fragment: NewsFragment)
     fun injectNewsDetailFragment(fragment: NewsDetailFragment)
+    fun injectHelpMoneyDialog(fragment: HelpMoneyDialogFragment)
 }

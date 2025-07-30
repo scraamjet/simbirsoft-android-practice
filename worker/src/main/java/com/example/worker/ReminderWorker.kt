@@ -1,38 +1,36 @@
 package com.example.worker
 
-import android.Manifest
 import android.content.Context
-import androidx.annotation.RequiresPermission
-import androidx.core.app.NotificationCompat
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.core.TypeNotification
 
 class ReminderWorker(
-    appContext: Context,
+    context: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(appContext, workerParams) {
+) : CoroutineWorker(context, workerParams) {
 
-    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override suspend fun doWork(): Result {
-        val newsId = inputData.getInt("news_id", -1)
-        val newsTitle = inputData.getString("news_title") ?: return Result.failure()
-        val amount = inputData.getInt("amount", -1)
-        if (newsId == -1 || amount <= 0) return Result.failure()
+        Log.d("ReminderWorker", "doWork() started")
+        val eventId = inputData.getInt("news_id", -1)
+        val eventName = inputData.getString("news_title").orEmpty()
+        val amount = inputData.getInt("amount", 0)
 
-        val app = applicationContext.applicationContext as WorkerComponentProvider
-        val notificationComponent = app.provideNotificationComponent() // ✅ создаем вручную
+        if (eventId == -1 || eventName.isEmpty() || amount <= 0) {
+            return Result.failure()
+        }
 
-        val notificationManager = notificationComponent.notificationManager()
+        val notificationComponent = (applicationContext as WorkerComponentProvider)
+            .provideNotificationComponent()
 
-        val notification = NotificationCompat.Builder(applicationContext, "reminder_channel")
-            .setSmallIcon(com.example.core.R.drawable.ic_ok)
-            .setContentTitle("Напоминание о пожертвовании")
-            .setContentText("Вы хотели пожертвовать $amount ₽ на: \"$newsTitle\"")
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(newsId, notification)
-
+        notificationComponent.makeStatusNotification(
+            context = applicationContext,
+            eventId = eventId,
+            eventName = eventName,
+            amount = amount,
+            typeNotification = TypeNotification.REMINDER_NOTIFICATION
+        )
         return Result.success()
     }
 }

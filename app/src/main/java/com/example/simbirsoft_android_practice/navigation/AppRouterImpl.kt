@@ -39,6 +39,10 @@ class AppRouterImpl @Inject constructor() : AppRouter {
         navController.navigate(R.id.action_authorization_to_help)
     }
 
+    override fun navigateToNews(navController: NavController) {
+        navController.navigate(R.id.action_news_detail_to_news)
+    }
+
     override fun navigateToDonateDialog(navController: NavController, newsId: Int, newsTitle: String) {
         val args = bundleOf(
             DonateDialogKeys.NEWS_ID to newsId,

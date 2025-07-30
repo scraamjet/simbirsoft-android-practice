@@ -30,11 +30,14 @@
         android:id="@+id/newsDetailFragment"
         android:name="com.example.news.presentation.newsdetail.NewsDetailFragment"
         android:label="Детали">
+        <action android:id="@+id/action_news_detail_to_news"
+            app:destination="@+id/newsFragment"/>
         <argument
             android:name="newsId"
             app:argType="integer" />
+        <deepLink
+            app:uri="app://news_detail/{newsId}" />
     </fragment>
-
 
     <fragment
         android:id="@+id/profileFragment"
@@ -64,4 +67,15 @@
         android:id="@+id/editPhotoDialogFragment"
         android:name="com.example.profile.presentation.dialog.EditPhotoDialogFragment"
         android:label="Диалог" />
+
+    <dialog
+        android:id="@+id/action_news_detail_to_donate_dialog"
+        android:name="com.example.news.presentation.HelpMoneyDialogFragment" >
+        <argument
+            android:name="newsId"
+            app:argType="integer" />
+        <argument
+            android:name="newsTitle"
+            app:argType="string" />
+    </dialog>
 </navigation>

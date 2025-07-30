@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             when (destination.id) {
                 R.id.authorizationFragment,
                 R.id.newsDetailFragment,
+                R.id.action_news_detail_to_donate_dialog
                     -> {
                     appRouter.setBottomNavigationVisible(visible = false)
                 }
