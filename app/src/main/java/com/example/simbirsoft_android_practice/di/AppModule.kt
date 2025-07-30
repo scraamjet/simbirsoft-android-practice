@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module

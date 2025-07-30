@@ -8,6 +8,8 @@ import com.example.simbirsoft_android_practice.App
 import com.example.filter.di.FilterComponent
 import com.example.help.di.HelpComponent
 import com.example.news.di.NewsComponent
+import com.example.worker.NotificationComponent
+import com.example.worker.WorkerComponent
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.search.di.SearchComponent
 import com.example.simbirsoft_android_practice.presentation.service.EventService
@@ -41,6 +43,8 @@ interface AppComponent {
     fun searchComponentFactory(): SearchComponent.Factory
 
     val multiViewModelFactory: MultiViewModelFactory
+    fun notificationComponentFactory(): NotificationComponent.Factory
+    fun workerComponentFactory(): WorkerComponent.Factory
 
     fun inject(app: App)
     fun inject(service: EventService)

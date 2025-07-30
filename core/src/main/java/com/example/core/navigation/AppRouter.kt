@@ -10,4 +10,5 @@ interface AppRouter {
     fun navigateToNewsDetail(navController: NavController, newsId: Int)
     fun navigateToFilter(navController: NavController)
     fun navigateToHelp(navController: NavController)
+    fun navigateToDonateDialog(navController: NavController, newsId: Int, newsTitle: String)
 }

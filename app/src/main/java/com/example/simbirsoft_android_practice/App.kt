@@ -16,9 +16,13 @@ import com.example.search.di.SearchComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
+import com.example.worker.NotificationComponent
+import com.example.worker.WorkerComponent
+import com.example.worker.WorkerComponentProvider
 
 class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider,
-    FilterComponentProvider, NewsComponentProvider, SearchComponentProvider {
+    FilterComponentProvider, NewsComponentProvider, SearchComponentProvider,
+    WorkerComponentProvider {
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
@@ -53,6 +57,14 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider, Help
 
     override fun provideSearchComponent(): SearchComponent {
         return appComponent.searchComponentFactory().create(this)
+    }
+
+    override fun provideWorkerComponent(): WorkerComponent {
+        return appComponent.workerComponentFactory().create(this)
+    }
+
+    override fun provideNotificationComponent(): NotificationComponent {
+        return appComponent.notificationComponentFactory().create(this)
     }
 }
 

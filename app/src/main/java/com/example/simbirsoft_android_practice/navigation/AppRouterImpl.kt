@@ -3,6 +3,7 @@ package com.example.simbirsoft_android_practice.navigation
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.core.navigation.AppRouter
+import com.example.news.presentation.DonateDialogKeys
 import com.example.simbirsoft_android_practice.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,4 +38,13 @@ class AppRouterImpl @Inject constructor() : AppRouter {
     override fun navigateToHelp(navController: NavController) {
         navController.navigate(R.id.action_authorization_to_help)
     }
+
+    override fun navigateToDonateDialog(navController: NavController, newsId: Int, newsTitle: String) {
+        val args = bundleOf(
+            DonateDialogKeys.NEWS_ID to newsId,
+            DonateDialogKeys.NEWS_TITLE to newsTitle
+        )
+        navController.navigate(R.id.action_news_detail_to_donate_dialog, args)
+    }
+
 }

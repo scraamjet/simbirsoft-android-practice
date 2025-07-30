@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.news"
+    namespace = "com.example.worker"
     compileSdk = 35
 
     defaultConfig {
@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-    
+
     buildFeatures {
         viewBinding = true
     }
@@ -44,7 +44,6 @@ android {
 dependencies {
 
     implementation(project(":core"))
-    implementation(project(":worker"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
