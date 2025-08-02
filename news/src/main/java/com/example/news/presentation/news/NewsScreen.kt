@@ -27,6 +27,7 @@ fun NewsScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             NewsTopAppBar(
                 onFilterClick = { onEvent(NewsEvent.FiltersClicked) }
@@ -35,7 +36,7 @@ fun NewsScreen(
     )
     { paddingValues ->
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
