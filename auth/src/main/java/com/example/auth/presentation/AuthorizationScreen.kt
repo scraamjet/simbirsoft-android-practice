@@ -36,6 +36,7 @@ fun AuthorizationScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             AuthorizationTopAppBar(
                 onBackClick = { onEvent(AuthorizationEvent.BackClicked) }
@@ -44,7 +45,7 @@ fun AuthorizationScreen(
     ) { innerPadding ->
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(20.dp)
