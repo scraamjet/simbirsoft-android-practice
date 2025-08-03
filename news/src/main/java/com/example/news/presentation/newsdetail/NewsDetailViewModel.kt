@@ -27,6 +27,7 @@ class NewsDetailViewModel @Inject constructor(
         when (event) {
             is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
             is NewsDetailEvent.OnBackClicked -> handleOnBackClicked()
+            NewsDetailEvent.OnHelpClicked -> handleOnHelpClicked()
         }
     }
 
@@ -53,6 +54,20 @@ class NewsDetailViewModel @Inject constructor(
     private fun handleOnBackClicked() {
         viewModelScope.launch {
             _effect.emit(NewsDetailEffect.NavigateBack)
+        }
+    }
+
+    private fun handleOnHelpClicked() {
+        val currentState = _state.value
+        if (currentState is NewsDetailState.Result) {
+            viewModelScope.launch {
+                _effect.emit(
+                    NewsDetailEffect.OpenHelpMoneyDialog(
+                        newsId = currentState.newsDetail.id,
+                        newsTitle = currentState.newsDetail.title
+                    )
+                )
+            }
         }
     }
 }

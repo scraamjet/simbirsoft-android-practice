@@ -75,6 +75,13 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
                 when (effect) {
                     is NewsDetailEffect.NavigateBack -> appRouter.navigateToNews(findNavController())
                     is NewsDetailEffect.ShowErrorToast -> showToast(R.string.news_detail_load_error)
+                    is NewsDetailEffect.OpenHelpMoneyDialog -> {
+                        appRouter.navigateToDonateDialog(
+                            findNavController(),
+                            effect.newsId,
+                            effect.newsTitle
+                        )
+                    }
                 }
             }
         }
@@ -117,12 +124,7 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
             viewModel.onEvent(NewsDetailEvent.OnBackClicked)
         }
         binding.linearLayoutHelpMoney.setOnClickListener {
-            val currentState = viewModel.state.value
-            if (currentState is NewsDetailState.Result) {
-                val newsId = newsId
-                val newsTitle = currentState.newsDetail.title
-                appRouter.navigateToDonateDialog(findNavController(), newsId, newsTitle)
-            }
+            viewModel.onEvent(NewsDetailEvent.OnHelpClicked)
         }
     }
 }
