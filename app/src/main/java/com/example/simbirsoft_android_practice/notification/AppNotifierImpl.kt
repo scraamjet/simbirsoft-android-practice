@@ -1,4 +1,4 @@
-package com.example.simbirsoft_android_practice.di
+package com.example.simbirsoft_android_practice.notification
 
 import android.Manifest
 import android.app.NotificationChannel
