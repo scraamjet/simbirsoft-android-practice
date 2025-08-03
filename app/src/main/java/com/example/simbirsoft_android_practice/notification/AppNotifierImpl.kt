@@ -16,7 +16,7 @@ import com.example.core.notification.AppNotifier
 import com.example.core.notification.TypeNotification
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
-import com.example.worker.RemindLaterReceiver
+import com.example.background.receiver.RemindLaterReceiver
 
 private const val DONATE_CHANNEL_ID = "donate_channel"
 private const val DONATE_CHANNEL_NAME = "Пожертвования"

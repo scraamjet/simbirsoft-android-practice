@@ -1,4 +1,4 @@
-package com.example.worker
+package com.example.background.di
 
 import android.content.Context
 import dagger.BindsInstance

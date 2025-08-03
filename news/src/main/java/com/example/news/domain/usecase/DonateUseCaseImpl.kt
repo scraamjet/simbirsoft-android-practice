@@ -4,7 +4,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.core.notification.DonateWorkerKeys
-import com.example.worker.DonateWorker
+import com.example.background.worker.DonateWorker
 import javax.inject.Inject
 
 class DonateUseCaseImpl @Inject constructor(

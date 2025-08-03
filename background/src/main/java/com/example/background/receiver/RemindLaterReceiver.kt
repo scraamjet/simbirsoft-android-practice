@@ -1,4 +1,4 @@
-package com.example.worker
+package com.example.background.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.example.background.worker.ReminderWorker
 import com.example.core.notification.DonateWorkerKeys
 import java.util.concurrent.TimeUnit
 

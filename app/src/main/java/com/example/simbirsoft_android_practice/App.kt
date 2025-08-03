@@ -17,8 +17,8 @@ import com.example.search.di.SearchComponentProvider
 import com.example.simbirsoft_android_practice.di.AppComponent
 import com.example.simbirsoft_android_practice.di.AppModule
 import com.example.simbirsoft_android_practice.di.DaggerAppComponent
-import com.example.worker.WorkerComponent
-import com.example.worker.WorkerComponentProvider
+import com.example.background.di.WorkerComponent
+import com.example.background.di.WorkerComponentProvider
 
 class App : Application(), ProfileComponentProvider, AuthComponentProvider, HelpComponentProvider,
     FilterComponentProvider, NewsComponentProvider, SearchComponentProvider,

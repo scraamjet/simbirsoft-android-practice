@@ -1,8 +1,9 @@
-package com.example.worker
+package com.example.background.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.background.di.WorkerComponentProvider
 import com.example.core.notification.DonateWorkerKeys
 import com.example.core.notification.TypeNotification
 

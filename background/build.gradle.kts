@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.worker"
+    namespace = "com.example.background"
     compileSdk = 35
 
     defaultConfig {
