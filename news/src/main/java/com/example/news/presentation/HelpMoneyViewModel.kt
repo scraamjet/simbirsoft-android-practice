@@ -58,7 +58,7 @@ class HelpMoneyViewModel @Inject constructor(
                 }
             }
 
-            is HelpMoneyEvent.SendClicked -> {
+            is HelpMoneyEvent.OnSendClicked -> {
                 viewModelScope.launch {
                     _effect.emit(HelpMoneyEffect.RequestNotificationPermission)
                 }
@@ -77,6 +77,12 @@ class HelpMoneyViewModel @Inject constructor(
             is HelpMoneyEvent.PermissionDenied -> {
                 viewModelScope.launch {
                     _effect.emit(HelpMoneyEffect.ShowPermissionDeniedMessage)
+                }
+            }
+
+            is HelpMoneyEvent.OnCancelClicked -> {
+                viewModelScope.launch {
+                    _effect.emit(HelpMoneyEffect.Dismiss)
                 }
             }
         }

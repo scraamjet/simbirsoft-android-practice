@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.core.di.MultiViewModelFactory
 import com.example.news.databinding.DialogFragmentHelpMoneyBinding
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.core.graphics.drawable.toDrawable
 import com.example.core.utils.launchInLifecycle
@@ -114,11 +110,11 @@ class HelpMoneyDialogFragment : DialogFragment() {
         }
 
         buttonCancel.setOnClickListener {
-            dismiss()
+            viewModel.onEvent(HelpMoneyEvent.OnCancelClicked)
         }
 
         buttonSend.setOnClickListener {
-            viewModel.onEvent(HelpMoneyEvent.SendClicked)
+            viewModel.onEvent(HelpMoneyEvent.OnSendClicked)
         }
     }
 
