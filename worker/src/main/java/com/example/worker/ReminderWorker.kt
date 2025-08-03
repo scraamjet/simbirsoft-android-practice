@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.core.DonateWorkerKeys
 import com.example.core.TypeNotification
 
 class ReminderWorker(
@@ -12,10 +13,9 @@ class ReminderWorker(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
-        Log.d("ReminderWorker", "doWork() started")
-        val eventId = inputData.getInt("news_id", -1)
-        val eventName = inputData.getString("news_title").orEmpty()
-        val amount = inputData.getInt("amount", 0)
+        val eventId = inputData.getInt(DonateWorkerKeys.NEWS_ID, -1)
+        val eventName = inputData.getString(DonateWorkerKeys.NEWS_TITLE).orEmpty()
+        val amount = inputData.getInt(DonateWorkerKeys.AMOUNT, 0)
 
         if (eventId == -1 || eventName.isEmpty() || amount <= 0) {
             return Result.failure()

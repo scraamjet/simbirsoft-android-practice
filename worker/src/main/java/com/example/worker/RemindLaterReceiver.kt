@@ -8,13 +8,14 @@ import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.example.core.DonateWorkerKeys
 import java.util.concurrent.TimeUnit
 
 class RemindLaterReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val eventId = intent.getIntExtra("news_id", -1)
-        val eventName = intent.getStringExtra("news_title").orEmpty()
-        val amount = intent.getIntExtra("amount", 0)
+        val eventId = intent.getIntExtra(DonateWorkerKeys.NEWS_ID, -1)
+        val eventName = intent.getStringExtra(DonateWorkerKeys.NEWS_TITLE).orEmpty()
+        val amount = intent.getIntExtra(DonateWorkerKeys.AMOUNT, 0)
 
         if (eventId == -1 || eventName.isEmpty() || amount <= 0) return
 
@@ -25,9 +26,9 @@ class RemindLaterReceiver : BroadcastReceiver() {
             .setInitialDelay(5, TimeUnit.SECONDS)
             .setInputData(
                 workDataOf(
-                    "news_id" to eventId,
-                    "news_title" to eventName,
-                    "amount" to amount
+                    DonateWorkerKeys.NEWS_ID to eventId,
+                    DonateWorkerKeys.NEWS_TITLE to eventName,
+                    DonateWorkerKeys.AMOUNT to amount
                 )
             )
             .build()
