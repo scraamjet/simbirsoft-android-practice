@@ -23,7 +23,7 @@ class RemindLaterReceiver : BroadcastReceiver() {
         notificationManager.cancel(newsId)
 
         val workRequest = OneTimeWorkRequestBuilder<ReminderWorker>()
-            .setInitialDelay(5, TimeUnit.SECONDS)
+            .setInitialDelay(30, TimeUnit.MINUTES)
             .setInputData(
                 workDataOf(
                     DonateWorkerKeys.NEWS_ID to newsId,

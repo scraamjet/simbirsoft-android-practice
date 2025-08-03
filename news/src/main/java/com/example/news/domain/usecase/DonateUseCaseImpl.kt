@@ -1,5 +1,6 @@
 package com.example.news.domain.usecase
 
+import androidx.work.Constraints
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -18,8 +19,13 @@ class DonateUseCaseImpl @Inject constructor(
             DonateWorkerKeys.AMOUNT to amount
         )
 
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .build()
+
         val request = OneTimeWorkRequestBuilder<DonateWorker>()
             .setInputData(data)
+            .setConstraints(constraints)
             .build()
 
         workManager.enqueue(request)
