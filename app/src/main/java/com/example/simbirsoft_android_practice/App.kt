@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice
 import android.app.Application
 import com.example.auth.di.AuthComponent
 import com.example.auth.di.AuthComponentProvider
-import com.example.core.NotificationComponent
+import com.example.core.AppNotifier
 import com.example.filter.di.FilterComponent
 import com.example.filter.di.FilterComponentProvider
 import com.example.help.di.HelpComponent
@@ -63,8 +63,8 @@ class App : Application(), ProfileComponentProvider, AuthComponentProvider, Help
         return appComponent.workerComponentFactory().create(this)
     }
 
-    override fun provideNotificationComponent(): NotificationComponent {
-        return appComponent.notificationComponent()
+    override fun provideAppNotifier(): AppNotifier {
+        return appComponent.appNotifier()
     }
 }
 

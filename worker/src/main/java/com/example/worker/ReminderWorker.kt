@@ -21,7 +21,7 @@ class ReminderWorker(
         }
 
         val notificationComponent = (applicationContext as WorkerComponentProvider)
-            .provideNotificationComponent()
+            .provideAppNotifier()
 
         notificationComponent.makeStatusNotification(
             context = applicationContext,

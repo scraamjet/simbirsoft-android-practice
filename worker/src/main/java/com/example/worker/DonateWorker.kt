@@ -21,7 +21,7 @@ class DonateWorker(
         }
 
         val notificationComponent = (applicationContext as WorkerComponentProvider)
-            .provideNotificationComponent()
+            .provideAppNotifier()
 
         notificationComponent.makeStatusNotification(
             context = applicationContext,
@@ -30,7 +30,6 @@ class DonateWorker(
             amount = amount,
             typeNotification = TypeNotification.SEND_NOTIFICATION
         )
-
         return Result.success()
     }
 }

@@ -12,7 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.core.DonateWorkerKeys
-import com.example.core.NotificationComponent
+import com.example.core.AppNotifier
 import com.example.core.TypeNotification
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
@@ -25,7 +25,7 @@ private const val REMINDER_CHANNEL_NAME = "Напоминания"
 private const val NEWS_ID_DIALOG_KEY = "newsId"
 private const val NOTIFICATION_REMINDER_OFFSET = 10_000
 
-class NotificationComponentImpl : NotificationComponent {
+class AppNotifierImpl : AppNotifier {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun makeStatusNotification(

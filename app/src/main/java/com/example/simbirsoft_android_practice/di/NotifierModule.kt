@@ -1,0 +1,15 @@
+package com.example.simbirsoft_android_practice.di
+
+import com.example.core.AppNotifier
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
+
+@Module
+class NotifierModule {
+    @Provides
+    @Singleton
+    fun provideAppNotifier(): AppNotifier {
+        return AppNotifierImpl()
+    }
+}

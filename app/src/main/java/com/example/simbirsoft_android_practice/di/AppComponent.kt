@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
 import com.example.auth.di.AuthComponent
-import com.example.core.NotificationComponent
+import com.example.core.AppNotifier
 import com.example.core.di.MultiViewModelFactory
 import com.example.profile.di.ProfileComponent
 import com.example.simbirsoft_android_practice.App
@@ -31,7 +31,7 @@ import javax.inject.Singleton
         InteractorModule::class,
         NavigationModule::class,
         WorkManagerModule::class,
-        NotificationModule::class,
+        NotifierModule::class,
         AppModule::class,
     ],
 )
@@ -42,10 +42,10 @@ interface AppComponent {
     fun filterComponentFactory(): FilterComponent.Factory
     fun newsComponentFactory(): NewsComponent.Factory
     fun searchComponentFactory(): SearchComponent.Factory
+    fun workerComponentFactory(): WorkerComponent.Factory
 
     val multiViewModelFactory: MultiViewModelFactory
-    fun notificationComponent(): NotificationComponent
-    fun workerComponentFactory(): WorkerComponent.Factory
+    fun appNotifier(): AppNotifier
 
     fun inject(app: App)
     fun inject(service: EventService)
