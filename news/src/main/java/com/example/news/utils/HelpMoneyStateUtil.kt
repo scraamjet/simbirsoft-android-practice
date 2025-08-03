@@ -1,6 +1,6 @@
 package com.example.news.utils
 
-import com.example.news.presentation.HelpMoneyState
+import com.example.news.presentation.dialog.HelpMoneyState
 
 const val MIN_AMOUNT = 1
 const val MAX_AMOUNT = 9_999_999

@@ -1,4 +1,4 @@
-package com.example.news.presentation
+package com.example.news.presentation.dialog
 
 import android.Manifest
 import android.provider.Settings
@@ -26,7 +26,6 @@ import com.example.news.databinding.DialogFragmentHelpMoneyBinding
 import javax.inject.Inject
 import androidx.core.graphics.drawable.toDrawable
 import com.example.core.utils.launchInLifecycle
-import com.example.news.DonateAmount
 import com.example.news.R
 import com.example.news.di.NewsComponentProvider
 

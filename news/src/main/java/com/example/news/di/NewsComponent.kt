@@ -1,7 +1,7 @@
 package com.example.news.di
 
 import android.content.Context
-import com.example.news.presentation.HelpMoneyDialogFragment
+import com.example.news.presentation.dialog.HelpMoneyDialogFragment
 import com.example.news.presentation.news.NewsFragment
 import com.example.news.presentation.newsdetail.NewsDetailFragment
 import dagger.BindsInstance

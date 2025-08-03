@@ -1,4 +1,4 @@
-package com.example.news.presentation
+package com.example.news.presentation.dialog
 
 object DonateDialogKeys {
     const val NEWS_ID = "newsId"

@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.domain.usecase
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager

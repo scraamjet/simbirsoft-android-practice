@@ -70,7 +70,7 @@
 
     <dialog
         android:id="@+id/action_news_detail_to_donate_dialog"
-        android:name="com.example.news.presentation.HelpMoneyDialogFragment" >
+        android:name="com.example.news.presentation.dialog.HelpMoneyDialogFragment" >
         <argument
             android:name="newsId"
             app:argType="integer" />

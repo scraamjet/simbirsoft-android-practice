@@ -1,4 +1,4 @@
-package com.example.news.presentation
+package com.example.news.presentation.dialog
 
 data class HelpMoneyState(
     val newsId: Int = 0,

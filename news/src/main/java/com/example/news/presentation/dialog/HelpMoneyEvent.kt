@@ -1,6 +1,4 @@
-package com.example.news.presentation
-
-import com.example.news.DonateAmount
+package com.example.news.presentation.dialog
 
 sealed class HelpMoneyEvent {
     data class Init(val newsId: Int, val newsTitle: String) : HelpMoneyEvent()

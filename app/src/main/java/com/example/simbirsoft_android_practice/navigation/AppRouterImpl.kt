@@ -3,7 +3,7 @@ package com.example.simbirsoft_android_practice.navigation
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.core.navigation.AppRouter
-import com.example.news.presentation.DonateDialogKeys
+import com.example.news.presentation.dialog.DonateDialogKeys
 import com.example.simbirsoft_android_practice.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

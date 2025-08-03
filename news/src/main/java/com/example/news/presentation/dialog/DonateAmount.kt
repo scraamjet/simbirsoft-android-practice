@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.presentation.dialog
 
 enum class DonateAmount(val value: Int) {
     ONE_HUNDRED(100),
