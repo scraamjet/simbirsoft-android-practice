@@ -1,6 +1,6 @@
 package com.example.simbirsoft_android_practice.di
 
-import com.example.core.AppNotifier
+import com.example.core.notification.AppNotifier
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

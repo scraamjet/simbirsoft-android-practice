@@ -1,4 +1,4 @@
-package com.example.core
+package com.example.core.notification
 
 import android.content.Context
 

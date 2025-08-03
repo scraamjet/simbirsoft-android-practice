@@ -3,7 +3,7 @@ package com.example.news.domain.usecase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.core.DonateWorkerKeys
+import com.example.core.notification.DonateWorkerKeys
 import com.example.worker.DonateWorker
 import javax.inject.Inject
 

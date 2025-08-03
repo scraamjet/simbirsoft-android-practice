@@ -1,6 +1,6 @@
 package com.example.worker
 
-import com.example.core.AppNotifier
+import com.example.core.notification.AppNotifier
 
 interface WorkerComponentProvider {
     fun provideWorkerComponent(): WorkerComponent

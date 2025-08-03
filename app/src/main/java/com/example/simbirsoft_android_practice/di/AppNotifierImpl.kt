@@ -11,9 +11,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavDeepLinkBuilder
-import com.example.core.DonateWorkerKeys
-import com.example.core.AppNotifier
-import com.example.core.TypeNotification
+import com.example.core.notification.DonateWorkerKeys
+import com.example.core.notification.AppNotifier
+import com.example.core.notification.TypeNotification
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.worker.RemindLaterReceiver

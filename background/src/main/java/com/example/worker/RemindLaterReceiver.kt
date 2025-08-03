@@ -7,7 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.core.DonateWorkerKeys
+import com.example.core.notification.DonateWorkerKeys
 import java.util.concurrent.TimeUnit
 
 class RemindLaterReceiver : BroadcastReceiver() {

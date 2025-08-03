@@ -1,4 +1,4 @@
-package com.example.core
+package com.example.core.notification
 
 object DonateWorkerKeys {
     const val NEWS_ID = "news_id"

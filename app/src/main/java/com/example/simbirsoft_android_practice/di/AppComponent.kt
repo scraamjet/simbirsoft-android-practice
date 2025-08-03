@@ -2,7 +2,7 @@ package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
 import com.example.auth.di.AuthComponent
-import com.example.core.AppNotifier
+import com.example.core.notification.AppNotifier
 import com.example.core.di.MultiViewModelFactory
 import com.example.profile.di.ProfileComponent
 import com.example.simbirsoft_android_practice.App
