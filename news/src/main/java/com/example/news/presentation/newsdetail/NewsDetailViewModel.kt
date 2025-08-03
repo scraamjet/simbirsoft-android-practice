@@ -27,7 +27,7 @@ class NewsDetailViewModel @Inject constructor(
         when (event) {
             is NewsDetailEvent.Load -> loadNewsDetail(newsId = event.newsId)
             is NewsDetailEvent.OnBackClicked -> handleOnBackClicked()
-            NewsDetailEvent.OnHelpClicked -> handleOnHelpClicked()
+            is NewsDetailEvent.OnHelpClicked -> handleOnHelpClicked()
         }
     }
 
