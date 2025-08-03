@@ -39,4 +39,9 @@
     <string name="money_sum_500">500 ₽</string>
     <string name="money_sum_1000">1000 ₽</string>
     <string name="money_sum_2000">2000 ₽</string>
+
+    <string name="notification_permission_required_title">Требуется разрешение</string>
+    <string name="notification_permission_required_message">Для отправки уведомлений необходимо разрешение. Разрешите его в настройках приложения.</string>
+    <string name="open_settings_button">Открыть настройки</string>
+    <string name="cancel_settings_button">Отмена</string>
 </resources>

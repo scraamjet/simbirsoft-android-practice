@@ -33,9 +33,9 @@ class HelpMoneyViewModel @Inject constructor(
             }
 
             is HelpMoneyEvent.SelectPredefinedAmount -> {
-                _state.updateState { state ->
-                    state.copy(
-                        selectedAmount = event.amount,
+                _state.updateState { currentState ->
+                    currentState.copy(
+                        selectedAmount = event.amount.value,
                         inputText = "",
                         isValid = true
                     )
@@ -43,8 +43,8 @@ class HelpMoneyViewModel @Inject constructor(
             }
 
             is HelpMoneyEvent.InputCustomAmount -> {
-                _state.updateState { state ->
-                    state.withCustomAmount(event.text)
+                _state.updateState { currentState ->
+                    currentState.withCustomAmount(input = event.text)
                 }
             }
 
@@ -56,12 +56,11 @@ class HelpMoneyViewModel @Inject constructor(
 
             is HelpMoneyEvent.PermissionGranted -> {
                 var amountToDonate: Int? = null
+                _state.updateState { currentState ->
+                    val inputAmount = currentState.inputText.toIntOrNull()
+                    amountToDonate = inputAmount ?: currentState.selectedAmount
 
-                _state.updateState { state ->
-                    val inputAmount = state.inputText.toIntOrNull()
-                    amountToDonate = inputAmount ?: state.selectedAmount
-
-                    state.copy(
+                    currentState.copy(
                         inputText = "",
                         selectedAmount = amountToDonate,
                         isValid = false
@@ -79,7 +78,7 @@ class HelpMoneyViewModel @Inject constructor(
 
             is HelpMoneyEvent.PermissionDenied -> {
                 viewModelScope.launch {
-                    _effect.emit(HelpMoneyEffect.ShowPermissionDeniedMessage)
+                    _effect.emit(HelpMoneyEffect.OpenNotificationSettings)
                 }
             }
 

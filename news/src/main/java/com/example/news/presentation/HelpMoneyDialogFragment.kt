@@ -1,15 +1,22 @@
 package com.example.news.presentation
 
 import android.Manifest
+import android.provider.Settings
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -19,6 +26,7 @@ import com.example.news.databinding.DialogFragmentHelpMoneyBinding
 import javax.inject.Inject
 import androidx.core.graphics.drawable.toDrawable
 import com.example.core.utils.launchInLifecycle
+import com.example.news.DonateAmount
 import com.example.news.R
 import com.example.news.di.NewsComponentProvider
 
@@ -39,15 +47,23 @@ class HelpMoneyDialogFragment : DialogFragment() {
         requireArguments().getString(DonateDialogKeys.NEWS_TITLE).orEmpty()
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
             viewModel.onEvent(HelpMoneyEvent.PermissionGranted)
         } else {
-            viewModel.onEvent(HelpMoneyEvent.PermissionDenied)
+            val shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+            viewModel.onEvent(
+                HelpMoneyEvent.PermissionDenied(shouldShowRationale = shouldShowRationale)
+            )
         }
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -87,16 +103,15 @@ class HelpMoneyDialogFragment : DialogFragment() {
 
     private fun initListeners() = with(binding) {
         defaultMoneySum.addOnButtonCheckedListener { _, _, _ ->
-            val checkedId = defaultMoneySum.checkedButtonId
-            val amount = when (checkedId) {
-                R.id.buttonMoneySumOneHundred -> 100
-                R.id.buttonMoneySumFiveHundred -> 500
-                R.id.buttonMoneySumOneThousand -> 1000
-                R.id.buttonMoneySumTwoThousand -> 2000
+            val amountEnum = when (defaultMoneySum.checkedButtonId) {
+                R.id.buttonMoneySumOneHundred -> DonateAmount.ONE_HUNDRED
+                R.id.buttonMoneySumFiveHundred -> DonateAmount.FIVE_HUNDRED
+                R.id.buttonMoneySumOneThousand -> DonateAmount.ONE_THOUSAND
+                R.id.buttonMoneySumTwoThousand -> DonateAmount.TWO_THOUSAND
                 else -> null
             }
-            if (amount != null) {
-                viewModel.onEvent(HelpMoneyEvent.SelectPredefinedAmount(amount))
+            amountEnum?.let { donateAmount ->
+                viewModel.onEvent(HelpMoneyEvent.SelectPredefinedAmount(donateAmount))
                 editTextMoneySum.setText("")
             }
         }
@@ -131,20 +146,28 @@ class HelpMoneyDialogFragment : DialogFragment() {
             viewModel.effect.collect { effect ->
                 when (effect) {
                     HelpMoneyEffect.Dismiss -> dismiss()
+
                     HelpMoneyEffect.RequestNotificationPermission -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            val permission = Manifest.permission.POST_NOTIFICATIONS
+                            when {
+                                ContextCompat.checkSelfPermission(
+                                    requireContext(), permission
+                                ) == PackageManager.PERMISSION_GRANTED -> {
+                                    viewModel.onEvent(HelpMoneyEvent.PermissionGranted)
+                                }
+
+                                else -> {
+                                    requestPermissionLauncher.launch(permission)
+                                }
+                            }
                         } else {
                             viewModel.onEvent(HelpMoneyEvent.PermissionGranted)
                         }
                     }
 
-                    HelpMoneyEffect.ShowPermissionDeniedMessage -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Разрешение не предоставлено",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    HelpMoneyEffect.OpenNotificationSettings -> {
+                        showSettingsDialog()
                     }
                 }
             }
@@ -154,5 +177,22 @@ class HelpMoneyDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showSettingsDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.notification_permission_required_title))
+            .setMessage(getString(R.string.notification_permission_required_message))
+            .setPositiveButton(R.string.open_settings_button) { _, _ -> openAppSettings() }
+            .setNegativeButton(R.string.cancel_settings_button, null)
+            .show()
+    }
+
+    private fun openAppSettings() {
+        startActivity(
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", requireContext().packageName, null)
+            }
+        )
     }
 }
