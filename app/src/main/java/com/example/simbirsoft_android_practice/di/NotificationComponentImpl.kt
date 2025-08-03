@@ -6,39 +6,45 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavDeepLinkBuilder
+import com.example.core.DonateWorkerKeys
 import com.example.core.NotificationComponent
 import com.example.core.TypeNotification
 import com.example.simbirsoft_android_practice.R
 import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.worker.RemindLaterReceiver
 
-class NotificationComponentImpl() : NotificationComponent {
+private const val DONATE_CHANNEL_ID = "donate_channel"
+private const val DONATE_CHANNEL_NAME = "Пожертвования"
+private const val REMINDER_CHANNEL_ID = "reminder_channel"
+private const val REMINDER_CHANNEL_NAME = "Напоминания"
+private const val NEWS_ID_DIALOG_KEY = "newsId"
+private const val NOTIFICATION_REMINDER_OFFSET = 10_000
+
+class NotificationComponentImpl : NotificationComponent {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     override fun makeStatusNotification(
         context: Context,
-        eventId: Int,
+        newsId: Int,
         eventName: String,
         amount: Int,
         typeNotification: TypeNotification,
     ) {
-        Log.d("Notification", "makeStatusNotification called, amount: $amount")
         val notificationManager = NotificationManagerCompat.from(context)
 
         val donateChannel = NotificationChannel(
-            "donate_channel",
-            "Пожертвования",
+            DONATE_CHANNEL_ID,
+            DONATE_CHANNEL_NAME,
             NotificationManager.IMPORTANCE_DEFAULT
         )
         val reminderChannel = NotificationChannel(
-            "reminder_channel",
-            "Напоминания",
+            REMINDER_CHANNEL_ID,
+            REMINDER_CHANNEL_NAME,
             NotificationManager.IMPORTANCE_DEFAULT
         )
 
@@ -54,7 +60,7 @@ class NotificationComponentImpl() : NotificationComponent {
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.newsDetailFragment)
             .setComponentName(MainActivity::class.java)
-            .setArguments(bundleOf("newsId" to eventId))
+            .setArguments(bundleOf(NEWS_ID_DIALOG_KEY to newsId))
             .createPendingIntent()
 
         val builder = NotificationCompat.Builder(context, channelId)
@@ -63,8 +69,11 @@ class NotificationComponentImpl() : NotificationComponent {
             .setStyle(
                 NotificationCompat.BigTextStyle().bigText(
                     when (typeNotification) {
-                        TypeNotification.SEND_NOTIFICATION -> "Спасибо, что пожертвовали $amount ₽! Будем очень признательны, если вы сможете пожертвовать еще больше."
-                        TypeNotification.REMINDER_NOTIFICATION -> "Напоминаем, что мы будем очень признательны, если вы сможете пожертвовать еще больше."
+                        TypeNotification.SEND_NOTIFICATION ->
+                            context.getString(R.string.notification_donate_text, amount)
+
+                        TypeNotification.REMINDER_NOTIFICATION ->
+                            context.getString(R.string.notification_reminder_text)
                     }
                 )
             )
@@ -74,19 +83,27 @@ class NotificationComponentImpl() : NotificationComponent {
         if (typeNotification == TypeNotification.SEND_NOTIFICATION) {
             val remindIntent = PendingIntent.getBroadcast(
                 context,
-                eventId,
+                newsId,
                 Intent(context, RemindLaterReceiver::class.java).apply {
-                    putExtra("news_id", eventId)
-                    putExtra("news_title", eventName)
-                    putExtra("amount", amount)
+                    putExtra(DonateWorkerKeys.NEWS_ID, newsId)
+                    putExtra(DonateWorkerKeys.NEWS_TITLE, eventName)
+                    putExtra(DonateWorkerKeys.AMOUNT, amount)
                 },
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
-            builder.addAction(R.drawable.history_icon, "Напомнить позже", remindIntent)
+            builder.addAction(
+                R.drawable.history_icon,
+                context.getString(R.string.notification_action_remind),
+                remindIntent
+            )
         }
 
         notificationManager.notify(
-            eventId + if (typeNotification == TypeNotification.REMINDER_NOTIFICATION) 10000 else 0,
+            newsId + if (typeNotification == TypeNotification.REMINDER_NOTIFICATION) {
+                NOTIFICATION_REMINDER_OFFSET
+            } else {
+                0
+            },
             builder.build()
         )
     }

@@ -5,7 +5,7 @@ import android.content.Context
 fun interface NotificationComponent {
     fun makeStatusNotification(
         context: Context,
-        eventId: Int,
+        newsId: Int,
         eventName: String,
         amount: Int,
         typeNotification: TypeNotification,

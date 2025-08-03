@@ -5,4 +5,9 @@
     <string name="splash_icon_desc">Иконка приложения</string>
     <string name="splash_loading_indicator">Индикатор загрузки</string>
     <string name="splash_progress_desc">Логотип SimbirSoft mobile</string>
+
+    <string name="notification_donate_text">Спасибо, что пожертвовали %1$d ₽! Будем очень признательны, если вы сможете пожертвовать еще больше.</string>
+    <string name="notification_reminder_text">Напоминаем, что мы будем очень признательны, если вы сможете пожертвовать еще больше.</string>
+    <string name="notification_action_remind">Напомнить позже</string>
+
 </resources>
