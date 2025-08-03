@@ -44,7 +44,7 @@ android {
 dependencies {
 
     implementation(project(":core"))
-    implementation(project(":worker"))
+    implementation(project(":background"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

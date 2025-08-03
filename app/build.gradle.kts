@@ -72,7 +72,7 @@ dependencies {
     implementation(project(":filter"))
     implementation(project(":news"))
     implementation(project(":search"))
-    implementation(project(":worker"))
+    implementation(project(":background"))
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
     implementation(libs.rxbinding)
