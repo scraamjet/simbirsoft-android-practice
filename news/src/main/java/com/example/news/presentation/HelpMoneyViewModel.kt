@@ -45,14 +45,15 @@ class HelpMoneyViewModel @Inject constructor(
                 val cleanedText = event.text.filter { char -> char.isDigit() }
 
                 val amountValue = cleanedText.toIntOrNull()
-                val isValidAmount = amountValue != null && amountValue in 1..9_999_999
+                val hasLeadingZero = cleanedText.length > 1 && cleanedText.startsWith("0")
+                val isValidAmount = amountValue != null && amountValue in 1..9_999_999 && !hasLeadingZero
 
                 _state.update { currentState ->
                     val shouldOverride = cleanedText.isNotBlank()
 
                     currentState.copy(
                         inputText = cleanedText,
-                        selectedAmount = if (shouldOverride) null else currentState.selectedAmount,
+                        selectedAmount = if (shouldOverride) {null} else currentState.selectedAmount,
                         isValid = if (shouldOverride) isValidAmount else currentState.selectedAmount != null
                     )
                 }
@@ -65,12 +66,25 @@ class HelpMoneyViewModel @Inject constructor(
             }
 
             is HelpMoneyEvent.PermissionGranted -> {
-                val currentState = _state.value
-                val amountToDonate =
-                    currentState.inputText.toIntOrNull() ?: currentState.selectedAmount
-                if (amountToDonate != null) {
-                    enqueueDonateWork(currentState.newsId, currentState.newsTitle, amountToDonate)
-                    viewModelScope.launch { _effect.emit(HelpMoneyEffect.Dismiss) }
+                var amountToDonate: Int? = null
+
+                _state.update { currentState ->
+                    val inputAmount = currentState.inputText.toIntOrNull()
+                    amountToDonate = inputAmount ?: currentState.selectedAmount
+
+                    currentState.copy(
+                        inputText = "",
+                        selectedAmount = amountToDonate,
+                        isValid = false
+                    )
+                }
+
+                amountToDonate?.let { amount ->
+                    val currentState = _state.value
+                    enqueueDonateWork(currentState.newsId, currentState.newsTitle, amount)
+                    viewModelScope.launch {
+                        _effect.emit(HelpMoneyEffect.Dismiss)
+                    }
                 }
             }
 
