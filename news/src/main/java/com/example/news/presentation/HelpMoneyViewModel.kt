@@ -2,23 +2,20 @@ package com.example.news.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.example.worker.DonateWorker
+import com.example.core.utils.updateState
+import com.example.news.DonateUseCase
+import com.example.news.utils.withCustomAmount
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HelpMoneyViewModel @Inject constructor(
-    private val workManager: WorkManager
+    private val donateUseCase: DonateUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HelpMoneyState())
@@ -30,32 +27,24 @@ class HelpMoneyViewModel @Inject constructor(
     fun onEvent(event: HelpMoneyEvent) {
         when (event) {
             is HelpMoneyEvent.Init -> {
-                _state.update { currentState ->
-                    currentState.copy(newsId = event.newsId, newsTitle = event.newsTitle)
+                _state.updateState { state ->
+                    state.copy(newsId = event.newsId, newsTitle = event.newsTitle)
                 }
             }
 
             is HelpMoneyEvent.SelectPredefinedAmount -> {
-                _state.update { currentState ->
-                    currentState.copy(selectedAmount = event.amount, inputText = "", isValid = true)
+                _state.updateState { state ->
+                    state.copy(
+                        selectedAmount = event.amount,
+                        inputText = "",
+                        isValid = true
+                    )
                 }
             }
 
             is HelpMoneyEvent.InputCustomAmount -> {
-                val cleanedText = event.text.filter { char -> char.isDigit() }
-
-                val amountValue = cleanedText.toIntOrNull()
-                val hasLeadingZero = cleanedText.length > 1 && cleanedText.startsWith("0")
-                val isValidAmount = amountValue != null && amountValue in 1..9_999_999 && !hasLeadingZero
-
-                _state.update { currentState ->
-                    val shouldOverride = cleanedText.isNotBlank()
-
-                    currentState.copy(
-                        inputText = cleanedText,
-                        selectedAmount = if (shouldOverride) {null} else currentState.selectedAmount,
-                        isValid = if (shouldOverride) isValidAmount else currentState.selectedAmount != null
-                    )
+                _state.updateState { state ->
+                    state.withCustomAmount(event.text)
                 }
             }
 
@@ -68,11 +57,11 @@ class HelpMoneyViewModel @Inject constructor(
             is HelpMoneyEvent.PermissionGranted -> {
                 var amountToDonate: Int? = null
 
-                _state.update { currentState ->
-                    val inputAmount = currentState.inputText.toIntOrNull()
-                    amountToDonate = inputAmount ?: currentState.selectedAmount
+                _state.updateState { state ->
+                    val inputAmount = state.inputText.toIntOrNull()
+                    amountToDonate = inputAmount ?: state.selectedAmount
 
-                    currentState.copy(
+                    state.copy(
                         inputText = "",
                         selectedAmount = amountToDonate,
                         isValid = false
@@ -81,7 +70,7 @@ class HelpMoneyViewModel @Inject constructor(
 
                 amountToDonate?.let { amount ->
                     val currentState = _state.value
-                    enqueueDonateWork(currentState.newsId, currentState.newsTitle, amount)
+                    donateUseCase.donate(currentState.newsId, currentState.newsTitle, amount)
                     viewModelScope.launch {
                         _effect.emit(HelpMoneyEffect.Dismiss)
                     }
@@ -100,23 +89,5 @@ class HelpMoneyViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun enqueueDonateWork(newsId: Int, newsTitle: String, amount: Int) {
-        val data = workDataOf(
-            "news_id" to newsId,
-            "news_title" to newsTitle,
-            "amount" to amount
-        )
-
-        val constraints = Constraints.Builder()
-            .build()
-
-        val request = OneTimeWorkRequestBuilder<DonateWorker>()
-            .setConstraints(constraints)
-            .setInputData(data)
-            .build()
-
-        workManager.enqueue(request)
     }
 }

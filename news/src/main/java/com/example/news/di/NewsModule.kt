@@ -2,6 +2,8 @@ package com.example.news.di
 
 import androidx.lifecycle.ViewModel
 import com.example.core.di.ViewModelKey
+import com.example.news.DonateUseCase
+import com.example.news.DonateUseCaseImpl
 import com.example.news.presentation.newsdetail.NewsDetailViewModel
 import com.example.news.domain.usecase.NewsUseCase
 import com.example.news.domain.usecase.NewsUseCaseImpl
@@ -21,6 +23,9 @@ interface NewsModule {
 
     @Binds
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
+
+    @Binds
+    fun bindDonateUseCase(impl: DonateUseCaseImpl): DonateUseCase
 
     @Binds
     @IntoMap
