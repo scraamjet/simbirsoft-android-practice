@@ -54,7 +54,11 @@ class AppNotifierImpl : AppNotifier {
         systemManager.createNotificationChannel(reminderChannel)
 
         val channelId =
-            if (typeNotification == TypeNotification.SEND_NOTIFICATION) "donate_channel" else "reminder_channel"
+            if (typeNotification == TypeNotification.SEND_NOTIFICATION) {
+                DONATE_CHANNEL_ID
+            } else {
+                REMINDER_CHANNEL_ID
+            }
 
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
