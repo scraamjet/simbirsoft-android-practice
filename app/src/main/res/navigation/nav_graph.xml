@@ -11,7 +11,7 @@
             android:id="@+id/action_authorization_to_help"
             app:destination="@id/helpFragment"
             app:popUpTo="@id/authorizationFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/newsDetailFragment"
         android:name="com.example.news.presentation.newsdetail.NewsDetailFragment"
-        android:label="Детали" >
+        android:label="Детали">
         <argument
             android:name="newsId"
             app:argType="integer" />
@@ -48,8 +48,7 @@
     <fragment
         android:id="@+id/searchContainerFragment"
         android:name="com.example.search.presentation.search.SearchContainerFragment"
-        android:label="Поиск">
-    </fragment>
+        android:label="Поиск" />
 
     <fragment
         android:id="@+id/filterFragment"
