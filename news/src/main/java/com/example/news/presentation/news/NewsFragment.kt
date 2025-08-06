@@ -2,155 +2,70 @@ package com.example.news.presentation.news
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.StringRes
-import androidx.core.view.isVisible
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.di.MultiViewModelFactory
-import com.example.core.model.NewsItem
 import com.example.core.navigation.AppRouter
-import com.example.core.utils.launchInLifecycle
+import com.example.core.ui.AppTheme
+import com.example.core.utils.collectAsEffect
 import com.example.news.R
-import com.example.news.databinding.FragmentNewsBinding
 import com.example.news.di.NewsComponentProvider
-import com.example.news.presentation.news.adapter.NewsAdapter
-import com.google.android.material.appbar.AppBarLayout
-import dev.androidbroadcast.vbpd.viewBinding
 import javax.inject.Inject
 
-private const val SCROLL_FLAG_NONE = 0
-
-class NewsFragment : Fragment(R.layout.fragment_news) {
-    private val binding by viewBinding(FragmentNewsBinding::bind)
+class NewsFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: MultiViewModelFactory
 
-    private val newsViewModel: NewsViewModel by viewModels { viewModelFactory }
+    private val viewModel by viewModels<NewsViewModel> { viewModelFactory }
 
     @Inject
     lateinit var appRouter: AppRouter
 
-    private val newsAdapter by lazy {
-        NewsAdapter { newsItemId -> onNewsItemClicked(newsId = newsItemId) }
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val component = (context.applicationContext as NewsComponentProvider)
+        val component = (requireContext().applicationContext as NewsComponentProvider)
             .provideNewsComponent()
-            component.injectNewsFragment(this)
+        component.injectNewsFragment(this)
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        initClickListeners()
-        observeState()
-        observeEffects()
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                AppTheme {
+                    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                    val effect = viewModel.effect.collectAsEffect()
 
-    private fun initRecyclerView() {
-        binding.recyclerViewItemNews.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = newsAdapter
-        }
-    }
+                    effect?.let { handledEffect -> handleEffect(handledEffect) }
 
-    private fun initClickListeners() {
-        binding.imageViewButtonFilters.setOnClickListener {
-            newsViewModel.onEvent(NewsEvent.FiltersClicked)
-        }
-    }
-
-    private fun observeState() {
-        launchInLifecycle(Lifecycle.State.STARTED) {
-            newsViewModel.uiState.collect { state ->
-                when (state) {
-                    is NewsState.Loading -> showLoading()
-                    is NewsState.Results -> showResults(newsList = state.newsList)
-                    is NewsState.NoResults -> showNoResults()
-                    is NewsState.Error -> hideContentOnError()
+                    NewsScreen(
+                        state = uiState,
+                        onEvent = viewModel::onEvent
+                    )
                 }
             }
         }
     }
 
-    private fun observeEffects() {
-        launchInLifecycle(Lifecycle.State.STARTED) {
-            newsViewModel.effect.collect { effect ->
-                when (effect) {
-                    is NewsEffect.NavigateToNewsDetail -> navigateToNewsDetail(newsId = effect.newsId)
-                    is NewsEffect.NavigateToFilter -> appRouter.navigateToFilter(findNavController())
-                    is NewsEffect.ShowErrorToast -> showToast(R.string.news_load_error)
-                }
-            }
-        }
-    }
-
-    private fun showLoading() {
-        binding.progressBarNews.isVisible = true
-        binding.recyclerViewItemNews.isVisible = false
-        binding.textViewNoNews.isVisible = false
-    }
-
-    private fun showResults(newsList: List<NewsItem>) {
-        binding.progressBarNews.isVisible = false
-        binding.recyclerViewItemNews.isVisible = true
-        binding.textViewNoNews.isVisible = false
-
-        newsAdapter.submitList(newsList)
-        updateScrollFlags(isListEmpty = false)
-    }
-
-    private fun showNoResults() {
-        binding.progressBarNews.isVisible = false
-        binding.recyclerViewItemNews.isVisible = false
-        binding.textViewNoNews.isVisible = true
-
-        updateScrollFlags(isListEmpty = true)
-    }
-
-    private fun showToast(
-        @StringRes messageResId: Int,
-    ) {
-        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun hideContentOnError() {
-        binding.progressBarNews.isVisible = false
-        binding.recyclerViewItemNews.isVisible = false
-        binding.textViewNoNews.isVisible = true
-
-        updateScrollFlags(isListEmpty = true)
-    }
-
-    private fun onNewsItemClicked(newsId: Int) {
-        newsViewModel.onEvent(NewsEvent.NewsClicked(newsId = newsId))
-    }
-
-    private fun navigateToNewsDetail(newsId: Int) {
-        appRouter.navigateToNewsDetail(findNavController(), newsId)
-    }
-
-    private fun updateScrollFlags(isListEmpty: Boolean) {
-        (binding.toolbarNews.layoutParams as AppBarLayout.LayoutParams).apply {
-            scrollFlags =
-                if (isListEmpty) {
-                    SCROLL_FLAG_NONE
-                } else {
-                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS or
-                            AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
-                }
+    private fun handleEffect(effect: NewsEffect) {
+        when (effect) {
+            is NewsEffect.NavigateToNewsDetail -> appRouter.navigateToNewsDetail(findNavController(), effect.newsId)
+            is NewsEffect.NavigateToFilter -> appRouter.navigateToFilter(findNavController())
+            is NewsEffect.ShowErrorToast -> Toast.makeText(requireContext(), R.string.news_load_error, Toast.LENGTH_SHORT).show()
         }
     }
 }
+
+

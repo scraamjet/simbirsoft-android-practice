@@ -1,9 +1,8 @@
 package com.example.news.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
-import com.example.news.presentation.newsdetail.NewsDetailFragment
 import com.example.news.presentation.news.NewsFragment
+import com.example.news.presentation.newsdetail.NewsDetailFragment
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -17,6 +16,4 @@ interface NewsComponent {
 
     fun injectNewsFragment(fragment: NewsFragment)
     fun injectNewsDetailFragment(fragment: NewsDetailFragment)
-
-    fun viewModelFactory(): ViewModelProvider.Factory
 }

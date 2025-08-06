@@ -50,3 +50,24 @@ val HeadingMediumWhite = TextStyle(
     fontSize = 21.sp,
     color = White
 )
+val HeadingMediumBlueGreyCenter = TextStyle(
+    fontFamily = OfficinaSansExtraBold,
+    fontSize = 21.sp,
+    color = BlueGrey,
+    textAlign = TextAlign.Center,
+    lineHeight = 32.sp
+)
+
+val BodyTextMediumBlackDeep = TextStyle(
+    fontFamily = Roboto,
+    fontSize = 16.sp,
+    color = BlackSolid,
+    textAlign = TextAlign.Center
+)
+
+val CaptionSmallWhite = TextStyle(
+    fontFamily = Roboto,
+    fontSize = 12.sp,
+    color = White,
+    textAlign = TextAlign.Center
+)
