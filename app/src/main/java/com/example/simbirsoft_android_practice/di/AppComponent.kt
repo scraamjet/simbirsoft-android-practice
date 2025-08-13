@@ -2,16 +2,16 @@ package com.example.simbirsoft_android_practice.di
 
 import android.content.Context
 import com.example.auth.di.AuthComponent
-import com.example.core.notification.AppNotifier
+import com.example.background.di.WorkerComponent
 import com.example.core.di.MultiViewModelFactory
-import com.example.profile.di.ProfileComponent
-import com.example.simbirsoft_android_practice.App
+import com.example.core.notification.AppNotifier
 import com.example.filter.di.FilterComponent
 import com.example.help.di.HelpComponent
 import com.example.news.di.NewsComponent
-import com.example.background.di.WorkerComponent
-import com.example.simbirsoft_android_practice.presentation.main.MainActivity
+import com.example.profile.di.ProfileComponent
 import com.example.search.di.SearchComponent
+import com.example.simbirsoft_android_practice.App
+import com.example.simbirsoft_android_practice.presentation.main.MainActivity
 import com.example.simbirsoft_android_practice.presentation.service.EventService
 import dagger.Component
 import javax.inject.Singleton
@@ -30,7 +30,6 @@ import javax.inject.Singleton
         NavigationModule::class,
         InteractorModule::class,
         NavigationModule::class,
-        WorkManagerModule::class,
         NotifierModule::class,
         AppModule::class,
     ],
