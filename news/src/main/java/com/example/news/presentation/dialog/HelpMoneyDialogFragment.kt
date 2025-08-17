@@ -1,7 +1,6 @@
 package com.example.news.presentation.dialog
 
 import android.Manifest
-import android.provider.Settings
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -10,6 +9,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,17 +17,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.example.core.di.MultiViewModelFactory
-import com.example.news.databinding.DialogFragmentHelpMoneyBinding
-import javax.inject.Inject
-import androidx.core.graphics.drawable.toDrawable
 import com.example.core.utils.launchInLifecycle
 import com.example.news.R
+import com.example.news.databinding.DialogFragmentHelpMoneyBinding
 import com.example.news.di.NewsComponentProvider
+import javax.inject.Inject
 
 class HelpMoneyDialogFragment : DialogFragment() {
 
@@ -39,11 +39,11 @@ class HelpMoneyDialogFragment : DialogFragment() {
     private val viewModel: HelpMoneyViewModel by viewModels { viewModelFactory }
 
     private val newsId: Int by lazy {
-        requireArguments().getInt(DonateDialogKeys.NEWS_ID)
+        requireArguments().getInt(NEWS_ID)
     }
 
     private val newsTitle: String by lazy {
-        requireArguments().getString(DonateDialogKeys.NEWS_TITLE).orEmpty()
+        requireArguments().getString(NEWS_TITLE).orEmpty()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -193,5 +193,10 @@ class HelpMoneyDialogFragment : DialogFragment() {
                 data = Uri.fromParts("package", requireContext().packageName, null)
             }
         )
+    }
+
+    companion object Keys {
+        const val NEWS_ID = "newsId"
+        const val NEWS_TITLE = "newsTitle"
     }
 }
