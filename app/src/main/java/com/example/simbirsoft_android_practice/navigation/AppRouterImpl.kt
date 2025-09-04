@@ -3,15 +3,13 @@ package com.example.simbirsoft_android_practice.navigation
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.example.core.navigation.AppRouter
+import com.example.core.navigation.NewsArgs
 import com.example.simbirsoft_android_practice.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
-
-private const val NEWS_ID_KEY = "newsId"
-private const val NEWS_TITLE_KEY = "newsTitle"
 
 class AppRouterImpl @Inject constructor() : AppRouter {
 
@@ -23,7 +21,7 @@ class AppRouterImpl @Inject constructor() : AppRouter {
     }
 
     override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
-        val bundle = bundleOf(NEWS_ID_KEY to newsId)
+        val bundle = bundleOf(NewsArgs.NEWS_ID_KEY to newsId)
         navController.navigate(R.id.action_news_to_news_detail, bundle)
     }
 
@@ -45,8 +43,8 @@ class AppRouterImpl @Inject constructor() : AppRouter {
 
     override fun navigateToDonateDialog(navController: NavController, newsId: Int, newsTitle: String) {
         val args = bundleOf(
-            NEWS_ID_KEY to newsId,
-            NEWS_TITLE_KEY to newsTitle
+            NewsArgs.NEWS_ID_KEY to newsId,
+            NewsArgs.NEWS_TITLE_KEY to newsTitle
         )
         navController.navigate(R.id.action_news_detail_to_donate_dialog, args)
     }

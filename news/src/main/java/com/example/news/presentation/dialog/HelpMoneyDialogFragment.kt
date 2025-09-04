@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.example.core.di.MultiViewModelFactory
+import com.example.core.navigation.NewsArgs
 import com.example.core.utils.launchInLifecycle
 import com.example.news.R
 import com.example.news.databinding.DialogFragmentHelpMoneyBinding
@@ -39,11 +40,11 @@ class HelpMoneyDialogFragment : DialogFragment() {
     private val viewModel: HelpMoneyViewModel by viewModels { viewModelFactory }
 
     private val newsId: Int by lazy {
-        requireArguments().getInt(NEWS_ID)
+        requireArguments().getInt(NewsArgs.NEWS_ID_KEY)
     }
 
     private val newsTitle: String by lazy {
-        requireArguments().getString(NEWS_TITLE).orEmpty()
+        requireArguments().getString(NewsArgs.NEWS_TITLE_KEY).orEmpty()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -193,10 +194,5 @@ class HelpMoneyDialogFragment : DialogFragment() {
                 data = Uri.fromParts("package", requireContext().packageName, null)
             }
         )
-    }
-
-    companion object Keys {
-        const val NEWS_ID = "newsId"
-        const val NEWS_TITLE = "newsTitle"
     }
 }
