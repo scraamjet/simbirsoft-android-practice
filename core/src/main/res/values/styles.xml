@@ -232,4 +232,43 @@
         <item name="android:textColor">@color/black_38</item>
     </style>
 
+    <style name="ButtonTextToggleMoney" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/text_color_btn_change_money_sum</item>
+        <item name="backgroundTint">@color/bgcolor_btn_change_money_sum</item>
+        <item name="strokeColor">@color/green</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="autoSizeMinTextSize">8sp</item>
+        <item name="autoSizeMaxTextSize">14sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="maxLines">1</item>
+        <item name="android:minLines">1</item>
+        <item name="singleLine">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="PopupHeadingLargeBlack">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textColor">@color/black_87</item>
+    </style>
+
+    <style name="BodyTextMediumBlackButton">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">@color/text_color_btn_dialog_fragment</item>
+    </style>
+
+    <style name="PopupFieldTitleSmallMuted">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black_54</item>
+    </style>
 </resources>

@@ -2,12 +2,15 @@ package com.example.news.di
 
 import androidx.lifecycle.ViewModel
 import com.example.core.di.ViewModelKey
+import com.example.news.domain.usecase.DonateUseCase
+import com.example.news.domain.usecase.DonateUseCaseImpl
 import com.example.news.presentation.newsdetail.NewsDetailViewModel
 import com.example.news.domain.usecase.NewsUseCase
 import com.example.news.domain.usecase.NewsUseCaseImpl
 import com.example.news.presentation.news.NewsViewModel
 import com.example.news.domain.usecase.NewsDetailUseCase
 import com.example.news.domain.usecase.NewsDetailUseCaseImpl
+import com.example.news.presentation.dialog.HelpMoneyViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -22,6 +25,9 @@ interface NewsModule {
     fun bindNewsDetailUseCase(impl: NewsDetailUseCaseImpl): NewsDetailUseCase
 
     @Binds
+    fun bindDonateUseCase(impl: DonateUseCaseImpl): DonateUseCase
+
+    @Binds
     @IntoMap
     @ViewModelKey(NewsViewModel::class)
     fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
@@ -30,4 +36,9 @@ interface NewsModule {
     @IntoMap
     @ViewModelKey(NewsDetailViewModel::class)
     fun bindNewsDetailViewModel(viewModel: NewsDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HelpMoneyViewModel::class)
+    fun bindHelpMoneyViewModel(viewModel: HelpMoneyViewModel): ViewModel
 }

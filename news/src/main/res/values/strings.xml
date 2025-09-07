@@ -27,4 +27,21 @@
     <string name="tab_name_search_by_nko">По НКО</string>
     <string name="hint_input_name_organization">Введите название организации</string>
     <string name="hint_input_title_event">Введите название мероприятия</string>
+
+    <string name="title_help_dialog_fragment">Спасибо за решение помочь!</string>
+    <string name="send_money">Перевести</string>
+    <string name="cancel_money">Отмена</string>
+    <string name="title_money_help_dialog_fragment">Выберите размер пожертвования</string>
+    <string name="title_custom_money">или введите нужную сумму</string>
+    <string name="input_custom_money">Введите сумму</string>
+
+    <string name="money_sum_100">100 ₽</string>
+    <string name="money_sum_500">500 ₽</string>
+    <string name="money_sum_1000">1000 ₽</string>
+    <string name="money_sum_2000">2000 ₽</string>
+
+    <string name="notification_permission_required_title">Требуется разрешение</string>
+    <string name="notification_permission_required_message">Для отправки уведомлений необходимо разрешение. Разрешите его в настройках приложения.</string>
+    <string name="open_settings_button">Открыть настройки</string>
+    <string name="cancel_settings_button">Отмена</string>
 </resources>

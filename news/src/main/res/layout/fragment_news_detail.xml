@@ -463,6 +463,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id = "@+id/linearLayoutHelpMoney"
                 android:layout_width="@dimen/size_toolbar_icon"
                 android:layout_height="@dimen/size_toolbar_icon"
                 android:importantForAccessibility="no"

@@ -17,6 +17,7 @@ object NewsMapper {
 
     fun eventToNewsDetail(event: Event): NewsDetail =
         NewsDetail(
+            id = event.id,
             title = event.name,
             fullDescription = event.description,
             startDateTime = event.startDate,

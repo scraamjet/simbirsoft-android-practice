@@ -49,4 +49,13 @@
     <dimen name="text_margin_start">4dp</dimen>
 
     <dimen name="margin_bottom_linear_layout_no_query_scroll">80dp</dimen>
+
+    <dimen name="padding_horizontal_popup_default">26dp</dimen>
+    <dimen name="margin_top_popup_header">21dp</dimen>
+    <dimen name="margin_top_popup_field_title">12dp</dimen>
+    <dimen name="margin_top_button_toggle_group">10dp</dimen>
+    <dimen name="margin_top_text_input_layout">4dp</dimen>
+    <dimen name="margin_top_popup_action_buttons">35dp</dimen>
+    <dimen name="margin_bottom_popup_action_buttons">17dp</dimen>
+    <dimen name="margin_end_popup_cancel_button">@dimen/margin_default</dimen>
 </resources>
