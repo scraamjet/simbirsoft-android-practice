@@ -1,0 +1,52 @@
+package com.example.simbirsoft_android_practice.navigation
+
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import com.example.core.navigation.AppRouter
+import com.example.core.navigation.NewsArgs
+import com.example.simbirsoft_android_practice.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import javax.inject.Inject
+
+class AppRouterImpl @Inject constructor() : AppRouter {
+
+    private val _bottomNavVisibility: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    override val bottomNavVisibility: StateFlow<Boolean> = _bottomNavVisibility.asStateFlow()
+
+    override fun setBottomNavigationVisible(visible: Boolean) {
+        _bottomNavVisibility.update { visible }
+    }
+
+    override fun navigateToNewsDetail(navController: NavController, newsId: Int) {
+        val bundle = bundleOf(NewsArgs.NEWS_ID_KEY to newsId)
+        navController.navigate(R.id.action_news_to_news_detail, bundle)
+    }
+
+    override fun navigateToFilter(navController: NavController) {
+        navController.navigate(R.id.action_news_to_filter)
+    }
+
+    override fun navigateToEditPhotoDialog(navController: NavController) {
+        navController.navigate(R.id.action_profile_to_edit_photo_dialog)
+    }
+
+    override fun navigateToHelp(navController: NavController) {
+        navController.navigate(R.id.action_authorization_to_help)
+    }
+
+    override fun navigateToNews(navController: NavController) {
+        navController.navigate(R.id.action_news_detail_to_news)
+    }
+
+    override fun navigateToDonateDialog(navController: NavController, newsId: Int, newsTitle: String) {
+        val args = bundleOf(
+            NewsArgs.NEWS_ID_KEY to newsId,
+            NewsArgs.NEWS_TITLE_KEY to newsTitle
+        )
+        navController.navigate(R.id.action_news_detail_to_donate_dialog, args)
+    }
+
+}

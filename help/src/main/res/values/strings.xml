@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_label">Помочь</string>
+    <string name="help_choose_category_label">Выберите категорию помощи</string>
+    <string name="help_load_error">Не удалось загрузить список категорий</string>
+    <string name="help_children_category_title">Дети</string>
+    <string name="help_adult_category_title">Взрослые</string>
+    <string name="help_animals_category_title">Животные</string>
+    <string name="help_old_category_title">Пожилые</string>
+    <string name="help_events_category_title">Мероприятия</string>
+</resources>

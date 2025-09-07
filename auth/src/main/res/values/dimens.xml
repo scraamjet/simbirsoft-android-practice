@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_authorization_zero">0dp</dimen>
+
+    <dimen name="margin_extra_small_authorization">8dp</dimen>
+    <dimen name="margin_small_authorization">20dp</dimen>
+    <dimen name="margin_medium_authorization">32dp</dimen>
+    <dimen name="margin_large_authorization">40dp</dimen>
+    <dimen name="margin_extra_large_authorization">60dp</dimen>
+
+    <dimen name="margin_horizontal_authorization_image_view_social">24dp</dimen>
+
+    <dimen name="size_authorization_imageview_social">40dp</dimen>
+
+    <dimen name="radius_authorization_button">2dp</dimen>
+    <dimen name="translationZ_authorization_button">2dp</dimen>
+    <dimen name="elevation_authorization_button">2dp</dimen>
+</resources>

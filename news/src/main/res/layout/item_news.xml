@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_news"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_top_news_item"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_horizontal_image"
+        android:paddingTop="@dimen/padding_top_image">
+
+        <ImageView
+            android:id="@+id/imageViewNewsItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fade_view_gradient" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textViewNewsTitle"
+        style="@style/HeadingMediumBlueGreyCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_title"
+        android:layout_marginTop="@dimen/margin_top_title" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_decor"
+        android:layout_marginBottom="@dimen/margin_bottom_decor"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_news_decor" />
+
+    <TextView
+        android:id="@+id/textViewNewsDescription"
+        style="@style/BodyTextMediumBlackDeep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_description"
+        android:layout_marginBottom="@dimen/margin_bottom_description"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:paddingHorizontal="@dimen/margin_medium" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_card_view_item_news"
+        android:backgroundTint="@color/turtle_green">
+
+        <TextView
+            android:id="@+id/textViewNewsTime"
+            style="@style/CaptionExtraSmallWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/drawable_padding_time"
+            android:gravity="center"
+            app:drawableStartCompat="@drawable/ic_calendar_white" />
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

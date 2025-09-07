@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity_splash_screen -->
+    <dimen name="splash_app_logo_width">245dp</dimen>
+    <dimen name="splash_app_logo_height">73dp</dimen>
+    <dimen name="splash_app_logo_margin_top">154dp</dimen>
+    <dimen name="splash_progress_bar_margin_bottom">20dp</dimen>
+    <dimen name="splash_loading_text_margin_bottom">124dp</dimen>
+    <dimen name="splash_mss_logo_margin_bottom">40dp</dimen>
+</resources>
+

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="@dimen/profile_app_bar_elevation">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/profile_collapsing_toolbar_height"
+            android:fitsSystemWindows="true"
+            android:keepScreenOn="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:toolbarId="@+id/collapsing_toolbar_layout">
+
+            <ImageView
+                android:id="@+id/appBarImageProfile"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_app_bar_image_height"
+                android:layout_gravity="bottom"
+                android:background="@color/light_grey"
+                android:fitsSystemWindows="true"
+                android:scaleType="center"
+                android:src="@drawable/image_man"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll"
+                tools:ignore="ContentDescription" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbarProfile"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:menu="@menu/menu_profile">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textViewProfile"
+                        style="@style/HeadingMediumWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/profile_toolbar_margin_start"
+                        android:text="@string/nav_profile" />
+
+                </FrameLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:isScrollContainer="true">
+
+            <TextView
+                android:id="@+id/textViewNameProfile"
+                style="@style/HeadingLargeBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_name_margin_top"
+                android:text="@string/profile_sample_name"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewBirthdayHintProfile"
+                style="@style/CaptionSmallBlackSubtle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_birthday_hint_margin_top"
+                android:text="@string/profile_date_of_birth"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameProfile"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/textViewBirthdayProfile"
+                style="@style/BodyTextRegularBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_sample_date"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayHintProfile" />
+
+            <TextView
+                android:id="@+id/textViewFieldOfActivityProfile"
+                style="@style/CaptionSmallBlackSubtle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_field_of_activity_margin_top"
+                android:text="@string/profile_field_of_activity"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewBirthdayProfile"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/textViewActivityProfile"
+                style="@style/BodyTextRegularBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_sample_activity"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFieldOfActivityProfile" />
+
+            <TextView
+                android:id="@+id/textViewPushUpProfile"
+                style="@style/BodyTextRegularBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_push_notifications_margin_top"
+                android:text="@string/profile_push_notifications"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/textViewActivityProfile" />
+
+            <Switch
+                android:id="@+id/switchNotificationsProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/profile_switch_margin_end"
+                android:layout_marginBottom="@dimen/profile_switch_margin_bottom"
+                app:layout_constraintBottom_toTopOf="@id/dividerProfileNotifications"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:theme="@style/Theme.Simbirsoftandroidpractice"
+                tools:ignore="TouchTargetSizeCheck,UseSwitchCompatOrMaterialXml" />
+
+            <View
+                android:id="@+id/dividerProfileNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_line_height"
+                android:layout_marginTop="@dimen/profile_line_margin_top"
+                android:background="@color/cool_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPushUpProfile" />
+
+            <TextView
+                android:id="@+id/textViewYourFriends"
+                style="@style/CaptionSmallBlackSubtle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_friends_margin_top"
+                android:text="@string/profile_friends_list"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                app:layout_constraintTop_toBottomOf="@+id/dividerProfileNotifications" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewFriends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_recycler_view_friend_list"
+                app:layout_constraintTop_toBottomOf="@+id/textViewYourFriends"
+                app:layout_constraintStart_toStartOf="@id/guidelineVerticalProfile"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"/>
+
+            <View
+                android:id="@+id/dividerProfileFriends"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_line_height"
+                android:layout_marginTop="@dimen/profile_line_2_margin_top"
+                android:background="@color/cool_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewFriends" />
+
+            <Button
+                android:id="@+id/buttonLogout"
+                style="@style/BodyTextSmallWhiteCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/profile_logout_margin_top"
+                android:layout_marginBottom="@dimen/profile_logout_margin_bottom"
+                android:gravity="center"
+                android:text="@string/profile_logout_button"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dividerProfileFriends" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineVerticalProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/profile_guideline_margin_start" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

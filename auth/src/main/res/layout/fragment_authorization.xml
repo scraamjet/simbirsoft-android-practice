@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutAuthorization"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarAuthorization"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/green">
+
+            <ImageView
+                android:id="@+id/imageViewFilterBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="@dimen/margin_small_authorization"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/textViewLabelFragment"
+                style="@style/HeadingMediumWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/title_authorization" />
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin_large_authorization">
+
+            <TextView
+                android:id="@+id/textViewAuthorizationSocialSign"
+                style="@style/BodyTextMediumBlackDeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_large_authorization"
+                android:text="@string/sign_in_through_social_networks" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_authorization"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewAuthorizationVK"
+                    android:layout_width="@dimen/size_authorization_imageview_social"
+                    android:layout_height="@dimen/size_authorization_imageview_social"
+                    android:layout_marginStart="@dimen/margin_extra_large_authorization"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_social_vk" />
+
+                <ImageView
+                    android:id="@+id/imageViewAuthorizationFacebook"
+                    android:layout_width="@dimen/size_authorization_imageview_social"
+                    android:layout_height="@dimen/size_authorization_imageview_social"
+                    android:layout_marginStart="@dimen/margin_horizontal_authorization_image_view_social"
+                    android:layout_marginEnd="@dimen/margin_horizontal_authorization_image_view_social"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_social_fb" />
+
+                <ImageView
+                    android:id="@+id/imageViewAuthorizationClassmates"
+                    android:layout_width="@dimen/size_authorization_imageview_social"
+                    android:layout_height="@dimen/size_authorization_imageview_social"
+                    android:layout_marginEnd="@dimen/margin_extra_large_authorization"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_social_ok" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewAuthorizationLogin"
+                style="@style/BodyTextMediumBlackDeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_large_authorization"
+                android:text="@string/login_authorization" />
+
+            <TextView
+                android:id="@+id/textViewAuthorizationEmailTitle"
+                style="CaptionSmallBlackSoft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                android:layout_marginTop="@dimen/margin_small_authorization"
+                android:text="@string/email_title" />
+
+            <EditText
+                android:id="@+id/editTextAuthorizationEmail"
+                style="BodyTextInputGrayFullWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                android:hint="@string/hint_input_e_mail"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/textViewAuthorizationPasswordTitle"
+                style="CaptionSmallBlackSoft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                android:layout_marginTop="@dimen/margin_small_authorization"
+                android:text="@string/password_title" />
+
+            <EditText
+                android:id="@+id/editTextAuthorizationPassword"
+                style="BodyTextInputGrayFullWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                android:drawableEnd="@drawable/ic_open_password"
+                android:hint="@string/hint_input_password"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textPassword" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAuthorization"
+                style="@style/BodyTextMediumWhiteCenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                android:layout_marginTop="@dimen/margin_medium_authorization"
+                android:backgroundTint="@drawable/color_login_button"
+                android:elevation="@dimen/elevation_authorization_button"
+                android:enabled="false"
+                android:gravity="center"
+                android:stateListAnimator="@null"
+                android:text="@string/login_button_text"
+                android:textAllCaps="true"
+                android:translationZ="@dimen/translationZ_authorization_button"
+                app:cornerRadius="@dimen/radius_authorization_button" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_authorization"
+                android:layout_marginBottom="@dimen/margin_medium_authorization"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewAuthorizationForgotPassword"
+                    style="@style/BodyTextLinkGreen"
+                    android:layout_width="@dimen/size_authorization_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                    android:layout_weight="1"
+                    android:text="@string/forgot_your_password" />
+
+                <TextView
+                    android:id="@+id/textViewAuthorizationRegistration"
+                    style="@style/BodyTextLinkGreen"
+                    android:layout_width="@dimen/size_authorization_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small_authorization"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/registration" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_list_layout_margin_vertical">20dp</dimen>
+    <dimen name="search_list_layout_margin_horizontal">8dp</dimen>
+    <dimen name="search_list_layout_margin_top">8dp</dimen>
+    <dimen name="search_list_layout_margin_end">72dp</dimen>
+    <dimen name="margin_top_search_list_linear_layout_no_query">53dp</dimen>
+    <dimen name="margin_top_text_view_no_results">53dp</dimen>
+
+    <dimen name="item_search_result_margin_top">17dp</dimen>
+    <dimen name="item_search_result_margin_bottom">18dp</dimen>
+    <dimen name="item_search_result_margin_end">16dp</dimen>
+
+    <dimen name="item_search_result_divider_height">1dp</dimen>
+
+    <dimen name="item_search_result_border_width">1dp</dimen>
+    <dimen name="help_category_item_spacing">8dp</dimen>
+
+    <dimen name="search_margin_horizontal">8dp</dimen>
+    <dimen name="search_margin_top">8dp</dimen>
+    <dimen name="search_card_corner_radius">2dp</dimen>
+    <dimen name="search_card_elevation">2dp</dimen>
+    <dimen name="search_card_translationZ">2dp</dimen>
+    <dimen name="search_tab_layout_height">48dp</dimen>
+    <dimen name="search_view_pager_height">0dp</dimen>
+    <dimen name="search_tab_indicator_height">2dp</dimen>
+
+    <dimen name="search_icon_margin_top">40dp</dimen>
+    <dimen name="search_text_margin_top">10dp</dimen>
+    <dimen name="search_text_margin_start">4dp</dimen>
+
+    <dimen name="margin_bottom_linear_layout_no_query_scroll">80dp</dimen>
+</resources>
